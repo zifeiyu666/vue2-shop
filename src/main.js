@@ -21,7 +21,7 @@ router.beforeEach((to, from, next) => {
       }
       else {    //如果没有权限,重定向到登录页,进行登录
         next({
-          path: '/login',
+          path: '/shop/login',
           // query: {redirect: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
         })
       }
