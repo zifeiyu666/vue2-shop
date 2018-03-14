@@ -11,6 +11,13 @@ Vue.use(Mint);
 Vue.config.productionTip = false
 Vue.prototype.$api = api;
 
+// 引入vue-awesome
+import 'vue-awesome/icons'
+/* Register component with one of 2 methods */
+import Icon from 'vue-awesome/components/Icon'
+// globally (in your main .js file)
+Vue.component('icon', Icon)
+
 
 // 用钩子函数beforeEach()对路由进行判断
 

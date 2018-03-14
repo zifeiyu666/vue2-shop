@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <transition name='fade'>
+        <router-view></router-view>
+    </transition>
     <v-loading v-show="fetchLoading"></v-loading>
   </div>
 </template>
@@ -23,7 +25,8 @@ export default {
 html,body,#app{
   width: 100%;
   height: 100%;
-  -webkit-tap-highlight-color:rgba(0,0,0,0)
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
+  background: #fff;
 }
 
 body,
@@ -47,7 +50,8 @@ p,
 ul {
     margin: 0;
     padding: 0;
-    -moz-user-select:none;-webkit-user-select:none;
+    -moz-user-select:none;
+    -webkit-user-select:none;
     -webkit-tap-highlight-color:transparent;
 }
 
@@ -129,6 +133,27 @@ h6 {
 
 .ac {
     text-align: center;
+}
+
+// 自定义全局样式
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .3s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+.title{
+    font-size: 18px;
+    line-height: 30px;
+    color: #333;
+}
+.fl{
+    float: left;
+}
+.clearfix:after {
+   content:""; 
+   display: block; 
+   clear:both; 
 }
 
 
