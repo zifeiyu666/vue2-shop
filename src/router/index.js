@@ -19,7 +19,13 @@ const ShowItem = resolve => require(['@/views/show/item.vue'], resolve)
 const ShowNews = resolve => require(['@/views/show/news.vue'], resolve)
 const ShowHistory = resolve => require(['@/views/show/history.vue'],resolve)
 const ShowItemList = resolve => require(['@/views/show/itemList.vue'],resolve)
-const ShowItemDetail = resolve => require(['@/views/show/itemDetail.vue'],resolve)
+const ShowItemNav = resolve => require(['@/views/show/itemNav.vue'],resolve)
+const ShowItemDetail = resolve => require(['@/views/show/item/itemDetail.vue'],resolve)
+const ShowHouseList = resolve => require(['@/views/show/item/houseList.vue'],resolve)
+const ShowHouseDetail = resolve => require(['@/views/show/item/houseDetail.vue'],resolve)
+const ShowBrandList = resolve => require(['@/views/show/item/brandList.vue'],resolve)
+const ShowBrandDetail = resolve => require(['@/views/show/item/brandDetail.vue'],resolve)
+const ShowAutoNav = resolve => require(['@/views/show/item/autoNav.vue'],resolve)
 
 const shopRouters = [{
     path: '/shop',
@@ -82,9 +88,39 @@ const showRouters = [
     component: ShowItemList
   },
   {
+    path: '/show/itemNav',
+    name: 'showItemNav',
+    component: ShowItemNav
+  },
+  {
     path: '/show/itemDetail',
-    name: 'showItemDetail',
+    name: 'ShowItemDetail',
     component: ShowItemDetail
+  },
+  {
+    path: '/show/houseList',
+    name: 'ShowHouseList',
+    component: ShowHouseList
+  },
+  {
+    path: '/show/houseDetail',
+    name: 'ShowHouseDetail',
+    component: ShowHouseDetail
+  },
+  {
+    path: '/show/brandList',
+    name: 'ShowBrandList',
+    component: ShowBrandList
+  },
+  {
+    path: '/show/brandDetail',
+    name: 'ShowBrandDetail',
+    component: ShowBrandDetail
+  },
+  {
+    path: '/show/autoNav',
+    name: 'ShowAutoNav',
+    component: ShowAutoNav
   },
   {
     path: '/show/news',

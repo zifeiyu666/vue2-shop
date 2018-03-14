@@ -10,6 +10,7 @@ import 'mint-ui/lib/style.css'
 Vue.use(Mint);
 Vue.config.productionTip = false
 Vue.prototype.$api = api;
+Vue.prototype.$imgHost = 'https://dummyimage.com/'
 
 // 引入vue-awesome
 import 'vue-awesome/icons'
