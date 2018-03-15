@@ -6,7 +6,7 @@
       <i slot="icon" class="icon-index"></i>
         首页
     </mt-tab-item>
-    <mt-tab-item id="showItem">
+    <mt-tab-item id="showItemList">
       <i slot="icon" class="icon-category"></i>
       项目
     </mt-tab-item>
@@ -45,8 +45,8 @@
         case 'showIndex':
           this.selected = 'showIndex';
           break;
-        case 'showItem':
-          this.selected = 'showItem';
+        case 'showItemList':
+          this.selected = 'showItemList';
 
           break;
         case 'showNews':

@@ -34,6 +34,9 @@
   .banner{
     width: 100%;
     overflow: hidden;
+    img{
+      width: 100%;
+    }
   }
   .item-title{
     margin-top: 15px;

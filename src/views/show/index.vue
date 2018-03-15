@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="index">
     <div class='swiper-container'>
-      <mt-swipe :auto="4000">
+      <!-- <mt-swipe :auto="4000">
         <mt-swipe-item>
           <p class='item01'>1</p>
         </mt-swipe-item>
@@ -11,17 +11,23 @@
         <mt-swipe-item>
           <p class='item03'>3</p>
         </mt-swipe-item>
-      </mt-swipe>
+      </mt-swipe> -->
+      <v-swiper :swiperData="datas.swiper"></v-swiper>
     </div>
     <v-title title='项目展示' @clickMore='moreItems'></v-title>
     <item-show></item-show>
+    <item-show></item-show>
+    <item-show></item-show>
     <v-title title='新闻资讯' @clickMore='moreNews'></v-title>
+    <news-show></news-show>
+    <news-show></news-show>
     <news-show></news-show>
     <v-footer></v-footer>
   </div>
 </template>
 
 <script>
+import Swiper from '@/components/index/swiper.vue'
 import * as mockapi from '@/../mockapi'
 import index from '@/http/mock.js' //模拟数据
 
@@ -35,7 +41,8 @@ export default {
     'v-footer': Footer,
     ItemShow,
     'v-title': Title,
-    NewsShow
+    NewsShow,
+    'v-swiper': Swiper,
   },
   data() {
     return {
@@ -48,6 +55,14 @@ export default {
       console.log(response)
     }).catch(error => {
       console.log(error)
+    })
+    this.$api({
+      method: 'post',
+      url: '/index'
+    }).then((response) => {
+      this.datas = response.data;
+    }).catch(function(error) {
+      alert(error)
     })
   },
   methods: {
@@ -65,24 +80,10 @@ export default {
 
 <style lang="less" scoped>
 .index {
+    padding-top: 0;
+    padding-bottom: 90px;
     width: 100%;
     height: 100%;
-    background-color: #F8FCFF;
+    background-color: #EBEBEB;
 }
-.swiper-container{
-  height: 200px;
-}
-p.item01{
-  height: 100%;
-  background: #eee;
-}
-p.item02{
-  height: 100%;
-  background: #666;
-}
-p.item03{
-  height: 100%;
-  background: #999;
-}
-
 </style>

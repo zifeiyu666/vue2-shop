@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <mt-header title="项目信息">
+  <div class='index'>
+    <mt-header fixed title="项目信息">
       <router-link to="/show" slot="left">
         <mt-button icon="back">返回</mt-button>
       </router-link>
@@ -15,16 +15,20 @@
       infinite-scroll-distance="10">
       <li v-for="(item, index) in list" :key='index' @click='goToItemDetail(item)'>
         <div class="item">
-          项目图片
+          <img :src="$imgHost + '400x80/999/&text=项目背景图'" alt="">
         </div>
       </li>
     </ul>
-
+    <v-footer></v-footer>
   </div>
   
 </template>
 <script>
+  import Footer from '@/common/show/_footer'
   export default{
+    components: {
+      'v-footer': Footer
+    },
     data() {
       return {
         list: [
@@ -49,10 +53,17 @@
     }
   }
 </script>
-<style>
+<style lang=less>
+.index{
+  padding-bottom: 90px;
+  padding-top: 40px;
+  background-color: #EBEBEB;
+}
 .item{
   box-shadow: 0px 1px 3px #eee;
-  margin: 10px;
-  height: 80px;
+  padding: 10px;
+  img{
+    width: 100%;
+  }
 }
 </style>

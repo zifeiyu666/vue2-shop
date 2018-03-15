@@ -136,6 +136,9 @@ h6 {
 }
 
 // 自定义全局样式
+p{
+    font-size: 14px;
+}
 .fade-enter-active, .fade-leave-active {
   transition: opacity .3s;
 }
@@ -143,9 +146,22 @@ h6 {
   opacity: 0;
 }
 .title{
-    font-size: 18px;
-    line-height: 30px;
+    font-size: 16px;
+    line-height: 26px;
     color: #333;
+}
+.index{
+    width: 100%;
+    height: 100%;
+    background-color: #EBEBEB;
+}
+.line{
+    height: 1px ;
+    background: #eee;
+    margin: 8px 0;
+}
+.mainbg{
+    background: #EBEBEB;
 }
 .fl{
     float: left;

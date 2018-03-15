@@ -17,9 +17,12 @@
 </script>
 <style lang=less>
   .circle-nav{
+    background: url('https://dummyimage.com/640x980&text=背景图');
+    background-size: 100% 100%;
     position: relative;
     height: 100%;
     .circle{
+      background: #fff;
       display: inline-block;
       text-align: center;
       line-height: 100px;

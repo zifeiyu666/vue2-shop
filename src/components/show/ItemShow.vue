@@ -1,8 +1,8 @@
 <template>
   <div class="item-show">
-    <div class="wrap clearfix">
+    <div class="wrap clearfix" @click='goToDetail'>
       <div class="img-wrap fl">
-        <img :src="imgHost + '80x80/999'" alt="">
+        <img :src="imgHost + '70x70/999'" alt="">
       </div>
       <div class="content-wrap">
         <h3 class="title">项目名称</h3>
@@ -17,6 +17,11 @@
       return {
         imgHost: 'https://dummyimage.com/'
       }
+    },
+    methods: {
+      goToDetail() {
+        this.$router.push('/show/itemNav')
+      }
     }
   }
 </script>
@@ -27,10 +32,10 @@
     .wrap{
       position: relative;
       border-bottom: 1px solid #eee;
-      padding: 15px 10px;
+      padding: 10px 6px;
     }
     .content-wrap{
-      padding-left: 110px;
+      padding-left: 100px;
       padding-right: 15px; 
       word-wrap: break-word;
       box-sizing: border-box;
@@ -38,10 +43,12 @@
       left: 0;
       top: 14px;
       width: 100%;
-      height: 80px;
+      height: 70px;
       overflow: hidden;
       p{
-        line-height: 24px;
+        margin-top: 4px;
+        font-size: 14px;
+        line-height: 20px;
       }
     }
   }

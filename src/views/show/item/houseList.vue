@@ -1,7 +1,7 @@
 <template>
   <div>
-    <mt-header title="项目信息">
-      <router-link to="/show" slot="left">
+    <mt-header title="户型鉴赏">
+      <router-link to="/show/itemNav" slot="left">
         <mt-button icon="back">返回</mt-button>
       </router-link>
       <!-- <mt-button icon="more" slot="right"></mt-button> -->
@@ -13,9 +13,9 @@
       v-infinite-scroll="loadMore"
       infinite-scroll-disabled="loading"
       infinite-scroll-distance="10">
-      <li v-for="(item, index) in list" :key='index' @click='goToItemDetail(item)'>
+      <li v-for="(item, index) in list" :key='index' @click='goToHouseDetail(item)'>
         <div class="item">
-          项目图片
+          <img :src="$imgHost + '400x80/999/&text=户型图'" alt="">
         </div>
       </li>
     </ul>
@@ -43,16 +43,18 @@
           this.loading = false;
         }, 2500);
       },
-      goToItemDetail(item) {
-        this.$router.push('/show/itemNav')
+      goToHouseDetail(item) {
+        this.$router.push('/show/houseDetail')
       } 
     }
   }
 </script>
-<style>
+<style lang=less>
 .item{
   box-shadow: 0px 1px 3px #eee;
   margin: 10px;
-  height: 80px;
+  img{
+    width: 100%;
+  }
 }
 </style>

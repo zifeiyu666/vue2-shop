@@ -1,7 +1,7 @@
 <template>
   <div>
-    <mt-header title="项目信息">
-      <router-link to="/show" slot="left">
+    <mt-header title="品牌故事">
+      <router-link to="/show/itemNav" slot="left">
         <mt-button icon="back">返回</mt-button>
       </router-link>
       <!-- <mt-button icon="more" slot="right"></mt-button> -->
@@ -13,9 +13,9 @@
       v-infinite-scroll="loadMore"
       infinite-scroll-disabled="loading"
       infinite-scroll-distance="10">
-      <li v-for="(item, index) in list" :key='index' @click='goToItemDetail(item)'>
+      <li v-for="(item, index) in list" :key='index' @click='goToBrandDetail(item)'>
         <div class="item">
-          项目图片
+          <img :src="$imgHost + '400x80/999/&text=品牌故事'" alt="">
         </div>
       </li>
     </ul>
@@ -43,8 +43,8 @@
           this.loading = false;
         }, 2500);
       },
-      goToItemDetail(item) {
-        this.$router.push('/show/itemNav')
+      goToBrandDetail(item) {
+        this.$router.push('/show/brandDetail')
       } 
     }
   }
