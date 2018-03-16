@@ -31,16 +31,19 @@ const shopRouters = [{
     path: '/shop',
     name: '首页',
     component: Index
-  }, {
+  }, 
+  {
     path: '/shop/category',
     name: '分类页',
     redirect: '/shop/category/all',
     component: Category,
     children: [{
+      name: '分类子页',
       path: '/shop/category/:tab',
       component:CategoryMain
     }]
-  }, {
+  },
+  {
     path: '/shop/car',
     name: '购物车页',
     component: Car

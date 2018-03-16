@@ -86,7 +86,7 @@ var detail = Mock.mock('http://api.com/detail', {
  
 var category = Mock.mock('http://api.com/category', {
     'aside|14':[{
-      'title':'@cname',
+      'title':'@cword@cword',
       'list|60':[{
         'title':'@last',
         'imgPath':Random.image('2000x2000','#5169b4','#FFF','png',''),

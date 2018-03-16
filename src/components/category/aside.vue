@@ -2,7 +2,7 @@
   <aside class="aside" v-if="datas">
     <ul>
       <li v-for="(k,i) in datas.aside" @click='changeTabIndex(i)'>
-        <router-link :to="{path:'/category/'+k.title}" :class='{active:i==tabIndex}' >{{k.title}}</router-link>
+        <router-link :to="{path:k.title}" :class='{active:i==tabIndex}' >{{k.title}}</router-link>
       </li>
 
     </ul>

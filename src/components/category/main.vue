@@ -18,7 +18,7 @@ export default {
   computed:{
     // 获取当前aside栏选择的是第几个
     tabIndex(){
-      return this.$store.state.category.tabIndex
+      return this.$store.state.category.tabIndex || 0
     }
   }
 }

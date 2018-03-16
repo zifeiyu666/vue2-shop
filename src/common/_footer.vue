@@ -6,17 +6,18 @@
       <i slot="icon" class="icon-index"></i>
         首页
     </mt-tab-item>
-    <mt-tab-item id="分类页">
-      <i slot="icon" class="icon-category"></i>
-      分类
+    <mt-tab-item id="用户页">
+      <i slot="icon" class="icon-user"></i>
+      会员中心
     </mt-tab-item>
+    
     <mt-tab-item id="购物车页">
       <i slot="icon" class="icon-car"></i>
       购物车
     </mt-tab-item>
-    <mt-tab-item id="用户页">
-      <i slot="icon" class="icon-user"></i>
-      我的
+    <mt-tab-item id="分类页">
+      <i slot="icon" class="icon-category"></i>
+      所有商品
     </mt-tab-item>
   </mt-tabbar>
   </footer>
@@ -41,12 +42,19 @@
 
       //获取当前路由名称，根据该名称给当前footer添加is-selected
       let Rname = this.$route.name;
+      console.log('routername')
+      console.log(this.$route)
+      console.log(Rname)
       switch (Rname) {
         case '首页':
           this.selected = '首页';
           break;
         case '分类页':
           this.selected = '分类页';
+
+          break;
+        case '分类子页':
+        this.selected = '分类页';
 
           break;
         case '购物车页':

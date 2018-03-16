@@ -8,6 +8,7 @@ const state = {
 const mutations = {
   [types.CHANGE_TABINDEX] (state,res) {
     state.tabIndex = res
+    console.log(`tabIndex: ${state.tabIndex}`)
   }
 }
 

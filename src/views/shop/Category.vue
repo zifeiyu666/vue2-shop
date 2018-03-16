@@ -1,30 +1,43 @@
 <template lang="html">
   <div class="wrap">
-    <v-header class="header">
+    <!-- <v-header class="header">
       <h1 slot="title">商品分类</h1>
-    </v-header>
+    </v-header> -->
     <section class="view">
       <v-aside :datas="allData"></v-aside>
       <router-view :datas="allData"></router-view>
     </section>
-
+    <v-footer></v-footer>
   </div>
 </template>
 
 <script>
-
 import Header from '@/common/_header.vue'
+import Footer from '@/common/_footer.vue'
 import Aside from '@/components/category/aside.vue'
 import category from '@/http/mock.js' //模拟数据
 export default {
   components:{
     'v-header':Header,
-    'v-aside': Aside
+    'v-aside': Aside,
+    'v-footer': Footer
   },
   data(){
     return {
-      allData:''
+      allData:'',
+      datas: ''
     }
+  },
+  beforeCreate() {
+
+    this.$api({
+      method: 'post',
+      url: '/index'
+    }).then((response) => {
+      this.datas = response.data;
+    }).catch(function(error) {
+      alert(error)
+    })
   },
   created(){
     this.$api({

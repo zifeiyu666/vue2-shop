@@ -5,7 +5,13 @@
           <div class="header-icon">
               <span class="icon2-user"></span>
           </div>
-          <span>登录/注册</span>
+          <!-- <span>登录/注册</span> -->
+          <div class="header-content">
+            <p>欢迎您：xxx</p>
+            <p>注册时间：2018-3-16</p>
+            <p>账户余额：0元</p>
+          </div>
+          <img class='qrcode' src="http://dummyimage.com/80x80/eeeeee&text=qrcode" alt="">
       </header>
       <div class="main">
           <router-link class="my-indent" :to="{ name: ''}">
@@ -119,11 +125,21 @@
   @import '../../assets/index/style.css';
   @import '../../assets/user/icon/carstyle.css';
 
-
   .car {
     width: 100%;
     padding-bottom: 14vw;
     background-color: #F8FCFF;
+    .qrcode{
+        position: absolute;
+        width: 60px;
+        height: 60px;
+        right: 20px;
+      }
+    .header-content{
+      color: #fff;
+      position: absolute;
+      left: 80px;
+    }
     .header {
       width: 100%;
       height: 16vw;

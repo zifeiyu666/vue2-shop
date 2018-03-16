@@ -10,6 +10,9 @@
     <span class="footer-addcar" @click="addIntoCar">
       加入购物车
     </span>
+    <span class="footer-buy" @click="goPay">
+      立即购买
+    </span>
   </footer>
 </template>
 
@@ -70,7 +73,24 @@ export default {
             });
          },function(err){
        });
-     }
+     },
+     //点击跳转到支付页
+    goPay(){
+
+        // 如果有选择商品才能跳转
+        if(this.$store.getters.selectedList.length) {
+          // 保存+缓存选择的商品 ,在支付页能用到
+          this.$store.dispatch('setSelectedList')
+          this.$router.push({name:'支付页'})
+
+
+      } else {
+
+        alert('你还没选择商品')
+
+      }
+
+    }
    }
 }
 </script>
@@ -96,7 +116,9 @@ export default {
   .footer-addcar{
     text-align: center;
   }
-
+  .footer-buy{
+    text-align: center;
+  }
   .footer-index {
     -webkit-flex: 3;
     -ms-flex: 3;
@@ -157,6 +179,18 @@ export default {
     letter-spacing: .2vw;
     &:active {
       background-color: #ff7d00;
+    }
+  }
+  .footer-buy{
+    -webkit-flex: 6;
+    -ms-flex: 6;
+    flex: 6;
+    line-height: 14vw;      height: 14vw;
+    color:#fff;
+    background-color:  #ff4800;
+    letter-spacing: .2vw;
+    &:active {
+      background-color: #ff9100;
     }
   }
 }
