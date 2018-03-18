@@ -8,6 +8,8 @@ const Index = resolve => require(['@/views/shop/Index.vue'], resolve)
 const Category = resolve => require(['@/views/shop/Category.vue'], resolve)
 const CategoryMain = resolve => require(['@/components/category/main.vue'], resolve)
 const Car = resolve => require(['@/views/shop/Car.vue'],resolve)
+const Order = resolve => require(['@/views/shop/Order.vue'],resolve)
+const Share = resolve => require(['@/views/shop/Share.vue'],resolve)
 const User = resolve => require(['@/views/shop/User.vue'], resolve)
 const Detail = resolve => require(['@/views/shop/Detail.vue'], resolve)
 const Search = resolve => require(['@/views/shop/Search.vue'], resolve)
@@ -48,6 +50,10 @@ const shopRouters = [{
     name: '购物车页',
     component: Car
   }, {
+    path: '/shop/order',
+    name: '立即购买',
+    component: Order
+  },{
     path: '/shop/car/pay',
     name: '支付页',
     component: Pay
@@ -59,7 +65,16 @@ const shopRouters = [{
     meta: {
         requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
     },
-  }, {
+  }, 
+  {
+    path: '/shop/share',
+    name: '分销中心',
+    component: Share,
+    meta: {
+        requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+    },
+  }, 
+  {
     path: '/shop/detail',
     name: '详情页',
     component: Detail

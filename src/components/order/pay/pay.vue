@@ -67,8 +67,9 @@ export default {
 
     //所有商品列表
     carList() {
-
-      return this.$store.state.detail.selectedList
+      return this.$store.state.detail.selectedList.filter(()=> {
+        return this.paynow
+      })
     },
 
     // 商品价格总和

@@ -1,8 +1,14 @@
 <template lang="html">
   <footer class="footer">
-    <router-link :to="{name:'首页'}" class="footer-index">
-      <i class="icon-index"></i>
-    </router-link>
+    <div class="footer-index" @click='collect'>
+      <span v-if='star' class='collection'>
+        <icon name='star' scale='1.5'></icon>
+      </span>
+      <span v-else>
+        <icon name='star-o' scale='1.5'></icon>
+      </span>
+      
+    </div>
     <router-link  :to="{name:'购物车页'}" class="footer-gocar">
       <i class="icon-car"></i>
       <span v-if="count">{{count}}</span>
@@ -21,7 +27,6 @@ import { MessageBox } from 'mint-ui';
 import { Toast } from 'mint-ui';
 export default {
    computed:{
-
      count(){
        //页面刷新后 数据会消失,解决:加判断
        if(this.$store.state.detail.count=='') {
@@ -39,8 +44,20 @@ export default {
        return this.$store.state.detail.sizeSelected
      }
    },
-
+  data() {
+    return {
+      star: false
+    }
+  },
    methods:{
+     collect() {
+       this.star = !this.star
+       if (this.star) {
+         Toast('收藏成功')
+       } else{
+         Toast('移除收藏成功')
+       }
+     },
      addIntoCar(){
       //  mint-ui的弹出式提示框
       const product = [{
@@ -66,7 +83,8 @@ export default {
          .then(action => {      //点击成功执行这里的函数
            this.$store.dispatch('setLocalCount',true);
            this.$store.dispatch('addCarList',product);
-
+          console.log('购物车商品数量')
+          console.log(this.$store.state.detail.carList)
             Toast({
               message:'添加成功',
               duration:1000
@@ -76,19 +94,26 @@ export default {
      },
      //点击跳转到支付页
     goPay(){
+        //  mint-ui的弹出式提示框
+      const product = [{
+        title:this.productDatasView.title,
+        price:this.productDatasView.price,
+        size:this.productDatasView.chose[this.sizeSelected].size,
+        col:this.productDatasView.chose[this.colSelected].col,
+        id:this.productDatasView.id,
+        imgPath:this.$store.state.detail.productDatas.swiper[0].imgSrc,
+        choseBool:true //这里直接设置为true
+      }];
 
-        // 如果有选择商品才能跳转
-        if(this.$store.getters.selectedList.length) {
-          // 保存+缓存选择的商品 ,在支付页能用到
-          this.$store.dispatch('setSelectedList')
-          this.$router.push({name:'支付页'})
-
-
-      } else {
-
-        alert('你还没选择商品')
-
-      }
+      this.$store.dispatch('addCarList',product).then(
+        res=> {
+          console.log(123)
+          console.log(this.$store.state.carList)
+          // 直接跳转到生成订单页面
+            this.$router.push('/shop/order')
+        }
+      )
+            
 
     }
    }
@@ -193,5 +218,8 @@ export default {
       background-color: #ff9100;
     }
   }
+}
+.collection{
+  color: #ff9100;
 }
 </style>

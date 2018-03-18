@@ -11,9 +11,9 @@
       会员中心
     </mt-tab-item>
     
-    <mt-tab-item id="购物车页">
+    <mt-tab-item id="分销中心">
       <i slot="icon" class="icon-car"></i>
-      购物车
+      分销中心
     </mt-tab-item>
     <mt-tab-item id="分类页">
       <i slot="icon" class="icon-category"></i>
@@ -57,8 +57,8 @@
         this.selected = '分类页';
 
           break;
-        case '购物车页':
-          this.selected = '购物车页';
+        case '分销中心':
+          this.selected = '分销中心';
 
           break;
         case '用户页':

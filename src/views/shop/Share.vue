@@ -14,26 +14,38 @@
           <img class='qrcode' src="http://dummyimage.com/80x80/eeeeee&text=qrcode" alt="">
       </header>
       <div class="main">
-          <router-link class="my-indent" :to="{ name: ''}">
+          <!-- <router-link class="my-indent" :to="{ name: ''}">
               <span class="my-indent-left">我的订单</span>
               <div class="my-indent-right">
                   <span>全部订单</span>
                   <i class="icon-go"></i>
               </div>
-          </router-link>
+          </router-link> -->
+          <div class='money'>
+            <div class='total'>
+              累计佣金：0.00元
+            </div>
+            <div class="current">
+              0.00
+            </div>
+            <button class="charge">去提现</button>
+          </div>
 
           <section class="my-pay">
               <router-link :to="{ name: ''}">
-                  <span class="icon2-money"></span>
-                  <p>待付款</p>
+                  <!-- <span class="icon2-money"></span> -->
+                  <span>18</span>
+                  <p>分销产品</p>
               </router-link>
               <router-link :to="{ name: ''}">
-                  <span class="icon2-thecar"></span>
-                  <p>已发货</p>
+                  <!-- <span class="icon2-thecar"></span> -->
+                  <span>3</span>
+                  <p>分销商</p>
               </router-link>
               <router-link :to="{ name: ''}">
-                  <span class="icon2-fixed"></span>
-                  <p>退换货</p>
+                  <!-- <span class="icon2-fixed"></span> -->
+                  <span>8</span>
+                  <p>分销订单</p>
               </router-link>
 
           </section>
@@ -46,17 +58,17 @@
                 </span>
               </div>
               <p>
-                <span>会员福利</span><i class="icon-go"></i>
+                <span>分销专题</span><i class="icon-go"></i>
               </p>
             </router-link>
-            <router-link class="my-vip-bottom ho" :to="{ name: ''}">
+            <!-- <router-link class="my-vip-bottom ho" :to="{ name: ''}">
               <div>
                 <span class="icon2-money"></span>
               </div>
               <p>
                 <span>我的优惠</span><i class="icon-go"></i>
               </p>
-            </router-link>
+            </router-link> -->
           </section>
 
           <section class="my-service">
@@ -67,7 +79,7 @@
                     </span>
                   </div>
                   <p>
-                    <span>服务中心</span><i class="icon-go"></i>
+                    <span>分销产品</span><i class="icon-go"></i>
                   </p>
               </router-link>
               <router-link class="my-service-bottom" :to="{ name: ''}">
@@ -75,7 +87,15 @@
                     <span class="icon2-milogo"></span>
                   </div>
                   <p>
-                    <span>电商之家</span><i class="icon-go"></i>
+                    <span>我的分销商</span><i class="icon-go"></i>
+                  </p>
+              </router-link>
+              <router-link class="my-service-bottom" :to="{ name: ''}">
+                  <div>
+                    <span class="icon2-milogo"></span>
+                  </div>
+                  <p>
+                    <span>分销订单</span><i class="icon-go"></i>
                   </p>
               </router-link>
           </section>
@@ -84,11 +104,9 @@
               <router-link :to="{ name: ''}" class="my-settle-top">
                   <div>
                     <span class="icon2-f"></span>
-
                   </div>
-
                   <p>
-                    <span>F码通道</span><i class="icon-go"></i>
+                    <span>我的佣金</span><i class="icon-go"></i>
                   </p>
               </router-link>
               <router-link :to="{ name: ''}" class="my-settle-bottom">
@@ -96,7 +114,7 @@
                   <span class="icon2-settle"></span>
                 </div>
                 <p>
-                  <span>设置</span><i class="icon-go"></i>
+                  <span>我的上级</span><i class="icon-go"></i>
                 </p>
               </router-link>
           </section>
@@ -228,16 +246,17 @@
           width: 33.33%;
           color: #999;
           text-align: center;
+          border-right: 1px solid #eee;
 
           >span {
-            .fz(font-size, 50);
-            margin-top: 2.3vw;
+            .fz(font-size, 40);
+            margin-top: 1.6vw;
             display: block;
             text-align: center;
           }
 
           p {
-            padding: 2.3vw 0;
+            padding: 1.8vw 0;
             text-align: center;
           }
         }
@@ -316,6 +335,31 @@
 
   .icon2-service {
     .fz(font-size, 34);
+  }
+
+  .money{
+    background: #f37d0f;
+    position: relative;
+    color: #fff;
+    padding: 10px 14px;
+    .total{
+      font-size: 14px;
+      color: #fff;
+    }
+    .current{
+      font-size: 24px;
+      line-height: 36px;
+    }
+    button{
+      position: absolute;
+      top: 24px;
+      right: 16px;
+      padding: 4px 6px;
+      background: none;
+      border: 1px solid #fff;
+      border-radius: 4px;
+      color: #fff;
+    }
   }
 
 </style>
