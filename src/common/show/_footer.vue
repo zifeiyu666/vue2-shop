@@ -10,14 +10,14 @@
       <i slot="icon" class="icon-category"></i>
       项目
     </mt-tab-item>
-    <mt-tab-item id="showNews">
+    <!-- <mt-tab-item id="showNews">
       <i slot="icon" class="icon-car"></i>
       资讯
-    </mt-tab-item>
-    <mt-tab-item id="showHistory">
+    </mt-tab-item> -->
+    <!-- <mt-tab-item id="showHistory">
       <i slot="icon" class="icon-user"></i>
       历程
-    </mt-tab-item>
+    </mt-tab-item> -->
   </mt-tabbar>
   </footer>
 </template>

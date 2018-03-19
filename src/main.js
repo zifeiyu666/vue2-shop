@@ -12,6 +12,9 @@ Vue.config.productionTip = false
 Vue.prototype.$api = api;
 Vue.prototype.$imgHost = 'https://dummyimage.com/'
 
+// 引入vue-amap
+// 
+
 // 引入vue-awesome
 import 'vue-awesome/icons'
 /* Register component with one of 2 methods */

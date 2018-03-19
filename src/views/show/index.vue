@@ -18,10 +18,11 @@
     <item-show></item-show>
     <item-show></item-show>
     <item-show></item-show>
-    <v-title title='新闻资讯' @clickMore='moreNews'></v-title>
+    <item-show></item-show>
+    <!-- <v-title title='新闻资讯' @clickMore='moreNews'></v-title>
     <news-show></news-show>
     <news-show></news-show>
-    <news-show></news-show>
+    <news-show></news-show> -->
     <v-footer></v-footer>
   </div>
 </template>

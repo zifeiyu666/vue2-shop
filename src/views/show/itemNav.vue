@@ -9,7 +9,9 @@
     <router-link class='circle nav01' to='/show/itemDetail'>项目简介</router-link>
     <router-link class='circle nav02' to='/show/houseList'>户型鉴赏</router-link>
     <router-link class='circle nav03' to='/show/brandList'>品牌故事</router-link>
-    <router-link class='circle nav04' to='/show/autoNav'>一键导航</router-link>
+    <router-link class='circle nav04' to='/show/news'>项目资讯</router-link>
+    <router-link class='circle nav05' to='/show/history'>发展历程</router-link>
+    <router-link class='circle nav06' to='/show/autoNav'>一键导航</router-link>
   </div>
 </template>
 <script>
@@ -34,23 +36,33 @@
     }
     .nav01{
       position: absolute;
-      left: 10%;
-      top: 20%;
+      left: 15%;
+      top: 10%;
     }
     .nav02{
       position: absolute;
-      left: 10%;
-      top: 50%;
+      left: 43%;
+      top: 20%;
     }
     .nav03{
       position: absolute;
       left: 60%;
-      top: 40%;
+      top: 36%;
     }
     .nav04{
       position: absolute;
       left: 60%;
+      top: 54%;
+    }
+    .nav05{
+      position: absolute;
+      left: 43%;
       top: 70%;
+    }
+    .nav06{
+      position: absolute;
+      left: 15%;
+      top: 80%;
     }
   }
   
