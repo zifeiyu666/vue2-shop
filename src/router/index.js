@@ -8,6 +8,7 @@ const Index = resolve => require(['@/views/shop/Index.vue'], resolve)
 const Category = resolve => require(['@/views/shop/Category.vue'], resolve)
 const CategoryMain = resolve => require(['@/components/category/main.vue'], resolve)
 const Car = resolve => require(['@/views/shop/Car.vue'],resolve)
+const Collection = resolve => require(['@/views/shop/Collection.vue'],resolve)
 const Order = resolve => require(['@/views/shop/Order.vue'],resolve)
 const Share = resolve => require(['@/views/shop/Share.vue'],resolve)
 const User = resolve => require(['@/views/shop/User.vue'], resolve)
@@ -15,6 +16,8 @@ const Detail = resolve => require(['@/views/shop/Detail.vue'], resolve)
 const Search = resolve => require(['@/views/shop/Search.vue'], resolve)
 const Pay = resolve => require(['@/components/car/pay/pay.vue'], resolve)
 const Login = resolve => require(['@/views/shop/login.vue'], resolve)
+const Edit = resolve => require(['@/views/shop/Edit.vue'], resolve)
+const ShareCompany = resolve => require(['@/views/shop/ShareCompany.vue'], resolve)
 // show
 const ShowIndex = resolve => require(['@/views/show/index.vue'], resolve)
 const ShowItem = resolve => require(['@/views/show/item.vue'], resolve)
@@ -49,7 +52,13 @@ const shopRouters = [{
     path: '/shop/car',
     name: '购物车页',
     component: Car
-  }, {
+  },
+  {
+    path: '/shop/collection',
+    name: '收藏',
+    component: Collection
+  },
+  {
     path: '/shop/order',
     name: '立即购买',
     component: Order
@@ -73,6 +82,14 @@ const shopRouters = [{
     meta: {
         requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
     },
+  },
+  {
+    path: '/shop/shareCompany',
+    name: '分销商',
+    component: ShareCompany,
+    meta: {
+        requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+    },
   }, 
   {
     path: '/shop/detail',
@@ -86,6 +103,11 @@ const shopRouters = [{
     path: '/shop/login',
     name: '登录页',
     component: Login
+  },
+  {
+    path: '/shop/edit',
+    name: '修改资料',
+    component: Edit
   }
 ]
 

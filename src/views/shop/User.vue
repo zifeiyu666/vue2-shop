@@ -21,32 +21,43 @@
                   <i class="icon-go"></i>
               </div>
           </router-link>
-
           <section class="my-pay">
               <router-link :to="{ name: ''}">
-                  <span class="icon2-money"></span>
+                  <i class="iconfont icon-daifukuan"></i>
                   <p>待付款</p>
               </router-link>
               <router-link :to="{ name: ''}">
-                  <span class="icon2-thecar"></span>
-                  <p>已发货</p>
+                  <i class="iconfont icon-yifukuan"></i>
+                  <p>已付款</p>
               </router-link>
               <router-link :to="{ name: ''}">
-                  <span class="icon2-fixed"></span>
+                  <i class="iconfont icon-yiwancheng1"></i>
+                  <p>已完成</p>
+              </router-link>
+              <router-link :to="{ name: ''}">
+                  <i class="iconfont icon-tuihuanhuo"></i>
                   <p>退换货</p>
               </router-link>
 
           </section>
 
           <section class="my-vip">
-            <router-link class="my-vip-top ho" :to="{ name: ''}" >
+            <router-link class="my-vip-top ho" to="/shop/collection" >
               <div class="my-vip-top-div">
                 <span class="icon2-vip">
                     <span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span><span class="path7"></span><span class="path8"></span><span class="path9"></span>
                 </span>
               </div>
               <p>
-                <span>会员福利</span><i class="icon-go"></i>
+                <span>我的收藏</span><i class="icon-go"></i>
+              </p>
+            </router-link>
+            <router-link class="my-vip-bottom ho" to="/shop/edit">
+              <div>
+                <span class="icon2-settle"></span>
+              </div>
+              <p>
+                <span>资料修改</span><i class="icon-go"></i>
               </p>
             </router-link>
             <router-link class="my-vip-bottom ho" :to="{ name: ''}">
@@ -54,52 +65,12 @@
                 <span class="icon2-money"></span>
               </div>
               <p>
-                <span>我的优惠</span><i class="icon-go"></i>
+                <span>余额提现</span><i class="icon-go"></i>
               </p>
             </router-link>
           </section>
 
-          <section class="my-service">
-              <router-link class="my-service-top" :to="{ name: ''}">
-                  <div>
-                    <span class="icon2-service">
-                        <span class="path1"></span><span class="path2"></span><span class="path3"></span>
-                    </span>
-                  </div>
-                  <p>
-                    <span>服务中心</span><i class="icon-go"></i>
-                  </p>
-              </router-link>
-              <router-link class="my-service-bottom" :to="{ name: ''}">
-                  <div>
-                    <span class="icon2-milogo"></span>
-                  </div>
-                  <p>
-                    <span>电商之家</span><i class="icon-go"></i>
-                  </p>
-              </router-link>
-          </section>
-
-          <section class="my-settle">
-              <router-link :to="{ name: ''}" class="my-settle-top">
-                  <div>
-                    <span class="icon2-f"></span>
-
-                  </div>
-
-                  <p>
-                    <span>F码通道</span><i class="icon-go"></i>
-                  </p>
-              </router-link>
-              <router-link :to="{ name: ''}" class="my-settle-bottom">
-                <div>
-                  <span class="icon2-settle"></span>
-                </div>
-                <p>
-                  <span>设置</span><i class="icon-go"></i>
-                </p>
-              </router-link>
-          </section>
+          
 
       </div>
       <v-baseline></v-baseline>
@@ -316,6 +287,13 @@
 
   .icon2-service {
     .fz(font-size, 34);
+  }
+  .iconfont{
+    font-size: 26px;
+    line-height: 26px;
+    margin-top: 2.3vw;
+    display: block;
+    text-align: center;
   }
 
 </style>

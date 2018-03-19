@@ -37,7 +37,7 @@
                   <span>18</span>
                   <p>分销产品</p>
               </router-link>
-              <router-link :to="{ name: ''}">
+              <router-link to="/shop/shareCompany">
                   <!-- <span class="icon2-thecar"></span> -->
                   <span>3</span>
                   <p>分销商</p>
