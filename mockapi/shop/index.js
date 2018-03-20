@@ -1,11 +1,11 @@
 import instance from './instance';
 import { convertRESTAPI } from '../util';
 
-/** dd */
-function test_get(opts) {
+/** 获取首页banner图 */
+function getBanner_get(opts) {
   return instance({
     method: 'get',
-    url:  '/test',
+    url:  '/getBanner',
     opts: opts
   });
 }
@@ -29,10 +29,10 @@ function proxy_get(opts) {
 }
 
 /** 带随机数据的 mock */
-function mock_get(opts) {
+function test_get(opts) {
   return instance({
     method: 'get',
-    url:  '/mock',
+    url:  '/test',
     opts: opts
   });
 }
@@ -65,10 +65,10 @@ function query_get(opts) {
 }
 
 export {
-  test_get,
+  getBanner_get,
   login_get,
   proxy_get,
-  mock_get,
+  test_get,
   user_post,
   upload_post,
   query_get

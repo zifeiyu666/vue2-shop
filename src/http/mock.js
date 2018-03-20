@@ -55,7 +55,7 @@ var index = Mock.mock('http://api.com/index', {
       'price|99-1000':100,
       'intro': Random.paragraph(),
       'id':'@id'
-    }],
+    }], 
     'banner':Random.image('400x100', '#ffcc33','#FFF', 'png', 's4-banner')
   }
 

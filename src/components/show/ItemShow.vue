@@ -2,11 +2,11 @@
   <div class="item-show">
     <div class="wrap clearfix" @click='goToDetail'>
       <div class="img-wrap fl">
-        <img :src="imgHost + '70x70/999'" alt="">
+        <img :src="itemData.url" alt="">
       </div>
       <div class="content-wrap">
-        <h3 class="title">项目名称</h3>
-        <p>简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介</p>
+        <h3 class="title">{{itemData.title}}</h3>
+        <p>{{itemData.intro}}</p>
       </div>
     </div>
   </div>
@@ -18,6 +18,9 @@
         imgHost: 'https://dummyimage.com/'
       }
     },
+    props: [
+      'itemData'
+    ],
     methods: {
       goToDetail() {
         this.$router.push('/show/itemNav')

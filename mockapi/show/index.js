@@ -1,20 +1,20 @@
 import instance from './instance';
 import { convertRESTAPI } from '../util';
 
-/** dd */
-function test_get(opts) {
+/** 获取首页banner图 */
+function show_getBanner_get(opts) {
   return instance({
     method: 'get',
-    url:  '/test',
+    url:  '/show/getBanner',
     opts: opts
   });
 }
 
-/** 支持 restful 的 mock，替换 id 试试 */
-function login_get(opts) {
+/** 获取项目列表 */
+function getItemList_get(opts) {
   return instance({
     method: 'get',
-    url:  '/login',
+    url:  '/getItemList',
     opts: opts
   });
 }
@@ -65,8 +65,8 @@ function query_get(opts) {
 }
 
 export {
-  test_get,
-  login_get,
+  show_getBanner_get,
+  getItemList_get,
   proxy_get,
   mock_get,
   user_post,

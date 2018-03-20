@@ -12,13 +12,10 @@
           <p class='item03'>3</p>
         </mt-swipe-item>
       </mt-swipe> -->
-      <v-swiper :swiperData="datas.swiper"></v-swiper>
+      <v-swiper :swiperData="datas.bannerList"></v-swiper>
     </div>
     <v-title title='项目展示' @clickMore='moreItems'></v-title>
-    <item-show></item-show>
-    <item-show></item-show>
-    <item-show></item-show>
-    <item-show></item-show>
+    <item-show v-for='i in items' :itemData="i"></item-show>
     <!-- <v-title title='新闻资讯' @clickMore='moreNews'></v-title>
     <news-show></news-show>
     <news-show></news-show>
@@ -48,25 +45,36 @@ export default {
   data() {
     return {
       datas: '',
+      items: [],
       loading:true
     }
   },
-  beforeCreate() {
-    mockapi.show.test_get({}).then(response => {
-      console.log(response)
-    }).catch(error => {
-      console.log(error)
-    })
-    this.$api({
-      method: 'post',
-      url: '/index'
-    }).then((response) => {
-      this.datas = response.data;
-    }).catch(function(error) {
-      alert(error)
-    })
+  mounted() {
+    this.getBannerList()
+    this.getItemList()
   },
   methods: {
+    getBannerList() {
+      mockapi.show.show_getBanner_get({
+
+      }).then(response => {
+        var data = response.data.data
+        this.datas = data
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    getItemList() {
+      mockapi.show.getItemList_get({
+
+      }).then(response => {
+        var data = response.data.data
+        this.items = data.itemList
+        console.log(this.items)
+      }).catch(error => {
+        console.log(error)
+      })
+    },
     moreItems() {
       console.log(11111111)
       this.$router.push('/show/item/list')
