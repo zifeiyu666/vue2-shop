@@ -76,13 +76,11 @@ export default {
   },
   methods: {
     goToSearch() {
-      this.$router.push('/shop/search')
+      this.$router.push('/shop/all')
     }
   }
 }
 </script>
-
-
 
 <style lang="less">
 .index {

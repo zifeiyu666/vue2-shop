@@ -18,6 +18,7 @@ const Pay = resolve => require(['@/components/car/pay/pay.vue'], resolve)
 const Login = resolve => require(['@/views/shop/login.vue'], resolve)
 const Edit = resolve => require(['@/views/shop/Edit.vue'], resolve)
 const ShareCompany = resolve => require(['@/views/shop/ShareCompany.vue'], resolve)
+const All = resolve => require(['@/views/shop/All.vue'], resolve)
 // show
 const ShowIndex = resolve => require(['@/views/show/index.vue'], resolve)
 const ShowItem = resolve => require(['@/views/show/item.vue'], resolve)
@@ -57,6 +58,11 @@ const shopRouters = [{
     path: '/shop/collection',
     name: '收藏',
     component: Collection
+  },
+  {
+    path: '/shop/all',
+    name: '所有商品',
+    component: All
   },
   {
     path: '/shop/order',

@@ -46,7 +46,8 @@ export default {
    },
   data() {
     return {
-      star: false
+      star: false,
+      num: 1
     }
   },
    methods:{
@@ -78,7 +79,10 @@ export default {
              `价格:${product[0].price}</br>`+
              `规格:${product[0].size}</br>`+
              `颜色:${product[0].col}</br>`+
-             `商品ID:${product[0].id}</br>`
+             `商品ID:${product[0].id}</br>`+
+             `数量：<button style="padding: 4px 5px;
+  width: 30px;" @click='add'>+</button> ${this.num} <button style="padding: 4px 5px;
+  width: 30px;" @click='reduce'>-</button>`
            )
          .then(action => {      //点击成功执行这里的函数
            this.$store.dispatch('setLocalCount',true);
@@ -113,8 +117,13 @@ export default {
             this.$router.push('/shop/order')
         }
       )
-            
-
+    },
+    add() {
+      console.log(1111)
+      this.num++
+    },
+    reduce() {
+      this.num--
     }
    }
 }

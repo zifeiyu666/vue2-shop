@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-header>
-      <h1 slot="title">我的收藏</h1>
+      <h1 slot="title">资料修改</h1>
     </v-header>
     <mt-field label="姓名" placeholder="请输入" v-model="username"></mt-field>
     <mt-field label="原密码" placeholder="请输入" type="password" v-modal="password"></mt-field>

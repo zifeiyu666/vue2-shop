@@ -15,6 +15,10 @@
           <div class="something-right">
             <p>{{k.title}}</p>
             <p style="color:rgb(199, 108, 28)"> {{k.col}} - {{k.size}}</p>
+            <p>数量：<button style="padding: 4px 5px;
+  width: 30px;" @click='add'>+</button> {{num}} <button style="padding: 4px 5px;
+  width: 30px;" @click='reduce'>-</button>
+            </p>
             <p>售价：{{k.price}}元</p>
             <div class="something-right-bottom" @click="cut(i)">
 
@@ -41,6 +45,11 @@ export default {
       return this.$store.state.detail.carList;
     },
 
+  },
+  data() {
+    return{
+      num: 1
+    }
   },
 
   mounted() {
@@ -78,8 +87,13 @@ export default {
           this.$store.dispatch('cutCarList',this.carList)
 
       }, 0);
-
-
+    },
+    add() {
+      console.log(1111)
+      this.num++
+    },
+    reduce() {
+      this.num--
     }
 
   }

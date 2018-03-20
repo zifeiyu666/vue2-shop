@@ -15,7 +15,7 @@
       <i slot="icon" class="icon-car"></i>
       分销中心
     </mt-tab-item>
-    <mt-tab-item id="分类页">
+    <mt-tab-item id="所有商品">
       <i slot="icon" class="icon-category"></i>
       所有商品
     </mt-tab-item>
@@ -49,12 +49,8 @@
         case '首页':
           this.selected = '首页';
           break;
-        case '分类页':
-          this.selected = '分类页';
-
-          break;
-        case '分类子页':
-        this.selected = '分类页';
+        case '所有商品':
+          this.selected = '所有商品';
 
           break;
         case '分销中心':
