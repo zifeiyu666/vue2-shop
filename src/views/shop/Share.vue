@@ -21,7 +21,7 @@
                   <i class="icon-go"></i>
               </div>
           </router-link> -->
-          <div class='money'>
+          <!-- <div class='money'>
             <div class='total'>
               累计佣金：0.00元
             </div>
@@ -29,7 +29,7 @@
               0.00
             </div>
             <button class="charge">去提现</button>
-          </div>
+          </div> -->
 
           <section class="my-pay">
               <router-link :to="{ name: ''}">
@@ -51,7 +51,7 @@
           </section>
 
           <section class="my-vip">
-            <router-link class="my-vip-top ho" :to="{ name: ''}" >
+            <!-- <router-link class="my-vip-top ho" :to="{ name: ''}" >
               <div class="my-vip-top-div">
                 <span class="icon2-vip">
                     <span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span><span class="path7"></span><span class="path8"></span><span class="path9"></span>
@@ -60,7 +60,7 @@
               <p>
                 <span>分销专题</span><i class="icon-go"></i>
               </p>
-            </router-link>
+            </router-link> -->
             <!-- <router-link class="my-vip-bottom ho" :to="{ name: ''}">
               <div>
                 <span class="icon2-money"></span>

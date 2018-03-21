@@ -16,8 +16,8 @@
             <p>{{k.title}}</p>
             <p style="color:rgb(199, 108, 28)"> {{k.col}} - {{k.size}}</p>
             <p>数量：<button style="padding: 4px 5px;
-  width: 30px;" @click='add'>+</button> {{num}} <button style="padding: 4px 5px;
-  width: 30px;" @click='reduce'>-</button>
+  width: 30px;" @click='add'>-</button> {{num}} <button style="padding: 4px 5px;
+  width: 30px;" @click='reduce'>+</button>
             </p>
             <p>售价：{{k.price}}元</p>
             <div class="something-right-bottom" @click="cut(i)">

@@ -10,14 +10,14 @@
     </div>
   <!-- 添加空函数 解决Safari浏览器 :active无效 -->
     <div class="chose-mychosed" ontouchstart="">
-      <div class="colChose">
+      <!-- <div class="colChose">
         <span
            v-for="(k,i) in view.chose"
            :class="{active:colSelected==i}"
            @click="colChose(i)"
          >{{k.col}}</span>
-      </div>
-      <div class="sizeChose" >
+      </div> -->
+      <!-- <div class="sizeChose" >
         <span
           v-for="(k,i) in view.chose"
           :class="{active:sizeSelected==i}"
@@ -25,7 +25,7 @@
         >
           {{k.size}}
         </span>
-      </div>
+      </div> -->
     </div>
 
 

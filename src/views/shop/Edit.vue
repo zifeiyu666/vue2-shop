@@ -4,8 +4,8 @@
       <h1 slot="title">资料修改</h1>
     </v-header>
     <mt-field label="姓名" placeholder="请输入" v-model="username"></mt-field>
-    <mt-field label="原密码" placeholder="请输入" type="password" v-modal="password"></mt-field>
-    <mt-field label="新密码" placeholder="请输入" type="password" v-modal="password"></mt-field>
+    <!-- <mt-field label="原密码" placeholder="请输入" type="password" v-modal="password"></mt-field>
+    <mt-field label="新密码" placeholder="请输入" type="password" v-modal="password"></mt-field> -->
     <mt-field label="手机号" placeholder="请输入" type="tel" v-model="phone"></mt-field>
     <div class="btn">
       <mt-button type='primary'>保存</mt-button>
