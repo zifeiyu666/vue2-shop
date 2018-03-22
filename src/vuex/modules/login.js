@@ -5,8 +5,14 @@ const state = {
 }
 
 const mutations = {
-  [types.CHANGE_TOKEN] (state,res) {
+  CHANGE_TOKEN (state,res) {
     state.token = res
+  },
+  LOG_IN (state, res) {
+    console.log('登录')
+  },
+  LOG_OUT (state, res) {
+    console.log('登出')
   }
 }
 

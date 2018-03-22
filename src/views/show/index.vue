@@ -15,7 +15,10 @@
       <v-swiper :swiperData="datas.bannerList"></v-swiper>
     </div>
     <v-title title='项目展示' @clickMore='moreItems'></v-title>
-    <item-show v-for='i in items' :itemData="i"></item-show>
+    <div v-for='(i, index) in items' :key='index' @click='goToDetail(i)'>
+      <item-show :itemData="i"></item-show>
+    </div>
+    
     <!-- <v-title title='新闻资讯' @clickMore='moreNews'></v-title>
     <news-show></news-show>
     <news-show></news-show>
@@ -56,7 +59,6 @@ export default {
   methods: {
     getBannerList() {
       mockapi.show.show_getBanner_get({
-
       }).then(response => {
         var data = response.data.data
         this.datas = data
@@ -74,6 +76,12 @@ export default {
       }).catch(error => {
         console.log(error)
       })
+    },
+    // 查看详情
+    goToDetail(i) {
+      console.log(11111)
+      this.$store.commit('SAVE_CURRENT_ITEM', i)
+      this.$router.push('/show/itemnav')
     },
     moreItems() {
       console.log(11111111)

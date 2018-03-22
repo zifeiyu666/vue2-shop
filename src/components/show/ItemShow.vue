@@ -1,6 +1,6 @@
 <template>
   <div class="item-show">
-    <div class="wrap clearfix" @click='goToDetail'>
+    <div class="wrap clearfix">
       <div class="img-wrap fl">
         <img :src="itemData.url" alt="">
       </div>
@@ -22,9 +22,7 @@
       'itemData'
     ],
     methods: {
-      goToDetail() {
-        this.$router.push('/show/itemNav')
-      }
+    
     }
   }
 </script>

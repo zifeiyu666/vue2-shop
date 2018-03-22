@@ -27,53 +27,53 @@ const mutations = {
 
 
 //异步请求的数据
-  [types.SET_DATAS](state,res) {
+  SET_DATAS (state,res) {
     state.productDatas = res
   },
 
   //详情页商品颜色的选择
-  [types.CHANGE_COL_SELECTED](state,res) {
+  CHANGE_COL_SELECTED (state,res) {
       state.colSelected = res;
   },
 
   //详情页商品尺寸的选择
 
-  [types.CHANGE_SIZE_SELECTED] (state,res) {
+  CHANGE_SIZE_SELECTED (state,res) {
       state.sizeSelected = res;
   },
 
   // 向购物车商品列表添加商品
-  [types.ADD_PRODUCT] (state) {
+  ADD_PRODUCT (state) {
     state.carList = Util.getLocal('carList');
   },
 
   //获取当前购物车商品数量
-  [types.CHANGE_COUNT] (state) {
+  CHANGE_COUNT (state) {
     state.count = Util.getLocal('count')
   },
 
 // 重置购物车
-  [types.RESET_CARLIST] (state) {
+  RESET_CARLIST (state) {
     state.carList = Util.getLocal('carList')
   },
 
 // 重置购物车数量
-  [types.RESET_COUNT] (state) {
+  RESET_COUNT (state) {
     state.count = Util.getLocal('carList').length
   },
 
 // loading开关
-  [types.SET_LOADING] (state,res) {
+  SET_LOADING (state,res) {
     state.fetchLoading = res
   },
 // 购物车里打钩的商品
-  ['SET_SELECTEDLIST'] (state,res) {
+  SET_SELECTEDLIST (state,res) {
     state.selectedList = Util.getLocal('selectedList')
   },
 
 //购物车里没打钩的商品
 
-  ['SET_UNSELECTEDLIST'] (state) {
+  SET_UNSELECTEDLIST (state) {
     state.unSelectedList = Util.getLocal('unSelectedList')
   }
 
@@ -102,13 +102,13 @@ const actions = {
     }else {
         Util.setLocal(--count,'count');
     }
-    commit(types.CHANGE_COUNT);
+    commit('CHANGE_COUNT');
   },
 
   //网购物车列表添加数据
   addCarList({commit},res) {
     Util.setLocal(res,'carList',true);
-    commit(types.ADD_PRODUCT)
+    commit('ADD_PRODUCT')
   },
 
   //重新设置购物车商品列表,把打钩并提交的商品去掉,即保留unSelectedList
@@ -116,19 +116,19 @@ const actions = {
   resetCarList({commit,getters}) {
     const unSelectedList = Util.getLocal('unSelectedList');
     Util.setLocal(unSelectedList,'carList');
-    commit(types.RESET_CARLIST)
+    commit('RESET_CARLIST')
   },
 // 重置购物车数量Count,即没打钩的商品的数量
   resetCount({commit,getters}) {
     const count = Util.getLocal('unSelectedList').length;
     Util.setLocal(count,'count');
-    commit(types.RESET_COUNT);
+    commit('RESET_COUNT');
   },
 
 // 删除购物车列表的某一项 （用新的数组直接替换）
   cutCarList({commit},res) {
     Util.setLocal(res,'carList');
-    commit(types.RESET_CARLIST);
+    commit('RESET_CARLIST');
   },
 
 // 分别保存打钩的商品和为打钩的商品

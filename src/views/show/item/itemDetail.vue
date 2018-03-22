@@ -14,17 +14,30 @@
       <p>王家皂民俗旅游村，是日照市秦楼街道的一个渔家小村，曾是一个以海产品捕捞业为主的沿海渔村，风景秀丽，气候宜人，是休闲度假、观光游光....王家皂民俗旅游村，是日照市秦楼街道的一个渔家小村，曾是一个以海产品捕捞业为主的沿海渔村，风景秀丽，气候宜人，是休闲度假、观光游光....</p>
     </div>
   
-
   </div>
   
 </template>
 <script>
+  import * as mockapi from '@/../mockapi'
   export default{
     data() {
       return {
+        content: ''
       }
     },
     methods: {
+      getItemNav() {
+        mockapi.show.getItemIntro_get({
+          typeId: 1,
+          id: 2
+        }).then(response => {
+          var data = response.data.data
+          this.navList = data.navList
+          console.log(this.navList)
+        }).catch(error => {
+          console.log(error)
+        })
+      }
     }
   }
 </script>
