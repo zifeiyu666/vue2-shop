@@ -6,7 +6,7 @@
       </router-link>
       <!-- <mt-button icon="more" slot="right"></mt-button> -->
     </mt-header>
-    <router-link v-for='(i, index) in navList' :key='index' class='circle' :class='"nav0" + i.typeId' to='/show/itemDetail'>{{i.title}}</router-link>
+    <router-link v-for='(i, index) in navList' :key='index' class='circle' :class='"nav0" + i.typeId' :to="{name: i.title}">{{i.title}}</router-link>
     <!-- <router-link class='circle nav02' to='/show/houseList'>户型鉴赏</router-link>
     <router-link class='circle nav03' to='/show/brandList'>品牌故事</router-link>
     <router-link class='circle nav04' to='/show/news'>项目资讯</router-link>

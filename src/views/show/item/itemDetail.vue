@@ -6,12 +6,7 @@
       </router-link>
       <!-- <mt-button icon="more" slot="right"></mt-button> -->
     </mt-header>
-    <div class="item-wrap">
-      <div class="banner">
-        <img :src="this.$imgHost + '414x200/999'" alt="">
-      </div>
-      <h2 class='item-title'>某某项目简介</h2>
-      <p>王家皂民俗旅游村，是日照市秦楼街道的一个渔家小村，曾是一个以海产品捕捞业为主的沿海渔村，风景秀丽，气候宜人，是休闲度假、观光游光....王家皂民俗旅游村，是日照市秦楼街道的一个渔家小村，曾是一个以海产品捕捞业为主的沿海渔村，风景秀丽，气候宜人，是休闲度假、观光游光....</p>
+    <div class="item-wrap" v-html="content">
     </div>
   
   </div>
@@ -25,15 +20,18 @@
         content: ''
       }
     },
+    mounted() {
+      this.getItemIntro()
+    },
     methods: {
-      getItemNav() {
+      getItemIntro() {
         mockapi.show.getItemIntro_get({
           typeId: 1,
           id: 2
         }).then(response => {
           var data = response.data.data
-          this.navList = data.navList
-          console.log(this.navList)
+          this.content = data.content
+          console.log(this.content)
         }).catch(error => {
           console.log(error)
         })
