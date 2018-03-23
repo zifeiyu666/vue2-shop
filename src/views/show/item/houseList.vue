@@ -13,9 +13,9 @@
       v-infinite-scroll="loadMore"
       infinite-scroll-disabled="loading"
       infinite-scroll-distance="10">
-      <li v-for="(item, index) in list" :key='index' @click='goToHouseDetail(item)'>
+      <li v-for="(item, index) in houseList" :key='index' @click='goToHouseDetail(item)'>
         <div class="item">
-          <img :src="$imgHost + '400x80/999/&text=户型图'" alt="">
+          <img :src="item.imgUrl" alt="">
         </div>
       </li>
     </ul>
@@ -24,15 +24,32 @@
   
 </template>
 <script>
+import * as mockapi from '@/../mockapi'
   export default{
     data() {
       return {
         list: [
           1,2,3,4,5,6,7,8,9,0
-        ]
+        ],
+        houstList: []
       }
     },
+    mounted() {
+      this.getHouseList()
+    },
     methods: {
+      getHouseList() {
+        mockapi.show.getHouseList_get({
+          params: {
+          }
+        }).then(response => {
+          var data = response.data.data
+          this.houseList = data.houseList
+          console.log(this.houseList)
+        }).catch(error => {
+          console.log(error)
+        })
+      },
       loadMore() {
         this.loading = true;
         setTimeout(() => {

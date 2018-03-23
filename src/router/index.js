@@ -140,12 +140,12 @@ const showRouters = [
   },
   {
     path: '/show/itemDetail',
-    name: 'ShowItemDetail',
+    name: '项目简介',
     component: ShowItemDetail
   },
   {
     path: '/show/houseList',
-    name: 'ShowHouseList',
+    name: '户型鉴赏',
     component: ShowHouseList
   },
   {
@@ -155,7 +155,7 @@ const showRouters = [
   },
   {
     path: '/show/brandList',
-    name: 'ShowBrandList',
+    name: '品牌故事',
     component: ShowBrandList
   },
   {
@@ -165,17 +165,17 @@ const showRouters = [
   },
   {
     path: '/show/autoNav',
-    name: 'ShowAutoNav',
+    name: '一键导航',
     component: ShowAutoNav
   },
   {
     path: '/show/news',
-    name: 'showNews',
+    name: '项目资讯',
     component: ShowNews
   },
   {
     path: '/show/history',
-    name: 'showHistory',
+    name: '发展历程',
     component: ShowHistory
   }
 ]
