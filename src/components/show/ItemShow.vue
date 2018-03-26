@@ -35,6 +35,9 @@
       border-bottom: 1px solid #eee;
       padding: 10px 6px;
     }
+    .img-wrap{
+      min-height: 70px;
+    }
     .content-wrap{
       padding-left: 100px;
       padding-right: 15px; 

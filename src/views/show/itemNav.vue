@@ -1,11 +1,15 @@
 <template>
   <div class='circle-nav'>
-    <mt-header title="快捷导航">
-      <router-link to="/show/item/list" slot="left">
-        <mt-button icon="back">返回</mt-button>
-      </router-link>
-      <!-- <mt-button icon="more" slot="right"></mt-button> -->
-    </mt-header>
+    <div class="goback" @click='goBack'>
+      <i class='iconfont icon-fanhui'></i>
+    </div>
+    <div class="header-img">
+      <img :src="$imgHost + '400x200'" alt="">
+    </div>
+    <div class="intro-wrap">
+      <p></p>
+      <router-link>购买详情</router-link>
+    </div>
     <router-link v-for='(i, index) in navList' :key='index' class='circle' :class='"nav0" + i.typeId' :to="{ name: i.title}">{{i.title}}</router-link>
     <!-- <router-link class='circle nav02' to='/show/houseList'>户型鉴赏</router-link>
     <router-link class='circle nav03' to='/show/brandList'>品牌故事</router-link>
@@ -47,6 +51,9 @@
           console.log(error)
         })
       },
+      goBack() {
+        this.$router.go('-1')
+      },
       generateRoute(id) {
         var route = ''
         switch(id)
@@ -78,23 +85,47 @@
   }
 </script>
 <style lang=less>
+  .goback{
+    position: fixed;
+    z-index: 1000;
+    width: 20px;
+    height: 20px;
+    border-radius: 14px;
+    background: rgba(0,0,0,.3);
+    left: 10px;
+    top: 10px;
+    padding: 2px;
+    i{
+      font-size: 14px;
+      color: #fff;
+      position: relative;
+      left: 2px;
+    }
+  }
   .circle-nav{
     background: url('https://dummyimage.com/640x980&text=背景图');
     background-size: 100% 100%;
     position: relative;
     height: 100%;
+    .header-img{
+      height: 30vh;
+      background: #eee;
+    }
+    .intro-wrap{
+      height: 30vh;
+    }
     .circle{
       background: #fff;
       display: inline-block;
       text-align: center;
       line-height: 100px;
-      height: 100px;
+      height: 20vh;
       width: 100px;
-      height: 100px;
-      box-shadow: 0px 1px 2px #eee;
-      border-radius: 50px;
+      width: 33.33333%;
+      border: 1px solid #eee;
+      box-sizing: border-box;
     }
-    .nav01{
+    /* .nav01{
       position: absolute;
       left: 15%;
       top: 10%;
@@ -123,7 +154,7 @@
       position: absolute;
       left: 15%;
       top: 80%;
-    }
+    } */
   }
   
 </style>
