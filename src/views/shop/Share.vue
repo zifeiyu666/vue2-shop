@@ -50,8 +50,8 @@
 
           </section>
 
-          <section class="my-vip">
-            <!-- <router-link class="my-vip-top ho" :to="{ name: ''}" >
+          <!-- <section class="my-vip">
+            <router-link class="my-vip-top ho" :to="{ name: ''}" >
               <div class="my-vip-top-div">
                 <span class="icon2-vip">
                     <span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span><span class="path7"></span><span class="path8"></span><span class="path9"></span>
@@ -60,16 +60,16 @@
               <p>
                 <span>分销专题</span><i class="icon-go"></i>
               </p>
-            </router-link> -->
-            <!-- <router-link class="my-vip-bottom ho" :to="{ name: ''}">
+            </router-link>
+            <router-link class="my-vip-bottom ho" :to="{ name: ''}">
               <div>
                 <span class="icon2-money"></span>
               </div>
               <p>
                 <span>我的优惠</span><i class="icon-go"></i>
               </p>
-            </router-link> -->
-          </section>
+            </router-link>
+          </section> -->
 
           <section class="my-service">
               <router-link class="my-service-top" :to="{ name: ''}">
@@ -101,22 +101,22 @@
           </section>
 
           <section class="my-settle">
-              <router-link :to="{ name: ''}" class="my-settle-top">
+              <router-link :to="{ name: '我的积分'}" class="my-settle-top">
                   <div>
                     <span class="icon2-f"></span>
                   </div>
                   <p>
-                    <span>我的佣金</span><i class="icon-go"></i>
+                    <span>我的积分</span><i class="icon-go"></i>
                   </p>
               </router-link>
-              <router-link :to="{ name: ''}" class="my-settle-bottom">
+              <!-- <router-link :to="{ name: ''}" class="my-settle-bottom">
                 <div>
                   <span class="icon2-settle"></span>
                 </div>
                 <p>
                   <span>我的上级</span><i class="icon-go"></i>
                 </p>
-              </router-link>
+              </router-link> -->
           </section>
 
       </div>

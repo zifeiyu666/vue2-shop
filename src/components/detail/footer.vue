@@ -19,6 +19,37 @@
     <span class="footer-buy" @click="goPay">
       立即购买
     </span>
+    <mt-popup
+      v-model="popupVisible"
+      position="bottom">
+      <div class='shopcar'>
+        <p>
+          商品名称:<span class="title">{{product ? product[0].title : undefined}}</span> 
+        </p>
+        <p>
+          价格:<span class="title">{{product ? product[0].price : undefined}}</span>
+        </p>
+        <p>
+          规格:<span class="title">{{product ? product[0].size : undefined}}</span>
+        </p>
+        <p>
+          颜色:<span class="title">{{product ? product[0].col : undefined}}</span>
+        </p>
+        <p>
+          商品ID:<span class="title">{{product ? product[0].id : undefined}}</span>
+        </p>
+        <p>
+          数量：<button style="padding: 4px 5px;
+  width: 30px;" @click='reduce'>-</button> {{num}} <button style="padding: 4px 5px;
+  width: 30px;" @click='add'>+</button>
+        </p>
+        <div class="bottom clearfix">
+          <mt-button type="primary" @click='confirmAddIntoCar'>确定</mt-button>
+          <mt-button type="default" @click='consoleAddIntoCar'>取消</mt-button>
+        </div>
+        
+      </div>
+    </mt-popup>
   </footer>
 </template>
 
@@ -47,7 +78,9 @@ export default {
   data() {
     return {
       star: false,
-      num: 1
+      num: 1,
+      popupVisible: false,
+      product: undefined
     }
   },
    methods:{
@@ -61,7 +94,7 @@ export default {
      },
      addIntoCar(){
       //  mint-ui的弹出式提示框
-      const product = [{
+      this.product = [{
         title:this.productDatasView.title,
         price:this.productDatasView.price,
         size:this.productDatasView.chose[this.sizeSelected].size,
@@ -70,31 +103,21 @@ export default {
         imgPath:this.$store.state.detail.productDatas.swiper[0].imgSrc,
         choseBool:false
       }];
-
-
-       MessageBox
-         .confirm
-           (
-             `商品名称:${product[0].title}</br>`+
-             `价格:${product[0].price}</br>`+
-             `规格:${product[0].size}</br>`+
-             `颜色:${product[0].col}</br>`+
-             `商品ID:${product[0].id}</br>`+
-             `数量：<button style="padding: 4px 5px;
-  width: 30px;" @click='add'>-</button> ${this.num} <button style="padding: 4px 5px;
-  width: 30px;" @click='reduce'>+</button>`
-           )
-         .then(action => {      //点击成功执行这里的函数
-           this.$store.dispatch('setLocalCount',true);
-           this.$store.dispatch('addCarList',product);
-          console.log('购物车商品数量')
-          console.log(this.$store.state.detail.carList)
-            Toast({
-              message:'添加成功',
-              duration:1000
-            });
-         },function(err){
-       });
+      this.popupVisible = !this.popupVisible
+     },
+     confirmAddIntoCar() {
+      this.$store.dispatch('setLocalCount',true);
+      this.$store.dispatch('addCarList',this.product);
+      console.log('购物车商品数量')
+      console.log(this.$store.state.detail.carList)
+      Toast({
+        message:'添加成功',
+        duration:1000
+      });
+      this.popupVisible = false
+     },
+     consoleAddIntoCar() {
+       this.popupVisible = false
      },
      //点击跳转到支付页
     goPay(){
@@ -123,7 +146,9 @@ export default {
       this.num++
     },
     reduce() {
-      this.num--
+      if (this.num >0) {
+        this.num--
+      }
     }
    }
 }
@@ -230,5 +255,27 @@ export default {
 }
 .collection{
   color: #ff9100;
+}
+.mint-popup{
+  width: 100%;
+}
+.shopcar{
+  padding: 15px;
+  padding-bottom: 60px;
+  p{
+    word-break: break-all;
+  }
+  .bottom{
+    position: absolute;
+    bottom: 0;
+    width: 100vw;
+    left:0;
+    button{
+      width: 50%;
+      float:left;
+      box-sizing: border-box;
+      border-radius: 0;
+    }
+  }
 }
 </style>

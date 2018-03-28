@@ -27,6 +27,33 @@
         </div>
       </div>
       
+      <mt-tab-container v-model="selected">
+        <mt-tab-container-item id="1">
+          <div class='wrap'>
+            <ul class="something" v-if='carList'>
+              <li v-for="(k,i) in carList" @click='gotoDetail'>
+                  <div class="something-middle">
+                    <img :src="k.imgPath">
+                  </div>
+                  <div class="something-right">
+                    <p>{{k.title}}</p>
+                    <p style="color:rgb(199, 108, 28)"> {{k.col}} - {{k.size}}</p>
+                    <p>售价：{{k.price}}元</p>
+                  </div>
+              </li>
+            </ul>
+          </div>
+        </mt-tab-container-item>
+        <mt-tab-container-item id="2">
+          <mt-cell v-for="n in 4" :title="'content ' + n" />
+        </mt-tab-container-item>
+        <mt-tab-container-item id="3">
+          <mt-cell v-for="n in 6" :title="'content ' + n" />
+        </mt-tab-container-item>
+        <mt-tab-container-item id="4">
+          <mt-cell v-for="n in 6" :title="'content ' + n" />
+        </mt-tab-container-item>
+      </mt-tab-container>
       <div class="search-history">
         <!-- <h2 class='title'>搜索历史<icon name='trash'></icon></h2>
         <button>历史一</button>
@@ -34,21 +61,7 @@
         <button>历史三</button> -->
       </div>
 
-      <div class='wrap'>
-        <ul class="something" v-if='carList'>
-          <li v-for="(k,i) in carList" @click='gotoDetail'>
-              <div class="something-middle">
-                <img :src="k.imgPath">
-              </div>
-              <div class="something-right">
-                <p>{{k.title}}</p>
-                <p style="color:rgb(199, 108, 28)"> {{k.col}} - {{k.size}}</p>
-                <p>售价：{{k.price}}元</p>
-              </div>
-          </li>
-
-        </ul>
-      </div>
+      
     </div>
 
     <div class="popside-wrap" v-if='popsideVisible'>
@@ -169,6 +182,9 @@ export default {
   z-index: 1000;
   width: 40px;
   height: 40px;
+}
+.wrap{
+  margin-top: 50px;
 }
 .mint-header{
   background: #eee;

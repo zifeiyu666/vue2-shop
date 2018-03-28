@@ -19,6 +19,7 @@ const Login = resolve => require(['@/views/shop/login.vue'], resolve)
 const Edit = resolve => require(['@/views/shop/Edit.vue'], resolve)
 const ShareCompany = resolve => require(['@/views/shop/ShareCompany.vue'], resolve)
 const All = resolve => require(['@/views/shop/All.vue'], resolve)
+const ShareJf = resolve => require(['@/views/shop/ShareJf.vue'], resolve)
 // show
 const ShowIndex = resolve => require(['@/views/show/index.vue'], resolve)
 const ShowItem = resolve => require(['@/views/show/item.vue'], resolve)
@@ -96,7 +97,15 @@ const shopRouters = [{
     meta: {
         requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
     },
-  }, 
+  },
+  {
+    path: '/shop/shareJf',
+    name: '我的积分',
+    component: ShareJf,
+    meta: {
+      requireAuth: true
+    }
+  },
   {
     path: '/shop/detail',
     name: '详情页',

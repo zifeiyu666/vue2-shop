@@ -23,7 +23,12 @@ export default {
     'v-footer':Footer,
     'v-baseline':Baseline
   },
-
+  data() {
+    return{
+    }
+  },
+  methods: {
+  },
   beforeCreate(){
     this.$store.dispatch('setDatas');
   }

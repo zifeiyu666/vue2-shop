@@ -7,8 +7,8 @@
       <img :src="$imgHost + '400x200'" alt="">
     </div>
     <div class="intro-wrap">
-      <p></p>
-      <router-link>购买详情</router-link>
+      <p>产品简介产品简介产品简介产品简介</p>
+      <router-link to='/shop/detail'>购买详情</router-link>
     </div>
     <router-link v-for='(i, index) in navList' :key='index' class='circle' :class='"nav0" + i.typeId' :to="{ name: i.title}">{{i.title}}</router-link>
     <!-- <router-link class='circle nav02' to='/show/houseList'>户型鉴赏</router-link>
