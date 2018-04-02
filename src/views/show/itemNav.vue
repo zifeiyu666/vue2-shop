@@ -4,13 +4,16 @@
       <i class='iconfont icon-fanhui'></i>
     </div>
     <div class="header-img">
-      <img :src="$imgHost + '400x200'" alt="">
+      <img :src="$imgHost + '400x200&text=项目图片'" alt="">
     </div>
     <div class="intro-wrap">
-      <p>产品简介产品简介产品简介产品简介</p>
+      <p>产品简介产品简介产品简介产品简介产品简介产品简介产品简介产品简介</p>
       <router-link to='/shop/detail'>购买详情</router-link>
     </div>
-    <router-link v-for='(i, index) in navList' :key='index' class='circle' :class='"nav0" + i.typeId' :to="{ name: i.title}">{{i.title}}</router-link>
+    <router-link v-for='(i, index) in navList' :key='index' class='circle' :class='"nav0" + i.typeId' :to="{ name: i.title}">
+      <i class='iconfont' :class="generateIcon(index)"></i>
+      {{i.title}}
+    </router-link>
     <!-- <router-link class='circle nav02' to='/show/houseList'>户型鉴赏</router-link>
     <router-link class='circle nav03' to='/show/brandList'>品牌故事</router-link>
     <router-link class='circle nav04' to='/show/news'>项目资讯</router-link>
@@ -51,8 +54,34 @@
           console.log(error)
         })
       },
+      generateIcon(index) {
+        var 
+        switch(index)
+        {
+        case 1: 
+          route = '/show/itemDetail'
+          break
+        case 2: 
+          route = '/show/houseList'
+          break
+        case 3: 
+          route = '/show/brandList'
+          break
+        case 4: 
+          route = '/show/news'
+          break
+        case 5: 
+          route = '/show/history'
+          break
+        case 6: 
+          route = '/show/autoNav'
+          break 
+        default:
+        
+        }
+      },
       goBack() {
-        this.$router.go('-1')
+        this.$router.push('/show')
       },
       generateRoute(id) {
         var route = ''
@@ -103,16 +132,35 @@
     }
   }
   .circle-nav{
-    background: url('https://dummyimage.com/640x980&text=背景图');
-    background-size: 100% 100%;
     position: relative;
     height: 100%;
     .header-img{
-      height: 30vh;
+      width: 100%;
+      height: 35vh;
       background: #eee;
+      img{
+        width: 100%;
+        height: 100%;
+      }
     }
     .intro-wrap{
-      height: 30vh;
+      height: 25vh;
+      padding: 15px;
+      box-sizing: border-box;
+      position: relative;
+      p{
+        font-size: 16px;
+      }
+      a{
+        border: 1px solid #eee;
+        padding: 6px 10px;
+        border-radius: 6px;
+        background: #FFAA00;
+        color: #fff;
+        position: absolute;
+        bottom: 10px;
+        right: 20px;
+      }
     }
     .circle{
       background: #fff;
