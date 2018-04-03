@@ -1,6 +1,78 @@
 import instance from './instance';
 import { convertRESTAPI } from '../util';
 
+/** Show/Action */
+function api_Show_Action_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Show/Action',
+    opts: opts
+  });
+}
+
+/** 获取新闻详细内容 */
+function api_Show_getNews_post(opts) {
+  return instance({
+    method: 'post',
+    url:  '/api/Show/getNews',
+    opts: opts
+  });
+}
+
+/** 获取图片新闻列表 */
+function api_Show_getPicNewsList_post(opts) {
+  return instance({
+    method: 'post',
+    url:  '/api/Show/getPicNewsList',
+    opts: opts
+  });
+}
+
+/** 获取文字新闻列表 */
+function api_Show_getWzNewsList_post(opts) {
+  return instance({
+    method: 'post',
+    url:  '/api/Show/getWzNewsList',
+    opts: opts
+  });
+}
+
+/** 获取项目所在地坐标 */
+function api_Show_getNavCoordinate_post(opts) {
+  return instance({
+    method: 'post',
+    url:  '/api/Show/getNavCoordinate',
+    opts: opts
+  });
+}
+
+/** 获取项目新闻导航 */
+function api_Show_getItemNav_post(opts) {
+  return instance({
+    method: 'post',
+    url:  '/api/Show/getItemNav',
+    opts: opts
+  });
+}
+
+/** 获取项目列表 */
+function api_Show_getItemList_post(opts) {
+  return instance({
+    method: 'post',
+    url:  '/api/Show/getItemList',
+    opts: opts
+  });
+}
+
+/** 获取首页的项目导航(最新5条) */
+function api_Show_getTopItem_post(opts) {
+  return instance({
+    method: 'post',
+    url:  '/api/Show/getTopItem',
+    opts: opts
+  });
+}
+
 /** 获取一键导航坐标 */
 function getNavCoordinate_get(opts) {
   return instance({
@@ -92,10 +164,10 @@ function getItemIntro_get(opts) {
 }
 
 /** 获取首页banner图 */
-function show_getBanner_get(opts) {
+function api_Show_getWebBanner_get(opts) {
   return instance({
     method: 'get',
-    url:  '/show/getBanner',
+    url:  '/api/Show/getWebBanner',
     opts: opts
   });
 }
@@ -109,33 +181,6 @@ function getItemList_get(opts) {
   });
 }
 
-/** 支持接口代理的 mock，试试在 url 上加 ?s={数字} */
-function proxy_get(opts) {
-  return instance({
-    method: 'get',
-    url:  '/proxy',
-    opts: opts
-  });
-}
-
-/** 带随机数据的 mock */
-function mock_get(opts) {
-  return instance({
-    method: 'get',
-    url:  '/mock',
-    opts: opts
-  });
-}
-
-/** 普通的 mock */
-function user_post(opts) {
-  return instance({
-    method: 'post',
-    url:  '/user',
-    opts: opts
-  });
-}
-
 /** 这只是一个响应 post 接口返回随机数据的例子 */
 function upload_post(opts) {
   return instance({
@@ -145,16 +190,15 @@ function upload_post(opts) {
   });
 }
 
-/** 根据请求参数返回指定数据，试试在 url 上加 ?name={任意值} */
-function query_get(opts) {
-  return instance({
-    method: 'get',
-    url:  '/query',
-    opts: opts
-  });
-}
-
 export {
+  api_Show_Action_get,
+  api_Show_getNews_post,
+  api_Show_getPicNewsList_post,
+  api_Show_getWzNewsList_post,
+  api_Show_getNavCoordinate_post,
+  api_Show_getItemNav_post,
+  api_Show_getItemList_post,
+  api_Show_getTopItem_post,
   getNavCoordinate_get,
   getHistory_get,
   getNewsIntro_get,
@@ -165,11 +209,7 @@ export {
   getHouseList_get,
   getItemNav_get,
   getItemIntro_get,
-  show_getBanner_get,
+  api_Show_getWebBanner_get,
   getItemList_get,
-  proxy_get,
-  mock_get,
-  user_post,
-  upload_post,
-  query_get
+  upload_post
 };

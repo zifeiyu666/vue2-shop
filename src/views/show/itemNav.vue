@@ -8,11 +8,11 @@
     </div>
     <div class="intro-wrap">
       <p>产品简介产品简介产品简介产品简介产品简介产品简介产品简介产品简介</p>
-      <router-link to='/shop/detail'>购买详情</router-link>
+      <router-link :to="{path:'/shop/detail', query: {id: currentId}}">购买详情</router-link>
     </div>
-    <router-link v-for='(i, index) in navList' :key='index' class='circle' :class='"nav0" + i.typeId' :to="{ name: i.title}">
+    <router-link v-for='(i, index) in navList' :key='index' class='circle' :class='"nav0" + i.id' :to="{ path: generateRoute(index), query: {id: currentId}}">
       <i class='iconfont' :class="generateIcon(index)"></i>
-      {{i.title}}
+      <span>{{i.name}}</span>
     </router-link>
     <!-- <router-link class='circle nav02' to='/show/houseList'>户型鉴赏</router-link>
     <router-link class='circle nav03' to='/show/brandList'>品牌故事</router-link>
@@ -23,62 +23,60 @@
 </template>
 <script>
   import * as mockapi from '@/../mockapi'
+  import qs from 'qs'
   export default{
     data() {
       return {
-        navList: []
-      }
-    },
-    computed: {
-      currentItem() {
-        return this.$store.state.show.currentItem
+        navList: [],
+        currentId: undefined
       }
     },
     mounted() {
+      this.currentId = this.$route.query.id
       this.getItemNav()
     },
     methods: {
       getItemNav() {
         console.log(1111111111111)
-        console.log(this.currentItem)
-        console.log(this.$store.state.show.currentItem)
-        mockapi.show.getItemNav_get({
-          params: {
-            id: this.currentItem
-          }
+        console.log(this.currentId)
+        mockapi.show.api_Show_getItemNav_post({
+          data: qs.stringify({
+            itemId: this.currentId
+          })
         }).then(response => {
           var data = response.data.data
-          this.navList = data.navList
+          this.navList = data
           console.log(this.navList)
         }).catch(error => {
           console.log(error)
         })
       },
       generateIcon(index) {
-        var 
+        var icon = undefined
         switch(index)
         {
+        case 0: 
+          icon = 'icon-zixun1'
+          break
         case 1: 
-          route = '/show/itemDetail'
+          icon = 'icon-haofangtuo400iconfonthuxing'
           break
         case 2: 
-          route = '/show/houseList'
+          icon = 'icon-pinpaiyingxiangli'
           break
         case 3: 
-          route = '/show/brandList'
+          icon = 'icon-zixun2'
           break
         case 4: 
-          route = '/show/news'
+          icon = 'icon-lishicaozuoliebiao'
           break
         case 5: 
-          route = '/show/history'
-          break
-        case 6: 
-          route = '/show/autoNav'
+          icon = 'icon-compass'
           break 
         default:
         
         }
+        return icon
       },
       goBack() {
         this.$router.push('/show')
@@ -87,28 +85,28 @@
         var route = ''
         switch(id)
         {
-        case 1: 
+        case 0: 
           route = '/show/itemDetail'
           break
-        case 2: 
+        case 1: 
           route = '/show/houseList'
           break
-        case 3: 
+        case 2: 
           route = '/show/brandList'
           break
-        case 4: 
+        case 3: 
           route = '/show/news'
           break
-        case 5: 
+        case 4: 
           route = '/show/history'
           break
-        case 6: 
+        case 5: 
           route = '/show/autoNav'
           break 
         default:
         
         }
-        
+        return route
       }
     }
   }
@@ -163,15 +161,29 @@
       }
     }
     .circle{
-      background: #fff;
+      background: rgb(250, 251, 252);
       display: inline-block;
       text-align: center;
-      line-height: 100px;
+      line-height: 100px; 
       height: 20vh;
       width: 100px;
       width: 33.33333%;
-      border: 1px solid #eee;
+      /* border: 1px solid #eee; */
+      outline: 1px solid #999;
       box-sizing: border-box;
+      i {
+        font-size: 28px;
+        display: block;
+        height: 0px;
+        position: relative;
+        border: none;
+        outline: none;
+        top: 0px;
+      }
+      span{
+        position: relative;
+        top: 30px;
+      }
     }
     /* .nav01{
       position: absolute;

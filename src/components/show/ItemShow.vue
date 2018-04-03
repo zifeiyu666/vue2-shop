@@ -2,11 +2,11 @@
   <div class="item-show">
     <div class="wrap clearfix">
       <div class="img-wrap fl">
-        <img :src="itemData.url" alt="">
+        <img :src="itemData.imgurl" alt="">
       </div>
       <div class="content-wrap">
-        <h3 class="title">{{itemData.title}}</h3>
-        <p>{{itemData.intro}}</p>
+        <h3 class="title">{{itemData.name}}</h3>
+        <p>{{itemData.itemintro}}</p> 
       </div>
     </div>
   </div>
@@ -37,6 +37,10 @@
     }
     .img-wrap{
       min-height: 70px;
+      img{
+        width: 70px;
+        height: 70px;
+      }
     }
     .content-wrap{
       padding-left: 100px;

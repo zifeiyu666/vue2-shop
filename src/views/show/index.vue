@@ -1,24 +1,13 @@
 <template lang="html">
   <div class="index">
     <div class='swiper-container'>
-      <!-- <mt-swipe :auto="4000">
-        <mt-swipe-item>
-          <p class='item01'>1</p>
-        </mt-swipe-item>
-        <mt-swipe-item>
-          <p class='item02'>2</p>
-        </mt-swipe-item>
-        <mt-swipe-item>
-          <p class='item03'>3</p>
-        </mt-swipe-item>
-      </mt-swipe> -->
-      <v-swiper :swiperData="datas.bannerList"></v-swiper>
+      <v-swiper :swiperData="bannerList"></v-swiper>
     </div>
     <v-title title='项目展示' @clickMore='moreItems'></v-title>
     <div v-for='(i, index) in items' :key='index' @click='goToDetail(i)'>
       <item-show :itemData="i"></item-show>
     </div>
-    
+    <div class="nothing"></div>
     <!-- <v-title title='新闻资讯' @clickMore='moreNews'></v-title>
     <news-show></news-show>
     <news-show></news-show>
@@ -31,7 +20,7 @@
 import Swiper from '@/components/index/swiper.vue'
 import * as mockapi from '@/../mockapi'
 import index from '@/http/mock.js' //模拟数据
-
+import qs from 'qs'
 import Footer from '@/common/show/_footer'
 import ItemShow from '@/components/show/ItemShow'
 import Title from '@/components/show/Title'
@@ -47,7 +36,7 @@ export default {
   },
   data() {
     return {
-      datas: '',
+      bannerList: [],
       items: [],
       loading:true
     }
@@ -58,20 +47,24 @@ export default {
   },
   methods: {
     getBannerList() {
-      mockapi.show.show_getBanner_get({
+      mockapi.show.api_Show_getWebBanner_get({
       }).then(response => {
+        console.log('成功返回banner')
         var data = response.data.data
-        this.datas = data
+        console.log(data)
+        this.bannerList = data
       }).catch(error => {
         console.log(error)
       })
     },
     getItemList() {
-      mockapi.show.getItemList_get({
-
+      mockapi.show.api_Show_getTopItem_post({
+        data: qs.stringify({
+          top: 5
+        })
       }).then(response => {
         var data = response.data.data
-        this.items = data.itemList
+        this.items = data
         console.log(this.items)
       }).catch(error => {
         console.log(error)
@@ -80,8 +73,7 @@ export default {
     // 查看详情
     goToDetail(i) {
       console.log(11111)
-      this.$store.commit('SAVE_CURRENT_ITEM', i)
-      this.$router.push('/show/itemnav')
+      this.$router.push({path: '/show/itemnav', query:{id: i.id}})
     },
     moreItems() {
       console.log(11111111)
@@ -102,5 +94,8 @@ export default {
     width: 100%;
     height: 100%;
     background-color: #EBEBEB;
+}
+.nothing {
+  height: 60px;
 }
 </style>

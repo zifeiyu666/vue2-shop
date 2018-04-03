@@ -1,9 +1,9 @@
 <template>
   <div>
     <mt-header title="项目简介">
-      <router-link to="/show/itemNav" slot="left">
+      <span @click='goBack()' slot="left">
         <mt-button icon="back">返回</mt-button>
-      </router-link>
+      </span>
       <!-- <mt-button icon="more" slot="right"></mt-button> -->
     </mt-header>
     <div class="item-wrap" v-html="content">
@@ -14,23 +14,27 @@
 </template>
 <script>
   import * as mockapi from '@/../mockapi'
+  import qs from 'qs'
+  import {goBack} from '@/mixin'
   export default{
     data() {
       return {
         content: ''
       }
     },
+    mixins: [goBack],
     mounted() {
       this.getItemIntro()
     },
     methods: {
       getItemIntro() {
-        mockapi.show.getItemIntro_get({
-          typeId: 1,
-          id: 2
+        mockapi.show.api_Show_getNews_post({
+          data: qs.stringify({
+            id: 31
+          })
         }).then(response => {
           var data = response.data.data
-          this.content = data.content
+          this.content = data.NewsContent
           console.log(this.content)
         }).catch(error => {
           console.log(error)

@@ -29,20 +29,20 @@ function convertRESTAPI(url, opts) {
 // 做了一个最简单的拦截，如果不成功，统一弹框，但仍会将response数据传递出去，可能后续有些自己的独特操作
 instance.interceptors.response.use(
   response => {
-    if (response.data.isSuccess === false) {
-      if (response.data.msg = '用户未登录') {
-        store.dispatch('LogOut').then(() => {
-          location && location.reload
-        })
-      } else {
-        var msg = response.data.msg || '发生未知错误'
-        Message({
-          message: msg,
-          type: 'error',
-          duration: 2 * 1000
-        })
-      }
-    }
+    // if (response.data.isSuccess === false) {
+    //   if (response.data.msg = '用户未登录') {
+    //     store.dispatch('LogOut').then(() => {
+    //       location && location.reload
+    //     })
+    //   } else {
+    //     var msg = response.data.msg || '发生未知错误'
+    //     Message({
+    //       message: msg,
+    //       type: 'error',
+    //       duration: 2 * 1000
+    //     })
+    //   }
+    // }
     return response
   },
   error => {

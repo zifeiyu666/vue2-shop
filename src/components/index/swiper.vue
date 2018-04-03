@@ -1,8 +1,8 @@
 <template lang="html">
     <mt-swipe :auto="4000" v-if='swiperData'>
       <mt-swipe-item v-for="k in swiperData" :key="k.id">
-        <router-link :to="{ name: '详情页'}">
-          <img :src="k.url">
+        <router-link :to="{ path: '/show/itemnav', params: { id: k.id }}">
+          <img :src="k.imgurl">
         </router-link>
       </mt-swipe-item>
     </mt-swipe>

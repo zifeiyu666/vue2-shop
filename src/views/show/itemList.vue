@@ -10,12 +10,14 @@
       
     </div>
     <ul
+      class='container'
       v-infinite-scroll="loadMore"
       infinite-scroll-disabled="loading"
       infinite-scroll-distance="10">
       <li v-for="(item, index) in list" :key='index' @click='goToItemDetail(item)'>
         <div class="item">
-          <img :src="$imgHost + '400x80/999/&text=项目背景图'" alt="">
+          <!-- <img :src="$imgHost + '400x80/999/&text=项目背景图'" alt=""> -->
+          <item-show :itemData="item"></item-show>
         </div>
       </li>
     </ul>
@@ -24,31 +26,54 @@
   
 </template>
 <script>
+  import * as mockapi from '@/../mockapi'
+  import qs from 'qs'
   import Footer from '@/common/show/_footer'
+  import ItemShow from '@/components/show/ItemShow'
   export default{
     components: {
-      'v-footer': Footer
+      'v-footer': Footer,
+      ItemShow,
     },
     data() {
       return {
-        list: [
-          1,2,3,4,5,6,7,8,9,0
-        ]
+        list: [],
+        pageNo: 1,
+        pageSize: 10
       }
     },
+    mounted() {
+      this.getItemList()
+    },
     methods: {
+      getItemList() {
+        mockapi.show.api_Show_getItemList_post({
+          data: qs.stringify({
+            pageNo: this.pageNo,
+            pageSize: this.pageSize
+          })
+        }).then(response => {
+          var data = response.data.data
+          this.list = this.list.concat(data)
+          this.loading=false
+        }).catch(error => {
+          console.log(error)
+        })
+      },
       loadMore() {
         this.loading = true;
-        setTimeout(() => {
-          let last = this.list[this.list.length - 1];
-          for (let i = 1; i <= 10; i++) {
-            this.list.push(last + i);
-          }
-          this.loading = false;
-        }, 2500);
+        // setTimeout(() => {
+        //   let last = this.list[this.list.length - 1];
+        //   for (let i = 1; i <= 10; i++) {
+        //     this.list.push(last + i);
+        //   }
+        //   this.loading = false;
+        // }, 2500);
+        this.getItemList()
       },
       goToItemDetail(item) {
-        this.$router.push('/show/itemNav')
+        console.log(1111133)
+        this.$router.push({ path: '/show/itemNav', query: { id: item.id }})
       } 
     }
   }
@@ -65,5 +90,8 @@
   img{
     width: 100%;
   }
+}
+.container{
+  margin-bottom: 100px;
 }
 </style>
