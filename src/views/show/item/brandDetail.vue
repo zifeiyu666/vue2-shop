@@ -1,9 +1,9 @@
 <template>
   <div>
     <mt-header title="品牌故事标题示例">
-      <router-link to="/show/brandList" slot="left">
+      <span @click='goBack()' slot="left">
         <mt-button icon="back">返回</mt-button>
-      </router-link>
+      </span>
       <!-- <mt-button icon="more" slot="right"></mt-button> -->
     </mt-header>
     <div class='swiper-container'>
@@ -38,7 +38,7 @@
   import Swiper from '@/components/index/swiper.vue'
   import * as mockapi from '@/../mockapi'
   import index from '@/http/mock.js' //模拟数据
-
+  import {goBack} from '@/mixin'  
   import Footer from '@/common/show/_footer'
   import ItemShow from '@/components/show/ItemShow'
   import Title from '@/components/show/Title'
@@ -57,6 +57,7 @@
         loading:true
       }
     },
+    mixins: [goBack],
     beforeCreate() {
       mockapi.show.test_get({}).then(response => {
         console.log(response)

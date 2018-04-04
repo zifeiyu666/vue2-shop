@@ -43,33 +43,37 @@
       }
     },
     mounted() {
-      this.getItemList()
+      this.getItemList().then(response => {
+        var data = response.data.data
+        this.list = this.list.concat(data)
+        this.pageNo++
+        this.loading=false
+      }).catch(error => {
+        console.log(error)
+      })
     },
     methods: {
       getItemList() {
-        mockapi.show.api_Show_getItemList_post({
-          data: qs.stringify({
+        return mockapi.show.api_Show_getItemList_get({
+          params: {
             pageNo: this.pageNo,
             pageSize: this.pageSize
-          })
-        }).then(response => {
+          } 
+        })
+      },
+      loadMore() {
+        if(this.loading) {
+          return
+        }
+        this.loading = true;
+        this.getItemList().then(response => {
           var data = response.data.data
           this.list = this.list.concat(data)
+          this.pageNo++
           this.loading=false
         }).catch(error => {
           console.log(error)
         })
-      },
-      loadMore() {
-        this.loading = true;
-        // setTimeout(() => {
-        //   let last = this.list[this.list.length - 1];
-        //   for (let i = 1; i <= 10; i++) {
-        //     this.list.push(last + i);
-        //   }
-        //   this.loading = false;
-        // }, 2500);
-        this.getItemList()
       },
       goToItemDetail(item) {
         console.log(1111133)

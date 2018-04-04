@@ -10,7 +10,6 @@ import 'mint-ui/lib/style.css'
 Vue.use(Mint);
 Vue.config.productionTip = false
 Vue.prototype.$api = api;
-Vue.prototype.$imgHost = 'https://dummyimage.com/'
 
 // 引入vue-amap
 // 
@@ -22,18 +21,56 @@ import Icon from 'vue-awesome/components/Icon'
 // globally (in your main .js file)
 Vue.component('icon', Icon)
 
+// easymock
+import qs from 'qs'
+import * as mockapi from '@/../mockapi'
 
 // 用钩子函数beforeEach()对路由进行判断
-
 router.beforeEach((to, from, next) => {
     if (to.meta.requireAuth) {  // 需要权限,进一步进行判断
-      if (store.state.login.token) {  // 通过vuex state获取当前的token是否存在
-        next();
+      console.log('进入需要登录信息路由')
+      if (store.state.userInfo.MemberToken) {  // 通过vuex state获取当前的token是否存在
+        console.log('有token')
+        if (store.state.userInfo.Phone) {
+          console.log('已经绑定手机')
+          next();
+        } else {
+          // 未绑定手机去绑定
+          console.log('没有绑定手机')
+          next({
+            path: '/shop/login',
+            query: {oldUrl: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
+          })
+        }
       }
-      else {    //如果没有权限,重定向到登录页,进行登录
-        next({
-          path: '/shop/login',
-          // query: {redirect: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
+      else {    
+        //如果没有token，获取token
+        console.log('没有token')
+        mockapi.shop.api_GetUserInfo_get({
+          params: {
+            code: 123 // 微信传递过来的code
+          }
+        }).then(response => {
+          console.log('成功获取到token')
+          
+          var data = response.data.data
+          console.log(data)
+          // 用户信息存在vuex中
+          store.commit('setUserInfo', data)
+          // 已经绑定手机放行
+          if(data.Phone) {
+            console.log('已经绑定手机')
+            next()
+          } else {
+            // 未绑定手机去绑定
+            console.log('没有绑定手机')
+            next({
+              path: '/shop/login',
+              query: {oldUrl: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
+            })
+          }
+        }).catch(err => {
+          console.log(err)
         })
       }
     }

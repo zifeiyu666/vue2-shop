@@ -58,10 +58,10 @@ export default {
       })
     },
     getItemList() {
-      mockapi.show.api_Show_getTopItem_post({
-        data: qs.stringify({
+      mockapi.show.api_Show_getTopItem_get({
+        params: {
           top: 5
-        })
+        }
       }).then(response => {
         var data = response.data.data
         this.items = data

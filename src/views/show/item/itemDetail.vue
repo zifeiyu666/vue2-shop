@@ -28,10 +28,10 @@
     },
     methods: {
       getItemIntro() {
-        mockapi.show.api_Show_getNews_post({
-          data: qs.stringify({
-            id: 31
-          })
+        mockapi.show.api_Show_getNews_get({
+          params: {
+            id: this.$route.query.code
+          }
         }).then(response => {
           var data = response.data.data
           this.content = data.NewsContent

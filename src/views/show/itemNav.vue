@@ -10,15 +10,10 @@
       <p>产品简介产品简介产品简介产品简介产品简介产品简介产品简介产品简介</p>
       <router-link :to="{path:'/shop/detail', query: {id: currentId}}">购买详情</router-link>
     </div>
-    <router-link v-for='(i, index) in navList' :key='index' class='circle' :class='"nav0" + i.id' :to="{ path: generateRoute(index), query: {id: currentId}}">
-      <i class='iconfont' :class="generateIcon(index)"></i>
+    <router-link v-for='(i, index) in navList' :key='index' class='circle' :class='"nav0" + i.id' :to="{ path: generateRoute(i.name), query: {code: i.code, id: currentId}}">
+      <i class='iconfont' :class="generateIcon(i.name)"></i>
       <span>{{i.name}}</span>
     </router-link>
-    <!-- <router-link class='circle nav02' to='/show/houseList'>户型鉴赏</router-link>
-    <router-link class='circle nav03' to='/show/brandList'>品牌故事</router-link>
-    <router-link class='circle nav04' to='/show/news'>项目资讯</router-link>
-    <router-link class='circle nav05' to='/show/history'>发展历程</router-link>
-    <router-link class='circle nav06' to='/show/autoNav'>一键导航</router-link> -->
   </div>
 </template>
 <script>
@@ -39,10 +34,10 @@
       getItemNav() {
         console.log(1111111111111)
         console.log(this.currentId)
-        mockapi.show.api_Show_getItemNav_post({
-          data: qs.stringify({
+        mockapi.show.api_Show_getItemNav_get({
+          params: {
             itemId: this.currentId
-          })
+          }
         }).then(response => {
           var data = response.data.data
           this.navList = data
@@ -51,26 +46,26 @@
           console.log(error)
         })
       },
-      generateIcon(index) {
+      generateIcon(name) {
         var icon = undefined
-        switch(index)
+        switch(name)
         {
-        case 0: 
+        case '项目简介': 
           icon = 'icon-zixun1'
           break
-        case 1: 
+        case '户型鉴赏': 
           icon = 'icon-haofangtuo400iconfonthuxing'
           break
-        case 2: 
+        case '品牌故事': 
           icon = 'icon-pinpaiyingxiangli'
           break
-        case 3: 
+        case '项目资讯': 
           icon = 'icon-zixun2'
           break
-        case 4: 
+        case '发展历程': 
           icon = 'icon-lishicaozuoliebiao'
           break
-        case 5: 
+        case '一键导航': 
           icon = 'icon-compass'
           break 
         default:
@@ -81,26 +76,26 @@
       goBack() {
         this.$router.push('/show')
       },
-      generateRoute(id) {
+      generateRoute(name) {
         var route = ''
-        switch(id)
+        switch(name)
         {
-        case 0: 
+        case '项目简介': 
           route = '/show/itemDetail'
           break
-        case 1: 
+        case '户型鉴赏': 
           route = '/show/houseList'
           break
-        case 2: 
+        case '品牌故事': 
           route = '/show/brandList'
           break
-        case 3: 
+        case '项目资讯': 
           route = '/show/news'
           break
-        case 4: 
+        case '发展历程': 
           route = '/show/history'
           break
-        case 5: 
+        case '一键导航': 
           route = '/show/autoNav'
           break 
         default:
@@ -111,7 +106,7 @@
     }
   }
 </script>
-<style lang=less>
+<style lang=less scoped>
   .goback{
     position: fixed;
     z-index: 1000;
@@ -150,18 +145,20 @@
         font-size: 16px;
       }
       a{
-        border: 1px solid #eee;
-        padding: 6px 10px;
+        border: none;
+        padding: 8px 12px;
         border-radius: 6px;
-        background: #FFAA00;
+        background: #ff4800;
         color: #fff;
         position: absolute;
         bottom: 10px;
         right: 20px;
+        font-size: 14px;
+        box-shadow: 1px 1px 3px #7a2300
       }
     }
     .circle{
-      background: rgb(250, 251, 252);
+      background: #FFAA00;
       display: inline-block;
       text-align: center;
       line-height: 100px; 
@@ -169,7 +166,7 @@
       width: 100px;
       width: 33.33333%;
       /* border: 1px solid #eee; */
-      outline: 1px solid #999;
+      outline: 4px solid #FFF;
       box-sizing: border-box;
       i {
         font-size: 28px;
@@ -178,11 +175,13 @@
         position: relative;
         border: none;
         outline: none;
-        top: 0px;
+        top: 18px;
+        color: #FFF;
       }
       span{
         position: relative;
         top: 30px;
+        COLOR: #FFF;
       }
     }
     /* .nav01{

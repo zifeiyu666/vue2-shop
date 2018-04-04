@@ -1,9 +1,11 @@
 <template lang="html">
 
   <div class="car">
-      <header class="header">
+      <header class="header" >
           <div class="header-icon">
-              <span class="icon2-user"></span>
+              <span>
+                <img :src="avatar" style='width: 100%; height: 100%' alt="">
+              </span>
           </div>
           <!-- <span>登录/注册</span> -->
           <div class="header-content">
@@ -11,7 +13,7 @@
             <p>注册时间：2018-3-16</p>
             <p>账户余额：0元</p>
           </div>
-          <img class='qrcode' src="http://dummyimage.com/80x80/eeeeee&text=qrcode" alt="">
+          <img class='qrcode' :src="qrcode" alt="">
       </header>
       <div class="main">
           <router-link class="my-indent" :to="{ name: ''}">
@@ -83,11 +85,21 @@
 
   import Baseline from '@/common/_baseline.vue'
   import Footer from '@/common/_footer.vue'
+  import { mapState } from 'vuex'
   export default {
     components: {
       'v-baseline': Baseline,
       'v-footer': Footer
-    }
+    },
+    data() {
+      return {
+        qrcode: '' 
+      }
+    },
+    mounted() {
+      this.qrcode = this.$store.state.userInfo.SharedQRCode
+      this.avatar = this.$store.state.userInfo.headimgurl
+    } 
   }
 </script>
 
@@ -114,7 +126,9 @@
     .header {
       width: 100%;
       height: 16vw;
-      background: url(../../../static/carbg.png) center 0 #f37d0f;
+      background: url(../../../static/carbg.png)  #f37d0f;
+      background-position: center 0;
+      background-color: #f37d0f;
       background-size: auto 100%;
       padding: 3.2vw 0;
       display: -webkit-box;
@@ -131,15 +145,16 @@
               box-sizing: border-box;
         width: 14vw;
         height: 14vw;
-        line-height: 16vw;
+        // line-height: 16vw;
         text-align: center;
         border-radius: 50%;
-        span {
-          .fz(font-size, 54);
-          &::before {
-            color: #ffffff;
-          }
-        }
+        overflow: hidden;
+        // span {
+        //   .fz(font-size, 54);
+        //   &::before {
+        //     color: #ffffff;
+        //   }
+        // }
       }
       >span {
         margin-left: 3.2vw;

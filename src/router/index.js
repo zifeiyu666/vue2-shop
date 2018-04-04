@@ -33,11 +33,15 @@ const ShowHouseDetail = resolve => require(['@/views/show/item/houseDetail.vue']
 const ShowBrandList = resolve => require(['@/views/show/item/brandList.vue'],resolve)
 const ShowBrandDetail = resolve => require(['@/views/show/item/brandDetail.vue'],resolve)
 const ShowAutoNav = resolve => require(['@/views/show/item/autoNav.vue'],resolve)
+const NewsDetail = resolve => require(['@/views/show/item/newsDetail'],resolve)
 
 const shopRouters = [{
     path: '/shop',
     name: '首页',
-    component: Index
+    component: Index,
+    meta: {
+        requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+    }
   }, 
   {
     path: '/shop/category',
@@ -48,31 +52,49 @@ const shopRouters = [{
       name: '分类子页',
       path: '/shop/category/:tab',
       component:CategoryMain
-    }]
+    }],
+    meta: {
+        requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+    }
   },
   {
     path: '/shop/car',
     name: '购物车页',
-    component: Car
+    component: Car,
+    meta: {
+        requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+    }
   },
   {
     path: '/shop/collection',
     name: '收藏',
-    component: Collection
+    component: Collection,
+    meta: {
+        requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+    }
   },
   {
     path: '/shop/all',
     name: '所有商品',
-    component: All
+    component: All,
+    meta: {
+        requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+    }
   },
   {
     path: '/shop/order',
     name: '立即购买',
-    component: Order
+    component: Order,
+    meta: {
+        requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+    }
   },{
     path: '/shop/car/pay',
     name: '支付页',
-    component: Pay
+    component: Pay,
+    meta: {
+        requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+    }
   },
   {
     path: '/shop/user',
@@ -80,7 +102,7 @@ const shopRouters = [{
     component: User,
     meta: {
         requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
-    },
+    }
   }, 
   {
     path: '/shop/share',
@@ -181,6 +203,11 @@ const showRouters = [
     path: '/show/news',
     name: '项目资讯',
     component: ShowNews
+  },
+  {
+    path: '/show/newsDetail',
+    name: '资讯详情',
+    component: NewsDetail
   },
   {
     path: '/show/history',

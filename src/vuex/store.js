@@ -17,5 +17,14 @@ export default new Vuex.Store({
     category,
     login,
     show
+  },
+  state: {
+    userInfo:  {}
+  },
+  mutations: {
+    setUserInfo(state, res) {
+      console.log('已经存储用户信息')
+      state.userInfo = res
+    }
   }
 })

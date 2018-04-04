@@ -5,33 +5,33 @@
     </v-header>
     <section>
       <mt-field
-       label="账号"
-        placeholder="请输入账号"
+       label="手机号"
+        placeholder="请输入手机号"
         type = "text"
         v-model = "account"
         :readonly = '!toggle'
         :disableClear = '!toggle'
         ></mt-field>
-      <mt-field
+      <!-- <mt-field
        label="密码"
        placeholder="请输入密码"
        type="password"
        v-model="password"
        :readonly='!toggle'
        :disableClear = '!toggle'
-        ></mt-field>
-      <p class="tip">Tip : 账号密码随便输</p>
+        ></mt-field> -->
+      <p class="tip">Tip : 您尚未绑定手机号，请进行手机号绑定</p>
     </section>
     <mt-button
      plain
      size="large"
      @click="login"
-     v-if='toggle'>登录</mt-button>
-    <mt-button
+     v-if='toggle'>绑定</mt-button>
+    <!-- <mt-button
      plain
      size="large"
      @click="logout"
-     v-else>退出登录</mt-button>
+     v-else>退出登录</mt-button> -->
 
   </div>
 </template>
@@ -53,12 +53,12 @@ export default {
   methods:{
     // 登录按钮
     login(){
-      if(this.account!=="" && this.password!=="") {
-        Toast('登录成功,存储token,跳转网页');
+      if(this.account!=="") {
+        Toast('手机号绑定成功');
         this.toggle = false;
         this.$store.commit('CHANGE_TOKEN',1);
       }else {
-        Toast('账号密码不能为空');
+        Toast('手机号不能为空');
       }
 
       setTimeout(()=>{

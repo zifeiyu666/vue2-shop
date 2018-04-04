@@ -1,7 +1,7 @@
 <template lang="html">
-  <section class="section3" v-if='section3'>
+  <section class="section3" >
     <ul class="section3-list">
-      <li v-for="k in section3.list">
+      <li v-for="k in section3">
         <div class="section3-list-left">
           <h4>{{k.title}}</h4>
           <div class="time">
@@ -14,7 +14,7 @@
           <p class="start">Starts at {{k.start}}</p>
         </div>
         <router-link :to="{name:'分类页'}" class="section3-list-right">
-          <img v-lazy="k.imgPath">
+          <img v-lazy="k.imgurl">
           <span>${{k.price}}</span>
         </router-link>
       </li>

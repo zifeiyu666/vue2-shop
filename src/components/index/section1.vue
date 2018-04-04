@@ -1,18 +1,18 @@
 <template lang="html">
   <section class="section1" v-if='section1'>
     <h1 class="section1-title">
-      section1
+      权益卡
       <i class="icon-right"></i>
     </h1>
     <ul class="section1-list">
-      <li v-for="k in section1.list">
+      <li v-for="k in section1">
         <router-link :to="{name:'详情页'}" :key="k.id">
-          <img v-lazy="k.imgPath" alt="">
+          <img v-lazy="k.imgurl" alt="">
         </router-link>
       </li>
     </ul>
   <router-link :to="{ name: '详情页'}"  class="section1-banner">
-    <img v-lazy="section1.banner" v-if='section1'>
+    <img v-lazy="section1.banner" v-if='section1.banner'>
   </router-link>
   </section>
 </template>

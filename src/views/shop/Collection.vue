@@ -6,13 +6,15 @@
         <h1 slot="title">我的收藏</h1>
       </v-header>
       <!-- 根据购物车是否有商品加载不同的组件 -->
-      <v-something v-if="count"></v-something>
+      <v-something v-if="list" :list = 'list' @loadmore = 'loadmore' @updatelist='updatelist'></v-something>
       <v-nothing v-else></v-nothing>
-      <v-footer></v-footer>
+      <!-- <v-footer></v-footer> -->
     </div>
 </template>
 
 <script>
+import qs from 'qs'
+import * as mockapi from '@/../mockapi'
 import Header from '@/common/_header.vue'
 import Nothing from '@/components/collection/nothing.vue'
 import Something from '@/components/collection/something.vue'
@@ -25,21 +27,39 @@ export default {
     'v-something':Something,
     'v-footer':Footer
   },
-
-  computed:{
-    count(){
-
-
-      return this.$store.state.detail.count
-
+  data() {
+    return {
+      count: '',
+      pageNo: 1,
+      pageSize: 10,
+      list: []
     }
   },
   mounted(){
-    // 防止刷新页面数据为空
-    if (this.$store.state.detail.count=="") {
-
-      this.$store.commit('RESET_COUNT');
-
+    this.getCollectionList()
+   
+  },
+  methods: {
+    getCollectionList() {
+      mockapi.shop.api_Shop_getMyCollection_get({
+        params: {
+          token: this.$store.state.userInfo.token,
+          pageNo: this.pageNo,
+          pageSize: this.pageSize
+        }
+      }).then(res => {
+        var data = res.data.data
+        this.pageNo++
+        this.list = this.list.concat(data)
+      })
+    },
+    updatelist() {
+      this.list = []
+      this.pageNo = 1
+      this.getCollectionList()
+    },
+    loadmore() {
+      this.getCollectionList()
     }
   }
 

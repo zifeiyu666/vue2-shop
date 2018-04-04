@@ -171,6 +171,8 @@ p{
    display: block; 
    clear:both; 
 }
-
+.mint-header{
+    background: #FFAA00 !important;
+}
 
 </style>

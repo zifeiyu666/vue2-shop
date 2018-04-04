@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mt-header title="户型详情">
+    <mt-header title="资讯详情">
       <span @click='goBack()' slot="left">
         <mt-button icon="back">返回</mt-button>
       </span>
@@ -21,7 +21,7 @@
       <v-swiper :swiperData="datas.swiper"></v-swiper>
     </div>
     <div class="item-wrap">
-      <h2 class='item-title'>户型一</h2>
+      <h2 class='item-title'>资讯一</h2>
       <p>户型一使用面积XX平方米，为套房设计。户型一使用面积XX平方米，为套房设计。户型一使用面积XX平方米，为套房设计。....</p>
       <div class="line"></div>
       <h2 class='title'>其卧室为地中海风格设计，参考户型图如下：</h2>

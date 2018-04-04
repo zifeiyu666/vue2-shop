@@ -3,39 +3,41 @@
   <div class="index">
     <!-- <v-header></v-header> -->
     <mt-button icon="search" @click='goToSearch'></mt-button>
-    <v-swiper :swiperData="datas.swiper"></v-swiper>
+    <v-swiper :swiperData="bannerList"></v-swiper>
     <!-- <v-service></v-service> -->
     <div class="search clearfix">
       <div class="avatar">
-        <img src="http://dummyimage.com/70x70/eeeeee&text=avatar" alt="">
+        <img :src="avatar" alt="">
       </div>
       <div class="part part01">
-        <h2 class="title">18</h2>
+        <h2 class="title"> </h2>
         <span>全部商品</span>
       </div>
       <div class="part part02">
-        <h2 class="title">18</h2>
+        <h2 class="title"> </h2>
         <span>最新上架</span>
       </div>
       <div class="part part03">
-        <h2 class="title">18</h2>
+        <h2 class="title"> </h2>
         <span>我的订单</span>
       </div>
     </div>
     
 
-    <v-section1 :section1="datas.section1"></v-section1>
-    <v-section2 :section2="datas.section2"></v-section2>
-    <v-section3></v-section3>
-    <v-section4 :section4="datas.section4"></v-section4>
+    <v-section1 :section1="section1"></v-section1>
+    <v-section2 :section2="section2"></v-section2>
+    <!-- <v-section3 :section3="section3"></v-section3> -->
+    <v-section4 :section4="section4"></v-section4>
     <v-baseline></v-baseline>
     <v-footer></v-footer>
   </div>
 </template>
 
 <script>
+import qs from 'qs'
+import * as mockapi from '@/../mockapi'
 import Header from '@/components/index/header.vue'
-import Swiper from '@/components/index/swiper.vue'
+import Swiper from '@/components/shop/swiper.vue'
 import Service from '@/components/index/service.vue'
 import Section1 from '@/components/index/section1.vue'
 import Section2 from '@/components/index/section2.vue'
@@ -58,23 +60,98 @@ export default {
   },
   data() {
     return {
-      datas: '',
       loading:true,
-      active: 'tab-container1'
+      active: 'tab-container1',
+      bannerList: '',
+      avatar: '',
+      section1: '',
+      section2: '',
+      section3: '',
+      section4: ''
     }
   },
   beforeCreate() {
-
-    this.$api({
-      method: 'post',
-      url: '/index'
-    }).then((response) => {
-      this.datas = response.data;
-    }).catch(function(error) {
-      alert(error)
-    })
+  },
+  mounted() {
+    this.getBanner()
+    this.getSection1()
+    this.getSection2()
+    this.getSection3()
+    this.getSection4()
+    this.avatar = this.$store.state.userInfo.headimgurl
   },
   methods: {
+    getBanner() {
+      mockapi.shop.api_Shop_getShopBanner_get({
+        params: {}
+      }).then(res => {
+        var data = res.data.data
+        console.log(data)
+        this.bannerList = data
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    getSection1() {
+      mockapi.shop.api_Shop_getTopProduct_get({
+        params: {
+          ProductType: 1,
+          ProjectType: 1, // typecode
+          top: 10
+        }
+      }).then(res => {
+        var data = res.data.data
+        console.log(data)
+        this.section1 = data
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    getSection2() {
+      mockapi.shop.api_Shop_getTopProduct_get({
+        params: {
+          ProductType: 2,
+          ProjectType: 1, // typecode
+          top: 10
+        }
+      }).then(res => {
+        var data = res.data.data
+        console.log(data)
+        this.section2 = data
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    getSection3() {
+      mockapi.shop.api_Shop_getTopProduct_get({
+        params: {
+          ProductType: 3,
+          ProjectType: 1, // typecode
+          top: 10
+        }
+      }).then(res => {
+        var data = res.data.data
+        console.log(data)
+        this.section3 = data
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    getSection4() {
+      mockapi.shop.api_Shop_getTopProduct_get({
+        params: {
+          ProductType: 1,
+          ProjectType: 2, // typecode
+          top: 10
+        }
+      }).then(res => {
+        var data = res.data.data
+        console.log(data)
+        this.section4 = data
+      }).catch(err => {
+        console.log(err)
+      })
+    },
     goToSearch() {
       this.$router.push('/shop/all')
     }
@@ -118,8 +195,10 @@ export default {
     top: -30px;
     border-radius: 4px;
     overflow: hidden;
+    box-shadow: 0px 1px 4px #ccc;
     img{
       width: 100%;
+      height: 100%;
     }
   }
   .part{
@@ -130,6 +209,7 @@ export default {
     }
     span{
       font-size: 14px;
+      line-height: 40px;
     }
     border-right: 1px solid #eee;
     padding: 0 20px;

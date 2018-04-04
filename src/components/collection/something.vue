@@ -2,22 +2,26 @@
 
   <div class="wrap">
     <v-gologin></v-gologin>
-    <ul class="something" v-if='carList'>
-      <li v-for="(k,i) in carList">
+    <ul
+    class="something" 
+    v-if='list'
+    v-infinite-scroll="loadMore"
+    infinite-scroll-disabled="loading"
+    infinite-scroll-distance="10">
+      <li v-for="(k,i) in list">
           <div class="something-middle">
-            <img :src="k.imgPath">
+            <img :src="k.imgurl">
           </div>
           <div class="something-right">
             <p>{{k.title}}</p>
-            <p style="color:rgb(199, 108, 28)"> {{k.col}} - {{k.size}}</p>
+            <p style="color:rgb(199, 108, 28)"> {{k.intro}}</p>
             <p>售价：{{k.price}}元</p>
-            <div class="something-right-bottom" @click="cut(i)">
+            <div class="something-right-bottom">
 
-              <span></span>
+              <span @click='deleteCollection(k)'></span>
             </div>
           </div>
       </li>
-
     </ul>
   </div>
 </template>
@@ -26,45 +30,27 @@
 // 提示登录组件
 import Gologin from '@/components/car/gologin.vue'
 import Util from '../../util/common'
+import qs from 'qs'
+import * as mockapi from '@/../mockapi'
 export default {
   components: {
     'v-gologin': Gologin
   },
-  computed: {
-
-    carList() {
-      return this.$store.state.detail.carList;
-    },
-
-  },
+  props: ['list'],
 
   mounted() {
-
-    // 初始化先获取购物车商品列表 否则 页面刷新出Bug
-    if (this.$store.state.detail.carList == "") {
-
-      this.$store.commit('RESET_CARLIST')
-
-     };
-
-
   },
   methods: {
-    cut(i){
-    // 点击垃圾桶，删除当前商品，这里用splice和filter都会bug,只能重置数组
-      let newCarList= [];
-
-      for (let k = 0; k < this.carList.length; k++) {
-          if(k!==i) {
-            newCarList.push(this.carList[k])
-          }
-      }
-
-
-      //点击垃圾桶 把商品数量count-1
-         this.$store.dispatch('setLocalCount',false);
-         this.$store.dispatch('cutCarList',newCarList);
-
+    deleteCollection(k) {
+      var that = this
+      mockapi.shop.api_Shop_cancleCollection_post({
+        data: qs.stringify({
+          token: this.$store.state.userInfo.token,
+          Pid: k.id
+        })
+      }).then(res => {
+        that.$emit('updatelist')
+      })
     },
     toggle() {
 
@@ -75,6 +61,9 @@ export default {
       }, 0);
 
 
+    },
+    loadMore() {
+        this.$emit('loadmore')
     }
 
   }

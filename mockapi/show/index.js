@@ -11,63 +11,63 @@ function api_Show_Action_get(opts) {
 }
 
 /** 获取新闻详细内容 */
-function api_Show_getNews_post(opts) {
+function api_Show_getNews_get(opts) {
   return instance({
-    method: 'post',
+    method: 'get',
     url:  '/api/Show/getNews',
     opts: opts
   });
 }
 
 /** 获取图片新闻列表 */
-function api_Show_getPicNewsList_post(opts) {
+function api_Show_getPicNewsList_get(opts) {
   return instance({
-    method: 'post',
+    method: 'get',
     url:  '/api/Show/getPicNewsList',
     opts: opts
   });
 }
 
 /** 获取文字新闻列表 */
-function api_Show_getWzNewsList_post(opts) {
+function api_Show_getWzNewsList_get(opts) {
   return instance({
-    method: 'post',
+    method: 'get',
     url:  '/api/Show/getWzNewsList',
     opts: opts
   });
 }
 
 /** 获取项目所在地坐标 */
-function api_Show_getNavCoordinate_post(opts) {
+function api_Show_getNavCoordinate_get(opts) {
   return instance({
-    method: 'post',
+    method: 'get',
     url:  '/api/Show/getNavCoordinate',
     opts: opts
   });
 }
 
 /** 获取项目新闻导航 */
-function api_Show_getItemNav_post(opts) {
+function api_Show_getItemNav_get(opts) {
   return instance({
-    method: 'post',
+    method: 'get',
     url:  '/api/Show/getItemNav',
     opts: opts
   });
 }
 
 /** 获取项目列表 */
-function api_Show_getItemList_post(opts) {
+function api_Show_getItemList_get(opts) {
   return instance({
-    method: 'post',
+    method: 'get',
     url:  '/api/Show/getItemList',
     opts: opts
   });
 }
 
 /** 获取首页的项目导航(最新5条) */
-function api_Show_getTopItem_post(opts) {
+function api_Show_getTopItem_get(opts) {
   return instance({
-    method: 'post',
+    method: 'get',
     url:  '/api/Show/getTopItem',
     opts: opts
   });
@@ -192,13 +192,13 @@ function upload_post(opts) {
 
 export {
   api_Show_Action_get,
-  api_Show_getNews_post,
-  api_Show_getPicNewsList_post,
-  api_Show_getWzNewsList_post,
-  api_Show_getNavCoordinate_post,
-  api_Show_getItemNav_post,
-  api_Show_getItemList_post,
-  api_Show_getTopItem_post,
+  api_Show_getNews_get,
+  api_Show_getPicNewsList_get,
+  api_Show_getWzNewsList_get,
+  api_Show_getNavCoordinate_get,
+  api_Show_getItemNav_get,
+  api_Show_getItemList_get,
+  api_Show_getTopItem_get,
   getNavCoordinate_get,
   getHistory_get,
   getNewsIntro_get,

@@ -1,10 +1,14 @@
 <template>
   <section class="section2" v-if='section2'>
     <div class="section2-list">
+      <h1 class="section1-title">
+        旅游打包类
+        <i class="icon-right"></i>
+      </h1>
       <ul>
-        <li v-for="k in section2.list" :key="k.id">
+        <li v-for="k in section2" :key="k.id">
           <router-link :to="{name:'详情页'}">
-            <img v-lazy="k.imgPath">
+            <img v-lazy="k.imgurl">
           </router-link>
           <h2 class="section2-list-title ac">
             {{k.title}}
@@ -19,7 +23,7 @@
       </ul>
     </div>
     <router-link class="section2-banner" :to="{name:'详情页'}">
-      <img v-lazy="section2.banner">
+      <img v-lazy="section2.banner" v-if="section2.banner">
     </router-link>
   </section>
 </template>
@@ -96,4 +100,25 @@ import { Lazyload } from 'mint-ui';
       width: 100%;
     }
   }
+  .section1-title {
+      .bt();
+      background-color: #ffffff;
+      text-align: center;
+      padding: 4vw 0;
+      .fz(font-size, 40);
+      color: #333;
+      position: relative;
+
+      i {
+        position: absolute;
+        right: 6vw;
+        top: 50%;
+        .fz(font-size, 36);
+        .fz(margin-top,-16);
+
+        &::before {
+          color: rgb(159, 159, 159);
+        }
+      }
+    }
 </style>

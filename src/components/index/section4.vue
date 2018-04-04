@@ -1,13 +1,13 @@
 <template lang="html">
-  <section class="section4" v-if='section4'>
+  <section class="section4" >
     <h2 class="section4-title">
-      section4
+      单独类
       <i class="icon-right"></i>
     </h2>
     <ul class="section4-list">
-      <li v-for="k in section4.list">
+      <li v-for="k in section4">
         <router-link :to="{name:'详情页'}" :key="k.id">
-          <img v-lazy="k.imgPath">
+          <img v-lazy="k.imgurl">
           <p>{{k.intro}}</p>
         </router-link>
         <h3>{{k.title}}</h3>
@@ -16,7 +16,7 @@
 
     </ul>
     <router-link :to="{name:'分类页'}" class="section4-banner">
-      <img v-lazy="section4.banner">
+      <img v-lazy="section4.banner" v-if="section4.banner">
     </router-link>
   </section>
 </template>
@@ -24,7 +24,10 @@
 <script>
 import { Lazyload } from 'mint-ui';
   export default {
-    props:['section4']
+    props:['section4'],
+    mounted() {
+      console.log(`section4:${section4}`)
+    }
   }
 </script>
 

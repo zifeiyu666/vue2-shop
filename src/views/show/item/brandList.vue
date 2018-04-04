@@ -1,9 +1,9 @@
 <template>
   <div>
     <mt-header title="品牌故事">
-      <router-link to="/show/itemNav" slot="left">
+      <span @click='goBack()' slot="left">
         <mt-button icon="back">返回</mt-button>
-      </router-link>
+      </span>
       <!-- <mt-button icon="more" slot="right"></mt-button> -->
     </mt-header>
     <div class="itemlist">
@@ -13,9 +13,10 @@
       v-infinite-scroll="loadMore"
       infinite-scroll-disabled="loading"
       infinite-scroll-distance="10">
-      <li v-for="(item, index) in list" :key='index' @click='goToBrandDetail(item)'>
-        <div class="item">
-          <img :src="$imgHost + '400x80/999/&text=品牌故事'" alt="">
+      <li v-for="(item, index) in brandList" :key='index' @click='goToBrandDetail(item)'>
+        <div class="item-container">
+          <img :src="item.imgurl" alt="">
+          <p class="title">{{item.title}}</p>
         </div>
       </li>
     </ul>
@@ -24,35 +25,70 @@
   
 </template>
 <script>
+import qs from 'qs'
+import * as mockapi from '@/../mockapi'
   export default{
     data() {
       return {
-        list: [
-          1,2,3,4,5,6,7,8,9,0
-        ]
+        brandList: [],
+        query: {
+          pageNo: 1,
+          pageSize: 10,
+          typeCode: this.$route.code
+        }
       }
     },
+    mounted() {
+      this.getBrandList().then(response => {
+        var data = response.data.data
+        this.brandList = this.brandList.concat(data)
+        console.log(this.houseList)
+        this.query.pageNo++
+        this.loading = false
+      }).catch(error => {
+        console.log(error)
+      })
+    },
     methods: {
+      getBrandList() {
+        return mockapi.show.api_Show_getPicNewsList_post({
+          data: qs.stringify(this.query)
+        })
+      },
       loadMore() {
         this.loading = true;
-        setTimeout(() => {
-          let last = this.list[this.list.length - 1];
-          for (let i = 1; i <= 10; i++) {
-            this.list.push(last + i);
-          }
-          this.loading = false;
-        }, 2500);
+        this.getBrandList().then(response => {
+          var data = response.data.data
+          this.houseList = this.houseList.concat(data)
+          console.log(this.houseList)
+          this.query.pageNo++
+          this.loading = false
+        }).catch(error => {
+          console.log(error)
+        })
       },
       goToBrandDetail(item) {
-        this.$router.push('/show/brandDetail')
-      } 
+        this.$router.push({path:'/show/BrandDetail', query: {id: this.$route.query.id}})
+      },
+      goBack(){
+        this.$router.push({path: '/show/itemNav', query: {id: this.$route.query.id}})
+      }
     }
   }
 </script>
-<style>
-.item{
-  box-shadow: 0px 1px 3px #eee;
+<style lang=less scoped>
+.item-container{
+  box-shadow: 0px 1px 4px #ccc;
   margin: 10px;
-  height: 80px;
+  background: #fff;
+  img{
+    width: 100%;
+    height: 60px;
+  }
+  .title{
+    padding: 0 4px;
+    line-height: 30px; 
+    height: 30px;
+  }
 }
 </style>
