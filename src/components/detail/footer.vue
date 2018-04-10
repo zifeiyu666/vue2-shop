@@ -9,7 +9,7 @@
       </span>
       
     </div>
-    <router-link  :to="{name:'购物车页'}" class="footer-gocar">
+    <router-link :to="{path:'/shop/car'}" class="footer-gocar">
       <i class="icon-car"></i>
       <span v-if="count">{{count}}</span>
     </router-link>
@@ -19,24 +19,22 @@
     <span class="footer-buy" @click="goPay">
       立即购买
     </span>
+    <!-- 加入购物车 -->
     <mt-popup
       v-model="popupVisible"
       position="bottom">
       <div class='shopcar'>
         <p>
-          商品名称:<span class="title">{{product ? product[0].title : undefined}}</span> 
+          商品名称:<span class="title">{{detail ? detail.p.ProductName : undefined}}</span> 
         </p>
         <p>
-          价格:<span class="title">{{product ? product[0].price : undefined}}</span>
+          商品类型:<span class="title">{{detail ? detail.p.ProductType : undefined}}</span> 
         </p>
         <p>
-          规格:<span class="title">{{product ? product[0].size : undefined}}</span>
+          价格:<span class="title">{{detail ? detail.p.DiscountPrice : undefined}}</span>
         </p>
         <p>
-          颜色:<span class="title">{{product ? product[0].col : undefined}}</span>
-        </p>
-        <p>
-          商品ID:<span class="title">{{product ? product[0].id : undefined}}</span>
+          规格:<span class="title">{{detail ? detail.p.ProductUnit : undefined}}</span>
         </p>
         <p>
           数量：<button style="padding: 4px 5px;
@@ -44,8 +42,36 @@
   width: 30px;" @click='add'>+</button>
         </p>
         <div class="bottom clearfix">
-          <mt-button type="primary" @click='confirmAddIntoCar'>确定</mt-button>
+          <mt-button type="primary" @click='confirmShopCar'>确定</mt-button>
           <mt-button type="default" @click='consoleAddIntoCar'>取消</mt-button>
+        </div>
+      </div>
+    </mt-popup>
+    <!-- 立即购买 -->
+    <mt-popup
+      v-model="payVisible"
+      position="bottom">
+      <div class='shopcar'>
+        <p>
+          商品名称:dddddddddd<span class="title">{{detail ? detail.p.ProductName : undefined}}</span> 
+        </p>
+        <p>
+          商品类型:<span class="title">{{detail ? detail.p.ProductType : undefined}}</span> 
+        </p>
+        <p>
+          价格:<span class="title">{{detail ? detail.p.DiscountPrice : undefined}}</span>
+        </p>
+        <p>
+          规格:<span class="title">{{detail ? detail.p.ProductUnit : undefined}}</span>
+        </p>
+        <p>
+          数量：<button style="padding: 4px 5px;
+  width: 30px;" @click='payReduce'>-</button> {{paynum}} <button style="padding: 4px 5px;
+  width: 30px;" @click='payAdd'>+</button>
+        </p>
+        <div class="bottom clearfix">
+          <mt-button type="primary" @click='confirmPay'>确定</mt-button>
+          <mt-button type="default" @click='consolePay'>取消</mt-button>
         </div>
         
       </div>
@@ -54,6 +80,8 @@
 </template>
 
 <script>
+import qs from 'qs'
+import * as mockapi from '@/../mockapi'
 import { MessageBox } from 'mint-ui';
 import { Toast } from 'mint-ui';
 export default {
@@ -75,24 +103,69 @@ export default {
        return this.$store.state.detail.sizeSelected
      }
    },
+  props: ['detail'],
   data() {
     return {
       star: false,
-      num: 1,
+      num: 1, // 购物车数量
+      paynum: 1, // 立即购买数量
       popupVisible: false,
+      payVisible: false,
       product: undefined
     }
   },
-   methods:{
-     collect() {
-       this.star = !this.star
-       if (this.star) {
-         Toast('收藏成功')
-       } else{
-         Toast('移除收藏成功')
-       }
-     },
-     addIntoCar(){
+  methods:{
+    // 收藏相关
+    collect() {
+      if (this.star) {
+        mockapi.shop.api_Shop_cancleCollection_post({
+          data: qs.stringify({
+            token: this.$store.state.userInfo.MemberToken,
+            PId: this.detail.p.PId
+          })
+        }).then(res => {
+          this.star = false
+          Toast('移除收藏成功')
+        })
+      } else {
+        mockapi.shop.api_Shop_addCollection_post({
+          data: qs.stringify({
+            token: this.$store.state.userInfo.MemberToken,
+            PId: this.detail.p.PId
+          })
+        }).then(res => {
+          this.star = true
+          Toast('收藏成功')
+        })
+      }
+    },
+    isSelected() {
+      mockapi.shop.api_Shop_isMyCollection_get({
+        params:{
+          token: this.$store.state.userInfo.MemberToken,
+          PId: this.detail.p.PId
+        }
+      }).then(res => {
+        var data = res.data.data
+        this.star = data.isSelected
+      })
+    },
+
+    /* 购物车相关 */
+    //  TODO: 获取购物车商品数量（缺少接口）
+    getMyCarNum() {
+      mockapi.shop.api_Shop_something_get({
+        params: {
+          token: this.$store.state.userInfo.MemberToken,
+          PId: this.detail.p.PId,
+          PropId: this.detail.prop.PropId,
+          Num: this.num
+        }
+      }).then(res => {
+
+      })
+    },
+    addIntoCar(){
       //  mint-ui的弹出式提示框
       this.product = [{
         title:this.productDatasView.title,
@@ -104,52 +177,106 @@ export default {
         choseBool:false
       }];
       this.popupVisible = !this.popupVisible
-     },
-     confirmAddIntoCar() {
-      this.$store.dispatch('setLocalCount',true);
-      this.$store.dispatch('addCarList',this.product);
-      console.log('购物车商品数量')
-      console.log(this.$store.state.detail.carList)
-      Toast({
-        message:'添加成功',
-        duration:1000
-      });
+    },
+    //  确认添加购物车 
+    confirmShopCar() {
+      mockapi.shop.api_Shop_addToCar_post({
+        data: qs.stringify({
+          token: this.$store.state.userInfo.MemberToken,
+          PId: this.detail.p.PId,
+          PropId: this.detail.prop.PropId,
+          Num: this.num
+        })
+      }).then(res => {
+        Toast('添加成功')
+        this.popupVisible = false
+        this.getMyCarNum()
+      })
+    },
+    consoleAddIntoCar() {
       this.popupVisible = false
-     },
-     consoleAddIntoCar() {
-       this.popupVisible = false
-     },
-     //点击跳转到支付页
+    },
+    add() {
+      if (this.num < (this.detail.p.TotalNum - this.detail.p.SoldNum)){
+        mockapi.shop.api_Shop_updateCar_post({
+          data: qs.stringify({
+            token: this.$store.state.userInfo.MemberToken,
+            PId: this.detail.p.PId,
+            PropId: this.detail.prop.PropId,
+            Num: this.num + 1
+          })
+        }).then(res => {
+          this.num++
+        }).catch(err => {
+          console.log(err)
+        })
+      } else {
+        Toast('已达到最大数量')
+      }
+    },
+    reduce() {
+      if (this.num > 1) {
+        mockapi.shop.api_Shop_updateCar_post({
+          data: qs.stringify({
+            token: this.$store.state.userInfo.MemberToken,
+            PId: this.detail.p.PId,
+            PropId: this.detail.prop.PropId,
+            Num: this.num - 1
+          })
+        }).then(res => {
+          this.num--
+        }).catch(err => {
+          console.log(err)
+        })
+      }
+    },
+    /* 立即购买相关 */
     goPay(){
-        //  mint-ui的弹出式提示框
-      const product = [{
+      //  mint-ui的弹出式提示框
+      this.product = [{
         title:this.productDatasView.title,
         price:this.productDatasView.price,
         size:this.productDatasView.chose[this.sizeSelected].size,
         col:this.productDatasView.chose[this.colSelected].col,
         id:this.productDatasView.id,
-        imgPath:this.$store.state.detail.productDatas.swiper[0].imgSrc,
-        choseBool:true //这里直接设置为true
       }];
-
-      this.$store.dispatch('addCarList',product).then(
-        res=> {
-          console.log(123)
-          console.log(this.$store.state.carList)
-          // 直接跳转到生成订单页面
-            this.$router.push('/shop/order')
-        }
-      )
+      this.payVisible = !this.payVisible
     },
-    add() {
+    confirmPay() {
+      this.payVisible = false
       console.log(1111)
-      this.num++
+      mockapi.shop.shop_generateOrder_get({
+        data: qs.stringify({
+          token: this.$store.state.userInfo.MemberToken,
+          PId: this.detail.p.PId,
+          PropId: this.detail.prop[0].PropId,
+          Num: this.paynum
+        })
+      }).then(res => {
+        this.$router.push({path: '/shop/order', query: {PId: this.detail.p.PId,
+            PropId: this.detail.prop[0].PropId,}})
+      }).catch(err => {
+        console.log(err)
+      })
+      
+      
     },
-    reduce() {
-      if (this.num >0) {
-        this.num--
+    consolePay() {
+      this.payVisible = false
+    },
+    payReduce() {
+      if(this.paynum > 1) {
+        this.paynum--
+      }
+    },
+    payAdd() {
+      if (this.paynum < (this.detail.p.TotalNum - this.detail.p.SoldNum)) {
+        this.paynum++
+      } else {
+        Toast('已达到最大可购买数量')
       }
     }
+    
    }
 }
 </script>

@@ -17,7 +17,7 @@
         <h2 class="title"> </h2>
         <span>最新上架</span>
       </div>
-      <div class="part part03">
+      <div class="part part03" @click='goToMyOrder'>
         <h2 class="title"> </h2>
         <span>我的订单</span>
       </div>
@@ -41,7 +41,7 @@ import Swiper from '@/components/shop/swiper.vue'
 import Service from '@/components/index/service.vue'
 import Section1 from '@/components/index/section1.vue'
 import Section2 from '@/components/index/section2.vue'
-import Section3 from '@/components/index/section3.vue'
+// import Section3 from '@/components/index/section3.vue'
 import Section4 from '@/components/index/section4.vue'
 import Baseline from '@/common/_baseline.vue'
 import Footer from '@/common/_footer.vue'
@@ -53,7 +53,7 @@ export default {
     'v-service': Service,
     'v-section1': Section1,
     'v-section2': Section2,
-    'v-section3': Section3,
+    // 'v-section3': Section3,
     'v-section4': Section4,
     'v-baseline': Baseline,
     'v-footer': Footer
@@ -66,7 +66,7 @@ export default {
       avatar: '',
       section1: '',
       section2: '',
-      section3: '',
+      // section3: '',
       section4: ''
     }
   },
@@ -76,7 +76,7 @@ export default {
     this.getBanner()
     this.getSection1()
     this.getSection2()
-    this.getSection3()
+    // this.getSection3()
     this.getSection4()
     this.avatar = this.$store.state.userInfo.headimgurl
   },
@@ -122,21 +122,21 @@ export default {
         console.log(err)
       })
     },
-    getSection3() {
-      mockapi.shop.api_Shop_getTopProduct_get({
-        params: {
-          ProductType: 3,
-          ProjectType: 1, // typecode
-          top: 10
-        }
-      }).then(res => {
-        var data = res.data.data
-        console.log(data)
-        this.section3 = data
-      }).catch(err => {
-        console.log(err)
-      })
-    },
+    // getSection3() {
+    //   mockapi.shop.api_Shop_getTopProduct_get({
+    //     params: {
+    //       ProductType: 3,
+    //       ProjectType: 1, // typecode
+    //       top: 10
+    //     }
+    //   }).then(res => {
+    //     var data = res.data.data
+    //     console.log(data)
+    //     this.section3 = data
+    //   }).catch(err => {
+    //     console.log(err)
+    //   })
+    // },
     getSection4() {
       mockapi.shop.api_Shop_getTopProduct_get({
         params: {
@@ -154,6 +154,9 @@ export default {
     },
     goToSearch() {
       this.$router.push('/shop/all')
+    },
+    goToMyOrder() {
+      this.$router.push('/shop/myorder')
     }
   }
 }

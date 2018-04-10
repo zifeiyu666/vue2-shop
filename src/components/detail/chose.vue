@@ -2,11 +2,12 @@
   <section class="chose" v-if="view">
     <div class="chose-view">
       <h1 class="chose-view-title">
-        {{view.title}} ~~
-        <span>(已选 {{colText}} - {{sizeText}})</span>
+        {{view.ProductTitle}} ~~
+        <span>(规格： {{view.ProductType}} - {{view.ProductUnit}})</span>
       </h1>
-      <span>{{view.price}}元</span>
-      <p class="chose-view-intro">{{view.intro}}</p>
+      <span>原价：{{view.OriginalPrice}}元</span>
+      <span>折扣价：{{view.DiscountPrice}}元</span>
+      <p class="chose-view-intro">{{view.ProductDescription}}</p>
     </div>
   <!-- 添加空函数 解决Safari浏览器 :active无效 -->
     <div class="chose-mychosed" ontouchstart="">
@@ -46,21 +47,24 @@ import {
 
 export default {
 
-  computed: mapState({
+//   computed: mapState({
 
-    view: state => state.detail.productDatas.view,
-    colSelected: state => state.detail.colSelected,
-    sizeSelected: state => state.detail.sizeSelected,
-    // 返回当前选择颜色的值(innerText)
-    colText() {
-      return this.view.chose[this.colSelected].col
-    },
-    // 返回当前选择规格的值(innerText)
-    sizeText() {
-      return this.view.chose[this.sizeSelected].size
-    }
+//     view: state => state.detail.productDatas.view,
+//     colSelected: state => state.detail.colSelected,
+//     sizeSelected: state => state.detail.sizeSelected,
+//     // 返回当前选择颜色的值(innerText)
+//     colText() {
+//       return this.view.chose[this.colSelected].col
+//     },
+//     // 返回当前选择规格的值(innerText)
+//     sizeText() {
+//       return this.view.chose[this.sizeSelected].size
+//     }
 
-  }),
+//   }),
+  props: [
+      'view'
+  ],
   methods: {
 
     //点击后把i赋值给colSelected,再通过判断决定是否添加选中样式 (active)

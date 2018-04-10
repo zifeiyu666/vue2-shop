@@ -24,6 +24,11 @@ export default {
     'v-nothing':Nothing,
     'v-something':Something,
     'v-footer':Footer
+  },
+  mounted() {},
+  methods() {
+    // TODO:这里缺少一个根据当前订单号返回正在支付的订单信息的接口
+    
   }
 
 }

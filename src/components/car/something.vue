@@ -2,26 +2,30 @@
 
   <div class="wrap">
     <v-gologin></v-gologin>
-    <ul class="something" v-if='carList'>
-      <li v-for="(k,i) in carList">
-          <div class="something-left" @click="toggle">
+    <ul 
+    class="something" 
+    v-if='carList'
+    v-infinite-scroll="loadMore"
+    infinite-scroll-disabled="loading"
+    infinite-scroll-distance="10">
+      <li v-for="(k,i) in carList" :key="i">
+          <div class="something-left">
             <label class="true" :class="{false:!k.choseBool}">
               <input type="checkbox" v-model="k.choseBool">
             </label>
           </div>
           <div class="something-middle">
-            <img :src="k.imgPath">
+            <img :src="k.imgurl">
           </div>
           <div class="something-right">
             <p>{{k.title}}</p>
-            <p style="color:rgb(199, 108, 28)"> {{k.col}} - {{k.size}}</p>
+            <p style="color:rgb(199, 108, 28)"> {{k.propname}}}</p>
             <p>数量：<button style="padding: 4px 5px;
-  width: 30px;" @click='add'>-</button> {{num}} <button style="padding: 4px 5px;
-  width: 30px;" @click='reduce'>+</button>
+  width: 30px;" @click='add(k.num)'>-</button> {{k.num}} <button style="padding: 4px 5px;
+  width: 30px;" @click='reduce(k.num)'>+</button>
             </p>
             <p>售价：{{k.price}}元</p>
-            <div class="something-right-bottom" @click="cut(i)">
-
+            <div class="something-right-bottom" @click="cut(k)">
               <span></span>
             </div>
           </div>
@@ -32,52 +36,68 @@
 </template>
 
 <script>
+import qs from 'qs'
+import * as mockapi from '@/../mockapi'
 // 提示登录组件
 import Gologin from '@/components/car/gologin.vue'
 import Util from '../../util/common'
+import {Toast} from 'mint-ui'
 export default {
   components: {
     'v-gologin': Gologin
   },
   computed: {
 
-    carList() {
-      return this.$store.state.detail.carList;
-    },
+    // carList() {
+    //   return this.$store.state.detail.carList;
+    // },
 
   },
   data() {
     return{
-      num: 1
+      num: 1,
+      pageNo: 1,
+      pageSize: 10,
+      carList: [],
+      token: ''
     }
   },
 
   mounted() {
-
-    // 初始化先获取购物车商品列表 否则 页面刷新出Bug
-    if (this.$store.state.detail.carList == "") {
-
-      this.$store.commit('RESET_CARLIST')
-
-     };
-
-
+    this.getMyCar()
+    this.token = this.$store.state.userInfo.MemberToken
   },
   methods: {
+    getMyCar() {
+      mockapi.shop.api_Shop_getMyCar_get({
+        params: {
+          token: this.token,
+          pageNo: this.pageNo,
+          pageSize: this.pageSize
+        }
+      }).then(res => {
+        var data = res.data.data
+        this.pageNo++
+        this.carList = this.carList.concat(data)
+      })
+    },
+    loadMore() {
+      this.getMyCar()
+    },
     cut(i){
-    // 点击垃圾桶，删除当前商品，这里用splice和filter都会bug,只能重置数组
-      let newCarList= [];
-
-      for (let k = 0; k < this.carList.length; k++) {
-          if(k!==i) {
-            newCarList.push(this.carList[k])
-          }
-      }
-
-
-      //点击垃圾桶 把商品数量count-1
-         this.$store.dispatch('setLocalCount',false);
-         this.$store.dispatch('cutCarList',newCarList);
+      // 点击垃圾桶，删除当前商品，这里用splice和filter都会bug,只能重置数组
+      mockapi.shop.api_Shop_deleteCar_post({
+        data: qs.stringify({
+          token: this.token,
+          PId: i.id,
+          PropId: i.propid
+        })
+      }).then(res => {
+        this.pageNo = 1
+        this.carList = []
+        Toast('删除成功')
+        this.getMyCar()
+      })
 
     },
     toggle() {
@@ -88,11 +108,22 @@ export default {
 
       }, 0);
     },
-    add() {
-      console.log(1111)
-      this.num++
+    add(num) {
+      mockapi.shop.api_Shop_updateCar_post({
+        data: qs.stringify({
+          token: this.token,
+          PId: i.id,
+          PropId: i.propid,
+          num: num++
+        })
+      }).then(res => {
+        this.pageNo = 1
+        this.carList = []
+        Toast('删除成功')
+        this.getMyCar()
+      })
     },
-    reduce() {
+    reduce(num) {
       this.num--
     }
 

@@ -1,8 +1,8 @@
 <template lang="html">
     <div class="swiper">
       <mt-swipe :auto="4000">
-        <mt-swipe-item v-for="i in swiper" :key="i.id">
-           <img :src="i.imgSrc">
+        <mt-swipe-item v-for="(i, index) in imgList" :key='index'>
+           <img :src="i">
         </mt-swipe-item>
       </mt-swipe>
       <div class="back" @click="$router.go(-1)">
@@ -18,7 +18,8 @@ export default {
     swiper(){
         return this.$store.state.detail.productDatas.swiper
     }
-  }
+  },
+  props: ['imgList']
 }
 </script>
 

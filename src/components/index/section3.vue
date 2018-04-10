@@ -13,7 +13,7 @@
           </div>
           <p class="start">Starts at {{k.start}}</p>
         </div>
-        <router-link :to="{name:'分类页'}" class="section3-list-right">
+        <router-link :to="{path:'/shop/detail', query:{pid: k.id}}" class="section3-list-right">
           <img v-lazy="k.imgurl">
           <span>${{k.price}}</span>
         </router-link>

@@ -7,7 +7,7 @@
       </h1>
       <ul>
         <li v-for="k in section2" :key="k.id">
-          <router-link :to="{name:'详情页'}">
+          <router-link :to="{path:'/shop/detail', query:{pid: k.id}}">
             <img v-lazy="k.imgurl">
           </router-link>
           <h2 class="section2-list-title ac">

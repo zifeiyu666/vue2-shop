@@ -25,22 +25,8 @@ export default {
     'v-something':Something,
     'v-footer':Footer
   },
-
-  computed:{
-    count(){
-
-
-      return this.$store.state.detail.count
-
-    }
-  },
   mounted(){
-    // 防止刷新页面数据为空
-    if (this.$store.state.detail.count=="") {
 
-      this.$store.commit('RESET_COUNT');
-
-    }
   }
 
 }

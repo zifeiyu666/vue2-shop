@@ -20,6 +20,7 @@ const Edit = resolve => require(['@/views/shop/Edit.vue'], resolve)
 const ShareCompany = resolve => require(['@/views/shop/ShareCompany.vue'], resolve)
 const All = resolve => require(['@/views/shop/All.vue'], resolve)
 const ShareJf = resolve => require(['@/views/shop/ShareJf.vue'], resolve)
+const myOrder = resolve => require(['@/views/shop/myOrders.vue'], resolve)
 // show
 const ShowIndex = resolve => require(['@/views/show/index.vue'], resolve)
 const ShowItem = resolve => require(['@/views/show/item.vue'], resolve)
@@ -51,7 +52,10 @@ const shopRouters = [{
     children: [{
       name: '分类子页',
       path: '/shop/category/:tab',
-      component:CategoryMain
+      component:CategoryMain,
+      meta: {
+        requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+      }
     }],
     meta: {
         requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
@@ -131,11 +135,17 @@ const shopRouters = [{
   {
     path: '/shop/detail',
     name: '详情页',
-    component: Detail
+    component: Detail,
+    meta: {
+      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+    }
   }, {
     path: '/shop/search',
     name: '搜索页',
-    component: Search
+    component: Search,
+    meta: {
+      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+    }
   },{
     path: '/shop/login',
     name: '登录页',
@@ -144,7 +154,18 @@ const shopRouters = [{
   {
     path: '/shop/edit',
     name: '修改资料',
-    component: Edit
+    component: Edit,
+    meta: {
+      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+    }
+  },
+  {
+    path: '/shop/myorder',
+    name: '我的订单',
+    component: myOrder,
+    meta: {
+      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+    }
   }
 ]
 

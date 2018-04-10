@@ -43,7 +43,7 @@ export default {
     getCollectionList() {
       mockapi.shop.api_Shop_getMyCollection_get({
         params: {
-          token: this.$store.state.userInfo.token,
+          token: this.$store.state.userInfo.MemberToken,
           pageNo: this.pageNo,
           pageSize: this.pageSize
         }

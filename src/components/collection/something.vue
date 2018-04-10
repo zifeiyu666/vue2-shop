@@ -32,6 +32,7 @@ import Gologin from '@/components/car/gologin.vue'
 import Util from '../../util/common'
 import qs from 'qs'
 import * as mockapi from '@/../mockapi'
+import { Toast } from 'mint-ui';
 export default {
   components: {
     'v-gologin': Gologin
@@ -45,22 +46,21 @@ export default {
       var that = this
       mockapi.shop.api_Shop_cancleCollection_post({
         data: qs.stringify({
-          token: this.$store.state.userInfo.token,
+          token: this.$store.state.userInfo.MemberToken,
           Pid: k.id
         })
       }).then(res => {
         that.$emit('updatelist')
+        Toast({
+          message: '操作成功'
+        });
       })
     },
     toggle() {
-
       setTimeout(() => {
           // 每点击一下都会改变choseBool的布尔值,所以要重置数组
           this.$store.dispatch('cutCarList',this.carList)
-
       }, 0);
-
-
     },
     loadMore() {
         this.$emit('loadmore')

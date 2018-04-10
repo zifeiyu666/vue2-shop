@@ -4,9 +4,9 @@
       单独类
       <i class="icon-right"></i>
     </h2>
-    <ul class="section4-list">
+    <ul class="section4-list" v-if="section4">
       <li v-for="k in section4">
-        <router-link :to="{name:'详情页'}" :key="k.id">
+        <router-link :to="{path:'/shop/detail', query:{pid: k.id}}" :key="k.id">
           <img v-lazy="k.imgurl">
           <p>{{k.intro}}</p>
         </router-link>
@@ -22,12 +22,9 @@
 </template>
 
 <script>
-import { Lazyload } from 'mint-ui';
+  import { Lazyload } from 'mint-ui';
   export default {
-    props:['section4'],
-    mounted() {
-      console.log(`section4:${section4}`)
-    }
+    props:['section4']
   }
 </script>
 

@@ -1,230 +1,211 @@
-<template lang="html">
+<template>
   <div>
-    <div class="search-wrap">
-      <!-- <icon name='angle-left' scale="1.5"></icon>   -->
-      <!-- <div style='background: #eee;height: 40px;'>
-        <div class="back" @click="back">
-          <icon name='angle-left' scale="1.5"></icon>
-        </div>
-        <div class="input-wrap">
-          <div class='input-inner-wrap'>
-            <icon name='search'></icon>  
-            <input type="text" placeholder='搜索'>
-          </div>
-        </div>
-      </div> -->
-      <div class="catagory clearfix">
-        <div class="nav">
-          <mt-navbar v-model="selected">
-            <mt-tab-item id="1">全部</mt-tab-item>
-            <mt-tab-item id="2">权益卡</mt-tab-item>
-            <mt-tab-item id="3">旅游打包类</mt-tab-item>
-            <mt-tab-item id="4">单独类</mt-tab-item>
-          </mt-navbar>
-        </div>
-        <div class="btn" @click='showPopside()'>
-          <i class='iconfont icon-fenlei'></i>
-        </div>
-      </div>
-      
-      <mt-tab-container v-model="selected">
-        <mt-tab-container-item id="1">
+    <v-header>
+      <h1 slot="title">我的订单</h1>
+    </v-header>
+    <mt-navbar v-model="selected">
+      <mt-tab-item id="1">全部</mt-tab-item>
+      <mt-tab-item id="2">待付款</mt-tab-item>
+      <mt-tab-item id="3">已付款</mt-tab-item>
+      <mt-tab-item id="4">已完成</mt-tab-item>
+    </mt-navbar>
+    <mt-tab-container v-model="selected">
+      <!-- 全部订单 -->
+      <mt-tab-container-item id="1">
           <div class="wrap">
             <ul
-            class="something" 
-            v-if='allList'
-            v-infinite-scroll="loadMore"
+            :autoFill="false"
+            v-if='allOrders'
+            infinite-scroll-throttle-delay="500"
+            v-infinite-scroll="loadMoreAll"
             infinite-scroll-disabled="loading"
             infinite-scroll-distance="10">
-              <li v-for="(k,i) in allList" @click='gotoDetail(k)' :key="i">
-                <div class="something-middle">
-                  <img :src="k.imgurl">
-                </div>
-                <div class="something-right">
-                  <p>{{k.title}}</p>
-                  <p style="color:rgb(199, 108, 28)"> {{k.intro}}</p>
-                  <p>售价：{{k.price}}元</p>
-                  <!-- <div class="something-right-bottom">
-                    <span @click='deleteCollection(k)'></span>
-                  </div> -->
-                </div>
+              <li class='order-wrap' v-for="(k,i) in allOrders" @click='gotoDetail(k)' :key="i">
+                <h3>订单标题：{{k.ordertitle}}</h3>
+                <ul class="something" >
+                  <li v-for="(k,i) in k.opd" :key='i'>
+                    <div class="something-middle">
+                      <img :src="k.imgurl">
+                    </div>
+                    <div class="something-right">
+                      <p>{{k.producttitle}}</p>
+                      <p style="color:rgb(199, 108, 28)"> {{k.intro}}</p>
+                      <p>售价：{{k.price}}元</p>
+                      <!-- <div class="something-right-bottom">
+                        <span @click='deleteCollection(k)'></span>
+                      </div> -->
+                    </div>
+                  </li>
+                </ul>
+                
               </li>
             </ul>
           </div>
-          
-          <!-- <div class='wrap'>
-            <ul class="something" v-if='allList'>
-              <li v-for="(k,i) in allList" @click='gotoDetail' :key="i">
-                  <div class="something-middle">
-                    <img :src="k.imgPath">
-                  </div>
-                  <div class="something-right">
-                    <p>{{k.title}}</p>
-                    <p style="color:rgb(199, 108, 28)"> {{k.col}} - {{k.size}}</p>
-                    <p>售价：{{k.price}}元</p>
-                  </div>
+        </mt-tab-container-item>
+      <!-- 待付款 -->
+      <mt-tab-container-item id="2">
+        <div class="wrap">
+            <ul
+            :autoFill="false"
+            v-if='allOrders'
+            infinite-scroll-throttle-delay="500"
+            v-infinite-scroll="loadMoreAll"
+            infinite-scroll-disabled="loading"
+            infinite-scroll-distance="10">
+              <li class='order-wrap' v-for="(k,i) in waitOrders" @click='gotoDetail(k)' :key="i">
+                <h3>订单标题：{{k.ordertitle}}</h3>
+                <ul class="something" >
+                  <li v-for="(k,i) in k.opd" :key='i'>
+                    <div class="something-middle">
+                      <img :src="k.imgurl">
+                    </div>
+                    <div class="something-right">
+                      <p>{{k.producttitle}}</p>
+                      <p style="color:rgb(199, 108, 28)"> {{k.intro}}</p>
+                      <p>售价：{{k.price}}元</p>
+                      <!-- <div class="something-right-bottom">
+                        <span @click='deleteCollection(k)'></span>
+                      </div> -->
+                    </div>
+                  </li>
+                </ul>
+                
               </li>
             </ul>
-          </div> -->
-        </mt-tab-container-item>
-        <!-- <mt-tab-container-item id="2">
-          <mt-cell v-for="n in 4" :title="'content ' + n" />
-        </mt-tab-container-item>
-        <mt-tab-container-item id="3">
-          <mt-cell v-for="n in 6" :title="'content ' + n" />
-        </mt-tab-container-item>
-        <mt-tab-container-item id="4">
-          <mt-cell v-for="n in 6" :title="'content ' + n" />
-        </mt-tab-container-item> -->
-      </mt-tab-container>
-      <div class="search-history">
-        <!-- <h2 class='title'>搜索历史<icon name='trash'></icon></h2>
-        <button>历史一</button>
-        <button>历史二</button>
-        <button>历史三</button> -->
-      </div>
-
-      
-    </div>
-
-    <div class="popside-wrap" v-if='popsideVisible'>
-      <div class="shade" @click='hidePopside()'></div>
-      <div class="main">
-        <div class='inner-wrap'>
-          <mt-radio
-            title="分类1"
-            v-model="value"
-            :options="['optionA', 'optionB', 'optionC']">
-          </mt-radio>
-          <mt-radio
-            title="分类2"
-            v-model="value"
-            :options="['optionA', 'optionB', 'optionC']">
-          </mt-radio>
-          <mt-radio
-            title="分类3"
-            v-model="value"
-            :options="['optionA', 'optionB']">
-          </mt-radio>
-          <div class="btn-wrap">
-            <mt-button class='btn-left' size='small' type='primary'>重置</mt-button>
-            <mt-button class='btn-right' size='small' type='primary' @click='hidePopside()'>完成</mt-button>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <v-footer></v-footer>
+      </mt-tab-container-item>
+      <!-- 已付款 -->
+      <mt-tab-container-item id="3">
+        <div class="wrap">
+            <ul
+            :autoFill="false"
+            v-if='allOrders'
+            infinite-scroll-throttle-delay="500"
+            v-infinite-scroll="loadMoreAll"
+            infinite-scroll-disabled="loading"
+            infinite-scroll-distance="10">
+              <li class='order-wrap' v-for="(k,i) in payedOrders" @click='gotoDetail(k)' :key="i">
+                <h3>订单标题：{{k.ordertitle}}</h3>
+                <ul class="something" >
+                  <li v-for="(k,i) in k.opd" :key='i'>
+                    <div class="something-middle">
+                      <img :src="k.imgurl">
+                    </div>
+                    <div class="something-right">
+                      <p>{{k.producttitle}}</p>
+                      <p style="color:rgb(199, 108, 28)"> {{k.intro}}</p>
+                      <p>售价：{{k.price}}元</p>
+                      <!-- <div class="something-right-bottom">
+                        <span @click='deleteCollection(k)'></span>
+                      </div> -->
+                    </div>
+                  </li>
+                </ul>
+                
+              </li>
+            </ul>
+          </div>
+      </mt-tab-container-item>
+      <!-- 已完成 -->
+      <mt-tab-container-item id="4">
+        <div class="wrap">
+            <ul
+            :autoFill="false"
+            v-if='allOrders'
+            infinite-scroll-throttle-delay="500"
+            v-infinite-scroll="loadMoreAll"
+            infinite-scroll-disabled="loading"
+            infinite-scroll-distance="10">
+              <li class='order-wrap' v-for="(k,i) in finishedOrders" @click='gotoDetail(k)' :key="i">
+                <h3>订单标题：{{k.ordertitle}}</h3>
+                <ul class="something" >
+                  <li v-for="(k,i) in k.opd" :key='i'>
+                    <div class="something-middle">
+                      <img :src="k.imgurl">
+                    </div>
+                    <div class="something-right">
+                      <p>{{k.producttitle}}</p>
+                      <p style="color:rgb(199, 108, 28)"> {{k.intro}}</p>
+                      <p>售价：{{k.price}}元</p>
+                      <!-- <div class="something-right-bottom">
+                        <span @click='deleteCollection(k)'></span>
+                      </div> -->
+                    </div>
+                  </li>
+                </ul>
+                
+              </li>
+            </ul>
+          </div>
+      </mt-tab-container-item>
+    </mt-tab-container>
   </div>
   
-  
 </template>
-
 <script>
 import Footer from '@/common/_footer.vue'
 import * as mockapi from '@/../mockapi'
 
-export default {
-  data() {
-    return {
-      selected: '1',
-      popsideVisible: false,
-      pageNo: 1,
-      pageSize: 10,
-      allList: [],
-      options: [
-        {
-          label: 'disabled option',
-          value: 'valueF',
-          disabled: true
-        },
-        {
-          label: 'optionA',
-          value: 'valueA'
-        },
-        {
-          label: 'optionB',
-          value: 'valueB'
+import Header from '@/common/_header.vue'
+  export default{
+    data() {
+      return {
+        busy: false, // 判断loadMore是否正在加载中
+        selected: '1',
+        popsideVisible: false,
+        pageNo: 1,
+        pageSize: 10,
+        allOrders: [],
+        finishedOrders: [],
+        payedOrders: [],
+        waitOrders: []
+      }
+    },
+    components: {
+      'v-header':Header
+    },
+    mounted() {
+      // this.getAllOrdersList(false)
+    },
+    methods: {
+      getAllOrdersList(flag) {
+        mockapi.shop.api_Shop_getAllOrders_get({
+          params: {
+            token: this.$store.state.userInfo.MemberToken,
+            name: this.$store.state.userInfo.nickname,
+            pageNo: this.pageNo,
+            pageSize: this.pageSize
+          }
+        }).then(res => {
+          this.busy = false
+          var data = res.data.data
+          this.allOrders = this.allOrders.concat(data)
+          
+        })
+      },
+      loadMoreAll() {
+        if (!this.busy) {
+          // 多次加载数据
+          setTimeout(() => {
+              this.getAllOrdersList(true)
+              this.pageNo ++
+              this.busy = true
+          }, 1000);
         }
-      ],
-      carList: [
-        {
-          title: '商品1',
-          price: '20',
-          imgPath: this.$imgHost + '70x70',
-          col: 'xxxxxxxxxxx',
-          size: '20x30',
-          id: '1'
-        },
-        {
-          title: '商品1',
-          price: '20',
-          imgPath: this.$imgHost + '70x70',
-          col: 'xxxxxxxxxxx',
-          size: '20x30',
-          id: '1'
-        },
-        {
-          title: '商品1',
-          price: '20',
-          imgPath: this.$imgHost + '70x70',
-          col: 'xxxxxxxxxxx',
-          size: '20x30',
-          id: '1'
-        },
-        {
-          title: '商品1',
-          price: '20',
-          imgPath: this.$imgHost + '70x70',
-          col: 'xxxxxxxxxxx',
-          size: '20x30',
-          id: '1'
-        }
-      ]
+        
+      },
     }
-  },
-  components: {
-     'v-footer':Footer
-  },
-  mounted() {
-    this.getAllProductList()
-  },
-  methods: {
-    getAllProductList() {
-      mockapi.shop.api_Shop_getAllProductList_get({
-        params: {
-          pageNo: this.pageNo,
-          pageSize: this.pageSize
-        }
-      }).then(res => {
-        var data = res.data.data
-        this.allList = this.allList.concat(data)
-        this.pageNo++
-      })
-    },
-    loadMore() {
-      this.getAllProductList()
-    },
-    gotoDetail(i) {
-      console.log()
-      this.$router.push({path: '/shop/detail', query: {pid: i.id}})
-    },
-    back() {
-      this.$router.go('-1')
-    },
-    showPopside() {
-      this.popsideVisible = true
-    },
-    hidePopside() {
-      this.popsideVisible = false
-    }
-
   }
-}
 </script>
-
 <style lang="less" scoped>
 @import '../../assets/fz.less';
+.order-wrap{
+  border-bottom: 1px solid #999;
+  margin-bottom: 20px;
+  h3{
+    padding-left: 15px;
+  }
+}
 .back{
   position: absolute;
   z-index: 1000;
@@ -498,3 +479,4 @@ input{
     }
 }
 </style>
+

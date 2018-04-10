@@ -1,10 +1,10 @@
 <template lang="html">
-  <div class="detail">
-    <v-swiper> </v-swiper>
-    <v-chose></v-chose>
+  <div class="detail" v-if="detail">
+    <v-swiper :imgList="detail.imgurl"></v-swiper>
+    <v-chose :view="detail.p"></v-chose>
     <v-content></v-content>
     <v-baseline></v-baseline>
-    <v-footer></v-footer>
+    <v-footer :detail="detail"></v-footer>
   </div>
 </template>
 
@@ -15,6 +15,8 @@ import Content from '@/components/detail/content.vue'
 import Footer from '@/components/detail/footer.vue'
 import Baseline from '@/common/_baseline.vue'
 import detail from '@/http/mock.js' //模拟数据
+import qs from 'qs'
+import * as mockapi from '@/../mockapi'
 export default {
   components:{
     'v-swiper':Swiper,
@@ -25,9 +27,23 @@ export default {
   },
   data() {
     return{
+      detail: undefined
     }
   },
+  mounted() {
+    this.getDetail()
+  },
   methods: {
+    getDetail() {
+      mockapi.shop.api_Shop_getProduct_get({
+        params:{
+          Pid: this.$route.query.pid
+        }
+      }).then(res => {
+        var data = res.data.data
+        this.detail = data
+      })
+    }
   },
   beforeCreate(){
     this.$store.dispatch('setDatas');
@@ -39,5 +55,10 @@ export default {
 .detail {
   width: 100%;
   padding-bottom: 14vw;
+}
+.banner{
+  width: 100%;
+  display: block;
+  height: 200px;
 }
 </style>
