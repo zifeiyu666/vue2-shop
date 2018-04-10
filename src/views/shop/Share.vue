@@ -3,15 +3,17 @@
   <div class="car">
       <header class="header">
           <div class="header-icon">
-              <span class="icon2-user"></span>
+              <span>
+                <img :src="avatar" style='width: 100%; height: 100%' alt="">
+              </span>
           </div>
           <!-- <span>登录/注册</span> -->
-          <div class="header-content">
-            <p>欢迎您：xxx</p>
-            <p>注册时间：2018-3-16</p>
-            <p>账户余额：0元</p>
+           <div class="header-content">
+            <p>欢迎您：{{username}}</p>
+            <p>注册时间：{{time}}</p>
+            <p>积分：{{jifen}}</p>
           </div>
-          <img class='qrcode' src="http://dummyimage.com/80x80/eeeeee&text=qrcode" alt="">
+          <img class='qrcode' :src="qrcode" alt="">
       </header>
       <div class="main">
           <!-- <router-link class="my-indent" :to="{ name: ''}">
@@ -134,6 +136,23 @@
     components: {
       'v-baseline': Baseline,
       'v-footer': Footer
+    },
+    data() {
+      return {
+        qrcode: '',
+        username: '',
+        avatar: '',
+        time: '',
+        jifen: ''
+      }
+    },
+    mounted() {
+      var userInfo = this.$store.state.userInfo
+      this.qrcode = userInfo.SharedQRCode
+      this.avatar = userInfo.headimgurl
+      this.username = userInfo.nickname
+      this.jifen = userInfo.Score,
+      this.time = userInfo.subscribe_time
     }
   }
 </script>
@@ -178,15 +197,16 @@
               box-sizing: border-box;
         width: 14vw;
         height: 14vw;
-        line-height: 16vw;
+        // line-height: 16vw;
         text-align: center;
         border-radius: 50%;
-        span {
-          .fz(font-size, 54);
-          &::before {
-            color: #ffffff;
-          }
-        }
+        overflow: hidden;
+        // span {
+        //   .fz(font-size, 54);
+        //   &::before {
+        //     color: #ffffff;
+        //   }
+        // }
       }
       >span {
         margin-left: 3.2vw;

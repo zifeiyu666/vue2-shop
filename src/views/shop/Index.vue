@@ -9,7 +9,7 @@
       <div class="avatar">
         <img :src="avatar" alt="">
       </div>
-      <div class="part part01">
+      <div class="part part01" @click='goToSearch'>
         <h2 class="title"> </h2>
         <span>全部商品</span>
       </div>
@@ -24,10 +24,10 @@
     </div>
     
 
-    <v-section1 :section1="section1"></v-section1>
-    <v-section2 :section2="section2"></v-section2>
+    <v-section1 :section1="section1" :banner='banner1'></v-section1>
+    <v-section2 :section2="section2" :banner="banner2"></v-section2>
     <!-- <v-section3 :section3="section3"></v-section3> -->
-    <v-section4 :section4="section4"></v-section4>
+    <v-section4 :section4="section4" :banner="banner4"></v-section4>
     <v-baseline></v-baseline>
     <v-footer></v-footer>
   </div>
@@ -67,7 +67,11 @@ export default {
       section1: '',
       section2: '',
       // section3: '',
-      section4: ''
+      section4: '',
+      banner1: '',
+      banner2: '',
+      // banner3: '',
+      banner4: '',
     }
   },
   beforeCreate() {
@@ -78,6 +82,9 @@ export default {
     this.getSection2()
     // this.getSection3()
     this.getSection4()
+    this.getBanner1()
+    this.getBanner2()
+    this.getBanner4()
     this.avatar = this.$store.state.userInfo.headimgurl
   },
   methods: {
@@ -148,6 +155,42 @@ export default {
         var data = res.data.data
         console.log(data)
         this.section4 = data
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    getBanner1() {
+      mockapi.shop.api_Shop_getADByCode_get({
+        params: {
+          typeCode: 'ADO'
+        }
+      }).then(res => {
+        var data = res.data.data
+        this.banner1 = data
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    getBanner2() {
+      mockapi.shop.api_Shop_getADByCode_get({
+        params: {
+          typeCode: 'ADT'
+        }
+      }).then(res => {
+        var data = res.data.data
+        this.banner2 = data
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    getBanner4() {
+      mockapi.shop.api_Shop_getADByCode_get({
+        params: {
+          typeCode: 'ADTH'
+        }
+      }).then(res => {
+        var data = res.data.data
+        this.banner4 = data
       }).catch(err => {
         console.log(err)
       })

@@ -16,7 +16,7 @@
 
     </ul>
     <router-link :to="{name:'分类页'}" class="section4-banner">
-      <img v-lazy="section4.banner" v-if="section4.banner">
+      <img :src="banner.imgurl" v-if='banner'>
     </router-link>
   </section>
 </template>
@@ -24,7 +24,7 @@
 <script>
   import { Lazyload } from 'mint-ui';
   export default {
-    props:['section4']
+    props:['section4','banner']
   }
 </script>
 

@@ -9,9 +9,9 @@
           </div>
           <!-- <span>登录/注册</span> -->
           <div class="header-content">
-            <p>欢迎您：xxx</p>
-            <p>注册时间：2018-3-16</p>
-            <p>账户余额：0元</p>
+            <p>欢迎您：{{username}}</p>
+            <p>注册时间：{{time}}</p>
+            <p>积分：{{jifen}}</p>
           </div>
           <img class='qrcode' :src="qrcode" alt="">
       </header>
@@ -62,14 +62,14 @@
                 <span>资料修改</span><i class="icon-go"></i>
               </p>
             </router-link>
-            <router-link class="my-vip-bottom ho" :to="{ name: ''}">
+            <!-- <router-link class="my-vip-bottom ho" :to="{ name: ''}">
               <div>
                 <span class="icon2-money"></span>
               </div>
               <p>
                 <span>余额提现</span><i class="icon-go"></i>
               </p>
-            </router-link>
+            </router-link> -->
           </section>
 
           
@@ -93,12 +93,20 @@
     },
     data() {
       return {
-        qrcode: '' 
+        qrcode: '',
+        username: '',
+        avatar: '',
+        time: '',
+        jifen: ''
       }
     },
     mounted() {
-      this.qrcode = this.$store.state.userInfo.SharedQRCode
-      this.avatar = this.$store.state.userInfo.headimgurl
+      var userInfo = this.$store.state.userInfo
+      this.qrcode = userInfo.SharedQRCode
+      this.avatar = userInfo.headimgurl
+      this.username = userInfo.nickname
+      this.jifen = userInfo.Score,
+      this.time = userInfo.subscribe_time
     } 
   }
 </script>

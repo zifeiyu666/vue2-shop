@@ -1,6 +1,24 @@
 import instance from './instance';
 import { convertRESTAPI } from '../util';
 
+/** 获取我的购物车里面商品数量 */
+function api_Shop_getMyCarCount_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Shop/getMyCarCount',
+    opts: opts
+  });
+}
+
+/** 测试 */
+function http_10_get(opts) {
+  return instance({
+    method: 'get',
+    url: convertRESTAPI('/http:/10.130.92.177:3001/api/test', opts),
+    opts: opts
+  });
+}
+
 /** ddd */
 function api_Shop_Action_get(opts) {
   return instance({
@@ -416,6 +434,8 @@ function shop_getBanner_get(opts) {
 }
 
 export {
+  api_Shop_getMyCarCount_get,
+  http_10_get,
   api_Shop_Action_get,
   api_Shop_getShareOrders_get,
   api_Shop_getThreeShareCompany_get,

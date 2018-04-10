@@ -4,7 +4,7 @@
     <v-chose :view="detail.p"></v-chose>
     <v-content></v-content>
     <v-baseline></v-baseline>
-    <v-footer :detail="detail"></v-footer>
+    <v-footer :detail="detail" :carnum="carnum"></v-footer>
   </div>
 </template>
 
@@ -27,11 +27,13 @@ export default {
   },
   data() {
     return{
-      detail: undefined
+      detail: undefined,
+      carnum: undefined
     }
   },
   mounted() {
     this.getDetail()
+    this.getCarNum()
   },
   methods: {
     getDetail() {
@@ -42,6 +44,16 @@ export default {
       }).then(res => {
         var data = res.data.data
         this.detail = data
+      })
+    },
+    getCarNum() {
+      mockapi.shop.api_Shop_getMyCarCount_get({
+        params:{
+          token: this.$store.state.userInfo.MemberToken
+        }
+      }).then(res => {
+        var data = res.data.data
+        this.carnum = data
       })
     }
   },

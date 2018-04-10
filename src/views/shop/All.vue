@@ -30,12 +30,7 @@
       <mt-tab-container v-model="selected">
         <mt-tab-container-item id="1">
           <div class="wrap">
-            <ul
-            class="something" 
-            v-if='allList'
-            v-infinite-scroll="loadMore"
-            infinite-scroll-disabled="loading"
-            infinite-scroll-distance="10">
+            <ul class="something" >
               <li v-for="(k,i) in allList" @click='gotoDetail(k)' :key="i">
                 <div class="something-middle">
                   <img :src="k.imgurl">
@@ -50,38 +45,79 @@
                 </div>
               </li>
             </ul>
+            <div style='text-align: center'>
+              <mt-button @click='loadMoreAll'>加载更多</mt-button>
+            </div>
           </div>
-          
-          <!-- <div class='wrap'>
-            <ul class="something" v-if='allList'>
-              <li v-for="(k,i) in allList" @click='gotoDetail' :key="i">
-                  <div class="something-middle">
-                    <img :src="k.imgPath">
-                  </div>
-                  <div class="something-right">
-                    <p>{{k.title}}</p>
-                    <p style="color:rgb(199, 108, 28)"> {{k.col}} - {{k.size}}</p>
-                    <p>售价：{{k.price}}元</p>
-                  </div>
+        </mt-tab-container-item>
+        <mt-tab-container-item id="2">
+          <div class="wrap">
+            <ul class="something" >
+              <li v-for="(k,i) in QYKList" @click='gotoDetail(k)' :key="i">
+                <div class="something-middle">
+                  <img :src="k.imgurl">
+                </div>
+                <div class="something-right">
+                  <p>{{k.title}}</p>
+                  <p style="color:rgb(199, 108, 28)"> {{k.intro}}</p>
+                  <p>售价：{{k.price}}元</p>
+                  <!-- <div class="something-right-bottom">
+                    <span @click='deleteCollection(k)'></span>
+                  </div> -->
+                </div>
               </li>
             </ul>
-          </div> -->
-        </mt-tab-container-item>
-        <!-- <mt-tab-container-item id="2">
-          <mt-cell v-for="n in 4" :title="'content ' + n" />
+            <div style='text-align: center'>
+              <mt-button @click='loadMoreQYK'>加载更多</mt-button>
+            </div>
+          </div>
         </mt-tab-container-item>
         <mt-tab-container-item id="3">
-          <mt-cell v-for="n in 6" :title="'content ' + n" />
+          <div class="wrap">
+            <ul class="something" >
+              <li v-for="(k,i) in LTDBList" @click='gotoDetail(k)' :key="i">
+                <div class="something-middle">
+                  <img :src="k.imgurl">
+                </div>
+                <div class="something-right">
+                  <p>{{k.title}}</p>
+                  <p style="color:rgb(199, 108, 28)"> {{k.intro}}</p>
+                  <p>售价：{{k.price}}元</p>
+                  <!-- <div class="something-right-bottom">
+                    <span @click='deleteCollection(k)'></span>
+                  </div> -->
+                </div>
+              </li>
+            </ul>
+            <div style='text-align: center'>
+              <mt-button @click='loadMoreLTDB'>加载更多</mt-button>
+            </div>
+          </div>
         </mt-tab-container-item>
         <mt-tab-container-item id="4">
-          <mt-cell v-for="n in 6" :title="'content ' + n" />
-        </mt-tab-container-item> -->
+          <div class="wrap">
+            <ul class="something" >
+              <li v-for="(k,i) in DDList" @click='gotoDetail(k)' :key="i">
+                <div class="something-middle">
+                  <img :src="k.imgurl">
+                </div>
+                <div class="something-right">
+                  <p>{{k.title}}</p>
+                  <p style="color:rgb(199, 108, 28)"> {{k.intro}}</p>
+                  <p>售价：{{k.price}}元</p>
+                  <!-- <div class="something-right-bottom">
+                    <span @click='deleteCollection(k)'></span>
+                  </div> -->
+                </div>
+              </li>
+            </ul>
+            <div style='text-align: center'>
+              <mt-button @click='loadMoreDD'>加载更多</mt-button>
+            </div>
+          </div>
+        </mt-tab-container-item>
       </mt-tab-container>
       <div class="search-history">
-        <!-- <h2 class='title'>搜索历史<icon name='trash'></icon></h2>
-        <button>历史一</button>
-        <button>历史二</button>
-        <button>历史三</button> -->
       </div>
 
       
@@ -129,58 +165,26 @@ export default {
     return {
       selected: '1',
       popsideVisible: false,
-      pageNo: 1,
-      pageSize: 10,
+      allQuery: {
+        pageNo: 1,
+        pageSize: 10,
+      },
       allList: [],
-      options: [
-        {
-          label: 'disabled option',
-          value: 'valueF',
-          disabled: true
-        },
-        {
-          label: 'optionA',
-          value: 'valueA'
-        },
-        {
-          label: 'optionB',
-          value: 'valueB'
-        }
-      ],
-      carList: [
-        {
-          title: '商品1',
-          price: '20',
-          imgPath: this.$imgHost + '70x70',
-          col: 'xxxxxxxxxxx',
-          size: '20x30',
-          id: '1'
-        },
-        {
-          title: '商品1',
-          price: '20',
-          imgPath: this.$imgHost + '70x70',
-          col: 'xxxxxxxxxxx',
-          size: '20x30',
-          id: '1'
-        },
-        {
-          title: '商品1',
-          price: '20',
-          imgPath: this.$imgHost + '70x70',
-          col: 'xxxxxxxxxxx',
-          size: '20x30',
-          id: '1'
-        },
-        {
-          title: '商品1',
-          price: '20',
-          imgPath: this.$imgHost + '70x70',
-          col: 'xxxxxxxxxxx',
-          size: '20x30',
-          id: '1'
-        }
-      ]
+      QYKQuery: {
+        pageNo: 1,
+        pageSize: 10,
+      },
+      QYKList: [],
+      DDQuery: {
+        pageNo: 1,
+        pageSize: 10,
+      },
+      DDList: [],
+      LTDBQuery: {
+        pageNo: 1,
+        pageSize: 10,
+      },
+      LTDBList: []
     }
   },
   components: {
@@ -188,22 +192,77 @@ export default {
   },
   mounted() {
     this.getAllProductList()
+    this.getQYKProductList()
+    this.getLTDBProductList()
+    this.getDDProductList()
   },
   methods: {
+    // 所有商品加载更多
     getAllProductList() {
       mockapi.shop.api_Shop_getAllProductList_get({
         params: {
-          pageNo: this.pageNo,
-          pageSize: this.pageSize
+          pageNo: this.allQuery.pageNo,
+          pageSize: this.allQuery.pageSize
         }
       }).then(res => {
         var data = res.data.data
         this.allList = this.allList.concat(data)
-        this.pageNo++
+        this.allQuery.pageNo++
       })
     },
-    loadMore() {
+    loadMoreAll() {
       this.getAllProductList()
+    },
+    // 获取权益卡商品列表
+    getQYKProductList() {
+      mockapi.shop.api_Shop_getProductList_get({
+        params: {
+          pageNo: this.QYKQuery.pageNo,
+          pageSize: this.QYKQuery.pageSize,
+          ProductType: 'QYKL'
+        }
+      }).then(res => {
+        var data = res.data.data
+        this.QYKList = this.QYKList.concat(data)
+        this.QYKQuery.pageNo++
+      })
+    },
+    loadMoreQYK() {
+      this.getQYKProductList()
+    },
+     // 获取旅游打包商品列表
+    getLTDBProductList() {
+      mockapi.shop.api_Shop_getProductList_get({
+        params: {
+          pageNo: this.LTDBQuery.pageNo,
+          pageSize: this.LTDBQuery.pageSize,
+          ProductType: 'LTDBL'
+        }
+      }).then(res => {
+        var data = res.data.data
+        this.LTDBList = this.LTDBList.concat(data)
+        this.LTDBQuery.pageNo++
+      })
+    },
+    loadMoreLTDB() {
+      this.getLTDBProductList()
+    },
+     // 获取单独商品列表
+    getDDProductList() {
+      mockapi.shop.api_Shop_getProductList_get({
+        params: {
+          pageNo: this.DDQuery.pageNo,
+          pageSize: this.DDQuery.pageSize,
+          ProductType: 'DDL'
+        }
+      }).then(res => {
+        var data = res.data.data
+        this.DDList = this.DDList.concat(data)
+        this.DDQuery.pageNo++
+      })
+    },
+    loadMoreDD() {
+      this.getDDProductList()
     },
     gotoDetail(i) {
       console.log()

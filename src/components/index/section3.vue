@@ -20,7 +20,7 @@
       </li>
     </ul>
     <router-link :to="{name:'分类页'}" class="section3-banner">
-      <img v-lazy="section3.banner" alt="">
+      <img :src="banner.imgurl" v-if='banner'>
     </router-link>
   </section>
 </template>

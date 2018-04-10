@@ -11,7 +11,7 @@
     </div>
     <router-link :to="{path:'/shop/car'}" class="footer-gocar">
       <i class="icon-car"></i>
-      <span v-if="count">{{count}}</span>
+      <span v-if="carnum">{{carnum}}</span>
     </router-link>
     <span class="footer-addcar" @click="addIntoCar">
       加入购物车
@@ -103,7 +103,7 @@ export default {
        return this.$store.state.detail.sizeSelected
      }
    },
-  props: ['detail'],
+  props: ['detail', 'carnum'],
   data() {
     return {
       star: false,
