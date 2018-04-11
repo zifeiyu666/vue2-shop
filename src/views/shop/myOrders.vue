@@ -7,19 +7,12 @@
       <mt-tab-item id="1">全部</mt-tab-item>
       <mt-tab-item id="2">待付款</mt-tab-item>
       <mt-tab-item id="3">已付款</mt-tab-item>
-      <mt-tab-item id="4">已完成</mt-tab-item>
     </mt-navbar>
     <mt-tab-container v-model="selected">
       <!-- 全部订单 -->
       <mt-tab-container-item id="1">
           <div class="wrap">
-            <ul
-            :autoFill="false"
-            v-if='allOrders'
-            infinite-scroll-throttle-delay="500"
-            v-infinite-scroll="loadMoreAll"
-            infinite-scroll-disabled="loading"
-            infinite-scroll-distance="10">
+            <ul>
               <li class='order-wrap' v-for="(k,i) in allOrders" @click='gotoDetail(k)' :key="i">
                 <h3>订单标题：{{k.ordertitle}}</h3>
                 <ul class="something" >
@@ -37,21 +30,17 @@
                     </div>
                   </li>
                 </ul>
-                
               </li>
+              <div class="btn-wrap" style='text-align: center'>
+                <mt-button @click='loadMoreAll'>加载更多</mt-button>
+              </div>
             </ul>
           </div>
-        </mt-tab-container-item>
+      </mt-tab-container-item>
       <!-- 待付款 -->
       <mt-tab-container-item id="2">
         <div class="wrap">
-            <ul
-            :autoFill="false"
-            v-if='allOrders'
-            infinite-scroll-throttle-delay="500"
-            v-infinite-scroll="loadMoreAll"
-            infinite-scroll-disabled="loading"
-            infinite-scroll-distance="10">
+            <ul>
               <li class='order-wrap' v-for="(k,i) in waitOrders" @click='gotoDetail(k)' :key="i">
                 <h3>订单标题：{{k.ordertitle}}</h3>
                 <ul class="something" >
@@ -71,19 +60,16 @@
                 </ul>
                 
               </li>
+              <div class="btn-wrap" style='text-align: center'>
+                <mt-button @click='loadMoreWait'>加载更多</mt-button>
+              </div>
             </ul>
           </div>
       </mt-tab-container-item>
       <!-- 已付款 -->
       <mt-tab-container-item id="3">
         <div class="wrap">
-            <ul
-            :autoFill="false"
-            v-if='allOrders'
-            infinite-scroll-throttle-delay="500"
-            v-infinite-scroll="loadMoreAll"
-            infinite-scroll-disabled="loading"
-            infinite-scroll-distance="10">
+            <ul>
               <li class='order-wrap' v-for="(k,i) in payedOrders" @click='gotoDetail(k)' :key="i">
                 <h3>订单标题：{{k.ordertitle}}</h3>
                 <ul class="something" >
@@ -103,38 +89,9 @@
                 </ul>
                 
               </li>
-            </ul>
-          </div>
-      </mt-tab-container-item>
-      <!-- 已完成 -->
-      <mt-tab-container-item id="4">
-        <div class="wrap">
-            <ul
-            :autoFill="false"
-            v-if='allOrders'
-            infinite-scroll-throttle-delay="500"
-            v-infinite-scroll="loadMoreAll"
-            infinite-scroll-disabled="loading"
-            infinite-scroll-distance="10">
-              <li class='order-wrap' v-for="(k,i) in finishedOrders" @click='gotoDetail(k)' :key="i">
-                <h3>订单标题：{{k.ordertitle}}</h3>
-                <ul class="something" >
-                  <li v-for="(k,i) in k.opd" :key='i'>
-                    <div class="something-middle">
-                      <img :src="k.imgurl">
-                    </div>
-                    <div class="something-right">
-                      <p>{{k.producttitle}}</p>
-                      <p style="color:rgb(199, 108, 28)"> {{k.intro}}</p>
-                      <p>售价：{{k.price}}元</p>
-                      <!-- <div class="something-right-bottom">
-                        <span @click='deleteCollection(k)'></span>
-                      </div> -->
-                    </div>
-                  </li>
-                </ul>
-                
-              </li>
+              <div class="btn-wrap" style='text-align: center'>
+                <mt-button @click='loadMorePayed'>加载更多</mt-button>
+              </div>
             </ul>
           </div>
       </mt-tab-container-item>
@@ -150,14 +107,25 @@ import Header from '@/common/_header.vue'
   export default{
     data() {
       return {
-        busy: false, // 判断loadMore是否正在加载中
         selected: '1',
         popsideVisible: false,
-        pageNo: 1,
-        pageSize: 10,
+        allQuery: {
+          pageNo: 1,
+          pageSize: 10,
+          busy: false, // 判断loadMore是否正在加载中
+        },
         allOrders: [],
-        finishedOrders: [],
+        payedQuery: {
+          pageNo: 1,
+          pageSize: 10,
+          busy: false, // 判断loadMore是否正在加载中
+        },
         payedOrders: [],
+        waitQuery: {
+          pageNo: 1,
+          pageSize: 10,
+          busy: false, // 判断loadMore是否正在加载中
+        },
         waitOrders: []
       }
     },
@@ -165,7 +133,9 @@ import Header from '@/common/_header.vue'
       'v-header':Header
     },
     mounted() {
-      // this.getAllOrdersList(false)
+      this.getAllOrdersList(false)
+      this.getWaitOrdersList(false)
+      this.getPayedOrdersList(false)
     },
     methods: {
       getAllOrdersList(flag) {
@@ -173,27 +143,74 @@ import Header from '@/common/_header.vue'
           params: {
             token: this.$store.state.userInfo.MemberToken,
             name: this.$store.state.userInfo.nickname,
-            pageNo: this.pageNo,
-            pageSize: this.pageSize
+            pageNo: this.allQuery.pageNo,
+            pageSize: this.allQuery.pageSize
           }
         }).then(res => {
-          this.busy = false
+          this.allQuery.busy = false
           var data = res.data.data
           this.allOrders = this.allOrders.concat(data)
           
         })
       },
+      getWaitOrdersList(flag) {
+        mockapi.shop.api_Shop_getUnpayedOrders_get({
+          params: {
+            token: this.$store.state.userInfo.MemberToken,
+            name: this.$store.state.userInfo.nickname,
+            pageNo: this.waitQuery.pageNo,
+            pageSize: this.waitQuery.pageSize
+          }
+        }).then(res => {
+          this.waitQuery.busy = false
+          var data = res.data.data
+          this.waitOrders = this.waitOrders.concat(data)
+        })
+      },
+      getPayedOrdersList(flag) {
+        mockapi.shop.api_Shop_getPayedOrders_get({
+          params: {
+            token: this.$store.state.userInfo.MemberToken,
+            name: this.$store.state.userInfo.nickname,
+            pageNo: this.payedQuery.pageNo,
+            pageSize: this.payedQuery.pageSize
+          }
+        }).then(res => {
+          this.payedQuery.busy = false
+          var data = res.data.data
+          this.payedOrders = this.payedOrders.concat(data)
+        })
+      },
       loadMoreAll() {
-        if (!this.busy) {
+        if (!this.allQuery.busy) {
           // 多次加载数据
           setTimeout(() => {
               this.getAllOrdersList(true)
-              this.pageNo ++
-              this.busy = true
+              this.allQuery.pageNo ++
+              this.allQuery.busy = true
           }, 1000);
         }
-        
       },
+      loadMoreWait() {
+        if (!this.waitQuery.busy) {
+          // 多次加载数据
+          setTimeout(() => {
+              this.getWaitOrdersList(true)
+              this.waitQuery.pageNo ++
+              this.waitQuery.busy = true
+          }, 1000);
+        }
+      },
+      loadMorePayed() {
+        if (!this.payedQuery.busy) {
+          // 多次加载数据
+          setTimeout(() => {
+              this.getPayedOrdersList(true)
+              this.payedQuery.pageNo ++
+              this.payedQuery.busy = true
+          }, 1000);
+        }
+      }
     }
   }
 </script>
