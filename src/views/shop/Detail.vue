@@ -1,8 +1,8 @@
 <template lang="html">
   <div class="detail" v-if="detail">
     <v-swiper :imgList="detail.imgurl"></v-swiper>
-    <v-chose :view="detail.p"></v-chose>
-    <v-content></v-content>
+    <v-chose :view="detail"></v-chose>
+    <v-content :content='detail'></v-content>
     <v-baseline></v-baseline>
     <v-footer :detail="detail" :carnum="carnum"></v-footer>
   </div>

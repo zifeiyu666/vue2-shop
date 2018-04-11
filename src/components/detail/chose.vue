@@ -2,12 +2,59 @@
   <section class="chose" v-if="view">
     <div class="chose-view">
       <h1 class="chose-view-title">
-        {{view.ProductTitle}} ~~
-        <span>(规格： {{view.ProductType}} - {{view.ProductUnit}})</span>
+        {{view.ProductTitle}} 
+        <!-- <p style='color: red'>规格：{{radio[0].radio}}-{{radio[1].radio}}-{{radio[2].radio}}</p> -->
       </h1>
-      <span>原价：{{view.OriginalPrice}}元</span>
-      <span>折扣价：{{view.DiscountPrice}}元</span>
-      <p class="chose-view-intro">{{view.ProductDescription}}</p>
+      <div>
+        <span>原价：{{view.OriginalPrice}}元</span>
+        <span>折扣价：{{view.DiscountPrice}}元</span>
+      </div>
+      <div>
+        <span>浏览次数： {{view.VisitTimes}}</span>
+        <span>所属项目：{{view.ProjectTypeName}}</span>
+        
+      </div>
+      <div>
+        <span>打包类型： {{view.DBTypeName}}</span>
+        <span>目的地类别： {{view.DestinationTypeName}}</span>
+        <span>使用天数：{{view.AvailableNum}}</span>
+        <span>房型类别： {{view.HouseTypeName}}</span>
+        <span>可使用开始日期： {{view.UseStartTime}}</span>
+        <span>可使用截止日期：{{view.UseEndTime}}</span>
+        <span>不可使用日期: {{view.Unable}}</span>
+        <span>适用人群：{{view.SuitableUser}}</span>
+      </div>
+      <!-- <div class="pick" v-for='(i, index) in view.diclist' >
+        <mt-button @click='toggleSelected(item)' size="small" :type="item.IsChecked ? 'primary' : 'default'" v-for="(item, k) in i.EntryList ">
+          {{item.EntryName}}
+        </mt-button>
+        <div>
+          <el-radio-group v-model="radio[index].radio">
+            <el-radio-button v-for="(item, k) in i.EntryList" :label="item.EntryName"></el-radio-button>
+          </el-radio-group>
+        </div>
+      </div> -->
+      <div class="pick" >
+        <div  v-if='view.diclist[0]'>
+          <h1>{{view.diclist[0].DicTypeName}}:</h1>
+          <el-radio-group v-model="radio[0].radio" @change='changeSelect'>
+            <el-radio-button v-for="(item, k) in modal1" :label="item.EntryCode">{{item.EntryName}}</el-radio-button>
+          </el-radio-group>
+        </div>
+        <div v-if='view.diclist[1]'>
+          <h1>{{view.diclist[1].DicTypeName}}:</h1>
+          <el-radio-group v-model="radio[1].radio" @change='changeSelect'>
+            <el-radio-button v-for="(item, k) in modal2" :label="item.EntryCode">{{item.EntryName}}</el-radio-button>
+          </el-radio-group>
+        </div>
+        <div v-if='view.diclist[2]'>
+          <h1>{{view.diclist[2].DicTypeName}}:</h1>
+          <el-radio-group v-model="radio[2].radio" @change='changeSelect'>
+            <el-radio-button v-for="(item, k) in modal3" :label="item.EntryCode">{{item.EntryName}}</el-radio-button>
+          </el-radio-group>
+        </div>
+      </div>
+      <p class="chose-view-intro">{{view.ProductIntro}}</p>
     </div>
   <!-- 添加空函数 解决Safari浏览器 :active无效 -->
     <div class="chose-mychosed" ontouchstart="">
@@ -46,25 +93,42 @@ import {
 
 
 export default {
-
-//   computed: mapState({
-
-//     view: state => state.detail.productDatas.view,
-//     colSelected: state => state.detail.colSelected,
-//     sizeSelected: state => state.detail.sizeSelected,
-//     // 返回当前选择颜色的值(innerText)
-//     colText() {
-//       return this.view.chose[this.colSelected].col
-//     },
-//     // 返回当前选择规格的值(innerText)
-//     sizeText() {
-//       return this.view.chose[this.sizeSelected].size
-//     }
-
-//   }),
   props: [
-      'view'
+    'view'
   ],
+  data() {
+    return {
+      selected: ['版本1', '红色', '32g'], // 用户选择的规格
+      type: 'default',
+      // 存储用户选择的规格信息
+      radio: [
+        {
+          radio: ''
+        },
+        {
+          radio: ''
+        },
+        {
+          radio: ''
+        }
+      ]
+    }
+  },
+  computed: {
+    // 当前可选的规格
+    modal1 () {
+      return this.view.diclist[0] ? this.view.diclist[0].EntryList : undefined
+    },
+    modal2 () {
+      return this.view.diclist[1] ? this.view.diclist[1].EntryList : undefined
+    },
+    modal3 () {
+      return this.view.diclist[2] ? this.view.diclist[2].EntryList : undefined
+    },
+    abledModal() {
+      return this.view.prop
+    }
+  },
   methods: {
 
     //点击后把i赋值给colSelected,再通过判断决定是否添加选中样式 (active)
@@ -73,6 +137,12 @@ export default {
     },
     sizeChose(i) {
       this.$store.commit('CHANGE_SIZE_SELECTED', i);
+    },
+    toggleSelected(item) {
+      item.IsChecked = !item.IsChecked
+    },
+    changeSelect() {
+
     }
 
   }
@@ -83,7 +153,6 @@ export default {
 @import '../../assets/fz.less';
 .chose {
     padding: 3vw;
-
     .chose-view {
         > h1 {
             .fz(font-size,36);

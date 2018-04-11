@@ -11,8 +11,11 @@ Vue.use(Mint);
 Vue.config.productionTip = false
 Vue.prototype.$api = api;
 
-// 引入vue-amap
-// 
+// 引入element-ui
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+
+Vue.use(ElementUI);
 
 // 引入vue-awesome
 import 'vue-awesome/icons'

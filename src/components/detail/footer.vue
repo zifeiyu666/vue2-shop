@@ -25,16 +25,16 @@
       position="bottom">
       <div class='shopcar'>
         <p>
-          商品名称:<span class="title">{{detail ? detail.p.ProductName : undefined}}</span> 
+          商品名称:<span class="title">{{detail ? detail.ProductName : undefined}}</span> 
         </p>
         <p>
-          商品类型:<span class="title">{{detail ? detail.p.ProductType : undefined}}</span> 
+          商品类型:<span class="title">{{detail ? detail.ProductType : undefined}}</span> 
         </p>
         <p>
-          价格:<span class="title">{{detail ? detail.p.DiscountPrice : undefined}}</span>
+          价格:<span class="title">{{detail ? detail.DiscountPrice : undefined}}</span>
         </p>
         <p>
-          规格:<span class="title">{{detail ? detail.p.ProductUnit : undefined}}</span>
+          规格:<span class="title">{{detail ? detail.ProductUnit : undefined}}</span>
         </p>
         <p>
           数量：<button style="padding: 4px 5px;
@@ -53,16 +53,16 @@
       position="bottom">
       <div class='shopcar'>
         <p>
-          商品名称:dddddddddd<span class="title">{{detail ? detail.p.ProductName : undefined}}</span> 
+          商品名称:dddddddddd<span class="title">{{detail ? detail.ProductName : undefined}}</span> 
         </p>
         <p>
-          商品类型:<span class="title">{{detail ? detail.p.ProductType : undefined}}</span> 
+          商品类型:<span class="title">{{detail ? detail.ProductType : undefined}}</span> 
         </p>
         <p>
-          价格:<span class="title">{{detail ? detail.p.DiscountPrice : undefined}}</span>
+          价格:<span class="title">{{detail ? detail.DiscountPrice : undefined}}</span>
         </p>
         <p>
-          规格:<span class="title">{{detail ? detail.p.ProductUnit : undefined}}</span>
+          规格:<span class="title">{{detail ? detail.ProductUnit : undefined}}</span>
         </p>
         <p>
           数量：<button style="padding: 4px 5px;
@@ -121,7 +121,7 @@ export default {
         mockapi.shop.api_Shop_cancleCollection_post({
           data: qs.stringify({
             token: this.$store.state.userInfo.MemberToken,
-            PId: this.detail.p.PId
+            PId: this.detail.PId
           })
         }).then(res => {
           this.star = false
@@ -131,7 +131,7 @@ export default {
         mockapi.shop.api_Shop_addCollection_post({
           data: qs.stringify({
             token: this.$store.state.userInfo.MemberToken,
-            PId: this.detail.p.PId
+            PId: this.detail.PId
           })
         }).then(res => {
           this.star = true
@@ -143,7 +143,7 @@ export default {
       mockapi.shop.api_Shop_isMyCollection_get({
         params:{
           token: this.$store.state.userInfo.MemberToken,
-          PId: this.detail.p.PId
+          PId: this.detail.PId
         }
       }).then(res => {
         var data = res.data.data
@@ -157,7 +157,7 @@ export default {
       mockapi.shop.api_Shop_something_get({
         params: {
           token: this.$store.state.userInfo.MemberToken,
-          PId: this.detail.p.PId,
+          PId: this.detail.PId,
           PropId: this.detail.prop.PropId,
           Num: this.num
         }
@@ -183,7 +183,7 @@ export default {
       mockapi.shop.api_Shop_addToCar_post({
         data: qs.stringify({
           token: this.$store.state.userInfo.MemberToken,
-          PId: this.detail.p.PId,
+          PId: this.detail.PId,
           PropId: this.detail.prop.PropId,
           Num: this.num
         })
@@ -197,11 +197,11 @@ export default {
       this.popupVisible = false
     },
     add() {
-      if (this.num < (this.detail.p.TotalNum - this.detail.p.SoldNum)){
+      if (this.num < (this.detail.TotalNum - this.detail.SoldNum)){
         mockapi.shop.api_Shop_updateCar_post({
           data: qs.stringify({
             token: this.$store.state.userInfo.MemberToken,
-            PId: this.detail.p.PId,
+            PId: this.detail.PId,
             PropId: this.detail.prop.PropId,
             Num: this.num + 1
           })
@@ -219,7 +219,7 @@ export default {
         mockapi.shop.api_Shop_updateCar_post({
           data: qs.stringify({
             token: this.$store.state.userInfo.MemberToken,
-            PId: this.detail.p.PId,
+            PId: this.detail.PId,
             PropId: this.detail.prop.PropId,
             Num: this.num - 1
           })
@@ -248,12 +248,12 @@ export default {
       mockapi.shop.shop_generateOrder_get({
         data: qs.stringify({
           token: this.$store.state.userInfo.MemberToken,
-          PId: this.detail.p.PId,
+          PId: this.detail.PId,
           PropId: this.detail.prop[0].PropId,
           Num: this.paynum
         })
       }).then(res => {
-        this.$router.push({path: '/shop/order', query: {PId: this.detail.p.PId,
+        this.$router.push({path: '/shop/order', query: {PId: this.detail.PId,
             PropId: this.detail.prop[0].PropId,}})
       }).catch(err => {
         console.log(err)
@@ -270,7 +270,7 @@ export default {
       }
     },
     payAdd() {
-      if (this.paynum < (this.detail.p.TotalNum - this.detail.p.SoldNum)) {
+      if (this.paynum < (this.detail.TotalNum - this.detail.SoldNum)) {
         this.paynum++
       } else {
         Toast('已达到最大可购买数量')

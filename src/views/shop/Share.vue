@@ -34,7 +34,7 @@
           </div> -->
 
           <section class="my-pay">
-              <router-link :to="{ name: ''}">
+              <router-link :to="{path: '/shop/shareproduct'}">
                   <!-- <span class="icon2-money"></span> -->
                   <span>18</span>
                   <p>分销产品</p>
@@ -128,8 +128,7 @@
 </template>
 
 <script>
-  // import * as mockData from '@/http/mock.js' //模拟数据
-
+  import * as mockapi from '@/../mockapi'
   import Baseline from '@/common/_baseline.vue'
   import Footer from '@/common/_footer.vue'
   export default {
