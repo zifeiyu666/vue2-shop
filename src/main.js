@@ -49,7 +49,9 @@ router.beforeEach((to, from, next) => {
       else {    
         //如果没有token，获取token
         console.log('没有token')
-        mockapi.shop.api_GetUserInfo_get({
+        // 测试接口 api_TestGetUserInfo_get
+        // 正式接口 api_GetUserInfo_get
+        mockapi.shop.api_TestGetUserInfo_get({
           params: {
             code: 123 // 微信传递过来的code
           }
@@ -57,6 +59,8 @@ router.beforeEach((to, from, next) => {
           console.log('成功获取到token')
           
           var data = response.data.data
+          // TODO: 为了测试添加手机号
+          // data.Phone = '18554870804'
           console.log(data)
           // 用户信息存在vuex中
           store.commit('setUserInfo', data)

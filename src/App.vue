@@ -174,5 +174,9 @@ p{
 .mint-header{
     background: #FFAA00 !important;
 }
+.nomore{
+    text-align: center;
+    padding: 20px;
+}
 
 </style>

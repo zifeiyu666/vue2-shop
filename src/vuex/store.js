@@ -19,12 +19,18 @@ export default new Vuex.Store({
     show
   },
   state: {
-    userInfo:  {}
+    userInfo:  {},
+    selectedProp: undefined
   },
   mutations: {
     setUserInfo(state, res) {
       console.log('已经存储用户信息')
       state.userInfo = res
+    },
+    saveSelectedProp(state, res) {
+      console.log('保存用户选择规格')
+      console.log(res)
+      state.selectedProp = res
     }
   }
 })

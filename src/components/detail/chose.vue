@@ -12,7 +12,6 @@
       <div>
         <span>浏览次数： {{view.VisitTimes}}</span>
         <span>所属项目：{{view.ProjectTypeName}}</span>
-        
       </div>
       <div>
         <span>打包类型： {{view.DBTypeName}}</span>
@@ -38,19 +37,19 @@
         <div  v-if='view.diclist[0]'>
           <h1>{{view.diclist[0].DicTypeName}}:</h1>
           <el-radio-group v-model="radio[0].radio" @change='changeSelect'>
-            <el-radio-button v-for="(item, k) in modal1" :label="item.EntryCode">{{item.EntryName}}</el-radio-button>
+            <el-radio-button v-for="(item, k) in modal1" :label="item.code">{{item.name}}</el-radio-button>
           </el-radio-group>
         </div>
         <div v-if='view.diclist[1]'>
           <h1>{{view.diclist[1].DicTypeName}}:</h1>
           <el-radio-group v-model="radio[1].radio" @change='changeSelect'>
-            <el-radio-button v-for="(item, k) in modal2" :label="item.EntryCode">{{item.EntryName}}</el-radio-button>
+            <el-radio-button v-for="(item, k) in modal2" :label="item.code">{{item.name}}</el-radio-button>
           </el-radio-group>
         </div>
         <div v-if='view.diclist[2]'>
           <h1>{{view.diclist[2].DicTypeName}}:</h1>
           <el-radio-group v-model="radio[2].radio" @change='changeSelect'>
-            <el-radio-button v-for="(item, k) in modal3" :label="item.EntryCode">{{item.EntryName}}</el-radio-button>
+            <el-radio-button v-for="(item, k) in modal3" :label="item.code">{{item.name}}</el-radio-button>
           </el-radio-group>
         </div>
       </div>
@@ -91,14 +90,14 @@ import {
   mapState
 } from 'vuex'
 
-
+import * as mockapi from '@/../mockapi'
 export default {
   props: [
     'view'
   ],
   data() {
     return {
-      selected: ['版本1', '红色', '32g'], // 用户选择的规格
+      selectedPropId: '', // 用户选择的规格
       type: 'default',
       // 存储用户选择的规格信息
       radio: [
@@ -111,23 +110,30 @@ export default {
         {
           radio: ''
         }
-      ]
+      ],
+      enabledProp: [],
+      modal1: [],
+      modal2: [],
+      modal3: []
     }
   },
   computed: {
     // 当前可选的规格
-    modal1 () {
-      return this.view.diclist[0] ? this.view.diclist[0].EntryList : undefined
-    },
-    modal2 () {
-      return this.view.diclist[1] ? this.view.diclist[1].EntryList : undefined
-    },
-    modal3 () {
-      return this.view.diclist[2] ? this.view.diclist[2].EntryList : undefined
-    },
+    // modal1 () {
+    //   return this.view.diclist[0] ? this.view.diclist[0].EntryList : undefined
+    // },
+    // modal2 () {
+    //   return this.view.diclist[1] ? this.view.diclist[1].EntryList : undefined
+    // },
+    // modal3 () {
+    //   return this.view.diclist[2] ? this.view.diclist[2].EntryList : undefined
+    // },
     abledModal() {
       return this.view.prop
     }
+  },
+  mounted() {
+    this.changeSelect()
   },
   methods: {
 
@@ -142,7 +148,52 @@ export default {
       item.IsChecked = !item.IsChecked
     },
     changeSelect() {
-
+      mockapi.shop.api_Shop_getProductPropList_get({
+        params:{
+          PId: this.$route.query.pid,
+          Prop1: this.radio[0].radio,
+          Prop2: this.radio[1].radio,
+          Prop3: this.radio[2].radio
+        }
+      }).then(res => {
+        var data = res.data.data
+        this.enabledProp = data
+        this.$store.commit('saveSelectedProp', this.enabledProp)
+        this.modal1 = []
+        this.modal2 = []
+        this.modal3 = []
+        for(var i = 0; i < this.enabledProp.length; i++ ) {
+          this.modal1.push(this.enabledProp[i].Prop1)
+          this.modal2.push(this.enabledProp[i].Prop2)
+          this.modal3.push(this.enabledProp[i].Prop3)
+        }
+        //将对象元素转换成字符串以作比较  
+        function obj2key(obj, keys){  
+            var n = keys.length,  
+                key = [];  
+            while(n--){  
+                key.push(obj[keys[n]]);  
+            }  
+            return key.join('|');  
+        }  
+        //去重操作  
+        function uniqeByKeys(array,keys){  
+            var arr = [];  
+            var hash = {};  
+            for (var i = 0, j = array.length; i < j; i++) {  
+                var k = obj2key(array[i], keys);  
+                if (!(k in hash)) {  
+                    hash[k] = true;  
+                    arr .push(array[i]);  
+                }  
+            }  
+            return arr ;  
+        }
+        //进行去重
+        this.modal1 = uniqeByKeys(this.modal1,['code']);
+        this.modal2 = uniqeByKeys(this.modal2,['code']);
+        this.modal3 = uniqeByKeys(this.modal3,['code']);
+      })
     }
 
   }

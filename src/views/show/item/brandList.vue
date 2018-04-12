@@ -6,20 +6,22 @@
       </span>
       <!-- <mt-button icon="more" slot="right"></mt-button> -->
     </mt-header>
-    <div class="itemlist">
-      
+    <div v-if="brandList">
+      <ul
+        v-infinite-scroll="loadMore"
+        infinite-scroll-disabled="loading"
+        infinite-scroll-distance="10">
+        <li v-for="(item, index) in brandList" :key='index' @click='goToBrandDetail(item)'>
+          <div class="item-container">
+            <img :src="item.imgurl" alt="">
+            <p class="title">{{item.title}}</p>
+          </div>
+        </li>
+      </ul>
     </div>
-    <ul
-      v-infinite-scroll="loadMore"
-      infinite-scroll-disabled="loading"
-      infinite-scroll-distance="10">
-      <li v-for="(item, index) in brandList" :key='index' @click='goToBrandDetail(item)'>
-        <div class="item-container">
-          <img :src="item.imgurl" alt="">
-          <p class="title">{{item.title}}</p>
-        </div>
-      </li>
-    </ul>
+    <div v-else>
+      <p class='nomore'>暂无更多内容</p>
+    </div>
 
   </div>
   
@@ -30,34 +32,24 @@ import * as mockapi from '@/../mockapi'
   export default{
     data() {
       return {
-        brandList: [],
+        brandList: undefined,
         query: {
           pageNo: 1,
           pageSize: 10,
-          typeCode: this.$route.code
+          typeCode: undefined
         }
       }
     },
     mounted() {
-      this.getBrandList().then(response => {
-        var data = response.data.data
-        this.brandList = this.brandList.concat(data)
-        console.log(this.houseList)
-        this.query.pageNo++
-        this.loading = false
-      }).catch(error => {
-        console.log(error)
-      })
+      this.query.typeCode = this.$route.query.code
+      console.log(this.query.typeCode)
+      this.getBrandList()
     },
     methods: {
       getBrandList() {
-        return mockapi.show.api_Show_getPicNewsList_post({
-          data: qs.stringify(this.query)
-        })
-      },
-      loadMore() {
-        this.loading = true;
-        this.getBrandList().then(response => {
+        mockapi.show.api_Show_getPicNewsList_get({
+          params: this.query
+        }).then(response => {
           var data = response.data.data
           this.houseList = this.houseList.concat(data)
           console.log(this.houseList)
@@ -66,6 +58,10 @@ import * as mockapi from '@/../mockapi'
         }).catch(error => {
           console.log(error)
         })
+      },
+      loadMore() {
+        this.loading = true;
+        this.getBrandList()
       },
       goToBrandDetail(item) {
         this.$router.push({path:'/show/BrandDetail', query: {id: this.$route.query.id}})

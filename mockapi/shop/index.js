@@ -1,6 +1,60 @@
 import instance from './instance';
 import { convertRESTAPI } from '../util';
 
+/** 绑定手机的时候先生成验证码 */
+function api_Shop_generateVeriCode_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Shop/generateVeriCode',
+    opts: opts
+  });
+}
+
+/** 绑定手机号 */
+function api_Shop_bindPhone_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Shop/bindPhone',
+    opts: opts
+  });
+}
+
+/** 测试用户验证 */
+function api_TestGetUserInfo_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/TestGetUserInfo',
+    opts: opts
+  });
+}
+
+/** 根据订单号获取订单详情 */
+function api_Shop_getOrders_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Shop/getOrders',
+    opts: opts
+  });
+}
+
+/** 获取商品的规格列表 */
+function api_Shop_getProductPropList_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Shop/getProductPropList',
+    opts: opts
+  });
+}
+
+/** 根据广告位代码获取最新发布的一条广告（一共四个广告位，代码分别为ADO，ADT，ADTH，ADF） */
+function api_Shop_getADByCode_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Shop/getADByCode',
+    opts: opts
+  });
+}
+
 /** 获取我的购物车里面商品数量 */
 function api_Shop_getMyCarCount_get(opts) {
   return instance({
@@ -114,15 +168,6 @@ function api_Shop_getDicType_get(opts) {
   return instance({
     method: 'get',
     url:  '/api/Shop/getDicType',
-    opts: opts
-  });
-}
-
-/** 根据广告位代码获取最新发布的一条广告（一共四个广告位，代码分别为ADO，ADT，ADTH，ADF） */
-function api_Shop_getADByCode_get(opts) {
-  return instance({
-    method: 'get',
-    url:  '/api/Shop/getADByCode',
     opts: opts
   });
 }
@@ -434,6 +479,12 @@ function shop_getBanner_get(opts) {
 }
 
 export {
+  api_Shop_generateVeriCode_get,
+  api_Shop_bindPhone_get,
+  api_TestGetUserInfo_get,
+  api_Shop_getOrders_get,
+  api_Shop_getProductPropList_get,
+  api_Shop_getADByCode_get,
   api_Shop_getMyCarCount_get,
   http_10_get,
   api_Shop_Action_get,
@@ -447,7 +498,6 @@ export {
   api_Shop_getAllOrders_get,
   api_Shop_getDicEntryList_get,
   api_Shop_getDicType_get,
-  api_Shop_getADByCode_get,
   api_Shop_getProduct_get,
   api_Shop_getAllProductList_get,
   api_Shop_getProductList_get,

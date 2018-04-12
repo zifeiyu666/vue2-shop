@@ -2,15 +2,17 @@
 
   <div class="wrap">
     <v-gologin></v-gologin>
-    <ul class="something" v-if='carList'>
-      <li v-for="(k,i) in carList" v-if='k.choseBool'>
+    <ul class="something" v-if='orderDetail'>
+      <li v-for="(k,i) in orderDetail.opd">
           <div class="something-middle">
-            <img :src="k.imgPath">
+            <img :src="k.imgurl[0]">
           </div>
           <div class="something-right">
-            <p>{{k.title}}</p>
+            <p>{{k.producttitle}}</p>
             <p style="color:rgb(199, 108, 28)"> {{k.col}} - {{k.size}}</p>
-            <p>售价：{{k.price}}元</p>
+            <p>售价：{{k.buyprice}}元</p>
+            <p>数量:<span>{{k.buynum}}</span></p>
+            <p>规格：{{k.propname}}</p>
             <div class="something-right-bottom">
             </div>
           </div>
@@ -28,6 +30,7 @@ export default {
   components: {
     'v-gologin': Gologin
   },
+  props: ['orderDetail'],
   computed: {
 
     carList() {

@@ -4,7 +4,7 @@
       <i class='iconfont icon-fanhui'></i>
     </div>
     <div class="header-img">
-      <img :src="$imgHost + '400x200&text=项目图片'" alt="">
+      <img src="" alt="">
     </div>
     <div class="intro-wrap">
       <p>产品简介产品简介产品简介产品简介产品简介产品简介产品简介产品简介</p>

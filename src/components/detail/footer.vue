@@ -21,6 +21,7 @@
     </span>
     <!-- 加入购物车 -->
     <mt-popup
+      v-if="selectedProp[0]"
       v-model="popupVisible"
       position="bottom">
       <div class='shopcar'>
@@ -31,7 +32,7 @@
           商品类型:<span class="title">{{detail ? detail.ProductType : undefined}}</span> 
         </p>
         <p>
-          价格:<span class="title">{{detail ? detail.DiscountPrice : undefined}}</span>
+          价格:<span class="title">{{price ? price : ''}}</span>
         </p>
         <p>
           规格:<span class="title">{{detail ? detail.ProductUnit : undefined}}</span>
@@ -49,6 +50,7 @@
     </mt-popup>
     <!-- 立即购买 -->
     <mt-popup
+      v-if='selectedProp[0]'
       v-model="payVisible"
       position="bottom">
       <div class='shopcar'>
@@ -59,7 +61,7 @@
           商品类型:<span class="title">{{detail ? detail.ProductType : undefined}}</span> 
         </p>
         <p>
-          价格:<span class="title">{{detail ? detail.DiscountPrice : undefined}}</span>
+          价格:<span class="title">{{payprice}}</span>
         </p>
         <p>
           规格:<span class="title">{{detail ? detail.ProductUnit : undefined}}</span>
@@ -85,24 +87,6 @@ import * as mockapi from '@/../mockapi'
 import { MessageBox } from 'mint-ui';
 import { Toast } from 'mint-ui';
 export default {
-   computed:{
-     count(){
-       //页面刷新后 数据会消失,解决:加判断
-       if(this.$store.state.detail.count=='') {
-          this.$store.commit('CHANGE_COUNT');
-       }
-       return this.$store.state.detail.count
-     },
-     productDatasView(){
-       return this.$store.state.detail.productDatas.view
-     },
-     colSelected(){
-       return this.$store.state.detail.colSelected
-     },
-     sizeSelected(){
-       return this.$store.state.detail.sizeSelected
-     }
-   },
   props: ['detail', 'carnum'],
   data() {
     return {
@@ -111,8 +95,37 @@ export default {
       paynum: 1, // 立即购买数量
       popupVisible: false,
       payVisible: false,
-      product: undefined
+      product: undefined,
+      PropId: '', // 用户选择的规格id
+      selectedProp: []
     }
+  },
+  computed:{
+    count(){
+      //页面刷新后 数据会消失,解决:加判断
+      if(this.$store.state.detail.count=='') {
+        this.$store.commit('CHANGE_COUNT');
+      }
+      return this.$store.state.detail.count
+    },
+    productDatasView(){
+      return this.$store.state.detail.productDatas.view
+    },
+    colSelected(){
+      return this.$store.state.detail.colSelected
+    },
+    sizeSelected(){
+      return this.$store.state.detail.sizeSelected
+    },
+    price() {
+      return this.selectedProp[0].DiscountPrice * this.num
+    },
+    payprice() {
+      return this.selectedProp[0].DiscountPrice * this.paynum
+    }
+  },
+  mounted() {
+    
   },
   methods:{
     // 收藏相关
@@ -158,7 +171,7 @@ export default {
         params: {
           token: this.$store.state.userInfo.MemberToken,
           PId: this.detail.PId,
-          PropId: this.detail.prop.PropId,
+          PropId: this.PropId,
           Num: this.num
         }
       }).then(res => {
@@ -167,16 +180,24 @@ export default {
     },
     addIntoCar(){
       //  mint-ui的弹出式提示框
-      this.product = [{
-        title:this.productDatasView.title,
-        price:this.productDatasView.price,
-        size:this.productDatasView.chose[this.sizeSelected].size,
-        col:this.productDatasView.chose[this.colSelected].col,
-        id:this.productDatasView.id,
-        imgPath:this.$store.state.detail.productDatas.swiper[0].imgSrc,
-        choseBool:false
-      }];
-      this.popupVisible = !this.popupVisible
+      this.selectedProp = this.$store.state.selectedProp
+      if (this.selectedProp.length == 1) {
+        this.PropId = this.selectedProp[0].PropId
+
+        this.product = [{
+          title:this.productDatasView.title,
+          price:this.price,
+          size:this.productDatasView.chose[this.sizeSelected].size,
+          col:this.productDatasView.chose[this.colSelected].col,
+          id:this.productDatasView.id,
+          imgPath:this.$store.state.detail.productDatas.swiper[0].imgSrc,
+          choseBool:false
+        }];
+        this.popupVisible = !this.popupVisible
+      } else {
+        Toast('请选择商品规格')
+      }
+      
     },
     //  确认添加购物车 
     confirmShopCar() {
@@ -184,7 +205,7 @@ export default {
         data: qs.stringify({
           token: this.$store.state.userInfo.MemberToken,
           PId: this.detail.PId,
-          PropId: this.detail.prop.PropId,
+          PropId: this.PropId,
           Num: this.num
         })
       }).then(res => {
@@ -197,12 +218,12 @@ export default {
       this.popupVisible = false
     },
     add() {
-      if (this.num < (this.detail.TotalNum - this.detail.SoldNum)){
+      if (this.num < (this.selectedProp[0].TotalNum - this.selectedProp[0].SoldNum)){
         mockapi.shop.api_Shop_updateCar_post({
           data: qs.stringify({
             token: this.$store.state.userInfo.MemberToken,
             PId: this.detail.PId,
-            PropId: this.detail.prop.PropId,
+            PropId: this.PropId,
             Num: this.num + 1
           })
         }).then(res => {
@@ -232,15 +253,14 @@ export default {
     },
     /* 立即购买相关 */
     goPay(){
-      //  mint-ui的弹出式提示框
-      this.product = [{
-        title:this.productDatasView.title,
-        price:this.productDatasView.price,
-        size:this.productDatasView.chose[this.sizeSelected].size,
-        col:this.productDatasView.chose[this.colSelected].col,
-        id:this.productDatasView.id,
-      }];
-      this.payVisible = !this.payVisible
+      this.selectedProp = this.$store.state.selectedProp
+      if (this.selectedProp.length == 1) {
+        this.PropId = this.selectedProp[0].PropId
+        //  mint-ui的弹出式提示框
+        this.payVisible = !this.payVisible
+      } else {
+        Toast('请选择商品规格')
+      }
     },
     confirmPay() {
       this.payVisible = false
@@ -249,12 +269,12 @@ export default {
         data: qs.stringify({
           token: this.$store.state.userInfo.MemberToken,
           PId: this.detail.PId,
-          PropId: this.detail.prop[0].PropId,
+          PropId: this.PropId,
           Num: this.paynum
         })
       }).then(res => {
-        this.$router.push({path: '/shop/order', query: {PId: this.detail.PId,
-            PropId: this.detail.prop[0].PropId,}})
+        var data = res.data.data
+        this.$router.push({path: '/shop/order', query: {orderno: data.order}})
       }).catch(err => {
         console.log(err)
       })
@@ -270,7 +290,7 @@ export default {
       }
     },
     payAdd() {
-      if (this.paynum < (this.detail.TotalNum - this.detail.SoldNum)) {
+      if (this.paynum < (this.selectedProp[0].TotalNum - this.selectedProp[0].SoldNum)) {
         this.paynum++
       } else {
         Toast('已达到最大可购买数量')

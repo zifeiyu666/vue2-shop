@@ -3,7 +3,7 @@
 
     <div class="footer-result">
       <p>合计：</p>
-      <p><span>{{allpay}} </span>元</p>
+      <p><span v-if='orderDetail'>{{allpay}} </span>元</p>
     </div>
     <!-- <router-link :to="{ name: '分类页'}" class="footer-goon" >
       继续购物
@@ -18,6 +18,7 @@
 <script>
 
 export default {
+  props: ['orderDetail'],
   computed:{
     // 勾选的商品数量
     count(){
@@ -32,20 +33,11 @@ export default {
 
     //勾选的商品的价格总和
     allpay(){
-      let all = 0;
-      // 如果有勾选商品,计算总价格
-      if(this.$store.getters.selectedList) {
-
-        for (let i = 0; i < this.$store.getters.selectedList.length; i++) {
-
-          all += this.$store.getters.selectedList[i].price;
-
-        }
-
-      }
-      // 没有勾选 即为0
+      var all = 0
+      this.orderDetail.opd.forEach((item,i) => {
+        all = all + item.totalprice
+      })
       return all
-
     }
   },
 

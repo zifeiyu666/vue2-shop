@@ -6,9 +6,9 @@
         <h1 slot="title">订单详情</h1>
       </v-header>
       <!-- 根据购物车是否有商品加载不同的组件 -->
-      <v-something></v-something>
+      <v-something :orderDetail="orderDetail"></v-something>
       <!-- <v-nothing></v-nothing> -->
-      <v-footer></v-footer>
+      <v-footer :orderDetail="orderDetail"></v-footer>
     </div>
 </template>
 
@@ -17,7 +17,8 @@ import Header from '@/common/_header.vue'
 import Nothing from '@/components/order/nothing.vue'
 import Something from '@/components/order/something.vue'
 import Footer from '@/components/order/footer.vue'
-
+import qs from 'qs'
+import * as mockapi from '@/../mockapi'
 export default {
   components:{
     'v-header':Header,
@@ -25,10 +26,27 @@ export default {
     'v-something':Something,
     'v-footer':Footer
   },
-  mounted() {},
-  methods() {
-    // TODO:这里缺少一个根据当前订单号返回正在支付的订单信息的接口
-    
+  data() {
+    return {
+      orderDetail: {}
+    }
+  },
+  mounted() {
+    this.getOrderDetail()
+  },
+  methods: {
+    getOrderDetail() {
+      // TODO:这里缺少一个根据当前订单号返回正在支付的订单信息的接口
+      mockapi.shop.api_Shop_getOrders_get({
+        params:{
+          token: this.$store.state.userInfo.MemberToken,
+          orderno: this.$route.query.orderno
+        }
+      }).then(res => {
+        var data = res.data.data
+        this.orderDetail = data
+      })
+    }
   }
 
 }
