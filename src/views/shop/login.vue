@@ -25,7 +25,7 @@
     <mt-button
      plain
      size="large"
-     @click="login"
+     @click="bindPhone"
      v-if='toggle'>绑定</mt-button>
     <!-- <mt-button
      plain
@@ -37,6 +37,8 @@
 </template>
 
 <script>
+import * as mockapi from '@/../mockapi'
+import qs from 'qs'
 import Header from '@/common/_header.vue'
 import { Toast } from 'mint-ui'
 export default {
@@ -50,13 +52,43 @@ export default {
       toggle:!this.$store.state.login.token
     }
   },
-  methods:{
-    // 登录按钮
-    login(){
+  mounted() {
+    this.getVeriCode()
+  },
+  methods: {
+    // 获取验证码
+    getVeriCode() {
+      mockapi.shop.api_Shop_generateVeriCode_post({
+        data: qs.stringify({
+          token: 1,
+          phone: '18554870804'
+        })
+      }).then(response => {
+        var data = response.data.data
+        console.log(data)
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    // 绑定手机
+    bindPhone(){
       if(this.account!=="") {
+        mockapi.shop.api_Shop_bindPhone_post({
+          data: qs.stringify({
+            token: '',
+            phone: '',
+            VeriCode: ''
+          })
+        }).then(response => {
+          var data = response.data.data
+          this.navList = data.list
+          this.banner = data.imgurl
+          this.intro = data.itemintro
+          console.log(this.navList)
+        }).catch(error => {
+          console.log(error)
+        })
         Toast('手机号绑定成功');
-        this.toggle = false;
-        this.$store.commit('CHANGE_TOKEN',1);
       }else {
         Toast('手机号不能为空');
       }

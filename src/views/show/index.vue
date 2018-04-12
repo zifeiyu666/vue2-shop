@@ -19,7 +19,6 @@
 <script>
 import Swiper from '@/components/index/swiper.vue'
 import * as mockapi from '@/../mockapi'
-import index from '@/http/mock.js' //模拟数据
 import qs from 'qs'
 import Footer from '@/common/show/_footer'
 import ItemShow from '@/components/show/ItemShow'

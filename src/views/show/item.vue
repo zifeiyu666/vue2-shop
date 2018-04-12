@@ -6,7 +6,6 @@
 
 <script>
 
-import index from '@/http/mock.js' //模拟数据
 export default {
   components: {
   },
@@ -17,14 +16,7 @@ export default {
     }
   },
   beforeCreate() {
-    this.$api({
-      method: 'post',
-      url: '/index'
-    }).then((response) => {
-      this.datas = response.data;
-    }).catch(function(error) {
-      alert(error)
-    })
+
   }
 }
 </script>

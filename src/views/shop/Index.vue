@@ -45,7 +45,6 @@ import Section2 from '@/components/index/section2.vue'
 import Section4 from '@/components/index/section4.vue'
 import Baseline from '@/common/_baseline.vue'
 import Footer from '@/common/_footer.vue'
-import index from '@/http/mock.js' //模拟数据
 export default {
   components: {
     'v-header': Header,

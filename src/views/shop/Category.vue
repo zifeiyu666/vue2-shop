@@ -15,7 +15,6 @@
 import Header from '@/common/_header.vue'
 import Footer from '@/common/_footer.vue'
 import Aside from '@/components/category/aside.vue'
-import category from '@/http/mock.js' //模拟数据
 export default {
   components:{
     'v-header':Header,
@@ -27,27 +26,6 @@ export default {
       allData:'',
       datas: ''
     }
-  },
-  beforeCreate() {
-
-    this.$api({
-      method: 'post',
-      url: '/index'
-    }).then((response) => {
-      this.datas = response.data;
-    }).catch(function(error) {
-      alert(error)
-    })
-  },
-  created(){
-    this.$api({
-      method:'post',
-      url:'/category'
-    }).then((res)=>{
-      this.allData = res.data;
-    }).catch((error)=>{
-      console.log(error);
-    })
   }
 }
 </script>

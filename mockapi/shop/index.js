@@ -2,18 +2,18 @@ import instance from './instance';
 import { convertRESTAPI } from '../util';
 
 /** 绑定手机的时候先生成验证码 */
-function api_Shop_generateVeriCode_get(opts) {
+function api_Shop_generateVeriCode_post(opts) {
   return instance({
-    method: 'get',
+    method: 'post',
     url:  '/api/Shop/generateVeriCode',
     opts: opts
   });
 }
 
 /** 绑定手机号 */
-function api_Shop_bindPhone_get(opts) {
+function api_Shop_bindPhone_post(opts) {
   return instance({
-    method: 'get',
+    method: 'post',
     url:  '/api/Shop/bindPhone',
     opts: opts
   });
@@ -298,15 +298,6 @@ function api_Shop_getMyCollection_get(opts) {
   });
 }
 
-/** 绑定手机号 */
-function api_Shop_bindPhone_post(opts) {
-  return instance({
-    method: 'post',
-    url:  '/api/Shop/bindPhone',
-    opts: opts
-  });
-}
-
 /** 获取商城首页Banner */
 function api_Shop_getShopBanner_get(opts) {
   return instance({
@@ -479,8 +470,8 @@ function shop_getBanner_get(opts) {
 }
 
 export {
-  api_Shop_generateVeriCode_get,
-  api_Shop_bindPhone_get,
+  api_Shop_generateVeriCode_post,
+  api_Shop_bindPhone_post,
   api_TestGetUserInfo_get,
   api_Shop_getOrders_get,
   api_Shop_getProductPropList_get,
@@ -512,7 +503,6 @@ export {
   api_Shop_addCollection_post,
   api_GetUserInfo_get,
   api_Shop_getMyCollection_get,
-  api_Shop_bindPhone_post,
   api_Shop_getShopBanner_get,
   shop_addCollection_get,
   shop_payOrder_get,

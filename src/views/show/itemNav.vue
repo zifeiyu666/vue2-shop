@@ -4,10 +4,10 @@
       <i class='iconfont icon-fanhui'></i>
     </div>
     <div class="header-img">
-      <img src="" alt="">
+      <img :src="banner" alt="">
     </div>
     <div class="intro-wrap">
-      <p>产品简介产品简介产品简介产品简介产品简介产品简介产品简介产品简介</p>
+      <p>{{intro}}</p>
       <router-link :to="{path:'/shop/detail', query: {id: currentId}}">购买详情</router-link>
     </div>
     <router-link v-for='(i, index) in navList' :key='index' class='circle' :class='"nav0" + i.id' :to="{ path: generateRoute(i.name), query: {code: i.code, id: currentId}}">
@@ -23,6 +23,8 @@
     data() {
       return {
         navList: [],
+        banner: '',
+        intro: '',
         currentId: undefined
       }
     },
@@ -40,7 +42,9 @@
           }
         }).then(response => {
           var data = response.data.data
-          this.navList = data
+          this.navList = data.list
+          this.banner = data.imgurl
+          this.intro = data.itemintro
           console.log(this.navList)
         }).catch(error => {
           console.log(error)
@@ -138,11 +142,18 @@
     }
     .intro-wrap{
       height: 25vh;
-      padding: 15px;
+      padding: 15px 15px 50px 15px;
+      -webkit-box-sizing: border-box;
       box-sizing: border-box;
       position: relative;
       p{
-        font-size: 16px;
+        font-size: 14px;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        line-height: 20px;
+        padding-bottom: 20px;
+        box-sizing: border-box;
       }
       a{
         border: none;

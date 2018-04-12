@@ -52,49 +52,49 @@ import { Lazyload } from 'mint-ui';
       }
     },
     mounted() {
-      this.$api({
-        url: '/index',
-      }).then((response) => {
+      // this.$api({
+      //   url: '/index',
+      // }).then((response) => {
 
-        // 将拿到的时间数据处理成倒计时
-        let setTime = ((ending, dom) => {
-          let endTime = ending;
-          let timeMsg = endTime.toString();
-          let end = new Date(timeMsg).getTime();
-          setInterval(() => {
-            let now = new Date().getTime();
-            let sy = parseInt((end - now) / 1000);
-            let minute = parseInt(sy % 3600 / 60);
-            let second = parseInt(sy % 60);
+      //   // 将拿到的时间数据处理成倒计时
+      //   let setTime = ((ending, dom) => {
+      //     let endTime = ending;
+      //     let timeMsg = endTime.toString();
+      //     let end = new Date(timeMsg).getTime();
+      //     setInterval(() => {
+      //       let now = new Date().getTime();
+      //       let sy = parseInt((end - now) / 1000);
+      //       let minute = parseInt(sy % 3600 / 60);
+      //       let second = parseInt(sy % 60);
 
-            minute < 10 ? minute = "0" + minute : minute;
-            second < 10 ? second = "0" + second : second;
-            let ms = (100 - Number(parseInt(now / 10).toString().substr(-2))).toString();
+      //       minute < 10 ? minute = "0" + minute : minute;
+      //       second < 10 ? second = "0" + second : second;
+      //       let ms = (100 - Number(parseInt(now / 10).toString().substr(-2))).toString();
 
-            if (end - now <= 0) {
-              minute = '00';
-              second = '00';
-              ms = '00';
-              dom.num2 = ms;
-              return
-            }
-            dom.num1 = minute;
-            dom.num2 = second;
-            dom.num3 = ms;
+      //       if (end - now <= 0) {
+      //         minute = '00';
+      //         second = '00';
+      //         ms = '00';
+      //         dom.num2 = ms;
+      //         return
+      //       }
+      //       dom.num1 = minute;
+      //       dom.num2 = second;
+      //       dom.num3 = ms;
 
-          }, 40);
-        });
-        this.section3 = response.data.section3;
-        for (let i of this.dom.keys()) {
-          setTime(response.data.section3.list[i].end, this.dom[i]);
-          this.section3.list[i].dom = this.dom[i]
+      //     }, 40);
+      //   });
+      //   this.section3 = response.data.section3;
+      //   for (let i of this.dom.keys()) {
+      //     setTime(response.data.section3.list[i].end, this.dom[i]);
+      //     this.section3.list[i].dom = this.dom[i]
 
-        }
-        // this.section3.dom = this.dom;
+      //   }
+      //   // this.section3.dom = this.dom;
 
-      }).catch((error) => {
-        console.log(error);
-      });
+      // }).catch((error) => {
+      //   console.log(error);
+      // });
 
 
     }

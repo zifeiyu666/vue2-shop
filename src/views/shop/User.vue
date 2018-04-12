@@ -81,7 +81,6 @@
 </template>
 
 <script>
-  // import * as mockData from '@/http/mock.js' //模拟数据
 
   import Baseline from '@/common/_baseline.vue'
   import Footer from '@/common/_footer.vue'

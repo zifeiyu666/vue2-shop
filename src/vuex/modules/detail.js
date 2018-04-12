@@ -86,12 +86,6 @@ const actions = {
 
 // 父组件发送异步请求
   setDatas({commit}) {
-    vm.$api({
-        method:'post',
-        url:"/detail"
-      }).then(response=>{
-        commit('SET_DATAS',response.data);
-      })
   },
 
 // 购物车数量增减,true是加,false是减

@@ -10,6 +10,7 @@ function createAPI(baseURL) {
       url: conf.url,
       baseURL: baseURL,
       method: conf.method
+      // withCredentials: true
     }, conf.opts));
   };
 }
@@ -26,8 +27,20 @@ function convertRESTAPI(url, opts) {
 
   return url;
 }
+
+// request拦截器
+// instance.interceptors.request.use(config => {
+//   // Do something before request is sent
+//   config.headers.common['X-Requested-With'] = 'XMLHttpRequest'
+
+//   return config
+// }, error => {
+//   // Do something with request error
+//   console.log(error) // for debug
+//   Promise.reject(error)
+// })
+
 // respone拦截器
-// 做了一个最简单的拦截，如果不成功，统一弹框，但仍会将response数据传递出去，可能后续有些自己的独特操作
 instance.interceptors.response.use(
   response => {
     console.log(123123123)
