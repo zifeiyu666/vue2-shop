@@ -16,7 +16,7 @@
           <img class='qrcode' :src="qrcode" alt="">
       </header>
       <div class="main">
-          <router-link class="my-indent" :to="{ name: ''}">
+          <router-link class="my-indent" :to="{ path: '/shop/myorder'}">
               <span class="my-indent-left">我的订单</span>
               <div class="my-indent-right">
                   <span>全部订单</span>

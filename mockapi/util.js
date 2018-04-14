@@ -46,7 +46,7 @@ instance.interceptors.response.use(
     console.log(123123123)
     console.log(response.data.result)
     if (response.data.result === '0') {
-      var msg = response.data.msg || '发生未知错误'
+      var msg = response.data.msg
       Toast(msg)
     }
     return response

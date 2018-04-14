@@ -14,8 +14,9 @@ export default {
 <style lang="less" scoped>
   .content {
     width: 100%;
-    margin-top: 10px;
-    border-top: 20px solid #F8FCFF;
+    overflow: hidden;
+    // margin-top: 10px;
+    // border-top: 20px solid #F8FCFF;
     .img-wrap {
     height: 120vw;
       img {

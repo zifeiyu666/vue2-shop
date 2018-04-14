@@ -33,11 +33,11 @@
             <ul class="something" >
               <li v-for="(k,i) in allList" @click='gotoDetail(k)' :key="i">
                 <div class="something-middle">
-                  <img :src="k.imgurl">
+                  <img :src="k.imgurl[0]">
                 </div>
                 <div class="something-right">
                   <p>{{k.title}}</p>
-                  <p style="color:rgb(199, 108, 28)"> {{k.intro}}</p>
+                  <p style="color:rgb(199, 108, 28);height: 35px;"> {{k.intro}}</p>
                   <p>售价：{{k.price}}元</p>
                   <!-- <div class="something-right-bottom">
                     <span @click='deleteCollection(k)'></span>
@@ -55,11 +55,11 @@
             <ul class="something" >
               <li v-for="(k,i) in QYKList" @click='gotoDetail(k)' :key="i">
                 <div class="something-middle">
-                  <img :src="k.imgurl">
+                  <img :src="k.imgurl[0]">
                 </div>
                 <div class="something-right">
                   <p>{{k.title}}</p>
-                  <p style="color:rgb(199, 108, 28)"> {{k.intro}}</p>
+                  <p style="color:rgb(199, 108, 28);height: 35px;"> {{k.intro}}</p>
                   <p>售价：{{k.price}}元</p>
                   <!-- <div class="something-right-bottom">
                     <span @click='deleteCollection(k)'></span>
@@ -77,11 +77,11 @@
             <ul class="something" >
               <li v-for="(k,i) in LTDBList" @click='gotoDetail(k)' :key="i">
                 <div class="something-middle">
-                  <img :src="k.imgurl">
+                  <img :src="k.imgurl[0]">
                 </div>
                 <div class="something-right">
                   <p>{{k.title}}</p>
-                  <p style="color:rgb(199, 108, 28)"> {{k.intro}}</p>
+                  <p style="color:rgb(199, 108, 28);height: 35px;"> {{k.intro}}</p>
                   <p>售价：{{k.price}}元</p>
                   <!-- <div class="something-right-bottom">
                     <span @click='deleteCollection(k)'></span>
@@ -99,11 +99,11 @@
             <ul class="something" >
               <li v-for="(k,i) in DDList" @click='gotoDetail(k)' :key="i">
                 <div class="something-middle">
-                  <img :src="k.imgurl">
+                  <img :src="k.imgurl[0]">
                 </div>
                 <div class="something-right">
                   <p>{{k.title}}</p>
-                  <p style="color:rgb(199, 108, 28)"> {{k.intro}}</p>
+                  <p style="color:rgb(199, 108, 28);height: 35px;"> {{k.intro}}</p>
                   <p>售价：{{k.price}}元</p>
                   <!-- <div class="something-right-bottom">
                     <span @click='deleteCollection(k)'></span>

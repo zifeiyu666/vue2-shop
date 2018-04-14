@@ -201,7 +201,7 @@ export default {
     getBanner4() {
       mockapi.shop.api_Shop_getADByCode_get({
         params: {
-          typeCode: 'ADTH'
+          typeCode: 'ADF'
         }
       }).then(res => {
         var data = res.data.data
@@ -249,17 +249,17 @@ export default {
   padding-bottom: 5px;
   padding-top: 5px;
   .avatar{
-    position:absolute;
-    width: 70px;
-    height: 70px;
-    left: 10px;
-    top: -30px;
-    border-radius: 4px;
-    overflow: hidden;
-    box-shadow: 0px 1px 4px #ccc;
+    position: absolute;
+    float: right;
+    width: 25%;
+    box-sizing: border-box;
+    bottom: 10px;
+    padding: 10px;
     img{
       width: 100%;
       height: 100%;
+      border-radius: 4px;
+      box-shadow: 1px 1px 3px #666;
     }
   }
   .part{
@@ -273,7 +273,10 @@ export default {
       line-height: 40px;
     }
     border-right: 1px solid #eee;
-    padding: 0 20px;
+    // padding: 0 20px;
+    text-align: center;
+    width: 25%;
+    box-sizing: border-box;
   }
   .part01{
     border: none;

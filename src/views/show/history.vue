@@ -7,9 +7,9 @@
       <!-- <mt-button icon="more" slot="right"></mt-button> -->
     </mt-header>
 
-    <timeline v-if='historyList' v-for="(i, index) in historyList" :Key='index'>
+    <timeline v-if='historyList' v-for="(i, index) in historyList" :key='index'>
       <timeline-title>{{i.title}}</timeline-title>
-      <timeline-item :key="index" color="#9dd8e0" :hollow="true">{{i.publishTime.slice(0,10)}}{{i.newsAbstract}}</timeline-item>
+      <timeline-item color="#9dd8e0" :hollow="true">{{i.publishTime.slice(0,10)}}{{i.newsAbstract}}</timeline-item>
       <!-- <timeline-item :hollow="true">2017-6-12运营平台入驻</timeline-item>
       <timeline-item :hollow="true">2017-6-12运营平台入驻</timeline-item> -->
     </timeline>

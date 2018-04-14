@@ -5,24 +5,26 @@
         {{view.ProductTitle}} 
         <!-- <p style='color: red'>规格：{{radio[0].radio}}-{{radio[1].radio}}-{{radio[2].radio}}</p> -->
       </h1>
-      <div>
+      <p class="chose-view-intro">{{view.ProductIntro}}</p>
+      <div class='item-wrap'>
         <span>原价：{{view.OriginalPrice}}元</span>
         <span>折扣价：{{view.DiscountPrice}}元</span>
       </div>
-      <div>
+      <div class='item-wrap'>
         <span>浏览次数： {{view.VisitTimes}}</span>
         <span>所属项目：{{view.ProjectTypeName}}</span>
       </div>
-      <div>
-        <span>打包类型： {{view.DBTypeName}}</span>
-        <span>目的地类别： {{view.DestinationTypeName}}</span>
-        <span>使用天数：{{view.AvailableNum}}</span>
-        <span>房型类别： {{view.HouseTypeName}}</span>
-        <span>可使用开始日期： {{view.UseStartTime}}</span>
-        <span>可使用截止日期：{{view.UseEndTime}}</span>
-        <span>不可使用日期: {{view.Unable}}</span>
-        <span>适用人群：{{view.SuitableUser}}</span>
+      <div class='item-wrap'>
+        <span v-if='view.DBTypeName'>打包类型： {{view.DBTypeName}}</span>
+        <span v-if='view.DestinationTypeName'>目的地类别： {{view.DestinationTypeName}}</span>
+        <span v-if='view.AvailableNum'>使用天数：{{view.AvailableNum}}</span>
+        <span v-if='view.HouseTypeName'>房型类别： {{view.HouseTypeName}}</span>
+        <span v-if='view.UseStartTim'>可使用开始日期： {{view.UseStartTime}}</span>
+        <span v-if='view.UseEndTime'>可使用截止日期：{{view.UseEndTime}}</span>
+        <span v-if = 'view.Unable'>不可使用日期: {{view.Unable}}</span>
+        <span v-if = 'view.SuitableUserName'>适用人群：{{view.SuitableUserName}}</span>
       </div>
+      <div class='line'></div>
       <!-- <div class="pick" v-for='(i, index) in view.diclist' >
         <mt-button @click='toggleSelected(item)' size="small" :type="item.IsChecked ? 'primary' : 'default'" v-for="(item, k) in i.EntryList ">
           {{item.EntryName}}
@@ -35,28 +37,29 @@
       </div> -->
       <div class="pick" >
         <div  v-if='view.diclist[0]'>
-          <h1>{{view.diclist[0].DicTypeName}}:</h1>
-          <el-radio-group v-model="radio[0].radio" @change='changeSelect'>
+          <h1>请选择{{view.diclist[0].DicTypeName}}:</h1>
+          <el-radio-group v-model="radio[0].radio" @change='changeSelect' @click.native="clickToggle0" size="medium">
             <el-radio-button v-for="(item, k) in modal1" :label="item.code">{{item.name}}</el-radio-button>
           </el-radio-group>
         </div>
         <div v-if='view.diclist[1]'>
-          <h1>{{view.diclist[1].DicTypeName}}:</h1>
-          <el-radio-group v-model="radio[1].radio" @change='changeSelect'>
+          <h1>请选择{{view.diclist[1].DicTypeName}}:</h1>
+          <el-radio-group v-model="radio[1].radio" @change='changeSelect' @click.native="clickToggle1" size="medium">
             <el-radio-button v-for="(item, k) in modal2" :label="item.code">{{item.name}}</el-radio-button>
           </el-radio-group>
         </div>
         <div v-if='view.diclist[2]'>
-          <h1>{{view.diclist[2].DicTypeName}}:</h1>
-          <el-radio-group v-model="radio[2].radio" @change='changeSelect'>
+          <h1>请选择{{view.diclist[2].DicTypeName}}:</h1>
+          <el-radio-group v-model="radio[2].radio" @change='changeSelect' @click.native="clickToggle2" size="medium">
             <el-radio-button v-for="(item, k) in modal3" :label="item.code">{{item.name}}</el-radio-button>
           </el-radio-group>
         </div>
       </div>
-      <p class="chose-view-intro">{{view.ProductIntro}}</p>
+      <div class='line'></div>
+      
     </div>
   <!-- 添加空函数 解决Safari浏览器 :active无效 -->
-    <div class="chose-mychosed" ontouchstart="">
+    <!-- <div class="chose-mychosed" ontouchstart="">
       <div class="colChose">
         <span
            v-for="(k,i) in view.chose"
@@ -73,7 +76,7 @@
           {{k.size}}
         </span>
       </div>
-    </div>
+    </div> -->
 
 
 
@@ -138,12 +141,12 @@ export default {
   methods: {
 
     //点击后把i赋值给colSelected,再通过判断决定是否添加选中样式 (active)
-    colChose(i) {
-      this.$store.commit('CHANGE_COL_SELECTED', i);
-    },
-    sizeChose(i) {
-      this.$store.commit('CHANGE_SIZE_SELECTED', i);
-    },
+    // colChose(i) {
+    //   this.$store.commit('CHANGE_COL_SELECTED', i);
+    // },
+    // sizeChose(i) {
+    //   this.$store.commit('CHANGE_SIZE_SELECTED', i);
+    // },
     toggleSelected(item) {
       item.IsChecked = !item.IsChecked
     },
@@ -194,6 +197,30 @@ export default {
         this.modal2 = uniqeByKeys(this.modal2,['code']);
         this.modal3 = uniqeByKeys(this.modal3,['code']);
       })
+    },
+
+    clickToggle0() {
+      console.log(1111111111111)
+      if (this.radio[0].radio) {
+        this.radio[0].radio = ''
+        this.changeSelect()
+      }
+    },
+
+    clickToggle1() {
+      console.log(1111111111111)
+      if (this.radio[1].radio) {
+        this.radio[1].radio = ''
+        this.changeSelect()
+      }
+    },
+
+    clickToggle2() {
+      console.log(1111111111111)
+      if (this.radio[2].radio) {
+        this.radio[2].radio = ''
+        this.changeSelect()
+      }
     }
 
   }
@@ -330,5 +357,25 @@ export default {
             }
         }
     }
+}
+.pick{
+  padding-bottom: 10px;
+}
+.pick h1{
+  font-size: 14px;
+  line-height: 35px;
+}
+.chose-view-intro{
+  color:#ff7d00;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.item-wrap span{
+  font-size: 12px;
+  width: 45%;
+  display: inline-block;
+  box-sizing: border-box;
+  padding-right: 10px;
+  color: #999;
 }
 </style>

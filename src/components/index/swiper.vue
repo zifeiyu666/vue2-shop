@@ -15,11 +15,11 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 
-.mint-swipe {
+.swiper .mint-swipe {
   width: 100%;
-  height:50vw;
+  height:80vw !important;
   a,img {
     display: block;
     width: 100%;

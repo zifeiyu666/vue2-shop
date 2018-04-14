@@ -11,7 +11,7 @@
           <p>{{k.intro}}</p>
         </router-link>
         <h3>{{k.title}}</h3>
-        <span>$ {{k.price}}</span>
+        <span>￥ {{k.price}}</span>
       </li>
 
     </ul>
@@ -97,9 +97,13 @@
           }
         }
 
-        >h3 {
+        >h3{
+          font-size: 16px;
           padding-top: 3vw;
-          .fz(font-size,40);
+          color: #333;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
         }
         >span {
           display: inline-block;

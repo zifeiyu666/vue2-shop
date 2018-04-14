@@ -8,7 +8,10 @@
       <li v-for="k in section1">
         <router-link :to="{path:'/shop/detail', query:{pid: k.id}}" :key="k.id">
           <img v-lazy="k.imgurl[0]" alt="">
+          <p>{{k.intro}}</p>
         </router-link>
+        <h3>{{k.title}}</h3>
+        <span>￥ {{k.price}}</span>
       </li>
     </ul>
   <router-link :to="{ name: '详情页'}"  class="section1-banner">
@@ -27,67 +30,97 @@ import { Lazyload } from 'mint-ui';
 </script>
 
 <style lang="less" scoped>
-  @import '../../assets/fz.less';
+   @import '../../assets/fz.less';
   @import '../../assets/index/style.css';
   .product-img{
     height: 120px;
   }
   .section1 {
+    width: 100%;
+    overflow: hidden;
     .pt();
     .section1-title {
       .bt();
-      background-color: #ffffff;
       text-align: center;
-      padding: 4vw 0;
       .fz(font-size, 40);
-      color: #333;
+      padding: 4vw 0;
       position: relative;
-
+      background-color: #ffffff;
       i {
         position: absolute;
         right: 6vw;
         top: 50%;
         .fz(font-size, 36);
         .fz(margin-top,-16);
-
         &::before {
-          color: rgb(159, 159, 159);
+          color: #9f9f9f;
         }
       }
     }
 
     .section1-list {
+      width: 100%;
       display: -ms-flex;
       display: -webkit-box;
       display: -ms-flexbox;
       display: flex;
+      -webkit-box-pack: left;
+          -ms-flex-pack: left;
+              justify-content: left;
       -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-      -ms-flex-pack: distribute;
-      justify-content: space-around;
-      padding:0 2vw 4vw 2vw;
+          flex-wrap: wrap;
+      overflow: hidden;
       li {
         width: 50%;
-        padding:1vw;
         -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        a,
-        img {
-          width: 100%;
+                box-sizing: border-box;
+        padding:0 3vw;
+        >a {
           display: block;
+          width: 100%;
+          position: relative;
+          img {
+            display: block;
+            width: 100%;
+          }
+          p {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: gold;
+            -webkit-box-sizing: border-box;
+                    box-sizing: border-box;
+            padding:1.2vw 2vw;
+          }
+        }
+
+        >h3{
+          font-size: 16px;
+          padding-top: 3vw;
+          color: #333;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        >span {
+          display: inline-block;
+          padding-bottom: 3vw;
+          color: #b4282d;
         }
       }
     }
 
     .section1-banner {
+      width: 100%;
       display: block;
-      width: 100vw;
       img {
+        display: block;
         width: 100%;
-        height: 24vw;
       }
     }
-
-
   }
 </style>
