@@ -20,9 +20,19 @@ export default new Vuex.Store({
   },
   state: {
     userInfo:  {},
-    selectedProp: undefined
+    selectedProp: undefined,
+    allMoney: '',
+    allJS: ''
   },
   mutations: {
+    updateAllMoney(state, res) {
+      console.log('全部金额')
+      console.log(res)
+      state.allMoney = res
+    },
+    updateAllJs(state, res) {
+      state.allJS = res
+    },
     setUserInfo(state, res) {
       console.log('已经存储用户信息')
       state.userInfo = res

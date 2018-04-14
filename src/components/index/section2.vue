@@ -8,7 +8,7 @@
       <ul>
         <li v-for="k in section2" :key="k.id">
           <router-link :to="{path:'/shop/detail', query:{pid: k.id}}">
-            <img v-lazy="k.imgurl">
+            <img class='product-img' v-lazy="k.imgurl[0]">
           </router-link>
           <h2 class="section2-list-title ac">
             {{k.title}}
@@ -40,6 +40,9 @@ import { Lazyload } from 'mint-ui';
 <style lang="less" scoped>
   @import '../../assets/fz.less';
   @import '../../assets/index/style.css';
+  .product-img{
+    height: 120px;
+  }
   .section2-list {
     overflow-x: auto;
     width: 100%;

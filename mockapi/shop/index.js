@@ -1,6 +1,24 @@
 import instance from './instance';
 import { convertRESTAPI } from '../util';
 
+/** 作用：根据MemberToken和OrderID生成预支付订单，并且返回预支付订单的参数供前台调用 */
+function api_GetWCPay_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/GetWCPay',
+    opts: opts
+  });
+}
+
+/** 直接购买商品，生成订单，返回订单号 */
+function api_Shop_generateOrder_post(opts) {
+  return instance({
+    method: 'post',
+    url:  '/api/Shop/generateOrder',
+    opts: opts
+  });
+}
+
 /** 绑定手机的时候先生成验证码 */
 function api_Shop_generateVeriCode_post(opts) {
   return instance({
@@ -470,6 +488,8 @@ function shop_getBanner_get(opts) {
 }
 
 export {
+  api_GetWCPay_get,
+  api_Shop_generateOrder_post,
   api_Shop_generateVeriCode_post,
   api_Shop_bindPhone_post,
   api_TestGetUserInfo_get,

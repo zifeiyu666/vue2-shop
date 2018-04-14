@@ -9,29 +9,24 @@
       继续购物
     </router-link> -->
     <a class="footer-pay" @click="goPay">
-      提交订单
+      立即支付
     </a>
   </footer>
 
 </template>
 
 <script>
-
+import * as mockapi from '@/../mockapi'
 export default {
   props: ['orderDetail'],
+  data() {
+    return {
+      jsondata: undefined
+    }
+  },
   computed:{
-    // 勾选的商品数量
-    count(){
-      // 如果已选择列表为空 就返回0
-      if(this.$store.getters.selectedList==undefined) {
-        return 0
-      }else {
 
-        return this.$store.getters.selectedList.length
-      }
-    },
-
-    //勾选的商品的价格总和
+    //商品的价格总和
     allpay(){
       var all = 0
       this.orderDetail.opd.forEach((item,i) => {
@@ -44,20 +39,35 @@ export default {
   methods:{
     //点击跳转到支付页
     goPay(){
+      mockapi.shop.api_GetWCPay_get({
+        params: {
+          MemberToken: this.$store.state.userInfo.MemberToken,
+          OrderId: this.$route.query.orderid
+        }
+      }).then(res => {
+        var data = res.data.data
+        var jsondata = data
+        
+        WeixinJSBridge.invoke('getBrandWCPayRequest', {
+            "appId": jsondata.appId, //公众号名称，由商户传入
+            "timeStamp": jsondata.timeStamp, //时间戳
+            "nonceStr": jsondata.nonceStr, //随机串
+            "package": jsondata.package,//扩展包
+            "signType": "MD5", //微信签名方式:MD5
+            "paySign": jsondata.paySign //微信签名
+        }, function (res) {
+            alert(JSON.stringify(res));
 
-        // 如果有选择商品才能跳转
-        if(this.$store.getters.selectedList.length) {
-          // 保存+缓存选择的商品 ,在支付页能用到
-          this.$store.dispatch('setSelectedList')
-          this.$router.push({name:'支付页'})
-
-
-      } else {
-
-        alert('你还没选择商品')
-
-      }
-
+            if (res.err_msg == "get_brand_wcpay_request:ok") {
+                if (confirm('支付成功！点击“确定”进入退款流程测试。')) {
+                    location.href = '@Url.Action("Refund", "TenPayV3")';
+                }
+                //console.log(JSON.stringify(res));
+            }
+            // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+            //因此微信团队建议，当收到ok返回时，向商户后台询问是否收到交易成功的通知，若收到通知，前端展示交易成功的界面；若此时未收到通知，商户后台主动调用查询订单接口，查询订单的当前状态，并反馈给前端展示相应的界面。
+        });
+      })
     }
   }
 }

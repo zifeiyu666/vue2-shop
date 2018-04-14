@@ -8,9 +8,7 @@
        label="手机号"
         placeholder="请输入手机号"
         type = "text"
-        v-model = "account"
-        :readonly = '!toggle'
-        :disableClear = '!toggle'
+        v-model = "phone"
         ></mt-field>
       <!-- <mt-field
        label="密码"
@@ -26,7 +24,7 @@
      plain
      size="large"
      @click="bindPhone"
-     v-if='toggle'>绑定</mt-button>
+     >绑定</mt-button>
     <!-- <mt-button
      plain
      size="large"
@@ -47,9 +45,7 @@ export default {
   },
   data(){
     return {
-      account:'',
-      password:'',
-      toggle:!this.$store.state.login.token
+      phone:''
     }
   },
   mounted() {
@@ -75,9 +71,9 @@ export default {
       if(this.account!=="") {
         mockapi.shop.api_Shop_bindPhone_post({
           data: qs.stringify({
-            token: '',
-            phone: '',
-            VeriCode: ''
+            token: this.$store.state.userInfo.MemberToken,
+            phone: this.phone,
+            VeriCode: '123123',
           })
         }).then(response => {
           var data = response.data.data

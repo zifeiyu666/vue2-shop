@@ -1,13 +1,13 @@
 <template lang="html">
   <section class="section4" >
     <h2 class="section4-title">
-      单独类
+      权益卡类
       <i class="icon-right"></i>
     </h2>
     <ul class="section4-list" v-if="section4">
       <li v-for="k in section4">
         <router-link :to="{path:'/shop/detail', query:{pid: k.id}}" :key="k.id">
-          <img v-lazy="k.imgurl">
+          <img class='product-img' v-lazy="k.imgurl[0]">
           <p>{{k.intro}}</p>
         </router-link>
         <h3>{{k.title}}</h3>
@@ -31,6 +31,9 @@
 <style lang="less" scoped>
   @import '../../assets/fz.less';
   @import '../../assets/index/style.css';
+  .product-img{
+    height: 120px;
+  }
   .section4 {
     width: 100%;
     overflow: hidden;
@@ -60,9 +63,9 @@
       display: -webkit-box;
       display: -ms-flexbox;
       display: flex;
-      -webkit-box-pack: center;
-          -ms-flex-pack: center;
-              justify-content: center;
+      -webkit-box-pack: left;
+          -ms-flex-pack: left;
+              justify-content: left;
       -ms-flex-wrap: wrap;
           flex-wrap: wrap;
       overflow: hidden;

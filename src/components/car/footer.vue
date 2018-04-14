@@ -5,7 +5,7 @@
       <p>共{{count}}件 金额：</p>
       <p><span>{{allpay}} </span>元</p>
     </div>
-    <router-link :to="{ name: '分类页'}" class="footer-goon" >
+    <router-link :to="{ path: '/shop/all'}" class="footer-goon" >
       继续购物
     </router-link>
     <a class="footer-pay" @click="goPay">
@@ -20,32 +20,20 @@
 export default {
   computed:{
     // 勾选的商品数量
-    count(){
-      // 如果已选择列表为空 就返回0
-      if(this.$store.getters.selectedList==undefined) {
-        return 0
-      }else {
+    // count(){
+    //   // 如果已选择列表为空 就返回0
+    //   if(this.$store.getters.selectedList==undefined) {
+    //     return 0
+    //   }else {
 
-        return this.$store.getters.selectedList.length
-      }
+    //     return this.$store.getters.selectedList.length
+    //   }
+    // },
+    count() {
+      return this.$store.state.allJS ? this.$store.state.allJS : 0
     },
-
-    //勾选的商品的价格总和
-    allpay(){
-      let all = 0;
-      // 如果有勾选商品,计算总价格
-      if(this.$store.getters.selectedList) {
-
-        for (let i = 0; i < this.$store.getters.selectedList.length; i++) {
-
-          all += this.$store.getters.selectedList[i].price;
-
-        }
-
-      }
-      // 没有勾选 即为0
-      return all
-
+    allpay() {
+      return this.$store.state.allMoney ? this.$store.state.allMoney : 0
     }
   },
 

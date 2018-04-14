@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mt-header title="户型详情">
+    <mt-header :title="title">
       <span @click='goBack()' slot="left">
         <mt-button icon="back">返回</mt-button>
       </span>
@@ -22,7 +22,7 @@
     </div>
     <div v-if='content' class="item-wrap">
       <h2 class='item-title'>{{content.NewsTitle}}</h2>
-      <p>{{content.NewsStract}}</p>
+      <p>{{content.NewsAbstract}}</p>
       <div v-html="content.NewsContent"></div>
     </div>
     <div v-else class='nomore'>暂无更多内容</div>
@@ -49,11 +49,13 @@
       return {
         datas: '',
         content: '',
-        loading:true
+        loading:true,
+        title: ''
       }
     },
     mixins: [goBack],
     mounted() {
+      this.title = this.$route.query.name
       this.getNewsDetail()
     },
     methods: {

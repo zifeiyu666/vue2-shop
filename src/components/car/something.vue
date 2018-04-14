@@ -4,32 +4,33 @@
     <v-gologin></v-gologin>
     <ul 
     class="something" 
-    v-if='carList'
-    v-infinite-scroll="loadMore"
-    infinite-scroll-disabled="loading"
-    infinite-scroll-distance="10">
+    v-if='carList'>
       <li v-for="(k,i) in carList" :key="i">
-          <div class="something-left">
+          <!-- 暂时屏蔽购物车选择，直接全部提交 -->
+          <!-- <div class="something-left">
             <label class="true" :class="{false:!k.choseBool}">
               <input type="checkbox" v-model="k.choseBool">
             </label>
-          </div>
+          </div> -->
           <div class="something-middle">
-            <img :src="k.imgurl">
+            <img :src="k.imgurl[0]">
           </div>
           <div class="something-right">
             <p>{{k.title}}</p>
-            <p style="color:rgb(199, 108, 28)"> {{k.propname}}}</p>
-            <p>数量：<button style="padding: 4px 5px;
-  width: 30px;" @click='add(k.num)'>-</button> {{k.num}} <button style="padding: 4px 5px;
-  width: 30px;" @click='reduce(k.num)'>+</button>
+            <p style="color:rgb(199, 108, 28)"> {{k.propname}}</p>
+            <p>数量：<span style="padding: 4px 5px;
+  width: 30px;" @click='reduce(k)'>-</span> {{k.num}} <span style="padding: 4px 5px;
+  width: 30px;" @click='add(k)'>+</span>
             </p>
-            <p>售价：{{k.price}}元</p>
+            <p>售价：{{k.price * k.num}}元</p>
             <div class="something-right-bottom" @click="cut(k)">
               <span></span>
             </div>
           </div>
       </li>
+      <div style='text-align:center; padding: 30px'>
+        <mt-button @click='loadMore'>加载更多</mt-button>
+      </div>
 
     </ul>
   </div>
@@ -59,13 +60,30 @@ export default {
       pageNo: 1,
       pageSize: 10,
       carList: [],
-      token: ''
+      token: '',
+      selectedProp: []
     }
   },
-
+  watch: {
+    carList: function (newVal, oldVal) {
+      var allMoney = 0
+      if (this.carList.length > 0) {
+        console.log(this.carList)
+        for(var i = 0; i< newVal.length; i++) {
+          allMoney = allMoney + parseFloat( newVal[i].price * newVal[i].num )
+        }
+        this.$store.commit('updateAllMoney', allMoney)
+        this.$store.commit('updateAllJs', newVal.length)
+      } else {
+        this.$store.commit('updateAllMoney', 0)
+        this.$store.commit('updateAllJs', 0)
+      }
+    }
+  },
   mounted() {
-    this.getMyCar()
+    this.selectedProp = this.$store.state.selectedProp
     this.token = this.$store.state.userInfo.MemberToken
+    this.getMyCar()
   },
   methods: {
     getMyCar() {
@@ -77,54 +95,85 @@ export default {
         }
       }).then(res => {
         var data = res.data.data
-        this.pageNo++
         this.carList = this.carList.concat(data)
       })
     },
-    loadMore() {
-      this.getMyCar()
-    },
-    cut(i){
-      // 点击垃圾桶，删除当前商品，这里用splice和filter都会bug,只能重置数组
-      mockapi.shop.api_Shop_deleteCar_post({
-        data: qs.stringify({
+    updateMycar() {
+      mockapi.shop.api_Shop_getMyCar_get({
+        params: {
           token: this.token,
-          PId: i.id,
-          PropId: i.propid
-        })
+          pageNo: this.pageNo,
+          pageSize: this.pageSize
+        }
       }).then(res => {
-        this.pageNo = 1
-        this.carList = []
-        Toast('删除成功')
-        this.getMyCar()
+        var data = res.data.data
+        this.carList = data
       })
-
     },
-    toggle() {
+    add(k) {
+      // if (this.num < (this.selectedProp[0].TotalNum - this.selectedProp[0].SoldNum)){
+      //   mockapi.shop.api_Shop_updateCar_post({
+      //     data: qs.stringify({
+      //       token: this.$store.state.userInfo.MemberToken,
+      //       PId: this.detail.PId,
+      //       PropId: this.PropId,
+      //       Num: this.num + 1
+      //     })
+      //   }).then(res => {
+      //     this.num++
+      //   }).catch(err => {
+      //     console.log(err)
+      //   })
+      // } else {
+      //   Toast('已达到最大数量')
+      // }
 
-      setTimeout(() => {
-          // 每点击一下都会改变choseBool的布尔值,所以要重置数组
-          this.$store.dispatch('cutCarList',this.carList)
-
-      }, 0);
-    },
-    add(num) {
+      // 暂时不限制最大购买量
       mockapi.shop.api_Shop_updateCar_post({
         data: qs.stringify({
-          token: this.token,
-          PId: i.id,
-          PropId: i.propid,
-          num: num++
+          token: this.$store.state.userInfo.MemberToken,
+          PId: k.id,
+          PropId: k.propid,
+          Num: k.num + 1
         })
       }).then(res => {
-        this.pageNo = 1
-        this.carList = []
-        Toast('删除成功')
-        this.getMyCar()
+        this.updateMycar()
+      }).catch(err => {
+        console.log(err)
       })
     },
-    reduce(num) {
-      this.num--
+    reduce(k) {
+      if (k.num > 1) {
+        mockapi.shop.api_Shop_updateCar_post({
+          data: qs.stringify({
+            token: this.$store.state.userInfo.MemberToken,
+            PId: k.id,
+            PropId: k.propid,
+            Num: k.num - 1
+          })
+        }).then(res => {
+          this.updateMycar()
+        }).catch(err => {
+          console.log(err)
+        })
+      }
+    },
+    cut(k) {
+      mockapi.shop.api_Shop_deleteCar_post({
+        data: qs.stringify({
+          token: this.$store.state.userInfo.MemberToken,
+          PId: k.id,
+          PropId: k.propid
+        })
+      }).then(res => {
+        this.updateMycar()
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    loadMore() {
+      this.pageNo++
+      this.getMyCar()
     }
 
   }
@@ -207,11 +256,17 @@ export default {
                     text-overflow: ellipsis;
                     display: -webkit-box;
                     -webkit-line-clamp: 2;
+                    height: 20px;
                     -webkit-box-orient: vertical;
                     .fz(font-size,26);
+                    span{
+                      padding: 10px 10px !important;
+                      background: #eee;
+                    }
                 }
                 p:last-of-type {
-                    .fz(font-size,22);
+                    font-size: 13px;
+                    line-height: 25px;
                     color: rgb(168, 168, 168);
                 }
                 .something-right-bottom {

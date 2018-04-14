@@ -44,7 +44,7 @@
                   <span>3</span>
                   <p>分销商</p>
               </router-link>
-              <router-link :to="{ name: ''}">
+              <router-link :to="{ path: '/shop/shareOrders'}">
                   <!-- <span class="icon2-fixed"></span> -->
                   <span>8</span>
                   <p>分销订单</p>

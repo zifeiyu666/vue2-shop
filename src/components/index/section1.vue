@@ -1,13 +1,13 @@
 <template lang="html">
   <section class="section1" v-if='section1'>
     <h1 class="section1-title">
-      权益卡
+      单独类
       <i class="icon-right"></i>
     </h1>
     <ul class="section1-list">
       <li v-for="k in section1">
         <router-link :to="{path:'/shop/detail', query:{pid: k.id}}" :key="k.id">
-          <img v-lazy="k.imgurl" alt="">
+          <img v-lazy="k.imgurl[0]" alt="">
         </router-link>
       </li>
     </ul>
@@ -29,6 +29,9 @@ import { Lazyload } from 'mint-ui';
 <style lang="less" scoped>
   @import '../../assets/fz.less';
   @import '../../assets/index/style.css';
+  .product-img{
+    height: 120px;
+  }
   .section1 {
     .pt();
     .section1-title {

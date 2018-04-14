@@ -10,10 +10,7 @@
       
     </div>
     <ul
-      class='container'
-      v-infinite-scroll="loadMore"
-      infinite-scroll-disabled="loading"
-      infinite-scroll-distance="10">
+      class='container'>
       <li v-for="(item, index) in list" :key='index' @click='goToItemDetail(item)'>
         <div class="item">
           <!-- <img :src="$imgHost + '400x80/999/&text=项目背景图'" alt=""> -->
@@ -43,22 +40,21 @@
       }
     },
     mounted() {
-      this.getItemList().then(response => {
-        var data = response.data.data
-        this.list = this.list.concat(data)
-        this.pageNo++
-        this.loading=false
-      }).catch(error => {
-        console.log(error)
-      })
+      this.getItemList()
     },
     methods: {
       getItemList() {
-        return mockapi.show.api_Show_getItemList_get({
+        mockapi.show.api_Show_getItemList_get({
           params: {
             pageNo: this.pageNo,
             pageSize: this.pageSize
           } 
+        }).then(response => {
+          var data = response.data.data
+          this.list = this.list.concat(data)
+          this.loading=false
+        }).catch(error => {
+          console.log(error)
         })
       },
       loadMore() {
@@ -66,14 +62,8 @@
           return
         }
         this.loading = true;
-        this.getItemList().then(response => {
-          var data = response.data.data
-          this.list = this.list.concat(data)
-          this.pageNo++
-          this.loading=false
-        }).catch(error => {
-          console.log(error)
-        })
+        this.pageNo++
+        this.getItemList()
       },
       goToItemDetail(item) {
         console.log(1111133)

@@ -1,27 +1,25 @@
 <template>
   <div>
-    <mt-header title="品牌故事">
+    <mt-header :title="title">
       <span @click='goBack()' slot="left">
         <mt-button icon="back">返回</mt-button>
       </span>
       <!-- <mt-button icon="more" slot="right"></mt-button> -->
     </mt-header>
-    <div v-if="brandList">
-      <ul
-        v-infinite-scroll="loadMore"
-        infinite-scroll-disabled="loading"
-        infinite-scroll-distance="10">
-        <li v-for="(item, index) in brandList" :key='index' @click='goToBrandDetail(item)'>
-          <div class="item-container">
-            <img :src="item.imgurl" alt="">
-            <p class="title">{{item.title}}</p>
-          </div>
-        </li>
-      </ul>
+    <div class="itemlist">
+      
     </div>
-    <div v-else>
-      <p class='nomore'>暂无更多内容</p>
-    </div>
+    <ul
+      v-infinite-scroll="loadMore"
+      infinite-scroll-disabled="loading"
+      infinite-scroll-distance="10">
+      <li v-for="(item, index) in houseList" :key='index' @click='goToDetail(item)'>
+        <div class="item-container">
+          <img :src="item.imgurl" alt="">
+          <p class="title">{{item.title}}</p>
+        </div>
+      </li>
+    </ul>
 
   </div>
   
@@ -32,33 +30,34 @@ import * as mockapi from '@/../mockapi'
   export default{
     data() {
       return {
-        brandList: [],
+        houseList: [],
         query: {
           pageNo: 1,
           pageSize: 10,
-          typeCode: undefined
+          typeCode: this.$route.query.code
         },
         busy: false, // loadmore是否busy
-        firstFlag: true
+        firstFlag: true,
+        title: ''
       }
     },
     mounted() {
-      this.query.typeCode = this.$route.query.code
-      console.log(this.query.typeCode)
-      this.getBrandList()
+      this.title = this.$route.query.name
+      this.houseList = []
+      this.getHouseList()
     },
     methods: {
-      getBrandList() {
+      getHouseList() {
         this.busy = true
         mockapi.show.api_Show_getPicNewsList_get({
           params: this.query
         }).then(response => {
           var data = response.data.data
           if (this.firstFlag) {
-            this.brandList = data
+            this.houseList = data
             this.firstFlag = false
           } else {
-            this.brandList = this.brandList.concat(data)
+            this.houseList = this.houseList.concat(data)
           }
           this.loading = false
           this.busy = false
@@ -68,12 +67,14 @@ import * as mockapi from '@/../mockapi'
       },
       loadMore() {
         if (!this.busy && !this.firstFlag) {
+          console.log('loadmore')
           this.query.pageNo++
-          this.getBrandList()
+          this.getHouseList()
         }
+        
       },
-      goToBrandDetail(item) {
-        this.$router.push({path:'/show/BrandDetail', query: {id: this.$route.query.id}})
+      goToDetail(item) {
+        this.$router.push({path:'/show/commonDetail', query: {id: item.id, name: this.$route.query.name}})
       },
       goBack(){
         this.$router.push({path: '/show/itemNav', query: {id: this.$route.query.id}})

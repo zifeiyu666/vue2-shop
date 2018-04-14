@@ -45,6 +45,7 @@ export default {
       }).then(res => {
         var data = res.data.data
         this.orderDetail = data
+        this.$store.commit('saveOrderId', data.orderid)
       })
     }
   }

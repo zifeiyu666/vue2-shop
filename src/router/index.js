@@ -22,6 +22,8 @@ const All = resolve => require(['@/views/shop/All.vue'], resolve)
 const ShareJf = resolve => require(['@/views/shop/ShareJf.vue'], resolve)
 const myOrder = resolve => require(['@/views/shop/myOrders.vue'], resolve)
 const shareProduct = resolve => require(['@/views/shop/ShareProduct.vue'], resolve)
+const shareOrders = resolve => require(['@/views/shop/ShareOrders.vue'], resolve)
+// show
 // show
 const ShowIndex = resolve => require(['@/views/show/index.vue'], resolve)
 const ShowItem = resolve => require(['@/views/show/item.vue'], resolve)
@@ -36,6 +38,8 @@ const ShowBrandList = resolve => require(['@/views/show/item/brandList.vue'],res
 const ShowBrandDetail = resolve => require(['@/views/show/item/brandDetail.vue'],resolve)
 const ShowAutoNav = resolve => require(['@/views/show/item/autoNav.vue'],resolve)
 const NewsDetail = resolve => require(['@/views/show/item/newsDetail'],resolve)
+const CommonDetail = resolve => require(['@/views/show/item/commonDetail'],resolve)
+const CommonList = resolve => require(['@/views/show/item/commonList'],resolve)
 
 const shopRouters = [{
     path: '/shop',
@@ -175,6 +179,14 @@ const shopRouters = [{
     meta: {
       requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
     }
+  },
+  {
+    path: '/shop/shareOrders',
+    name: '分销订单',
+    component: shareOrders,
+    meta: {
+      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+    }
   }
 ]
 
@@ -243,10 +255,21 @@ const showRouters = [
     path: '/show/history',
     name: '发展历程',
     component: ShowHistory
+  },
+  {
+    path: '/show/commonDetail',
+    name: '详情',
+    component: CommonDetail
+  },
+  {
+    path: '/show/commonList',
+    name: '列表',
+    component: CommonList
   }
 ]
 
 export default new Router({
+  mode: 'history',
   routes: [
     ...shopRouters,
     ...showRouters

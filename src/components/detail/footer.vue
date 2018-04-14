@@ -29,7 +29,7 @@
           商品名称:<span class="title">{{detail ? detail.ProductName : undefined}}</span> 
         </p>
         <p>
-          商品类型:<span class="title">{{detail ? detail.ProductType : undefined}}</span> 
+          商品类型:<span class="title">{{detail ? detail.ProductTypeName : undefined}}</span> 
         </p>
         <p>
           价格:<span class="title">{{price ? price : ''}}</span>
@@ -55,7 +55,7 @@
       position="bottom">
       <div class='shopcar'>
         <p>
-          商品名称:dddddddddd<span class="title">{{detail ? detail.ProductName : undefined}}</span> 
+          商品名称:<span class="title">{{detail ? detail.ProductName : undefined}}</span> 
         </p>
         <p>
           商品类型:<span class="title">{{detail ? detail.ProductType : undefined}}</span> 
@@ -87,7 +87,7 @@ import * as mockapi from '@/../mockapi'
 import { MessageBox } from 'mint-ui';
 import { Toast } from 'mint-ui';
 export default {
-  props: ['detail', 'carnum'],
+  props: ['detail'],
   data() {
     return {
       star: false,
@@ -97,26 +97,11 @@ export default {
       payVisible: false,
       product: undefined,
       PropId: '', // 用户选择的规格id
-      selectedProp: []
+      selectedProp: [],
+      carnum: ''
     }
   },
   computed:{
-    count(){
-      //页面刷新后 数据会消失,解决:加判断
-      if(this.$store.state.detail.count=='') {
-        this.$store.commit('CHANGE_COUNT');
-      }
-      return this.$store.state.detail.count
-    },
-    productDatasView(){
-      return this.$store.state.detail.productDatas.view
-    },
-    colSelected(){
-      return this.$store.state.detail.colSelected
-    },
-    sizeSelected(){
-      return this.$store.state.detail.sizeSelected
-    },
     price() {
       return this.selectedProp[0].DiscountPrice * this.num
     },
@@ -125,9 +110,24 @@ export default {
     }
   },
   mounted() {
-    
+    this.initCollectStar()
+    this.getMyCarNum()
   },
   methods:{
+    initCollectStar() {
+      mockapi.shop.api_Shop_isMyCollection_get({
+        params: {
+          token: this.$store.state.userInfo.MemberToken,
+          PId: this.detail.PId
+        }
+      }).then(res => {
+        if (res.data.result == 1) {
+          this.star = true
+        } else {
+          this.star = false
+        }
+      })
+    },
     // 收藏相关
     collect() {
       if (this.star) {
@@ -167,15 +167,13 @@ export default {
     /* 购物车相关 */
     //  TODO: 获取购物车商品数量（缺少接口）
     getMyCarNum() {
-      mockapi.shop.api_Shop_something_get({
-        params: {
-          token: this.$store.state.userInfo.MemberToken,
-          PId: this.detail.PId,
-          PropId: this.PropId,
-          Num: this.num
+      mockapi.shop.api_Shop_getMyCarCount_get({
+        params:{
+          token: this.$store.state.userInfo.MemberToken
         }
       }).then(res => {
-
+        var data = res.data.data
+        this.carnum = data
       })
     },
     addIntoCar(){
@@ -183,16 +181,6 @@ export default {
       this.selectedProp = this.$store.state.selectedProp
       if (this.selectedProp.length == 1) {
         this.PropId = this.selectedProp[0].PropId
-
-        this.product = [{
-          title:this.productDatasView.title,
-          price:this.price,
-          size:this.productDatasView.chose[this.sizeSelected].size,
-          col:this.productDatasView.chose[this.colSelected].col,
-          id:this.productDatasView.id,
-          imgPath:this.$store.state.detail.productDatas.swiper[0].imgSrc,
-          choseBool:false
-        }];
         this.popupVisible = !this.popupVisible
       } else {
         Toast('请选择商品规格')
@@ -265,16 +253,17 @@ export default {
     confirmPay() {
       this.payVisible = false
       console.log(1111)
-      mockapi.shop.shop_generateOrder_get({
+      mockapi.shop.api_Shop_generateOrder_post({
         data: qs.stringify({
           token: this.$store.state.userInfo.MemberToken,
           PId: this.detail.PId,
           PropId: this.PropId,
-          Num: this.paynum
+          Num: this.paynum,
+          Score: 0 // TODO: 暂时这么处理
         })
       }).then(res => {
         var data = res.data.data
-        this.$router.push({path: '/shop/order', query: {orderno: data.order}})
+        this.$router.push({path: '/shop/order', query: {orderno: data.orderno, orderid: data.orderid}})
       }).catch(err => {
         console.log(err)
       })

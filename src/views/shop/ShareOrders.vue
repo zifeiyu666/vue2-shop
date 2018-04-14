@@ -1,113 +1,37 @@
 <template>
   <div>
     <v-header>
-      <h1 slot="title">分销商</h1>
+      <h1 slot="title">分销订单</h1>
     </v-header>
-    <div class='catagory clearfix'>
-      <div class="nav">
-        <mt-navbar v-model="selected">
-          <mt-tab-item id="1">全部</mt-tab-item>
-          <mt-tab-item id="2">一级</mt-tab-item>
-          <mt-tab-item id="3">二级</mt-tab-item>
-          <mt-tab-item id="4">三级</mt-tab-item>
-        </mt-navbar>
+    <mt-tab-container v-model="selected">
+      <div class="wrap">
+        <ul v-if='allOrders.length > 0'>
+          <li class='order-wrap' v-for="(k,i) in allOrders" @click='gotoDetail(k)' :key="i">
+            <h3>订单标题：{{k.ordertitle}}</h3>
+            <ul class="something" >
+              <li v-for="(k,i) in k.opd" :key='i'>
+                <div class="something-middle">
+                  <img :src="k.imgurl">
+                </div>
+                <div class="something-right">
+                  <p>{{k.producttitle}}</p>
+                  <p style="color:rgb(199, 108, 28)"> {{k.intro}}</p>
+                  <p>售价：{{k.price}}元</p>
+                  <!-- <div class="something-right-bottom">
+                    <span @click='deleteCollection(k)'></span>
+                  </div> -->
+                </div>
+              </li>
+            </ul>
+          </li>
+          <div class="btn-wrap" style='text-align: center'>
+            <mt-button @click='loadMore'>加载更多</mt-button>
+          </div>
+        </ul>
+        <div class='nomore' v-else>
+          没有更多内容了
+        </div>
       </div>
-    </div>
-    
-    <mt-tab-container v-model="selected" style='margin-top: 60px;'>
-      <mt-tab-container-item id="1">
-        <div class="wrap">
-          <ul class="something" >
-            <li v-for="(k,i) in allList" @click='gotoDetail(k)' :key="i">
-              <div class="something-middle">
-                <img :src="k.headimageurl">
-              </div>
-              <div class="something-right">
-                <p>姓名：{{k.name}}</p>
-                <p>电话： {{k.phone}}</p>
-                <p>级别： {{k.level}}级</p>
-                <p style="font-size: 14px;">地址：{{k.adress}}</p>
-                <!-- <div class="something-right-bottom">
-                  <span @click='deleteCollection(k)'></span>
-                </div> -->
-              </div>
-            </li>
-          </ul>
-          <div style='text-align: center;position: relative;top: 20px;'>
-            <mt-button @click='loadMoreAll'>加载更多</mt-button>
-          </div>
-        </div>
-      </mt-tab-container-item>
-      <mt-tab-container-item id="2">
-        <div class="wrap">
-          <ul class="something" >
-            <li v-for="(k,i) in oneList" @click='gotoDetail(k)' :key="i">
-              <div class="something-middle">
-                <img :src="k.headimageurl">
-              </div>
-              <div class="something-right">
-                <p>姓名：{{k.name}}</p>
-                <p>电话： {{k.phone}}</p>
-                <p>级别： {{k.level}}级</p>
-                <p style="font-size: 14px;">地址：{{k.adress}}</p>
-                <!-- <div class="something-right-bottom">
-                  <span @click='deleteCollection(k)'></span>
-                </div> -->
-              </div>
-            </li>
-          </ul>
-          <div style='text-align: center;position: relative;top: 20px;'>
-            <mt-button @click='loadMoreOne'>加载更多</mt-button>
-          </div>
-        </div>
-      </mt-tab-container-item>
-      <mt-tab-container-item id="3">
-        <div class="wrap">
-          <ul class="something" >
-            <li v-for="(k,i) in twoList" @click='gotoDetail(k)' :key="i">
-              <div class="something-middle">
-                <img :src="k.headimageurl">
-              </div>
-              <div class="something-right">
-                <p>姓名：{{k.name}}</p>
-                <p>电话： {{k.phone}}</p>
-                <p>级别： {{k.level}}级</p>
-                <p style="font-size: 14px;">地址：{{k.adress}}</p>
-                <!-- <div class="something-right-bottom">
-                  <span @click='deleteCollection(k)'></span>
-                </div> -->
-              </div>
-            </li>
-          </ul>
-          <div style='text-align: center;position: relative;top: 20px;'>
-            <mt-button @click='loadMoreTwo'>加载更多</mt-button>
-          </div>
-        </div>
-      </mt-tab-container-item>
-      <mt-tab-container-item id="4">
-        <div class="wrap">
-          <ul class="something" >
-            <li v-for="(k,i) in threeList" @click='gotoDetail(k)' :key="i">
-              <div class="something-middle">
-                <img :src="k.headimageurl">
-              </div>
-              <div class="something-right">
-                <p>姓名：{{k.name}}</p>
-                <p>电话： {{k.phone}}</p>
-                <p>级别： {{k.level}}级</p>
-                <p style="font-size: 14px;">地址：{{k.adress}}</p>
-                <!-- <div class="something-right-bottom">
-                  <span @click='deleteCollection(k)'></span>
-                </div> -->
-              </div>
-            </li>
-          </ul>
-          <div style='text-align: center;position: relative;top: 20px;'>
-            <mt-button @click='loadMoreThree'>加载更多</mt-button>
-          </div>
-        </div>
-      </mt-tab-container-item>
-      
     </mt-tab-container>
   </div>
   
@@ -115,118 +39,61 @@
 <script>
 import Footer from '@/common/_footer.vue'
 import * as mockapi from '@/../mockapi'
+
 import Header from '@/common/_header.vue'
   export default{
     data() {
       return {
         selected: '1',
-        allList: [],
-        oneList: [],
-        twoList: [],
-        threeList: [],
-        allQuery: {
-          pageNo: 1,
-          pageSize: 10,
-        },
-        oneQuery: {
-          pageNo: 1,
-          pageSize: 10,
-        },
-        twoQuery: {
-          pageNo: 1,
-          pageSize: 10,
-        },
-        threeQuery: {
-          pageNo: 1,
-          pageSize: 10,
-        },
+        popsideVisible: false,
+        pageNo: 1,
+        pageSize: 10,
+        allOrders: []
       }
     },
     components: {
       'v-header':Header
     },
     mounted() {
-      this.getAllList()
-      this.getOneList()
-      this.getTwoList()
-      this.getThreeList()
+      this.getShareOrders()
     },
     methods: {
-
-      getAllList() {
-        mockapi.shop.api_Shop_getShareCompany_get({
+      getShareOrders() {
+        mockapi.shop.api_Shop_getShareOrders_get({
           params: {
             token: this.$store.state.userInfo.MemberToken,
-            pageNo: this.allQuery.pageNo,
-            pageSize: this.allQuery.pageSize
+            pageNo: this.pageNo,
+            pageSize: this.pageSize
           }
         }).then(res => {
           var data = res.data.data
-          this.allList = this.allList.concat(data)
-          this.allQuery.pageNo++
+          this.allOrders = this.allOrders.concat(data)
         })
       },
-      getOneList() {
-        mockapi.shop.api_Shop_getOneShareCompany_get({
-          params: {
-            token: this.$store.state.userInfo.MemberToken,
-            pageNo: this.oneQuery.pageNo,
-            pageSize: this.oneQuery.pageSize
-          }
-        }).then(res => {
-          var data = res.data.data
-          this.oneList = this.oneList.concat(data)
-          this.oneQuery.pageNo++
-        })
-      },
-      getTwoList() {
-        mockapi.shop.api_Shop_getTwoShareCompany_get({
-          params: {
-            token: this.$store.state.userInfo.MemberToken,
-            pageNo: this.twoQuery.pageNo,
-            pageSize: this.twoQuery.pageSize
-          }
-        }).then(res => {
-          var data = res.data.data
-          this.twoList = this.twoList.concat(data)
-          this.twoQuery.pageNo++
-        })
-      },
-      getThreeList() {
-        mockapi.shop.api_Shop_getThreeShareCompany_get({
-          params: {
-            token: this.$store.state.userInfo.MemberToken,
-            pageNo: this.threeQuery.pageNo,
-            pageSize: this.threeQuery.pageSize
-          }
-        }).then(res => {
-          var data = res.data.data
-          this.threeList = this.threeList.concat(data)
-          this.threeQuery.pageNo++
-        })
-      },
-      loadMoreAll() {
-        this.getAllList
-      },
-      loadMoreOne() {
-        this.getOneList
-      },
-      loadMoreTwo() {
-        this.getTwoList
-      },
-      loadMoreThree() {
-        this.getThreeList
+      loadMore() {
+        this.pageNo++
+        this.getShareOrders()
       }
     }
   }
 </script>
-<style lang=less>
-  @import '../../assets/fz.less';
+<style lang="less" scoped>
+@import '../../assets/fz.less';
+.order-wrap{
+  border-bottom: 1px solid #999;
+  margin-bottom: 20px;
+  h3{
+    padding-left: 15px;
+  }
+}
 .back{
   position: absolute;
   z-index: 1000;
   width: 40px;
   height: 40px;
+}
+.wrap{
+  margin-top: 50px;
 }
 .mint-header{
   background: #eee;
@@ -298,9 +165,12 @@ input{
 }
 .catagory{
   position: fixed;
-  top: 50px;
+  top: 0;
   z-index: 10;
-  width: 100%;
+  .nav{
+    width: 85vw;
+    float: left;
+  }
   .btn{
     text-align: center;
     width: 15vw;
@@ -489,3 +359,4 @@ input{
     }
 }
 </style>
+

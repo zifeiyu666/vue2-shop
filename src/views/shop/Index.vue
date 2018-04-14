@@ -71,22 +71,38 @@ export default {
       banner2: '',
       // banner3: '',
       banner4: '',
+      productTypeList: [] // 商品类别
     }
   },
   beforeCreate() {
   },
   mounted() {
+    this.getProductType()
     this.getBanner()
-    this.getSection1()
-    this.getSection2()
+    
     // this.getSection3()
-    this.getSection4()
+    
     this.getBanner1()
     this.getBanner2()
     this.getBanner4()
     this.avatar = this.$store.state.userInfo.headimgurl
   },
   methods: {
+    getProductType() {
+      mockapi.shop.api_Shop_getProductType_get({
+        params: {}
+      }).then(res => {
+        var data = res.data.data
+        console.log(data)
+        this.productTypeList = data
+        // 请求数据
+        this.getSection1()
+        this.getSection2()
+        this.getSection4()
+      }).catch(err => {
+        console.log(err)
+      })
+    },
     getBanner() {
       mockapi.shop.api_Shop_getShopBanner_get({
         params: {}
@@ -101,8 +117,8 @@ export default {
     getSection1() {
       mockapi.shop.api_Shop_getTopProduct_get({
         params: {
-          ProductType: 1,
-          ProjectType: 1, // typecode
+          ProductType: this.productTypeList[0].EntryCode,
+          ProjectType: '',
           top: 10
         }
       }).then(res => {
@@ -116,8 +132,8 @@ export default {
     getSection2() {
       mockapi.shop.api_Shop_getTopProduct_get({
         params: {
-          ProductType: 2,
-          ProjectType: 1, // typecode
+          ProductType: this.productTypeList[1].EntryCode,
+          ProjectType: '',
           top: 10
         }
       }).then(res => {
@@ -146,8 +162,8 @@ export default {
     getSection4() {
       mockapi.shop.api_Shop_getTopProduct_get({
         params: {
-          ProductType: 1,
-          ProjectType: 2, // typecode
+          ProductType: this.productTypeList[2].EntryCode,
+          ProjectType: '',
           top: 10
         }
       }).then(res => {

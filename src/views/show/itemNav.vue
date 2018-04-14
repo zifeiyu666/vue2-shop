@@ -8,9 +8,9 @@
     </div>
     <div class="intro-wrap">
       <p>{{intro}}</p>
-      <router-link :to="{path:'/shop/detail', query: {id: currentId}}">购买详情</router-link>
+      <!-- <router-link :to="{path:'/shop/detail', query: {id: currentId}}">购买详情</router-link> -->
     </div>
-    <router-link v-for='(i, index) in navList' :key='index' class='circle' :class='"nav0" + i.id' :to="{ path: generateRoute(i.name), query: {code: i.code, id: currentId}}">
+    <router-link v-for='(i, index) in navList' :key='index' class='circle' :class='"nav0" + i.id' :to="{ path: generateRoute(i.name), query: {code: i.code, id: currentId, name: i.name}}">
       <i class='iconfont' :class="generateIcon(i.name)"></i>
       <span>{{i.name}}</span>
     </router-link>
@@ -42,7 +42,7 @@
           }
         }).then(response => {
           var data = response.data.data
-          this.navList = data.list
+          this.navList = data.list.concat({name: '一键导航'})
           this.banner = data.imgurl
           this.intro = data.itemintro
           console.log(this.navList)
@@ -88,13 +88,13 @@
           route = '/show/itemDetail'
           break
         case '户型鉴赏': 
-          route = '/show/houseList'
+          route = '/show/commonList'
           break
         case '品牌故事': 
-          route = '/show/brandList'
+          route = '/show/commonList'
           break
         case '项目资讯': 
-          route = '/show/news'
+          route = '/show/commonList'
           break
         case '发展历程': 
           route = '/show/history'

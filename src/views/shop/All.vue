@@ -45,7 +45,7 @@
                 </div>
               </li>
             </ul>
-            <div style='text-align: center'>
+            <div style='text-align: center; margin: 40px'>
               <mt-button @click='loadMoreAll'>加载更多</mt-button>
             </div>
           </div>
@@ -219,7 +219,8 @@ export default {
         params: {
           pageNo: this.QYKQuery.pageNo,
           pageSize: this.QYKQuery.pageSize,
-          ProductType: 'QYKL'
+          ProductType: 'QYKL',
+          ProjectType: ''
         }
       }).then(res => {
         var data = res.data.data
@@ -236,7 +237,8 @@ export default {
         params: {
           pageNo: this.LTDBQuery.pageNo,
           pageSize: this.LTDBQuery.pageSize,
-          ProductType: 'LTDBL'
+          ProductType: 'LTDBL',
+          ProjectType: ''
         }
       }).then(res => {
         var data = res.data.data
@@ -253,7 +255,8 @@ export default {
         params: {
           pageNo: this.DDQuery.pageNo,
           pageSize: this.DDQuery.pageSize,
-          ProductType: 'DDL'
+          ProductType: 'DDL',
+          ProjectType: ''
         }
       }).then(res => {
         var data = res.data.data

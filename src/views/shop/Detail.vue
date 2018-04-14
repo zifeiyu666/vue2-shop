@@ -33,27 +33,18 @@ export default {
   },
   mounted() {
     this.getDetail()
-    this.getCarNum()
+    // this.getCarNum()
   },
   methods: {
     getDetail() {
       mockapi.shop.api_Shop_getProduct_get({
         params:{
+          token: this.$store.state.userInfo.MemberToken,
           Pid: this.$route.query.pid
         }
       }).then(res => {
         var data = res.data.data
         this.detail = data
-      })
-    },
-    getCarNum() {
-      mockapi.shop.api_Shop_getMyCarCount_get({
-        params:{
-          token: this.$store.state.userInfo.MemberToken
-        }
-      }).then(res => {
-        var data = res.data.data
-        this.carnum = data
       })
     }
   },

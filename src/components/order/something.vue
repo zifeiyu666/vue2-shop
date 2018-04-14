@@ -9,7 +9,6 @@
           </div>
           <div class="something-right">
             <p>{{k.producttitle}}</p>
-            <p style="color:rgb(199, 108, 28)"> {{k.col}} - {{k.size}}</p>
             <p>售价：{{k.buyprice}}元</p>
             <p>数量:<span>{{k.buynum}}</span></p>
             <p>规格：{{k.propname}}</p>
@@ -136,10 +135,12 @@ export default {
                     -webkit-line-clamp: 2;
                     -webkit-box-orient: vertical;
                     .fz(font-size,26);
+                    height: 20px;
                 }
                 p:last-of-type {
                     .fz(font-size,22);
                     color: rgb(168, 168, 168);
+                    font-size: 13px;
                 }
                 .something-right-bottom {
 

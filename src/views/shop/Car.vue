@@ -6,13 +6,15 @@
         <h1 slot="title">购物车</h1>
       </v-header>
       <!-- 根据购物车是否有商品加载不同的组件 -->
-      <v-something v-if="count"></v-something>
-      <v-nothing v-else></v-nothing>
+      <v-something></v-something>
+      <!-- <v-nothing></v-nothing> -->
       <v-footer></v-footer>
     </div>
 </template>
 
 <script>
+import qs from 'qs'
+import * as mockapi from '@/../mockapi'
 import Header from '@/common/_header.vue'
 import Nothing from '@/components/car/nothing.vue'
 import Something from '@/components/car/something.vue'
@@ -25,8 +27,29 @@ export default {
     'v-something':Something,
     'v-footer':Footer
   },
+  data() {
+    return {
+      carList: undefined,
+      pageNo: 1,
+      pageSize: 10
+    }
+  },
   mounted(){
-
+    // this.getMyCar()
+  },
+  methods: {
+    getMyCar() {
+      mockapi.shop.api_Shop_getMyCar_get({
+        params: {
+          token: this.$store.state.userInfo.MemberToken,
+          pageNo: this.pageNo,
+          pageSize: this.pageSize
+        }
+      }).then(res => {
+        var data = res.data.data
+        this.carList = data
+      })
+    }
   }
 
 }

@@ -22,15 +22,18 @@
     </div>
     <div class="item-wrap">
       <!-- <h2 class='item-title'>户型一</h2> -->
-      <p>　近日，山东省“仙境海岸”发展协调小组召开全体成员会议，根据省旅游局关于加快打造“仙境海岸”品牌的意见，鼓励各产业领域参与“仙境海岸”重点项目的建设。....</p>
+      <!-- <p>　近日，山东省“仙境海岸”发展协调小组召开全体成员会议，根据省旅游局关于加快打造“仙境海岸”品牌的意见，鼓励各产业领域参与“仙境海岸”重点项目的建设。....</p>
       <img :src="this.$imgHost + '414x200/999'" alt="">
       <div class="line"></div>
       <p>会议提出，山东省将青岛、烟台、威海、日照4市近两年新规划、新引进、新布局的重大旅游项目纳入该规划，并将借鉴世界滨海旅游发达国家的经验，把“仙境海岸”打造成世界级滨海度假旅游品牌。为此，该省将加快“仙境海岸”基础配套设施建设，以水陆空大交通和慢游海滨步道绿道为中心实现配套。</p>
       <img :src="this.$imgHost + '414x200/999'" alt="">
       <img :src="this.$imgHost + '414x200/999'" alt="">
       <img :src="this.$imgHost + '414x200/999'" alt="">
-      <img :src="this.$imgHost + '414x200/999'" alt="">
+      <img :src="this.$imgHost + '414x200/999'" alt=""> -->
     </div>
+    <div v-if='content' class="item-wrap" v-html="content">
+    </div>
+    <div v-else class='nomore'>暂无更多内容</div>
   </div>
   
 </template>
@@ -56,32 +59,23 @@
         loading:true
       }
     },
-    mixins: [goBack],
-    beforeCreate() {
-      mockapi.show.test_get({}).then(response => {
-        console.log(response)
-      }).catch(error => {
-        console.log(error)
-      })
-      this.$api({
-        method: 'post',
-        url: '/index'
-      }).then((response) => {
-        this.datas = response.data;
-      }).catch(function(error) {
-        alert(error)
-      })
+    mounted() {
+      this.getNewsDetail()
     },
+    mixins: [goBack],
     methods: {
-      goToItemDetail(item) {
-        this.$router.push('/show/itemNav')
-      },
-      moreItems() {
-        console.log(11111111)
-        this.$router.push('/show/item/list')
-      },
-      moreNews() {
-
+      getNewsDetail() {
+        mockapi.show.api_Show_getNews_get({
+          params: {
+            id: this.$route.query.id
+          }
+        }).then(response => {
+          var data = response.data.data
+          this.content = data
+          console.log(this.content)
+        }).catch(error => {
+          console.log(error)
+        })
       }
     }
   }

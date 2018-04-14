@@ -1,6 +1,15 @@
 import instance from './instance';
 import { convertRESTAPI } from '../util';
 
+/** 获取项目简介 */
+function api_Show_getXMJJ_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Show/getXMJJ',
+    opts: opts
+  });
+}
+
 /** Show/Action */
 function api_Show_Action_get(opts) {
   return instance({
@@ -191,6 +200,7 @@ function upload_post(opts) {
 }
 
 export {
+  api_Show_getXMJJ_get,
   api_Show_Action_get,
   api_Show_getNews_get,
   api_Show_getPicNewsList_get,

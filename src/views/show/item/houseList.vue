@@ -35,40 +35,44 @@ import * as mockapi from '@/../mockapi'
           pageNo: 1,
           pageSize: 10,
           typeCode: this.$route.query.code
-        }
+        },
+        busy: false, // loadmore是否busy
+        firstFlag: true
       }
     },
     mounted() {
-      this.getHouseList().then(response => {
-        var data = response.data.data
-        this.houseList = this.houseList.concat(data)
-        console.log(this.houseList)
-        this.query.pageNo++
-        this.loading = false
-      }).catch(error => {
-        console.log(error)
-      })
+      this.houseList = []
+      this.getHouseList()
     },
     methods: {
       getHouseList() {
-        return mockapi.show.api_Show_getPicNewsList_get({
+        this.busy = true
+        mockapi.show.api_Show_getPicNewsList_get({
           params: this.query
-        })
-      },
-      loadMore() {
-        this.loading = true;
-        this.getHouseList().then(response => {
+        }).then(response => {
           var data = response.data.data
-          this.houseList = this.houseList.concat(data)
-          console.log(this.houseList)
-          this.query.pageNo++
+          if (this.firstFlag) {
+            this.houseList = data
+            this.firstFlag = false
+          } else {
+            this.houseList = this.houseList.concat(data)
+          }
           this.loading = false
+          this.busy = false
         }).catch(error => {
           console.log(error)
         })
       },
+      loadMore() {
+        if (!this.busy && !this.firstFlag) {
+          console.log('loadmore')
+          this.query.pageNo++
+          this.getHouseList()
+        }
+        
+      },
       goToHouseDetail(item) {
-        this.$router.push({path:'/show/houseDetail', query: {id: this.$route.query.id}})
+        this.$router.push({path:'/show/houseDetail', query: {id: item.id}})
       },
       goBack(){
         this.$router.push({path: '/show/itemNav', query: {id: this.$route.query.id}})

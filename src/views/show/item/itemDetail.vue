@@ -6,9 +6,12 @@
       </span>
       <!-- <mt-button icon="more" slot="right"></mt-button> -->
     </mt-header>
-    <div class="item-wrap" v-html="content">
+    <div v-if='content' class="item-wrap">
+      <h2 class='item-title'>{{content.NewsTitle}}</h2>
+      <p>{{content.NewsAbstract}}</p>
+      <div v-html="content.NewsContent"></div>
     </div>
-  
+    <div v-else class='nomore'>暂无更多内容</div>
   </div>
   
 </template>
@@ -28,13 +31,13 @@
     },
     methods: {
       getItemIntro() {
-        mockapi.show.api_Show_getNews_get({
+        mockapi.show.api_Show_getXMJJ_get({
           params: {
-            id: this.$route.query.code
+            typeCode: this.$route.query.code
           }
         }).then(response => {
           var data = response.data.data
-          this.content = data.NewsContent
+          this.content = data
           console.log(this.content)
         }).catch(error => {
           console.log(error)
