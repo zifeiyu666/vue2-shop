@@ -58,7 +58,7 @@
           商品名称:<span class="title">{{detail ? detail.ProductName : undefined}}</span> 
         </p>
         <p>
-          商品类型:<span class="title">{{detail ? detail.ProductType : undefined}}</span> 
+          商品类型:<span class="title">{{detail ? detail.ProductTypeName : undefined}}</span> 
         </p>
         <p>
           价格:<span class="title">{{payprice}}</span>

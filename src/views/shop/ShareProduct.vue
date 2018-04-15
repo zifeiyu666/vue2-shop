@@ -10,7 +10,7 @@
         </div>
         <div class="something-right">
           <p>{{k.title}}</p>
-          <p style="color:rgb(199, 108, 28);height: 35px;"> {{k.intro}}</p>
+          <p style="color:rgb(199, 108, 28);height: 20px;"> {{k.intro}}</p>
           <p>售价：{{k.price}}元</p>
           <!-- <div class="something-right-bottom">
             <span @click='deleteCollection(k)'></span>

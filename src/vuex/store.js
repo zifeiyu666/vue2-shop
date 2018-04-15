@@ -22,9 +22,13 @@ export default new Vuex.Store({
     userInfo:  {},
     selectedProp: undefined,
     allMoney: '',
-    allJS: ''
+    allJS: '',
+    carList: []
   },
   mutations: {
+    saveCarlist(state, res) {
+      state.carList = res
+    },
     updateAllMoney(state, res) {
       console.log('全部金额')
       console.log(res)

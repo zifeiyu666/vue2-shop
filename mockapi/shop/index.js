@@ -1,6 +1,15 @@
 import instance from './instance';
 import { convertRESTAPI } from '../util';
 
+/** 提交多个商品生成订单，返回订单号 */
+function api_Shop_generateCarOrder_post(opts) {
+  return instance({
+    method: 'post',
+    url:  '/api/Shop/generateCarOrder',
+    opts: opts
+  });
+}
+
 /** 作用：根据MemberToken和OrderID生成预支付订单，并且返回预支付订单的参数供前台调用 */
 function api_GetWCPay_get(opts) {
   return instance({
@@ -488,6 +497,7 @@ function shop_getBanner_get(opts) {
 }
 
 export {
+  api_Shop_generateCarOrder_post,
   api_GetWCPay_get,
   api_Shop_generateOrder_post,
   api_Shop_generateVeriCode_post,

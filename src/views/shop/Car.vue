@@ -48,6 +48,7 @@ export default {
       }).then(res => {
         var data = res.data.data
         this.carList = data
+        this.$store.commit('saveCarlist', data)
       })
     }
   }

@@ -74,7 +74,7 @@
           </section> -->
 
           <section class="my-service">
-              <router-link class="my-service-top" :to="{ name: ''}">
+              <router-link class="my-service-top" :to="{path: '/shop/shareproduct'}">
                   <div>
                     <span class="icon2-service">
                         <span class="path1"></span><span class="path2"></span><span class="path3"></span>
@@ -84,7 +84,7 @@
                     <span>分销产品</span><i class="icon-go"></i>
                   </p>
               </router-link>
-              <router-link class="my-service-bottom" :to="{ name: ''}">
+              <router-link class="my-service-bottom" to="/shop/shareCompany">
                   <div>
                     <span class="icon2-milogo"></span>
                   </div>
@@ -92,7 +92,7 @@
                     <span>我的分销商</span><i class="icon-go"></i>
                   </p>
               </router-link>
-              <router-link class="my-service-bottom" :to="{ name: ''}">
+              <router-link class="my-service-bottom" :to="{ path: '/shop/shareOrders'}">
                   <div>
                     <span class="icon2-milogo"></span>
                   </div>

@@ -16,7 +16,7 @@
                 <div class="something-right">
                   <p>{{k.producttitle}}</p>
                   <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p>
-                  <!-- <p style="color:rgb(199, 108, 28);height: 35px;"> {{k.intro}}</p> -->
+                  <!-- <p style="color:rgb(199, 108, 28);height: 20px;"> {{k.intro}}</p> -->
                   <p>售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;使用积分：{{k.usescore}}</p>
                   <!-- <div class="something-right-bottom">
                     <span @click='deleteCollection(k)'></span>
