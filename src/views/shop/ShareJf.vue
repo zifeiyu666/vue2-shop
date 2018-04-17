@@ -26,16 +26,19 @@
       </mt-tab-container-item>
     </mt-tab-container> -->
     <p class='title jf-title'>积分获取记录</p>
-    <div v-for="n in 4" :key='n'>
+    <div v-for="(i, index) in JfList" :key='index'>
       <div class="company-wrap clearfix">
         <div class="avatar">
-          <img :src="$imgHost + '60x60&text=jifen'" alt="">
+          <img src="" alt="">
         </div>
         <div class="content">
           <ul>
-            <li>积分获取事件</li>
-            <li>获取积分数量33</li>
-            <li>时间：2017-6-12</li>
+            <li>变动类型：{{i.inout}}</li>
+            <li>原因： {{i.reason}}</li>
+            <li>数量： {{i.score}}</li>
+            <li>变动前积分数量：{{i.beforescore}}</li>
+            <li>变动前积分数量：{{i.afterscore}}</li> 
+            <li>时间：{{i.recordTime}}</li>
           </ul>
         </div>
       </div>
@@ -45,15 +48,36 @@
   
 </template>
 <script>
+import * as mockapi from '@/../mockapi'
 import Header from '@/common/_header.vue'
   export default{
     data() {
       return {
-        selected: '1'
+        pageNo: 1,
+        pageSize: 10,
+        JfList: []
       }
     },
     components: {
       'v-header':Header
+    },
+    mounted() {
+      this.getJfList()
+    },
+    methods: {
+      getJfList() {
+        mockapi.shop.api_Shop_getMyScoreList_get({
+          params: {
+            token: this.$store.state.userInfo.MemberToken,
+            pageNo: this.pageNo,
+            pageSize: this.pageSize
+          }
+        }).then(res => {
+          var data = res.data.data
+          this.JfList = data
+          console.log(this.JfList)
+        })
+      }
     }
   }
 </script>

@@ -71,6 +71,13 @@
   width: 30px;" @click='payReduce'>-</button> {{paynum}} <button style="padding: 4px 5px;
   width: 30px;" @click='payAdd'>+</button>
         </p>
+        <div class="jf" v-if='score'>
+          <mt-field label="积分抵扣:" placeholder="请输入要使用的积分" type="number" v-model="usescore" ></mt-field>
+          <div class="totalScore">
+            <span>当前可用积分：{{score}}</span>
+          </div>
+        </div>
+
         <div class="bottom clearfix">
           <mt-button type="primary" @click='confirmPay'>确定</mt-button>
           <mt-button type="default" @click='consolePay'>取消</mt-button>
@@ -98,7 +105,9 @@ export default {
       product: undefined,
       PropId: '', // 用户选择的规格id
       selectedProp: [],
-      carnum: ''
+      carnum: '',
+      score: '',
+      usescore: ''
     }
   },
   computed:{
@@ -109,11 +118,31 @@ export default {
       return this.selectedProp[0].DiscountPrice * this.paynum
     }
   },
+  // TODO： 检测数据
+  watch: {
+    usescore() {
+      if (this.usescore > this.score) {
+        this.usescore = this.score
+        Toast('不能超过最大可用积分')
+      }
+    }
+  },
   mounted() {
     this.initCollectStar()
     this.getMyCarNum()
+    this.getScore()
   },
   methods:{
+    getScore() {
+      mockapi.shop.api_Shop_getMyScore_get({
+        params: {
+          token: this.$store.state.userInfo.MemberToken
+        }
+      }).then(res => {
+        var data = res.data.data
+        this.score = data
+      })
+    },
     initCollectStar() {
       mockapi.shop.api_Shop_isMyCollection_get({
         params: {
@@ -165,7 +194,6 @@ export default {
     },
 
     /* 购物车相关 */
-    //  TODO: 获取购物车商品数量（缺少接口）
     getMyCarNum() {
       mockapi.shop.api_Shop_getMyCarCount_get({
         params:{
@@ -259,7 +287,7 @@ export default {
           PId: this.detail.PId,
           PropId: this.PropId,
           Num: this.paynum,
-          Score: 0 // TODO: 暂时这么处理
+          Score: this.usescore ? this.usescore : 0
         })
       }).then(res => {
         var data = res.data.data
@@ -293,7 +321,23 @@ export default {
 <style lang="less" scoped>
 @import '../../assets/fz.less';
 @import '../../assets/index/style.css';
-
+.jf{
+  width: 100%;
+  box-sizing: border-box;
+  // border-bottom: 1px solid #eee;
+  margin-top: 20px;
+  margin-left: -10px;
+  margin-right: -10px;
+  border-top: none;
+  .totalScore{
+    text-align: right;
+    padding: 0px 10px;
+    span{
+      font-size: 12px;
+      color: #FFAA00;
+    }
+  }
+}
 .footer {
   width: 100%;
   display: -webkit-flex;

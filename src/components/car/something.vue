@@ -74,6 +74,7 @@ export default {
         }
         this.$store.commit('updateAllMoney', allMoney)
         this.$store.commit('updateAllJs', newVal.length)
+        this.$store.commit('saveCarlist', newVal)
       } else {
         this.$store.commit('updateAllMoney', 0)
         this.$store.commit('updateAllJs', 0)

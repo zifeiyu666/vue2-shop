@@ -1,6 +1,12 @@
 <template lang="html">
   <footer class="footer">
-
+    <div class="jf" v-if="score">
+      <mt-field label="积分抵扣:" placeholder="请输入要使用的积分" type="number" v-model="usescore" ></mt-field>
+      <div class="totalScore">
+        <span>当前可用积分：{{score}}</span>
+      </div>
+    </div>
+        
     <div class="footer-result">
       <p>共{{count}}件 金额：</p>
       <p><span>{{allpay}} </span>元</p>
@@ -16,6 +22,7 @@
 </template>
 
 <script>
+import { Toast } from 'mint-ui';
 import { MessageBox } from 'mint-ui';
 import * as mockapi from '@/../mockapi'
 import qs from 'qs'
@@ -43,27 +50,53 @@ export default {
   },
   data() {
     return {
-      params: []
+      params: [],
+      score: '',
+      usescore: ''
     }
   },
   watch: {
     carList() {
-      console.log(123123333)
+      console.log('carlist')
       console.log(this.carList)
       this.carList.forEach((item, i) => {
         this.params.push({propid: item.propid, num: item.num})
       })
+      console.log('params')
+      console.log(this.params)
+      console.log(qs.stringify({params: this.params}))
+      // this.params = JSON.stringify(this.params)
+    },
+    usescore() {
+      if (this.usescore > this.score) {
+        this.usescore = this.score
+        Toast('不能超过最大可用积分')
+      }
     }
   },
+  mounted() {
+    this.getScore()
+  },
   methods:{
+    getScore() {
+      mockapi.shop.api_Shop_getMyScore_get({
+        params: {
+          token: this.$store.state.userInfo.MemberToken
+        }
+      }).then(res => {
+        var data = res.data.data
+        this.score = data
+      })
+    },
     //点击跳转到支付页
     goPay(){
       mockapi.shop.api_Shop_generateCarOrder_post({
-        data: qs.stringify({
+        data: {
           token: this.$store.state.userInfo.MemberToken,
+          // TODO: 这里参数传递有问题，需要后台解析
           params: this.params,
-          Score: 0 // TODO: 暂时这么处理
-        })
+          Score: this.usescore ? this.usescore : 0
+        }
       }).then(res => {
         var data = res.data.data
         this.$router.push({path: '/shop/order', query: {orderno: data.orderno, orderid: data.orderid}})
@@ -76,8 +109,25 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import '../../assets/fz.less';
-
+  @import '../../assets/fz.less';
+  .jf{
+    position: fixed;
+    bottom: 54px;
+    padding: 10px 5px;
+    width: 100%;
+    box-sizing: border-box;
+    border-bottom: 1px solid #eee;
+    margin-top: 20px;
+    border-top: none;
+    .totalScore{
+      text-align: right;
+      padding: 0px 10px;
+      span{
+        font-size: 12px;
+        color: #FFAA00;
+      }
+    }
+  }
   .footer {
     width: 100%;
     height: 16vw;

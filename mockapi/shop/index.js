@@ -1,6 +1,60 @@
 import instance from './instance';
 import { convertRESTAPI } from '../util';
 
+/** 获取我的积分 */
+function api_Shop_getMyScore_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Shop/getMyScore',
+    opts: opts
+  });
+}
+
+/** 抽奖 返回前台用户抽中的选项 */
+function api_Shop_Lottery_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Shop/Lottery',
+    opts: opts
+  });
+}
+
+/** 获取我的今日中奖情况 返回为空说明今天没抽奖 */
+function api_Shop_getTodayLottery_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Shop/getTodayLottery',
+    opts: opts
+  });
+}
+
+/** 获取每日好礼活动信息 */
+function api_Shop_getActivity_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Shop/getActivity',
+    opts: opts
+  });
+}
+
+/** 获取我的二维码 */
+function api_Shop_getMySharedQRCode_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Shop/getMySharedQRCode',
+    opts: opts
+  });
+}
+
+/** 获取我的积分记录 */
+function api_Shop_getMyScoreList_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Shop/getMyScoreList',
+    opts: opts
+  });
+}
+
 /** 提交多个商品生成订单，返回订单号 */
 function api_Shop_generateCarOrder_post(opts) {
   return instance({
@@ -497,6 +551,12 @@ function shop_getBanner_get(opts) {
 }
 
 export {
+  api_Shop_getMyScore_get,
+  api_Shop_Lottery_get,
+  api_Shop_getTodayLottery_get,
+  api_Shop_getActivity_get,
+  api_Shop_getMySharedQRCode_get,
+  api_Shop_getMyScoreList_get,
   api_Shop_generateCarOrder_post,
   api_GetWCPay_get,
   api_Shop_generateOrder_post,
