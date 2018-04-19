@@ -1,10 +1,11 @@
 <template>
   <section class="section2" v-if='section2'>
-    <div class="section2-list">
-      <h1 class="section1-title">
+    <h1 class="section1-title">
         旅游打包类
         <i class="icon-right"></i>
       </h1>
+    <div class="section2-list">
+      
       <ul>
         <li v-for="k in section2" :key="k.id">
           <router-link :to="{path:'/shop/detail', query:{pid: k.id}}">
@@ -43,19 +44,24 @@ import { Lazyload } from 'mint-ui';
   .product-img{
     height: 120px;
   }
+  .section1-title{
+    .bt();
+    // .pt();
+    margin-top: 6vw;
+  }
   .section2-list {
     overflow-x: auto;
     width: 100%;
-    .pt();
+    // .pt();
     /*原生滑动*/
     -webkit-overflow-scrolling: touch;
     >ul {
-      .bt();
+      // .bt();
       display: -ms-flex;
       display: -webkit-box;
       display: -ms-flexbox;
       display: flex;
-      padding: 6vw;
+      padding: 1vw 6vw 3vw 6vw;
       width: 380%;
       li {
         margin-right: 10vw;
@@ -99,7 +105,7 @@ import { Lazyload } from 'mint-ui';
     width: 100vw;
     img {
       display: block;
-      height: 24vw;
+      // height: 24vw;
       width: 100%;
     }
   }
