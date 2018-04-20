@@ -25,12 +25,12 @@
           </router-link>
           <section class="my-pay">
               <router-link :to="{ name: ''}">
-                  <i class="iconfont icon-daifukuan"></i>
-                  <p>待付款</p>
+                  <i class="iconfont icon-yifukuan"></i>
+                  <p>全部</p>
               </router-link>
               <router-link :to="{ name: ''}">
-                  <i class="iconfont icon-yifukuan"></i>
-                  <p>已付款</p>
+                  <i class="iconfont icon-daifukuan"></i>
+                  <p>待付款</p>
               </router-link>
               <router-link :to="{ name: ''}">
                   <i class="iconfont icon-yiwancheng1"></i>
@@ -54,6 +54,14 @@
                 <span>我的收藏</span><i class="icon-go"></i>
               </p>
             </router-link>
+            <router-link class="my-vip-bottom ho" :to="{ path: '/shop/choujiang'}">
+              <div>
+                <span class="icon2-money"></span>
+              </div>
+              <p>
+                <span>每日抽奖</span><i class="icon-go"></i>
+              </p>
+            </router-link>
             <router-link class="my-vip-bottom ho" to="/shop/edit">
               <div>
                 <span class="icon2-settle"></span>
@@ -62,14 +70,7 @@
                 <span>资料修改</span><i class="icon-go"></i>
               </p>
             </router-link>
-            <!-- <router-link class="my-vip-bottom ho" :to="{ name: ''}">
-              <div>
-                <span class="icon2-money"></span>
-              </div>
-              <p>
-                <span>余额提现</span><i class="icon-go"></i>
-              </p>
-            </router-link> -->
+            
           </section>
 
           

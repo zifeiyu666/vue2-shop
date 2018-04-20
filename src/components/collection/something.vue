@@ -10,7 +10,7 @@
     infinite-scroll-distance="10">
       <li v-for="(k,i) in list">
           <div class="something-middle">
-            <img :src="k.imgurl">
+            <img :src="k.imgurl[0]">
           </div>
           <div class="something-right">
             <p>{{k.title}}</p>
@@ -50,10 +50,12 @@ export default {
           Pid: k.id
         })
       }).then(res => {
-        that.$emit('updatelist')
-        Toast({
+        if (res.data.result == 1) {
+          that.$emit('updatelist')
+          Toast({
           message: '操作成功'
-        });
+          });
+        } 
       })
     },
     toggle() {

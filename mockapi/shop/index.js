@@ -11,9 +11,9 @@ function api_Shop_getMyScore_get(opts) {
 }
 
 /** 抽奖 返回前台用户抽中的选项 */
-function api_Shop_Lottery_get(opts) {
+function api_Shop_Lottery_post(opts) {
   return instance({
-    method: 'get',
+    method: 'post',
     url:  '/api/Shop/Lottery',
     opts: opts
   });
@@ -552,7 +552,7 @@ function shop_getBanner_get(opts) {
 
 export {
   api_Shop_getMyScore_get,
-  api_Shop_Lottery_get,
+  api_Shop_Lottery_post,
   api_Shop_getTodayLottery_get,
   api_Shop_getActivity_get,
   api_Shop_getMySharedQRCode_get,

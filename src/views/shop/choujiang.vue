@@ -1,5 +1,17 @@
 <template>
   <div class="awardRotate">
+    <div class="goback" @click='goBack'>
+      <i class='iconfont icon-fanhui'></i>
+    </div>
+    <div class="result-wrap">
+      <div class="enable" v-if='enable'>快来试试今天的手气吧！</div>
+      <div class="disable" v-else>
+        今日已经抽过，明天再来。
+        <div class="result">
+          今天您抽到的奖品是：{{todayLottery.Title}}
+        </div>
+      </div>
+    </div>
     <img src="../../assets/img/jp.png" id="shan-img" style="display:none; width: 10px; height: 10px" />
     <img src="../../assets/img/fail.png" id="sorry-img" style="display:none;  width: 10px; height: 10px" />
     <div class="banner">
@@ -12,6 +24,8 @@
 </template>
 
 <script type="text/ecmascript-6">
+import qs from 'qs'
+import * as mockapi from '@/../mockapi'
 import $ from 'jquery'
 import {myfun} from '../../assets/awardRotate'
 // import 'mint-ui/lib/style.css'
@@ -29,32 +43,75 @@ export default {
         insideRadius: 68,
         startAngle: 0,
         bRotate: false
-      }
+      },
+      net_err: false,
+      actDetail: undefined,
+      enable: true
     }
   },
   created () {
     console.log(131231231)
     document.title = '大转盘抽奖代码'
     this.$nextTick(() => {
-      this.turnplate.restaraunts = ['50M免费流量包', '10Q币', '谢谢参与', '5Q币', '10M免费流量包', '20M免费流量包', '20Q币 ', '30M免费流量包', '100M免费流量包', 
-'2Q币', 'VUE示例', 'TEST选项']
-      this.turnplate.colors = ['#FFF4D6', '#FFFFFF', '#FFF4D6', '#FFFFFF', '#FFF4D6', '#FFFFFF', '#FFF4D6', '#FFFFFF', '#FFF4D6', '#FFFFFF', '#FFF4D6',  '#FFFFFF']
-      this.rotateTimeOut()
-      this.rotateFn()
-      this.drawRouletteWheel()
+      // this.turnplate.restaraunts = ['50M免费流量包', '10Q币', '谢谢参与', '5Q币', '10M免费流量包', '20M免费流量包', '20Q币 ', '30M免费流量包', '100M免费流量包', 
+// '2Q币', 'VUE示例', 'TEST选项']
+      // this.turnplate.colors = ['#FFF4D6', '#FFFFFF', '#FFF4D6', '#FFFFFF', '#FFF4D6', '#FFFFFF', '#FFF4D6', '#FFFFFF', '#FFF4D6', '#FFFFFF', '#FFF4D6',  '#FFFFFF']
+      // this.rotateTimeOut()
+      // this.rotateFn()
+      // this.drawRouletteWheel()
+      this.getTodayLottery()
+      this.getRestaraunts()
     })
   },
   components: {
     myfun
   },
   methods: {
+    goBack() {
+      this.$router.push('/shop/user')
+    },
+    getTodayLottery() {
+      mockapi.shop.api_Shop_getTodayLottery_get({
+        params: {
+          token: this.$store.state.userInfo.MemberToken
+        }
+      }).then(res => {
+        var data = res.data.data
+        if (!data) {
+          this.enable = true
+        } else {
+          this.enable = false
+          this.todayLottery = data
+        }
+      })
+    },
+    getRestaraunts() {
+      mockapi.shop.api_Shop_getActivity_get({
+        params: {
+        }
+      }).then(res => {
+        var data = res.data.data
+        data.activity_Options.forEach((item, i) => {
+          this.turnplate.restaraunts.push(item)
+          if (i%2 == 0) {
+            this.turnplate.colors.push('#FFF4D6')
+          } else {
+            this.turnplate.colors.push('#FFFFFF')
+          }
+        })
+        this.actDetail = data
+        this.drawRouletteWheel()
+      })
+    },
     rotateTimeOut: function () {
       $('#wheelcanvas').rotate({
         angle: 0,
-        animateTo: 2160,
-        duration: 8000,
+        animateTo: 7200,
+        duration: 36000,
         callback: function () {
           Toast({message: '网络超时，请检查您的网络设置！', position: 'middle'})
+          $('#wheelcanvas').stopRotate()
+          this.net_err = true
         }
       })
     },
@@ -70,10 +127,11 @@ export default {
         $('#wheelcanvas').stopRotate()
         $('#wheelcanvas').rotate({
           angle: 0,
-          animateTo: angles + 1800,
-          duration: 8000,
+          animateTo: angles + 360,
+          duration: 3000,
           callback: function () {
-            Toast({message: txt, position: 'middle'})
+            Toast({message: txt.title, position: 'middle'})
+            console.log(txt)
             if (bRotateT) {
               bRotateT = false
             } else {
@@ -85,12 +143,45 @@ export default {
       this.turnplate.bRotate = bRotateT
     },
     pointer () {
-      // if (this.turnplate.bRotate) return
-      this.turnplate.bRotate = !this.turnplate.bRotate
-      // 获取随机数(奖品个数范围内)
-      var item = Math.floor(Math.random() * (this.turnplate.restaraunts.length - 1 + 1) + 1)
-      // 奖品数量等于10,指针落在对应奖品区域的中心角度[252, 216, 180, 144, 108, 72, 36, 360, 324, 288]
-      this.rotateFn(item, this.turnplate.restaraunts[item - 1])
+      this.net_err = false
+      // TODO:接口有问题
+      if (this.enable) {
+        var that =this
+        this.rotateTimeOut()
+        mockapi.shop.api_Shop_Lottery_post({
+          data: qs.stringify({
+            token: this.$store.state.userInfo.MemberToken,
+            ActId: this.actDetail.activity.ActId
+          })
+        }).then(res => {
+          var data = res.data.data
+          var item = ''
+          this.actDetail.activity_Options.forEach((item,i) => {
+            if (item.optionid === data.OptionId) {
+              item = i
+            }
+          })
+          // if (this.turnplate.bRotate) return
+          that.turnplate.bRotate = !that.turnplate.bRotate
+          // 获取随机数(奖品个数范围内)
+          // var item = Math.floor(Math.random() * (that.turnplate.restaraunts.length - 1 + 1) + 1)
+          // 奖品数量等于10,指针落在对应奖品区域的中心角度[252, 216, 180, 144, 108, 72, 36, 360, 324, 288]
+          that.rotateFn(item, that.turnplate.restaraunts[item - 1])
+        })
+      } else {
+        Toast('今日已经抽过，明天再来。')
+      }
+      
+      // setTimeout(function() {
+      //   // if (this.turnplate.bRotate) return
+      // that.turnplate.bRotate = !that.turnplate.bRotate
+      // // 获取随机数(奖品个数范围内)
+      // // var item = Math.floor(Math.random() * (that.turnplate.restaraunts.length - 1 + 1) + 1)
+      // var item = 3
+      // // 奖品数量等于10,指针落在对应奖品区域的中心角度[252, 216, 180, 144, 108, 72, 36, 360, 324, 288]
+      // that.rotateFn(item, that.turnplate.restaraunts[item - 1])
+      // },3000)
+      
     },
     drawRouletteWheel () {
       var canvas = document.getElementById('wheelcanvas')
@@ -118,7 +209,7 @@ export default {
 
           // ----绘制奖品开始----
           ctx.fillStyle = '#E5302F'
-          var text = this.turnplate.restaraunts[i]
+          var text = this.turnplate.restaraunts[i].title
           var lineHeight = 17
           // translate方法重新映射画布上的 (0,0) 位置
           ctx.translate(211 + Math.cos(angle + arc / 2) * this.turnplate.textRadius, 211 + Math.sin(angle + arc / 2) * this.turnplate.textRadius)
@@ -176,6 +267,23 @@ export default {
 </script>
 
 <style scoped  lang="stylus" rel="stylesheet/stylus">
+  .goback{
+    position: fixed;
+    z-index: 1000;
+    width: 20px;
+    height: 20px;
+    border-radius: 14px;
+    background: rgba(0,0,0,.3);
+    left: 10px;
+    top: 10px;
+    padding: 2px;
+    i{
+      font-size: 14px;
+      color: #fff;
+      position: relative;
+      left: 2px;
+    }
+  }
   .awardRotate{
     background: rgb(230, 45, 45);
     height :100%;
@@ -194,4 +302,19 @@ export default {
   .banner .turnplate{display:block;width:100%;position:relative;background-image:url(../../assets/img/bg.png);background-size:100% 100%;}
   .banner .turnplate canvas.item{width:100%;}
   .banner .turnplate img.pointer{position:absolute;width:31.5%;height:42.5%;left:34.6%;top:23%;}
+
+  // 抽奖结果
+  .disable{
+    position: absolute;
+    width: 100%;
+    top: 40px;
+    text-align: center;
+    color: #fff;
+    font-size: 14px;
+    .result{
+      margin-top: 5px;
+      font-size: 16px;
+
+    }
+  }
 </style>
