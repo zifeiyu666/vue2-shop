@@ -90,6 +90,8 @@ export default {
     },
     //点击跳转到支付页
     goPay(){
+      console.log(this.$store.state.userInfo.MemberToken)
+      console.log(this.params[0].propid)
       mockapi.shop.api_Shop_generateCarOrder_post({
         data: {
           token: this.$store.state.userInfo.MemberToken,

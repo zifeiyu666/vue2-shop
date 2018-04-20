@@ -26,7 +26,7 @@ html,body,#app{
   width: 100%;
   height: 100%;
   -webkit-tap-highlight-color:rgba(0,0,0,0);
-  background: #fff;
+  background: #F8FCFF;
 }
 
 body,
@@ -66,7 +66,7 @@ input {
 }
 
 ul,li {
-  background-color: #ffffff;
+//   background-color: #ffffff;
 }
 ol,
 ul {
@@ -97,7 +97,7 @@ textarea {
 /*防止拖动*/
 img {
     border: 0;
-    vertical-align: middle;
+    // vertical-align: middle;
 }
 
 /*  去掉图片低测默认的3像素空白缝隙*/

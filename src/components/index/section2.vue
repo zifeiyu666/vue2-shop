@@ -52,6 +52,8 @@ import { Lazyload } from 'mint-ui';
   .section2-list {
     overflow-x: auto;
     width: 100%;
+    // margin-top: 6vw;
+    background: #fff;
     // .pt();
     /*原生滑动*/
     -webkit-overflow-scrolling: touch;

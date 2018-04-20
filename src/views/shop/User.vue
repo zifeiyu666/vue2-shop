@@ -24,19 +24,19 @@
               </div>
           </router-link>
           <section class="my-pay">
-              <router-link :to="{ name: ''}">
+              <router-link :to="{ path: '/shop/myorder'}">
                   <i class="iconfont icon-yifukuan"></i>
                   <p>全部</p>
               </router-link>
-              <router-link :to="{ name: ''}">
+              <router-link :to="{ path: '/shop/myorder', query: {selected: '2'}}">
                   <i class="iconfont icon-daifukuan"></i>
                   <p>待付款</p>
               </router-link>
-              <router-link :to="{ name: ''}">
+              <router-link :to="{ path: '/shop/myorder', query: {selected: '3'}}">
                   <i class="iconfont icon-yiwancheng1"></i>
-                  <p>已完成</p>
+                  <p>已付款</p>
               </router-link>
-              <router-link :to="{ name: ''}">
+              <router-link :to="{ path: '/shop/refundList'}">
                   <i class="iconfont icon-tuihuanhuo"></i>
                   <p>退换货</p>
               </router-link>
@@ -47,7 +47,7 @@
             <router-link class="my-vip-top ho" to="/shop/collection" >
               <div class="my-vip-top-div">
                 <span class="icon2-vip">
-                    <span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span><span class="path7"></span><span class="path8"></span><span class="path9"></span>
+                  <span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span><span class="path7"></span><span class="path8"></span><span class="path9"></span>
                 </span>
               </div>
               <p>
@@ -60,6 +60,14 @@
               </div>
               <p>
                 <span>每日抽奖</span><i class="icon-go"></i>
+              </p>
+            </router-link>
+            <router-link :to="{ name: '我的积分'}" class="my-settle-top">
+              <div>
+                <span class="icon2-f"></span>
+              </div>
+              <p>
+                <span>我的积分</span><i class="icon-go"></i>
               </p>
             </router-link>
             <router-link class="my-vip-bottom ho" to="/shop/edit">

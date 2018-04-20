@@ -50,8 +50,6 @@ export default {
     }
   },
   created () {
-    console.log(131231231)
-    document.title = '大转盘抽奖代码'
     this.$nextTick(() => {
       // this.turnplate.restaraunts = ['50M免费流量包', '10Q币', '谢谢参与', '5Q币', '10M免费流量包', '20M免费流量包', '20Q币 ', '30M免费流量包', '100M免费流量包', 
 // '2Q币', 'VUE示例', 'TEST选项']
@@ -90,15 +88,18 @@ export default {
         params: {
         }
       }).then(res => {
+        var that = this
         var data = res.data.data
         data.activity_Options.forEach((item, i) => {
-          this.turnplate.restaraunts.push(item)
+          that.turnplate.restaraunts.push(item)
           if (i%2 == 0) {
-            this.turnplate.colors.push('#FFF4D6')
+            that.turnplate.colors.push('#FFF4D6')
           } else {
-            this.turnplate.colors.push('#FFFFFF')
+            that.turnplate.colors.push('#FFFFFF')
           }
         })
+        console.log('获取转盘数组')
+        console.log(that.turnplate.restaraunts)
         this.actDetail = data
         this.drawRouletteWheel()
       })
@@ -127,8 +128,8 @@ export default {
         $('#wheelcanvas').stopRotate()
         $('#wheelcanvas').rotate({
           angle: 0,
-          animateTo: angles + 360,
-          duration: 3000,
+          animateTo: angles + 1800,
+          duration: 5000,
           callback: function () {
             Toast({message: txt.title, position: 'middle'})
             console.log(txt)
@@ -143,9 +144,10 @@ export default {
       this.turnplate.bRotate = bRotateT
     },
     pointer () {
-      this.net_err = false
+      this.drawRouletteWheel()
+      // this.net_err = false
       // TODO:接口有问题
-      if (this.enable) {
+      if (!this.enable) {
         var that =this
         this.rotateTimeOut()
         mockapi.shop.api_Shop_Lottery_post({
@@ -155,23 +157,27 @@ export default {
           })
         }).then(res => {
           var data = res.data.data
-          var item = ''
+          var index = ''
           this.actDetail.activity_Options.forEach((item,i) => {
-            if (item.optionid === data.OptionId) {
-              item = i
+            if (item.optionid === data.optionid) {
+              index = i
+              console.log('返回的抽奖结果')
+              console.log(index) 
+              console.log(data.optionid)
             }
           })
+          console.log('txt信息')
+          console.log(that.turnplate.restaraunts[index - 1])
           // if (this.turnplate.bRotate) return
           that.turnplate.bRotate = !that.turnplate.bRotate
           // 获取随机数(奖品个数范围内)
           // var item = Math.floor(Math.random() * (that.turnplate.restaraunts.length - 1 + 1) + 1)
           // 奖品数量等于10,指针落在对应奖品区域的中心角度[252, 216, 180, 144, 108, 72, 36, 360, 324, 288]
-          that.rotateFn(item, that.turnplate.restaraunts[item - 1])
+          that.rotateFn(index+1, that.turnplate.restaraunts[index])
         })
       } else {
         Toast('今日已经抽过，明天再来。')
       }
-      
       // setTimeout(function() {
       //   // if (this.turnplate.bRotate) return
       // that.turnplate.bRotate = !that.turnplate.bRotate
@@ -316,5 +322,13 @@ export default {
       font-size: 16px;
 
     }
+  }
+  .enable{
+    position: absolute;
+    width: 100%;
+    top: 40px;
+    text-align: center;
+    color: #fff;
+    font-size: 16px;
   }
 </style>

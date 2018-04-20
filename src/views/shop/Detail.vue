@@ -58,6 +58,7 @@ export default {
 .detail {
   width: 100%;
   padding-bottom: 14vw;
+  background: #fff;
 }
 .banner{
   width: 100%;

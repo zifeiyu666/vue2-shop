@@ -253,8 +253,8 @@ export default {
     float: right;
     width: 25%;
     box-sizing: border-box;
-    bottom: 10px;
-    padding: 10px;
+    bottom: -2px;
+    padding: 14px;
     img{
       width: 100%;
       height: 100%;

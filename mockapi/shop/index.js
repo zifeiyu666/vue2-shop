@@ -1,6 +1,15 @@
 import instance from './instance';
 import { convertRESTAPI } from '../util';
 
+/** 申请退款，针对订单中的商品进行退款申请,传入订单商品表里面的主键Id */
+function api_Shop_saveRefundApply_post(opts) {
+  return instance({
+    method: 'post',
+    url:  '/api/Shop/saveRefundApply',
+    opts: opts
+  });
+}
+
 /** 获取我的积分 */
 function api_Shop_getMyScore_get(opts) {
   return instance({
@@ -551,6 +560,7 @@ function shop_getBanner_get(opts) {
 }
 
 export {
+  api_Shop_saveRefundApply_post,
   api_Shop_getMyScore_get,
   api_Shop_Lottery_post,
   api_Shop_getTodayLottery_get,
