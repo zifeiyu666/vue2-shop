@@ -33,24 +33,21 @@
             <button class="charge">去提现</button>
           </div> -->
 
-          <section class="my-pay">
+          <!-- <section class="my-pay">
               <router-link :to="{path: '/shop/shareproduct'}">
-                  <!-- <span class="icon2-money"></span> -->
                   <span>18</span>
                   <p>分销产品</p>
               </router-link>
               <router-link to="/shop/shareCompany">
-                  <!-- <span class="icon2-thecar"></span> -->
                   <span>3</span>
                   <p>分销商</p>
               </router-link>
               <router-link :to="{ path: '/shop/shareOrders'}">
-                  <!-- <span class="icon2-fixed"></span> -->
                   <span>8</span>
                   <p>分销订单</p>
               </router-link>
 
-          </section>
+          </section> -->
 
           <!-- <section class="my-vip">
             <router-link class="my-vip-top ho" :to="{ name: ''}" >
@@ -77,8 +74,9 @@
               <router-link class="my-service-top" :to="{path: '/shop/shareproduct'}">
                   <div>
                     <span class="icon2-service">
-                        <span class="path1"></span><span class="path2"></span><span class="path3"></span>
+                        <img src='../../assets/img/cp.png' style='width: 26px;margin-top:-4px' >
                     </span>
+                    
                   </div>
                   <p>
                     <span>分销产品</span><i class="icon-go"></i>
@@ -86,7 +84,8 @@
               </router-link>
               <router-link class="my-service-bottom" to="/shop/shareCompany">
                   <div>
-                    <span class="icon2-milogo"></span>
+                    <!-- <span class="icon2-milogo"></span> -->
+                    <img src='../../assets/img/fxs.png' style='width: 24px;margin-top:-4px' >
                   </div>
                   <p>
                     <span>我的分销商</span><i class="icon-go"></i>
@@ -94,15 +93,13 @@
               </router-link>
               <router-link class="my-service-bottom" :to="{ path: '/shop/shareOrders'}">
                   <div>
-                    <span class="icon2-milogo"></span>
+                    <!-- <span class="icon2-milogo"></span> -->
+                    <img src='../../assets/img/dd.png' style='width: 22px;margin-top:-4px' >
                   </div>
                   <p>
                     <span>分销订单</span><i class="icon-go"></i>
                   </p>
               </router-link>
-          </section>
-
-          <section class="my-settle">
               <router-link :to="{ name: '我的积分'}" class="my-settle-top">
                   <div>
                     <span class="icon2-f"></span>
@@ -111,6 +108,10 @@
                     <span>我的积分</span><i class="icon-go"></i>
                   </p>
               </router-link>
+          </section>
+
+          <!-- <section class="my-settle"> -->
+              
               <!-- <router-link :to="{ name: ''}" class="my-settle-bottom">
                 <div>
                   <span class="icon2-settle"></span>
@@ -119,10 +120,10 @@
                   <span>我的上级</span><i class="icon-go"></i>
                 </p>
               </router-link> -->
-          </section>
+          <!-- </section> -->
 
       </div>
-      <v-baseline></v-baseline>
+      <!-- <v-baseline></v-baseline> -->
       <v-footer></v-footer>
     </div>
 </template>
