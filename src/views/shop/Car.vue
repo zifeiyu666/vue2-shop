@@ -35,7 +35,7 @@ export default {
     }
   },
   mounted(){
-    // this.getMyCar()
+    this.getMyCar()
   },
   methods: {
     getMyCar() {
