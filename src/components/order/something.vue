@@ -16,12 +16,13 @@
             </div>
           </div>
       </li>
-
     </ul>
   </div>
 </template>
 
 <script>
+import {Toast} from 'mint-ui'
+import * as mockapi from '@/../mockapi'
 // 提示登录组件
 import Gologin from '@/components/car/gologin.vue'
 import Util from '../../util/common'
@@ -30,6 +31,12 @@ export default {
     'v-gologin': Gologin
   },
   props: ['orderDetail'],
+  data() {
+    return {
+      score: '',
+      usescore: ''
+    }
+  },
   computed: {
 
     carList() {
@@ -39,7 +46,7 @@ export default {
     },
 
   },
-
+  // TODO： 检测数据
   mounted() {
 
     // 初始化先获取购物车商品列表 否则 页面刷新出Bug
@@ -52,13 +59,14 @@ export default {
 
   },
   methods: {
-
   }
 }
 </script>
 
 <style lang="less" scoped>
+
 @import '../../assets/fz.less';
+
 .wrap {
     width: 100%;
     .something {

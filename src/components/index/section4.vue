@@ -69,6 +69,8 @@
       -ms-flex-wrap: wrap;
           flex-wrap: wrap;
       overflow: hidden;
+      // margin-top: 6vw;
+      background: #fff;
       li {
         width: 50%;
         -webkit-box-sizing: border-box;

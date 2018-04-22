@@ -23,7 +23,10 @@ const ShareJf = resolve => require(['@/views/shop/ShareJf.vue'], resolve)
 const myOrder = resolve => require(['@/views/shop/myOrders.vue'], resolve)
 const shareProduct = resolve => require(['@/views/shop/ShareProduct.vue'], resolve)
 const shareOrders = resolve => require(['@/views/shop/ShareOrders.vue'], resolve)
-// show
+const chouJiang = resolve => require(['@/views/shop/choujiang.vue'], resolve)
+const refund = resolve => require(['@/views/shop/refund.vue'], resolve)
+const refundList = resolve => require(['@/views/shop/refundList.vue'], resolve)
+
 // show
 const ShowIndex = resolve => require(['@/views/show/index.vue'], resolve)
 const ShowItem = resolve => require(['@/views/show/item.vue'], resolve)
@@ -186,6 +189,30 @@ const shopRouters = [{
     component: shareOrders,
     meta: {
       requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+    }
+  },
+  {
+    path: '/shop/choujiang',
+    name: '活动抽奖',
+    component: chouJiang,
+    meta: {
+      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+    }
+  },
+  {
+    path: '/shop/refund',
+    name: '申请退款',
+    component: refund,
+    meta: {
+      requireAuth: true,
+    }
+  },
+  {
+    path: '/shop/refundList',
+    name: '申请退款',
+    component: refundList,
+    meta: {
+      requireAuth: true,
     }
   }
 ]

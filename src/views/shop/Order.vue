@@ -36,7 +36,6 @@ export default {
   },
   methods: {
     getOrderDetail() {
-      // TODO:这里缺少一个根据当前订单号返回正在支付的订单信息的接口
       mockapi.shop.api_Shop_getOrders_get({
         params:{
           token: this.$store.state.userInfo.MemberToken,
@@ -45,7 +44,8 @@ export default {
       }).then(res => {
         var data = res.data.data
         this.orderDetail = data
-        this.$store.commit('saveOrderId', data.orderid)
+        // TODO: 未完成
+        // this.$store.commit('saveOrderId', data.orderid)
       })
     }
   }

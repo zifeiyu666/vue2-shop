@@ -13,10 +13,10 @@
       <mt-tab-container-item id="1">
           <div class="wrap">
             <ul>
-              <li class='order-wrap' v-for="(k,i) in allOrders" @click='gotoDetail(k)' :key="i">
-                <h3>订单标题：{{k.ordertitle}}</h3>
+              <li class='order-wrap' v-for="(item,i) in allOrders" @click='gotoDetail(item)' :key="i">
+                <h3>订单标题：{{item.ordertitle}}</h3>
                 <ul class="something" >
-                  <li v-for="(k,i) in k.opd" :key='i'>
+                  <li v-for="(k,i) in item.opd" :key='i'>
                     <div class="something-middle">
                       <img :src="k.imgurl[0]">
                     </div>
@@ -27,9 +27,20 @@
                       <!-- <div class="something-right-bottom">
                         <span @click='deleteCollection(k)'></span>
                       </div> -->
+                      <!-- TODO -->
+                      <!-- v-if='k.orderstate=="已付款"' -->
+                      <div class='state-wrap'>
+                        <mt-button  class='refund-btn1'  @click='refund([k,item])'>申请退款</mt-button>
+                      </div>
+                      
                     </div>
+                    
                   </li>
+                  <mt-button v-if='item.orderstate=="未付款"' class='refund-btn'  @click='goPay(k)'>去支付</mt-button>
                 </ul>
+                
+                <!-- <div class="line"></div> -->
+                
               </li>
               <div class="btn-wrap" style='text-align: center'>
                 <mt-button @click='loadMoreAll'>加载更多</mt-button>
@@ -57,6 +68,7 @@
                       </div> -->
                     </div>
                   </li>
+                  <mt-button class='refund-btn'  @click='goPay(k)'>去支付</mt-button>
                 </ul>
                 
               </li>
@@ -86,6 +98,7 @@
                       </div> -->
                     </div>
                   </li>
+                  <mt-button class='refund-btn'  @click='refund(k)'>申请退款</mt-button>
                 </ul>
                 
               </li>
@@ -133,6 +146,9 @@ import Header from '@/common/_header.vue'
       'v-header':Header
     },
     mounted() {
+      if (this.$route.query.selected) {
+        this.selected = this.$route.query.selected
+      }
       this.getAllOrdersList(false)
       this.getWaitOrdersList(false)
       this.getPayedOrdersList(false)
@@ -210,6 +226,9 @@ import Header from '@/common/_header.vue'
               this.payedQuery.busy = true
           }, 1000);
         }
+      },
+      refund(data) {
+        this.$router.push({path: '/shop/refund', query: {orderno: data[1].orderno, id: data[0].id}})
       }
     }
   }
@@ -219,6 +238,9 @@ import Header from '@/common/_header.vue'
 .order-wrap{
   // border-bottom: 1px solid #999;
   margin-bottom: 20px;
+  background: #fff;
+  padding-top: 10px;
+  box-shadow: 0px 1px 2px 1px #ddd;
   h3{
     padding-left: 15px;
   }
@@ -230,7 +252,7 @@ import Header from '@/common/_header.vue'
   height: 40px;
 }
 .wrap{
-  margin-top: 50px;
+  margin-top: 10px;
 }
 .mint-header{
   background: #eee;
@@ -371,6 +393,8 @@ input{
     padding-bottom: 60px;
     .something {
         width: 100%;
+        padding-bottom: 50px;
+        position: relative;
         > li {
             display: -ms-flex;
             display: -webkit-box;
@@ -379,9 +403,10 @@ input{
             -webkit-box-align: center;
             -ms-flex-align: center;
             align-items: center;
-            padding: 4vw 2vw;
+            padding: 4vw 0vw;
             position: relative;
-            height: 26vw;
+            height: 40vw;
+            margin: 0 2vw;
             .bd();
             .something-left {
                 -ms-flex: 2;
@@ -404,13 +429,15 @@ input{
 
             }
             .something-middle {
-                -ms-flex: 3;
+                ms-flex: 3;
                 -webkit-box-flex: 3;
                 flex: 3;
-                height: 26vw;
+                height: 30vw;
                 padding-left: 2vw;
                 -webkit-box-sizing: border-box;
                 box-sizing: border-box;
+                position: relative;
+                top: -4vw;
                 img {
                     display: block;
                     width: 100%;
@@ -494,6 +521,32 @@ input{
             transform: scale(1.3);
         }
     }
+}
+.refund-btn{
+  font-size: 13px;
+  width: 80px;
+  height: 35px;
+  color: #FFAA00;
+  margin-top: 2vw;
+  position: absolute;
+  right: 4vw;
+  bottom: 7px;
+  z-index: 10;
+}
+.refund-btn1{
+  display: inline-block;
+  font-size: 13px;
+  width: 80px;
+  height: 8vw;
+  color: #FFAA00;
+  margin-top: 2vw;
+  // position: absolute;
+  // right: 4vw;
+  // bottom: 7px;
+  z-index: 10;
+}
+.state-wrap{
+  height: 8vw;
 }
 </style>
 

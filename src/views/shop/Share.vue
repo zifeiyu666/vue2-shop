@@ -3,9 +3,7 @@
   <div class="car">
       <header class="header">
           <div class="header-icon">
-              <span>
-                <img :src="avatar" style='width: 100%; height: 100%' alt="">
-              </span>
+            <img :src="avatar" style='width: 100%; height: 100%' alt="">
           </div>
           <!-- <span>登录/注册</span> -->
            <div class="header-content">
@@ -100,14 +98,6 @@
                     <span>分销订单</span><i class="icon-go"></i>
                   </p>
               </router-link>
-              <router-link :to="{ name: '我的积分'}" class="my-settle-top">
-                  <div>
-                    <span class="icon2-f"></span>
-                  </div>
-                  <p>
-                    <span>我的积分</span><i class="icon-go"></i>
-                  </p>
-              </router-link>
           </section>
 
           <!-- <section class="my-settle"> -->
@@ -161,7 +151,10 @@
   @import '../../assets/fz.less';
   @import '../../assets/index/style.css';
   @import '../../assets/user/icon/carstyle.css';
-
+  .avatar{
+      float: left;
+      padding: 10px;
+    }
   .car {
     width: 100%;
     padding-bottom: 14vw;

@@ -1,156 +1,30 @@
 <template lang="html">
   <div>
-    <div class="search-wrap">
-      <!-- <icon name='angle-left' scale="1.5"></icon>   -->
-      <!-- <div style='background: #eee;height: 40px;'>
-        <div class="back" @click="back">
-          <icon name='angle-left' scale="1.5"></icon>
-        </div>
-        <div class="input-wrap">
-          <div class='input-inner-wrap'>
-            <icon name='search'></icon>  
-            <input type="text" placeholder='搜索'>
+    <v-header>
+      <h1 slot="title">退款订单</h1>
+    </v-header>
+    <div class="wrap">
+      <ul class="something" >
+        <li v-for="(k,i) in allList" @click='gotoDetail(k)' :key="i">
+          <div class="something-middle">
+            <img :src="k.imgurl[0]">
           </div>
-        </div>
-      </div> -->
-      <div class="catagory clearfix">
-        <div class="nav">
-          <mt-navbar v-model="selected">
-            <mt-tab-item id="1">全部</mt-tab-item>
-            <mt-tab-item id="2">权益卡</mt-tab-item>
-            <mt-tab-item id="3">旅游打包类</mt-tab-item>
-            <mt-tab-item id="4">单独类</mt-tab-item>
-          </mt-navbar>
-        </div>
-        <div class="btn" style='margin-top:0; color: #666' @click='showPopside()'>
-          <i class='iconfont icon-fenlei'></i>
-        </div>
-      </div>
-      
-      <mt-tab-container v-model="selected">
-        <mt-tab-container-item id="1">
-          <div class="wrap">
-            <ul class="something" >
-              <li v-for="(k,i) in allList" @click='gotoDetail(k)' :key="i">
-                <div class="something-middle">
-                  <img :src="k.imgurl[0]">
-                </div>
-                <div class="something-right">
-                  <p>{{k.title}}</p>
-                  <p style="color:rgb(199, 108, 28);height: 20px;"> {{k.intro}}</p>
-                  <p>售价：{{k.price}}元</p>
-                  <!-- <div class="something-right-bottom">
-                    <span @click='deleteCollection(k)'></span>
-                  </div> -->
-                </div>
-              </li>
-            </ul>
-            <div style='text-align: center; margin: 40px'>
-              <mt-button @click='loadMoreAll'>加载更多</mt-button>
-            </div>
+          <div class="something-right">
+            <p style='height: 36px'>{{k.title}}</p>
+            <!-- <p style="color:rgb(199, 108, 28);height: 20px;"> {{k.intro}}</p> -->
+            <p style="color:rgb(199, 108, 28);height: 20px;">售价：{{k.price}}元</p>
+            <p>退款中</p>
+            <!-- <div class="something-right-bottom">
+              <span @click='deleteCollection(k)'></span>
+            </div> -->
           </div>
-        </mt-tab-container-item>
-        <mt-tab-container-item id="2">
-          <div class="wrap">
-            <ul class="something" >
-              <li v-for="(k,i) in QYKList" @click='gotoDetail(k)' :key="i">
-                <div class="something-middle">
-                  <img :src="k.imgurl[0]">
-                </div>
-                <div class="something-right">
-                  <p>{{k.title}}</p>
-                  <p style="color:rgb(199, 108, 28);height: 20px;"> {{k.intro}}</p>
-                  <p>售价：{{k.price}}元</p>
-                  <!-- <div class="something-right-bottom">
-                    <span @click='deleteCollection(k)'></span>
-                  </div> -->
-                </div>
-              </li>
-            </ul>
-            <div style='text-align: center'>
-              <mt-button @click='loadMoreQYK'>加载更多</mt-button>
-            </div>
-          </div>
-        </mt-tab-container-item>
-        <mt-tab-container-item id="3">
-          <div class="wrap">
-            <ul class="something" >
-              <li v-for="(k,i) in LTDBList" @click='gotoDetail(k)' :key="i">
-                <div class="something-middle">
-                  <img :src="k.imgurl[0]">
-                </div>
-                <div class="something-right">
-                  <p>{{k.title}}</p>
-                  <p style="color:rgb(199, 108, 28);height: 20px;"> {{k.intro}}</p>
-                  <p>售价：{{k.price}}元</p>
-                  <!-- <div class="something-right-bottom">
-                    <span @click='deleteCollection(k)'></span>
-                  </div> -->
-                </div>
-              </li>
-            </ul>
-            <div style='text-align: center'>
-              <mt-button @click='loadMoreLTDB'>加载更多</mt-button>
-            </div>
-          </div>
-        </mt-tab-container-item>
-        <mt-tab-container-item id="4">
-          <div class="wrap">
-            <ul class="something" >
-              <li v-for="(k,i) in DDList" @click='gotoDetail(k)' :key="i">
-                <div class="something-middle">
-                  <img :src="k.imgurl[0]">
-                </div>
-                <div class="something-right">
-                  <p>{{k.title}}</p>
-                  <p style="color:rgb(199, 108, 28);height: 20px;"> {{k.intro}}</p>
-                  <p>售价：{{k.price}}元</p>
-                  <!-- <div class="something-right-bottom">
-                    <span @click='deleteCollection(k)'></span>
-                  </div> -->
-                </div>
-              </li>
-            </ul>
-            <div style='text-align: center'>
-              <mt-button @click='loadMoreDD'>加载更多</mt-button>
-            </div>
-          </div>
-        </mt-tab-container-item>
-      </mt-tab-container>
-      <div class="search-history">
-      </div>
-
-      
-    </div>
-
-    <div class="popside-wrap" v-if='popsideVisible'>
-      <div class="shade" @click='hidePopside()'></div>
-      <div class="main">
-        <div class='inner-wrap'>
-          <mt-radio
-            title="分类1"
-            v-model="value"
-            :options="['optionA', 'optionB', 'optionC']">
-          </mt-radio>
-          <mt-radio
-            title="分类2"
-            v-model="value"
-            :options="['optionA', 'optionB', 'optionC']">
-          </mt-radio>
-          <mt-radio
-            title="分类3"
-            v-model="value"
-            :options="['optionA', 'optionB']">
-          </mt-radio>
-          <div class="btn-wrap">
-            <mt-button class='btn-left' size='small' type='primary'>重置</mt-button>
-            <mt-button class='btn-right' size='small' type='primary' @click='hidePopside()'>完成</mt-button>
-          </div>
-        </div>
+        </li>
+      </ul>
+      <div style='text-align: center; margin: 40px'>
+        <mt-button @click='loadMoreAll'>加载更多</mt-button>
       </div>
     </div>
-
-    <v-footer></v-footer>
+    <!-- <v-footer></v-footer> -->
   </div>
   
   
@@ -158,6 +32,7 @@
 
 <script>
 import Footer from '@/common/_footer.vue'
+import Header from '@/common/_header.vue'
 import * as mockapi from '@/../mockapi'
 
 export default {
@@ -188,7 +63,8 @@ export default {
     }
   },
   components: {
-     'v-footer':Footer
+     'v-footer':Footer,
+     'v-header':Header
   },
   mounted() {
     this.getAllProductList()
@@ -293,9 +169,6 @@ export default {
   width: 40px;
   height: 40px;
 }
-.wrap{
-  margin-top: 50px;
-}
 .mint-header{
   background: #eee;
   color: #666;
@@ -315,15 +188,15 @@ export default {
 .mint-navbar{
   background: #fff;
 }
-.search-wrap{
-  background: #F8FCFF;
-  height: 100%;
-  .fa-icon{
-    position: relative;
-    left: 10px;
-    top: 6px;
-  }
-}
+// .search-wrap{
+//   background: #F8FCFF;
+//   height: 100%;
+//   .fa-icon{
+//     position: relative;
+//     left: 10px;
+//     top: 6px;
+//   }
+// }
 .input-inner-wrap{
   margin-right: 20px;
   position: relative;

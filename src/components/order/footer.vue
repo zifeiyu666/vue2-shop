@@ -30,9 +30,11 @@ export default {
     //商品的价格总和
     allpay(){
       var all = 0
-      this.orderDetail.opd.forEach((item,i) => {
-        all = all + item.totalprice
-      })
+      if (this.orderDetail.opd) {
+        this.orderDetail.opd.forEach((item,i) => {
+          all = all + item.totalprice
+        })
+      }
       return all
     }
   },
@@ -40,6 +42,7 @@ export default {
   methods:{
     //点击跳转到支付页
     goPay(){
+      var that = this
       MessageBox.confirm('立即去支付?').then(action => {
         mockapi.shop.api_GetWCPay_get({
           params: {
@@ -61,10 +64,15 @@ export default {
               alert(JSON.stringify(res));
 
               if (res.err_msg == "get_brand_wcpay_request:ok") {
-                  if (confirm('支付成功！点击“确定”进入退款流程测试。')) {
-                      location.href = '@Url.Action("Refund", "TenPayV3")';
-                  }
+                  // if (confirm('支付成功！点击“确定”进入退款流程测试。')) {
+                  //     location.href = '@Url.Action("Refund", "TenPayV3")';
+                  // }
                   //console.log(JSON.stringify(res));
+                  that.$message('支付成功')
+                  that.$route.push('/shop/myorder')
+              } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
+                that.$message('支付被取消')
+                that.$route.push('/shop/myorder')
               }
               // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
               //因此微信团队建议，当收到ok返回时，向商户后台询问是否收到交易成功的通知，若收到通知，前端展示交易成功的界面；若此时未收到通知，商户后台主动调用查询订单接口，查询订单的当前状态，并反馈给前端展示相应的界面。

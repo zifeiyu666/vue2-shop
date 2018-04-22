@@ -5,12 +5,12 @@
     </v-header>
     <header class="header">
         <div class="header-icon">
-            <span class="icon2-user"></span>
+          <img :src="avatar" style='width: 100%; height: 100%' alt="">
         </div>
         <!-- <span>登录/注册</span> -->
         <div class="header-content">
-          <p>欢迎您：xxx</p>
-          <p>总积分：123</p>
+          <p>欢迎您：{{username}}</p>
+          <p>总积分：{{jifen}}</p>
         </div>
     </header>
     <!-- <mt-navbar v-model="selected">
@@ -26,34 +26,79 @@
       </mt-tab-container-item>
     </mt-tab-container> -->
     <p class='title jf-title'>积分获取记录</p>
-    <div v-for="n in 4" :key='n'>
+    <div v-for="(i, index) in JfList" :key='index'>
       <div class="company-wrap clearfix">
-        <div class="avatar">
-          <img :src="$imgHost + '60x60&text=jifen'" alt="">
-        </div>
+        <!-- <div class="avatar">
+          <img src="" alt="">
+        </div> -->
         <div class="content">
-          <ul>
-            <li>积分获取事件</li>
-            <li>获取积分数量33</li>
-            <li>时间：2017-6-12</li>
+          <ul style='background-color: #F8FCFF!important'>
+            <li>变动类型：<span>{{i.inout}}</span></li>
+            <li>原因： <span>{{i.reason}}</span></li>
+            <li>数量： <span>{{i.score}}</span></li>
+            <li>变动前积分数量：<span>{{i.beforescore}}</span></li>
+            <li>变动后积分数量：<span>{{i.afterscore}}</span></li> 
+            <li>时间：<span>{{generateTime(i.recordTime)}}</span></li>
           </ul>
         </div>
       </div>
+    </div>
+    <div class="btn-wrap" style='text-align: center;margin-top:30px;margin-bottom: 20px;'>
+      <mt-button @click='loadMore'>加载更多</mt-button>
     </div>
     
   </div>
   
 </template>
 <script>
+import * as mockapi from '@/../mockapi'
 import Header from '@/common/_header.vue'
   export default{
     data() {
       return {
-        selected: '1'
+        pageNo: 1,
+        pageSize: 10,
+        JfList: []
       }
     },
     components: {
       'v-header':Header
+    },
+    mounted() {
+      this.getJfList()
+      var userInfo = this.$store.state.userInfo
+      this.qrcode = userInfo.SharedQRCode
+      this.avatar = userInfo.headimgurl
+      this.username = userInfo.nickname
+      this.jifen = userInfo.Score,
+      this.time = userInfo.subscribe_time
+    },
+    methods: {
+      getJfList() {
+        mockapi.shop.api_Shop_getMyScoreList_get({
+          params: {
+            token: this.$store.state.userInfo.MemberToken,
+            pageNo: this.pageNo,
+            pageSize: this.pageSize
+          }
+        }).then(res => {
+          var data = res.data.data
+          this.JfList = this.JfList.concat(data)
+          console.log(this.JfList)
+        })
+      },
+      generateTime(time) {
+        var date = ''
+        var timer = ''
+        date = time.substring(0,10)
+        timer = time.slice(11,19)
+        return (date + " " + timer)
+        
+      },
+      loadMore() {
+        this.pageNo ++ 
+        this.getJfList()
+      } 
     }
   }
 </script>
@@ -65,7 +110,8 @@ import Header from '@/common/_header.vue'
     margin-top: 20px;
     padding-left: 10px;
     background: #F8FCFF;
-    border-bottom: 1px solid #eee;
+    /* border-bottom: 1px solid #eee; */
+    box-shadow: 0px 1px 2px 1px #ddd;
     .avatar{
       float: left;
       padding: 10px;
@@ -74,6 +120,16 @@ import Header from '@/common/_header.vue'
       padding: 10px;
       font-size: 14px;
       float: left;
+      li{
+        /* background: none; */
+        font-size: 12px;
+        line-height: 20px;
+        span{
+          font-size: 14px;
+          color: #333;
+          margin-left: 5px;
+        }
+      }
     }
   }
   .header {
@@ -107,6 +163,7 @@ import Header from '@/common/_header.vue'
         line-height: 16vw;
         text-align: center;
         border-radius: 50%;
+        overflow: hidden;
         span {
           .fz(font-size, 54);
           &::before {

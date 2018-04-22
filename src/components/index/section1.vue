@@ -38,7 +38,8 @@ import { Lazyload } from 'mint-ui';
   .section1 {
     width: 100%;
     overflow: hidden;
-    .pt();
+    margin-top: 6vw;
+    background: #fff;
     .section1-title {
       .bt();
       text-align: center;

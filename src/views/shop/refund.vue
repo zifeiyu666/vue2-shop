@@ -1,83 +1,170 @@
-<template lang="html">
-
-  <div class="wrap">
-    <v-gologin></v-gologin>
-    <ul
-    class="something" 
-    v-if='list'
-    v-infinite-scroll="loadMore"
-    infinite-scroll-disabled="loading"
-    infinite-scroll-distance="10">
-      <li v-for="(k,i) in list">
-          <div class="something-middle">
-            <img :src="k.imgurl[0]">
-          </div>
-          <div class="something-right">
-            <p>{{k.title}}</p>
-            <p style="color:rgb(199, 108, 28)"> {{k.intro}}</p>
-            <p>售价：{{k.price}}元</p>
-            <div class="something-right-bottom">
-
-              <span @click='deleteCollection(k)'></span>
+<template>
+  <div>
+    <v-header>
+      <h1 slot="title">我的订单</h1>
+    </v-header>
+    <ul class='wrap'>
+      <li class='order-wrap'>
+        <h3>订单标题：{{orderDetail.ordertitle}}</h3>
+        <ul class="something" >
+          <li v-for="(k,i) in orderDetail.opd" :key='i'>
+            <div class="something-middle">
+              <img :src="k.imgurl[0]">
             </div>
-          </div>
+            <div class="something-right">
+              <p>{{k.producttitle}}</p>
+              <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p>
+              <p>售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;使用积分：{{k.usescore}}</p>
+              <!-- <div class="something-right-bottom">
+                <span @click='deleteCollection(k)'></span>
+              </div> -->
+            </div>
+          </li>
+        </ul>  
       </li>
+      <mt-field label="申请理由" placeholder="请填写退款理由" type="textarea" rows="4" v-model="reason"></mt-field>
     </ul>
+    <mt-button class='bottom' @click='submitRefund'>提交</mt-button>
   </div>
+  
 </template>
-
 <script>
-// 提示登录组件
-import Gologin from '@/components/car/gologin.vue'
-import Util from '../../util/common'
-import qs from 'qs'
+import {Toast} from 'mint-ui'
+import Footer from '@/common/_footer.vue'
 import * as mockapi from '@/../mockapi'
-import { Toast } from 'mint-ui';
-export default {
-  components: {
-    'v-gologin': Gologin
-  },
-  props: ['list'],
 
-  mounted() {
-  },
-  methods: {
-    deleteCollection(k) {
-      var that = this
-      mockapi.shop.api_Shop_cancleCollection_post({
-        data: qs.stringify({
-          token: this.$store.state.userInfo.MemberToken,
-          Pid: k.id
+import Header from '@/common/_header.vue'
+  export default{
+    data() {
+      return {
+        orderDetail: undefined,
+        reason: ''
+      }
+    },
+    components: {
+      'v-header':Header
+    },
+    mounted() {
+      this.getOrderDetail()
+    },
+    methods: {
+      getOrderDetail() {
+        mockapi.shop.api_Shop_getOrders_get({
+          params: {
+            token: this.$store.state.userInfo.MemberToken,
+            orderno: this.$route.query.orderno
+          }
+        }).then(res => {
+          this.orderDetail = res.data.data
         })
-      }).then(res => {
-        if (res.data.result == 1) {
-          that.$emit('updatelist')
-          Toast({
-          message: '操作成功'
-          });
-        } 
-      })
-    },
-    toggle() {
-      setTimeout(() => {
-          // 每点击一下都会改变choseBool的布尔值,所以要重置数组
-          this.$store.dispatch('cutCarList',this.carList)
-      }, 0);
-    },
-    loadMore() {
-        this.$emit('loadmore')
+      },
+      submitRefund() {
+        mockapi.shop.api_Shop_saveRefundApply_post({
+          params: {
+            token: this.$store.state.userInfo.MemberToken,
+            Id: this.$route.query.id,
+            Reason: this.reason
+          }
+        }).then(res => {
+          if (res.data.result == 1) {
+            Toast('退款申请成功！')
+          }
+        })
+      }
     }
-
   }
-}
 </script>
-
 <style lang="less" scoped>
 @import '../../assets/fz.less';
+.bottom{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #ff4800;
+  color: #fff;
+  border-radius: 0;
+  font-size: 14px;
+}
+.back{
+  position: absolute;
+  z-index: 1000;
+  width: 40px;
+  height: 40px;
+}
+.wrap{
+  margin-top: 10px;
+}
+.mint-header{
+  background: #eee;
+  color: #666;
+}
+.null{
+    height: 10px;
+  }
+.input-wrap{
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  padding-left: 40px;
+  padding-top: 5px;
+  box-sizing: border-box;
+}
+.mint-navbar{
+  background: #fff;
+}
+.search-wrap{
+  background: #F8FCFF;
+  height: 100%;
+  .fa-icon{
+    position: relative;
+    left: 10px;
+    top: 6px;
+  }
+}
+.input-inner-wrap{
+  margin-right: 20px;
+  position: relative;
+  .fa-icon{
+    position: absolute;
+    top: 6px;
+    left: 8px;
+  }
+}
+input{
+  width: 100%;
+  background: #fff;
+  border: 1px solid #eee;
+  line-height: 18px;
+  padding: 5px 10px 5px 30px;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+.mint-navbar .mint-tab-item.is-selected {
+    border-bottom: 3px solid #FFAA00;
+    color: #FFAA00;
+    margin-bottom: -3px;
+}
+
 .wrap {
     width: 100%;
+    padding-bottom: 60px;
+    .order-wrap{
+      // border-bottom: 1px solid #999;
+      margin-bottom: 20px;
+      background: #fff;
+      padding-top: 10px;
+      box-shadow: 0px 1px 2px 1px #ddd;
+      h3{
+        padding-left: 15px;
+        font-size: 16px;
+      }
+    }
     .something {
         width: 100%;
+        padding-bottom: 50px;
+        position: relative;
         > li {
             display: -ms-flex;
             display: -webkit-box;
@@ -86,9 +173,10 @@ export default {
             -webkit-box-align: center;
             -ms-flex-align: center;
             align-items: center;
-            padding: 4vw 2vw;
+            padding: 4vw 0vw;
             position: relative;
             height: 26vw;
+            margin: 0 2vw;
             .bd();
             .something-left {
                 -ms-flex: 2;
@@ -202,4 +290,16 @@ export default {
         }
     }
 }
+.refund-btn{
+  font-size: 13px;
+  width: 80px;
+  height: 35px;
+  color: #FFAA00;
+  margin-top: 2vw;
+  position: absolute;
+  right: 4vw;
+  bottom: 7px;
+  z-index: 10;
+}
 </style>
+

@@ -7,8 +7,8 @@
     <!-- <mt-field label="原密码" placeholder="请输入" type="password" v-modal="password"></mt-field>
     <mt-field label="新密码" placeholder="请输入" type="password" v-modal="password"></mt-field> -->
     <mt-field label="手机号" placeholder="请输入" type="tel" v-model="phone"></mt-field>
-    <div class="btn">
-      <mt-button type='primary'>保存</mt-button>
+    <div>
+      <mt-button class='btn'>保存</mt-button>
     </div>
   </div>
 </template>
@@ -22,7 +22,11 @@
 </script>
 <style>
   .btn{
+    width: 100%;
+
     text-align: center;
-    margin-top: 20px;
+    margin-top: 20px; 
+    color:#fff;
+    background: #f37d0f;
   }
 </style>
