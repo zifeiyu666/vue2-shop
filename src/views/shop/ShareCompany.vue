@@ -14,7 +14,7 @@
       </div>
     </div>
     
-    <mt-tab-container v-model="selected" style='margin-top: 60px;'>
+    <mt-tab-container v-model="selected">
       <mt-tab-container-item id="1">
         <div class="wrap">
           <ul class="something" >
@@ -34,7 +34,8 @@
             </li>
           </ul>
           <div style='text-align: center;position: relative;top: 20px;'>
-            <mt-button @click='loadMoreAll'>加载更多</mt-button>
+            <mt-button @click='loadMoreAll' v-if='allQuery.loadMore'>加载更多</mt-button>
+            <v-baseline v-else></v-baseline>
           </div>
         </div>
       </mt-tab-container-item>
@@ -57,7 +58,8 @@
             </li>
           </ul>
           <div style='text-align: center;position: relative;top: 20px;'>
-            <mt-button @click='loadMoreOne'>加载更多</mt-button>
+            <mt-button @click='loadMoreOne' v-if='oneQuery.loadMore'>加载更多</mt-button>
+            <v-baseline v-else></v-baseline>
           </div>
         </div>
       </mt-tab-container-item>
@@ -80,7 +82,8 @@
             </li>
           </ul>
           <div style='text-align: center;position: relative;top: 20px;'>
-            <mt-button @click='loadMoreTwo'>加载更多</mt-button>
+            <mt-button @click='loadMoreTwo' v-if='twoQuery.loadMore'>加载更多</mt-button>
+            <v-baseline v-else></v-baseline>
           </div>
         </div>
       </mt-tab-container-item>
@@ -103,7 +106,8 @@
             </li>
           </ul>
           <div style='text-align: center;position: relative;top: 20px;'>
-            <mt-button @click='loadMoreThree'>加载更多</mt-button>
+            <mt-button @click='loadMoreThree' v-if='threeQuery.loadMore'>加载更多</mt-button>
+            <v-baseline v-else></v-baseline>
           </div>
         </div>
       </mt-tab-container-item>
@@ -113,6 +117,7 @@
   
 </template>
 <script>
+import Baseline from '@/common/_baseline.vue'
 import Footer from '@/common/_footer.vue'
 import * as mockapi from '@/../mockapi'
 import Header from '@/common/_header.vue'
@@ -127,22 +132,27 @@ import Header from '@/common/_header.vue'
         allQuery: {
           pageNo: 1,
           pageSize: 10,
+          loadMore: true
         },
         oneQuery: {
           pageNo: 1,
           pageSize: 10,
+          loadMore: true
         },
         twoQuery: {
           pageNo: 1,
           pageSize: 10,
+          loadMore: true
         },
         threeQuery: {
           pageNo: 1,
           pageSize: 10,
+          loadMore: true
         },
       }
     },
     components: {
+      'v-baseline': Baseline,
       'v-header':Header
     },
     mounted() {
@@ -161,7 +171,11 @@ import Header from '@/common/_header.vue'
             pageSize: this.allQuery.pageSize
           }
         }).then(res => {
-          var data = res.data.data
+          var data = res.data.data.list
+          var isLastPage = res.data.data.pager.isLastPage
+          if (isLastPage) {
+            this.allQuery.loadMore = false
+          }
           this.allList = this.allList.concat(data)
           this.allQuery.pageNo++
         })
@@ -174,9 +188,13 @@ import Header from '@/common/_header.vue'
             pageSize: this.oneQuery.pageSize
           }
         }).then(res => {
-          var data = res.data.data
+          var data = res.data.data.list
+          var isLastPage = res.data.data.pager.isLastPage
+          if (isLastPage) {
+            this.oneQuery.loadMore = false
+          }
           this.oneList = this.oneList.concat(data)
-          this.oneQuery.pageNo++
+          // this.oneQuery.pageNo++
         })
       },
       getTwoList() {
@@ -187,9 +205,13 @@ import Header from '@/common/_header.vue'
             pageSize: this.twoQuery.pageSize
           }
         }).then(res => {
-          var data = res.data.data
+          var data = res.data.data.list
+          var isLastPage = res.data.data.pager.isLastPage
+          if (isLastPage) {
+            this.twoQuery.loadMore = false
+          }
           this.twoList = this.twoList.concat(data)
-          this.twoQuery.pageNo++
+          // this.twoQuery.pageNo++
         })
       },
       getThreeList() {
@@ -200,21 +222,29 @@ import Header from '@/common/_header.vue'
             pageSize: this.threeQuery.pageSize
           }
         }).then(res => {
-          var data = res.data.data
+          var data = res.data.data.list
+          var isLastPage = res.data.data.pager.isLastPage
+          if (isLastPage) {
+            this.threeQuery.loadMore = false
+          }
           this.threeList = this.threeList.concat(data)
-          this.threeQuery.pageNo++
+          // this.threeQuery.pageNo++
         })
       },
       loadMoreAll() {
+        this.allQuery.pageSize++
         this.getAllList
       },
       loadMoreOne() {
+        this.oneQuery.pageSize++
         this.getOneList
       },
       loadMoreTwo() {
+        this.twoQuery.pageSize++
         this.getTwoList
       },
       loadMoreThree() {
+        this.threeQuery.pageSize++
         this.getThreeList
       }
     }
@@ -297,7 +327,7 @@ input{
   }
 }
 .catagory{
-  position: fixed;
+  /* position: fixed; */
   top: 50px;
   z-index: 10;
   width: 100%;

@@ -46,7 +46,7 @@ export default {
           pageSize: this.pageSize
         }
       }).then(res => {
-        var data = res.data.data
+        var data = res.data.data.list
         this.carList = data
         this.$store.commit('saveCarlist', data)
       })

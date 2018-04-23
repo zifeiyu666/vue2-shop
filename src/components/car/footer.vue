@@ -93,12 +93,12 @@ export default {
       console.log(this.$store.state.userInfo.MemberToken)
       console.log(this.params[0].propid)
       mockapi.shop.api_Shop_generateCarOrder_post({
-        data: {
+        data: qs.stringify({
           token: this.$store.state.userInfo.MemberToken,
           // TODO: 这里参数传递有问题，需要后台解析
           params: this.params,
           Score: this.usescore ? this.usescore : 0
-        }
+        })
       }).then(res => {
         var data = res.data.data
         this.$router.push({path: '/shop/order', query: {orderno: data.orderno, orderid: data.orderid}})
@@ -114,7 +114,7 @@ export default {
   @import '../../assets/fz.less';
   .jf{
     position: fixed;
-    bottom: 54px;
+    bottom: 16vw;
     padding: 10px 5px;
     width: 100%;
     box-sizing: border-box;

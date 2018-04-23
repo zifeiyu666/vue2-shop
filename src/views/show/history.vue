@@ -63,7 +63,7 @@
           params: this.query
         }).then(response => {
           var data = response.data.data
-          this.historyList = data
+          this.historyList = data.list
           this.loading = false
           this.busy = false
         }).catch(error => {

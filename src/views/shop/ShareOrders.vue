@@ -26,7 +26,8 @@
             </ul>
           </li>
           <div class="btn-wrap" style='text-align: center'>
-            <mt-button @click='loadMore'>加载更多</mt-button>
+            <mt-button @click='loadMore' v-if='isLoadMore'>加载更多</mt-button>
+            <v-baseline v-else></v-baseline>
           </div>
         </ul>
         <div class='nomore' v-else>
@@ -38,6 +39,7 @@
   
 </template>
 <script>
+import Baseline from '@/common/_baseline.vue'
 import Footer from '@/common/_footer.vue'
 import * as mockapi from '@/../mockapi'
 
@@ -49,10 +51,12 @@ import Header from '@/common/_header.vue'
         popsideVisible: false,
         pageNo: 1,
         pageSize: 10,
-        allOrders: []
+        allOrders: [],
+        isLoadMore: true
       }
     },
     components: {
+      'v-baseline': Baseline,
       'v-header':Header
     },
     mounted() {
@@ -67,7 +71,11 @@ import Header from '@/common/_header.vue'
             pageSize: this.pageSize
           }
         }).then(res => {
-          var data = res.data.data
+          var data = res.data.data.list
+          var isLastPage = res.data.data.pager.isLastPage
+          if (isLastPage) {
+            this.isLoadMore = false
+          }
           this.allOrders = this.allOrders.concat(data)
         })
       },

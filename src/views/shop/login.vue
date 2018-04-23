@@ -4,12 +4,25 @@
       <h1 slot="title">登录页</h1>
     </v-header>
     <section>
+      <v-timer ref="timerbtn" class="btn btn-default timer" v-on:run="sendCode" 
+:disabled="disabled" :second="60"></v-timer>
       <mt-field
-       label="手机号"
+        label="手机号"
         placeholder="请输入手机号"
         type = "text"
         v-model = "phone"
-        ></mt-field>
+      ></mt-field>
+      <!-- <mt-button
+     plain
+     size="large"
+     @click="bindPhone"
+     >获取验证码</mt-button> -->
+      <mt-field
+        label="验证码"
+        placeholder="请输入验证码"
+        type = "text"
+        v-model = "phone"
+      ></mt-field>
       <!-- <mt-field
        label="密码"
        placeholder="请输入密码"
@@ -35,13 +48,15 @@
 </template>
 
 <script>
+import identify from '@/components/identifyPhone'
 import * as mockapi from '@/../mockapi'
 import qs from 'qs'
 import Header from '@/common/_header.vue'
 import { Toast } from 'mint-ui'
 export default {
   components:{
-    'v-header':Header
+    'v-header':Header,
+    'v-timer': identify
   },
   data(){
     return {
@@ -65,6 +80,20 @@ export default {
       }).catch(error => {
         console.log(error)
       })
+    },
+    sendCode (){
+      if (this.phone) {
+        this.$refs.timerbtn.setDisabled(true); //设置按钮不可用
+        this.$refs.timerbtn.start();
+        var that = this
+        setTimeout(function(){
+          console.log('stop timer')
+           that.$refs.timerbtn.stop(); //停止倒计时
+        },4000)
+      } else {
+        Toast('请输入手机号')
+      }
+        
     },
     // 绑定手机
     bindPhone(){
@@ -121,5 +150,16 @@ export default {
       font-size: 16px;
     }
   }
+}
+.timer{
+  position: absolute;
+  right: 0px;
+  z-index: 1000;
+  top: 42px;
+  height: 48px;
+  padding: 0 6px;
+  font-size: 13px;
+  color: #666;
+  background: #eee;
 }
 </style>

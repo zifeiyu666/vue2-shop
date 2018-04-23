@@ -1,6 +1,15 @@
 import instance from './instance';
 import { convertRESTAPI } from '../util';
 
+/** 取消订单 */
+function api_Shop_CancleOrder_post(opts) {
+  return instance({
+    method: 'post',
+    url:  '/api/Shop/CancleOrder',
+    opts: opts
+  });
+}
+
 /** 申请退款，针对订单中的商品进行退款申请,传入订单商品表里面的主键Id */
 function api_Shop_saveRefundApply_post(opts) {
   return instance({
@@ -560,6 +569,7 @@ function shop_getBanner_get(opts) {
 }
 
 export {
+  api_Shop_CancleOrder_post,
   api_Shop_saveRefundApply_post,
   api_Shop_getMyScore_get,
   api_Shop_Lottery_post,

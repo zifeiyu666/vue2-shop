@@ -220,11 +220,11 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .index {
     width: 100%;
     padding-bottom: 14vw;
-    background-color: #F8FCFF;
+    background-color: #F8FCFF !important;
     position: relative;
     .mint-button{
       position: absolute;

@@ -4,25 +4,26 @@
     <v-gologin></v-gologin>
     <ul
     class="something" 
-    v-if='list'
-    v-infinite-scroll="loadMore"
-    infinite-scroll-disabled="loading"
-    infinite-scroll-distance="10">
+    v-if='list'>
       <li v-for="(k,i) in list">
           <div class="something-middle">
             <img :src="k.imgurl[0]">
           </div>
           <div class="something-right">
             <p>{{k.title}}</p>
-            <p style="color:rgb(199, 108, 28)"> {{k.intro}}</p>
+            <p style="color:rgb(199, 108, 28);height:20px;"> {{k.intro}}</p>
             <p>售价：{{k.price}}元</p>
             <div class="something-right-bottom">
-
               <span @click='deleteCollection(k)'></span>
             </div>
           </div>
       </li>
+
     </ul>
+    <div style='text-align: center'>
+        <mt-button @click='loadMore' v-if='isLoadMore'>加载更多</mt-button>
+        <v-baseline v-else></v-baseline>
+    </div>
   </div>
 </template>
 
@@ -33,21 +34,23 @@ import Util from '../../util/common'
 import qs from 'qs'
 import * as mockapi from '@/../mockapi'
 import { Toast } from 'mint-ui';
+import Baseline from '@/common/_baseline.vue'
 export default {
   components: {
+    'v-baseline': Baseline,
     'v-gologin': Gologin
   },
-  props: ['list'],
-
+  props: ['list', 'isLoadMore'],
   mounted() {
   },
+
   methods: {
     deleteCollection(k) {
       var that = this
       mockapi.shop.api_Shop_cancleCollection_post({
         data: qs.stringify({
           token: this.$store.state.userInfo.MemberToken,
-          Pid: k.id
+          PId: k.id
         })
       }).then(res => {
         if (res.data.result == 1) {

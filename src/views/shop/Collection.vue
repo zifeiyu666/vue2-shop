@@ -6,7 +6,7 @@
         <h1 slot="title">我的收藏</h1>
       </v-header>
       <!-- 根据购物车是否有商品加载不同的组件 -->
-      <v-something v-if="list" :list = 'list' @loadmore = 'loadmore' @updatelist='updatelist'></v-something>
+      <v-something v-if="list" :isLoadMore='isLoadMore' :list = 'list' @loadmore = 'loadmore' @updatelist='updatelist'></v-something>
       <v-nothing v-else></v-nothing>
       <!-- <v-footer></v-footer> -->
     </div>
@@ -19,9 +19,10 @@ import Header from '@/common/_header.vue'
 import Nothing from '@/components/collection/nothing.vue'
 import Something from '@/components/collection/something.vue'
 import Footer from '@/components/collection/footer.vue'
-
+import Baseline from '@/common/_baseline.vue'
 export default {
   components:{
+    'v-baseline': Baseline,
     'v-header':Header,
     'v-nothing':Nothing,
     'v-something':Something,
@@ -32,12 +33,12 @@ export default {
       count: '',
       pageNo: 1,
       pageSize: 10,
-      list: []
+      list: [],
+      isLoadMore: true
     }
   },
   mounted(){
     this.getCollectionList()
-   
   },
   methods: {
     getCollectionList() {
@@ -48,7 +49,11 @@ export default {
           pageSize: this.pageSize
         }
       }).then(res => {
-        var data = res.data.data
+        var data = res.data.data.list
+        var isLastPage = res.data.data.pager.isLastPage
+        if (isLastPage) {
+          this.isLoadMore = false
+        }
         this.pageNo++
         this.list = this.list.concat(data)
       })

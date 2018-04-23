@@ -54,7 +54,7 @@ import * as mockapi from '@/../mockapi'
         }).then(response => {
           var data = response.data.data
           if (this.firstFlag) {
-            this.houseList = data
+            this.houseList = data.list
             this.firstFlag = false
           } else {
             this.houseList = this.houseList.concat(data)

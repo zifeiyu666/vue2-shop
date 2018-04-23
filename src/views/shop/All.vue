@@ -45,7 +45,8 @@
               </li>
             </ul>
             <div style='text-align: center; margin: 40px'>
-              <mt-button @click='loadMoreAll'>加载更多</mt-button>
+              <mt-button @click='loadMoreAll' v-if='allQuery.loadMore'>加载更多</mt-button>
+              <v-baseline v-else></v-baseline>
             </div>
           </div>
         </mt-tab-container-item>
@@ -67,7 +68,8 @@
               </li>
             </ul>
             <div style='text-align: center'>
-              <mt-button @click='loadMoreQYK'>加载更多</mt-button>
+              <mt-button @click='loadMoreQYK' v-if='QYKQuery.loadMore'>加载更多</mt-button>
+              <v-baseline v-else></v-baseline>
             </div>
           </div>
         </mt-tab-container-item>
@@ -89,7 +91,8 @@
               </li>
             </ul>
             <div style='text-align: center'>
-              <mt-button @click='loadMoreLTDB'>加载更多</mt-button>
+              <mt-button @click='loadMoreLTDB' v-if='LTDBQuery.loadMore'>加载更多</mt-button>
+              <v-baseline v-else></v-baseline>
             </div>
           </div>
         </mt-tab-container-item>
@@ -111,7 +114,8 @@
               </li>
             </ul>
             <div style='text-align: center'>
-              <mt-button @click='loadMoreDD'>加载更多</mt-button>
+              <mt-button @click='loadMoreDD' v-if='DDQuery.loadMore'>加载更多</mt-button>
+              <v-baseline v-else></v-baseline>
             </div>
           </div>
         </mt-tab-container-item>
@@ -156,6 +160,7 @@
 </template>
 
 <script>
+import Baseline from '@/common/_baseline.vue'
 import Footer from '@/common/_footer.vue'
 import * as mockapi from '@/../mockapi'
 
@@ -167,27 +172,32 @@ export default {
       allQuery: {
         pageNo: 1,
         pageSize: 10,
+        loadMore: true
       },
       allList: [],
       QYKQuery: {
         pageNo: 1,
         pageSize: 10,
+        loadMore: true
       },
       QYKList: [],
       DDQuery: {
         pageNo: 1,
         pageSize: 10,
+        loadMore: true
       },
       DDList: [],
       LTDBQuery: {
         pageNo: 1,
         pageSize: 10,
+        loadMore: true
       },
       LTDBList: []
     }
   },
   components: {
-     'v-footer':Footer
+    'v-baseline': Baseline,
+    'v-footer':Footer
   },
   mounted() {
     this.getAllProductList()
@@ -204,12 +214,17 @@ export default {
           pageSize: this.allQuery.pageSize
         }
       }).then(res => {
-        var data = res.data.data
+        var data = res.data.data.list
+        var isLastPage = res.data.data.pager.isLastPage
+        if (isLastPage) {
+          this.allQuery.loadMore = false
+        }
         this.allList = this.allList.concat(data)
-        this.allQuery.pageNo++
+        // this.allQuery.pageNo++
       })
     },
     loadMoreAll() {
+      this.allQuery.pageSize++
       this.getAllProductList()
     },
     // 获取权益卡商品列表
@@ -222,12 +237,17 @@ export default {
           ProjectType: ''
         }
       }).then(res => {
-        var data = res.data.data
+        var data = res.data.data.list
+        var isLastPage = res.data.data.pager.isLastPage
+        if (isLastPage) {
+          this.QYKQuery.loadMore = false
+        }
         this.QYKList = this.QYKList.concat(data)
-        this.QYKQuery.pageNo++
+        // this.QYKQuery.pageNo++
       })
     },
     loadMoreQYK() {
+      this.QYKQuery.pageSize++
       this.getQYKProductList()
     },
      // 获取旅游打包商品列表
@@ -240,12 +260,17 @@ export default {
           ProjectType: ''
         }
       }).then(res => {
-        var data = res.data.data
+        var data = res.data.data.list
+        var isLastPage = res.data.data.pager.isLastPage
+        if (isLastPage) {
+          this.LTDBQuery.loadMore = false
+        }
         this.LTDBList = this.LTDBList.concat(data)
-        this.LTDBQuery.pageNo++
+        // this.LTDBQuery.pageNo++
       })
     },
     loadMoreLTDB() {
+      this.LTDBQuery.pageSize++
       this.getLTDBProductList()
     },
      // 获取单独商品列表
@@ -258,12 +283,17 @@ export default {
           ProjectType: ''
         }
       }).then(res => {
-        var data = res.data.data
+        var data = res.data.data.list
+        var isLastPage = res.data.data.pager.isLastPage
+        if (isLastPage) {
+          this.DDQuery.loadMore = false
+        }
         this.DDList = this.DDList.concat(data)
-        this.DDQuery.pageNo++
+        // this.DDQuery.pageNo++
       })
     },
     loadMoreDD() {
+      this.DDQuery.pageSize++
       this.getDDProductList()
     },
     gotoDetail(i) {
@@ -285,6 +315,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+
 @import '../../assets/fz.less';
 .back{
   position: absolute;

@@ -1,12 +1,14 @@
 <template lang="html">
-    <mt-swipe :auto="4000" v-if='swiperData'>
+  <div v-if='swiperData ? true : false'>
+    <mt-swipe :auto="4000">
       <mt-swipe-item v-for="k in swiperData" :key="k.id">
         <router-link :to="{ path: '/show/itemnav', params: { id: k.id }}">
           <img :src="k.imgurl">
         </router-link>
       </mt-swipe-item>
     </mt-swipe>
-
+  </div>
+  
 </template>
 
 <script>
@@ -17,7 +19,7 @@ export default {
 
 <style lang="less">
 
-.swiper .mint-swipe {
+.swiper-container .mint-swipe {
   width: 100%;
   height:80vw !important;
   a,img {

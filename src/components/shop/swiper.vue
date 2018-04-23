@@ -1,11 +1,14 @@
-<template lang="html">
-    <mt-swipe :auto="4000" v-if='swiperData'>
-      <mt-swipe-item v-for="k in swiperData" :key="k.id">
-        <router-link :to="{ path: '/show/itemnav', params: { id: k.id }}">
-          <img :src="k.imgurl">
-        </router-link>
-      </mt-swipe-item>
-    </mt-swipe>
+<template lang="html" >
+    
+    <div v-if='swiperData ? true : false'>
+      <mt-swipe :auto="4000" >
+        <mt-swipe-item v-for="k in swiperData" :key="k.id">
+          <router-link :to="{ path: '/show/itemnav', params: { id: k.id }}">
+            <img :src="k.imgurl">
+          </router-link>
+        </mt-swipe-item>
+      </mt-swipe>
+    </div>
 
 </template>
 

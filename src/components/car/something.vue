@@ -29,7 +29,8 @@
           </div>
       </li>
       <div style='text-align:center; padding: 30px'>
-        <mt-button @click='loadMore'>加载更多</mt-button>
+        <mt-button @click='loadMore' v-if='isLoadMore'>加载更多</mt-button>
+        <v-baseline v-else></v-baseline>
       </div>
 
     </ul>
@@ -37,6 +38,7 @@
 </template>
 
 <script>
+import Baseline from '@/common/_baseline.vue'
 import qs from 'qs'
 import * as mockapi from '@/../mockapi'
 // 提示登录组件
@@ -45,6 +47,7 @@ import Util from '../../util/common'
 import {Toast} from 'mint-ui'
 export default {
   components: {
+    'v-baseline': Baseline,
     'v-gologin': Gologin
   },
   computed: {
@@ -61,7 +64,8 @@ export default {
       pageSize: 10,
       carList: [],
       token: '',
-      selectedProp: []
+      selectedProp: [],
+      isLoadMore: true
     }
   },
   watch: {
@@ -95,7 +99,11 @@ export default {
           pageSize: this.pageSize
         }
       }).then(res => {
-        var data = res.data.data
+        var data = res.data.data.list
+        var isLastPage = res.data.data.pager.isLastPage
+        if (isLastPage) {
+          this.isLoadMore = false
+        }
         this.carList = this.carList.concat(data)
       })
     },
@@ -107,7 +115,11 @@ export default {
           pageSize: this.pageSize
         }
       }).then(res => {
-        var data = res.data.data
+        var data = res.data.data.list
+        var isLastPage = res.data.data.pager.isLastPage
+        if (isLastPage) {
+          this.isLoadMore = false
+        }
         this.carList = data
       })
     },
