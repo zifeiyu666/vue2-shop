@@ -26,7 +26,6 @@
           <i class='iconfont icon-fenlei'></i>
         </div>
       </div>
-      
       <mt-tab-container v-model="selected">
         <mt-tab-container-item id="1">
           <div class="wrap">
