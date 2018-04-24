@@ -235,18 +235,19 @@ export default {
     },
     add() {
       if (this.num < (this.selectedProp[0].TotalNum - this.selectedProp[0].SoldNum)){
-        mockapi.shop.api_Shop_updateCar_post({
-          data: qs.stringify({
-            token: this.$store.state.userInfo.MemberToken,
-            PId: this.detail.PId,
-            PropId: this.PropId,
-            Num: this.num + 1
-          })
-        }).then(res => {
-          this.num++
-        }).catch(err => {
-          console.log(err)
-        })
+        // mockapi.shop.api_Shop_updateCar_post({
+        //   data: qs.stringify({
+        //     token: this.$store.state.userInfo.MemberToken,
+        //     PId: this.detail.PId,
+        //     PropId: this.PropId,
+        //     Num: this.num + 1
+        //   })
+        // }).then(res => {
+        //   this.num++
+        // }).catch(err => {
+        //   console.log(err)
+        // })
+        this.num++
       } else {
         Toast('已达到最大数量')
       }

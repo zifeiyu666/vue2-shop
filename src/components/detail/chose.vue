@@ -38,21 +38,27 @@
       <div class="pick" >
         <div  v-if='view.diclist[0]'>
           <h1>请选择{{view.diclist[0].DicTypeName}}:</h1>
-          <el-radio-group v-model="radio[0].radio" @change='changeSelect' @click.native="clickToggle0" size="medium">
-            <el-radio-button v-for="(item, k) in modal1" :label="item.code">{{item.name}}</el-radio-button>
-          </el-radio-group>
+          <div @click.native="clickToggle0">
+            <el-radio-group v-model="radio[0].radio" @change='changeSelect' size="medium">
+              <el-radio-button v-for="(item, k) in modal1" :label="item.code">{{item.name}}</el-radio-button>
+            </el-radio-group>
+          </div>
         </div>
         <div v-if='view.diclist[1]'>
           <h1>请选择{{view.diclist[1].DicTypeName}}:</h1>
-          <el-radio-group v-model="radio[1].radio" @change='changeSelect' @click.native="clickToggle1" size="medium">
-            <el-radio-button v-for="(item, k) in modal2" :label="item.code">{{item.name}}</el-radio-button>
-          </el-radio-group>
+          <div @click.native="clickToggle1" >
+            <el-radio-group v-model="radio[1].radio" @change='changeSelect' size="medium">
+              <el-radio-button v-for="(item, k) in modal2" :label="item.code">{{item.name}}</el-radio-button>
+            </el-radio-group>
+          </div>
         </div>
         <div v-if='view.diclist[2]'>
           <h1>请选择{{view.diclist[2].DicTypeName}}:</h1>
-          <el-radio-group v-model="radio[2].radio" @change='changeSelect' @click.native="clickToggle2" size="medium">
-            <el-radio-button v-for="(item, k) in modal3" :label="item.code">{{item.name}}</el-radio-button>
-          </el-radio-group>
+          <div @click.native="clickToggle2">
+            <el-radio-group v-model="radio[2].radio" @change='changeSelect' size="medium">
+              <el-radio-button v-for="(item, k) in modal3" :label="item.code">{{item.name}}</el-radio-button>
+            </el-radio-group>
+          </div>
         </div>
       </div>
       <div class='line'></div>

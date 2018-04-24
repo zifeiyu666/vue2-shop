@@ -21,7 +21,7 @@
         label="验证码"
         placeholder="请输入验证码"
         type = "text"
-        v-model = "phone"
+        v-model = "identifyCode"
       ></mt-field>
       <!-- <mt-field
        label="密码"
@@ -60,11 +60,12 @@ export default {
   },
   data(){
     return {
-      phone:''
+      phone:'',
+      identifyCode: ''
     }
   },
   mounted() {
-    this.getVeriCode()
+    // this.getVeriCode()
   },
   methods: {
     // 获取验证码
@@ -102,7 +103,7 @@ export default {
           data: qs.stringify({
             token: this.$store.state.userInfo.MemberToken,
             phone: this.phone,
-            VeriCode: '123123',
+            VeriCode : this.identifyCode,
           })
         }).then(response => {
           var data = response.data.data
@@ -155,7 +156,7 @@ export default {
   position: absolute;
   right: 0px;
   z-index: 1000;
-  top: 42px;
+  top: 12vw;
   height: 48px;
   padding: 0 6px;
   font-size: 13px;
