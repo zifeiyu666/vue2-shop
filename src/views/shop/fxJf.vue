@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-header>
-      <h1 slot="title">购物积分</h1>
+      <h1 slot="title">分销积分</h1>
     </v-header>
     <header class="header">
         <div class="header-icon">

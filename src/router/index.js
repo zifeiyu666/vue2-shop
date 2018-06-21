@@ -20,6 +20,7 @@ const Edit = resolve => require(['@/views/shop/Edit.vue'], resolve)
 const ShareCompany = resolve => require(['@/views/shop/ShareCompany.vue'], resolve)
 const All = resolve => require(['@/views/shop/All.vue'], resolve)
 const ShareJf = resolve => require(['@/views/shop/ShareJf.vue'], resolve)
+const fxJf = resolve => require(['@/views/shop/fxJf.vue'], resolve)
 const myOrder = resolve => require(['@/views/shop/myOrders.vue'], resolve)
 const shareProduct = resolve => require(['@/views/shop/ShareProduct.vue'], resolve)
 const shareOrders = resolve => require(['@/views/shop/ShareOrders.vue'], resolve)
@@ -134,8 +135,16 @@ const shopRouters = [{
   },
   {
     path: '/shop/shareJf',
-    name: '我的积分',
+    name: '购物积分',
     component: ShareJf,
+    meta: {
+      requireAuth: true
+    }
+  },
+  {
+    path: '/shop/fxJf',
+    name: '分销积分',
+    component: fxJf,
     meta: {
       requireAuth: true
     }

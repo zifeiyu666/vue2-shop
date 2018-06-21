@@ -62,12 +62,12 @@
                 <span>每日抽奖</span><i class="icon-go"></i>
               </p>
             </router-link>
-            <router-link :to="{ name: '我的积分'}" class="my-settle-top">
+            <router-link :to="{ name: '购物积分'}" class="my-settle-top">
               <div>
                 <span class="icon2-f"></span>
               </div>
               <p>
-                <span>我的积分</span><i class="icon-go"></i>
+                <span>购物积分</span><i class="icon-go"></i>
               </p>
             </router-link>
             <router-link class="my-vip-bottom ho" to="/shop/edit">
