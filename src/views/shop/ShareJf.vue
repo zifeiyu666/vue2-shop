@@ -26,7 +26,7 @@
       </mt-tab-container-item>
     </mt-tab-container> -->
     <p class='title jf-title'>积分获取记录</p>
-    <div v-for="(i, index) in JfList" :key='index'>
+    <div v-for="(i, index) in JfList" :key='index' style='margin: 0 10px;'>
       <div class="company-wrap clearfix">
         <!-- <div class="avatar">
           <img src="" alt="">
@@ -36,32 +36,45 @@
             <li>变动类型：<span>{{i.inout}}</span></li>
             <li>原因： <span>{{i.reason}}</span></li>
             <li>数量： <span>{{i.score}}</span></li>
-            <li>变动前积分数量：<span>{{i.beforescore}}</span></li>
-            <li>变动后积分数量：<span>{{i.afterscore}}</span></li> 
+            <!-- <li>变动前积分数量：<span>{{i.beforescore}}</span></li> -->
+            <!-- <li>变动后积分数量：<span>{{i.afterscore}}</span></li>  -->
             <li>时间：<span>{{generateTime(i.recordTime)}}</span></li>
           </ul>
         </div>
       </div>
     </div>
-    <div class="btn-wrap" style='text-align: center;margin-top:30px;margin-bottom: 20px;'>
+    <!-- <div class="btn-wrap" style='text-align: center;margin-top:30px;margin-bottom: 20px;'>
       <mt-button @click='loadMore'>加载更多</mt-button>
+    </div> -->
+    <div style='padding-bottom: 40px'>
+
+      <div style='text-align: center;position: relative;top: 20px;'>
+        <mt-button @click='loadMore' v-if='!isLastPage'>加载更多</mt-button>
+        <v-baseline v-else></v-baseline>
+      </div>
+
     </div>
+    
     
   </div>
   
 </template>
 <script>
+import Baseline from '@/common/_baseline.vue'
 import * as mockapi from '@/../mockapi'
 import Header from '@/common/_header.vue'
+import { Toast } from 'mint-ui';
   export default{
     data() {
       return {
         pageNo: 1,
         pageSize: 10,
+        isLastPage: false,
         JfList: []
       }
     },
     components: {
+      'v-baseline': Baseline,
       'v-header':Header
     },
     mounted() {
@@ -75,6 +88,10 @@ import Header from '@/common/_header.vue'
     },
     methods: {
       getJfList() {
+        if (this.isLastPage) {
+          Toast('已经是最后一页了')
+          return 
+        }
         mockapi.shop.api_Shop_getMyScoreList_get({
           params: {
             token: this.$store.state.userInfo.MemberToken,
@@ -82,9 +99,11 @@ import Header from '@/common/_header.vue'
             pageSize: this.pageSize
           }
         }).then(res => {
-          var data = res.data.data
+          var data = res.data.data.list
+          var pager = res.data.data.pager
           this.JfList = this.JfList.concat(data)
           console.log(this.JfList)
+          this.isLastPage = pager.isLastPage
         })
       },
       generateTime(time) {
@@ -180,5 +199,8 @@ import Header from '@/common/_header.vue'
     }
     .jf-title{
       padding: 10px 0  0 15px;
+      font-size: 16px;
+      color: #777;
+      font-weight: bold;
     }
 </style>

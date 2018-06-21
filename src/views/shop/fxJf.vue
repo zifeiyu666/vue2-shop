@@ -26,7 +26,7 @@
       </mt-tab-container-item>
     </mt-tab-container> -->
     <p class='title jf-title'>积分获取记录</p>
-    <div v-for="(i, index) in JfList" :key='index'>
+    <div v-for="(i, index) in JfList" :key='index' style='margin: 0 10px;'>
       <div class="company-wrap clearfix">
         <!-- <div class="avatar">
           <img src="" alt="">
@@ -43,14 +43,21 @@
         </div>
       </div>
     </div>
-    <div class="btn-wrap" style='text-align: center;margin-top:30px;margin-bottom: 20px;'>
-      <mt-button @click='loadMore'>加载更多</mt-button>
+    <div style='padding-bottom: 40px'>
+
+      <div style='text-align: center;position: relative;top: 20px;'>
+        <mt-button @click='loadMore' v-if='!isLastPage'>加载更多</mt-button>
+        <v-baseline v-else></v-baseline>
+      </div>
+
     </div>
     
   </div>
   
 </template>
 <script>
+import Baseline from '@/common/_baseline.vue'
+import { Toast } from 'mint-ui';
 import * as mockapi from '@/../mockapi'
 import Header from '@/common/_header.vue'
   export default{
@@ -58,11 +65,13 @@ import Header from '@/common/_header.vue'
       return {
         pageNo: 1,
         pageSize: 10,
+        isLastPage: false,
         JfList: []
       }
     },
     components: {
-      'v-header':Header
+      'v-header':Header,
+      'v-baseline': Baseline,
     },
     mounted() {
       this.getJfList()
@@ -82,9 +91,11 @@ import Header from '@/common/_header.vue'
             pageSize: this.pageSize
           }
         }).then(res => {
-          var data = res.data.data
+          var data = res.data.data.list
+          var pager = res.data.data.pager
           this.JfList = this.JfList.concat(data)
           console.log(this.JfList)
+          this.isLastPage = pager.isLastPage
         })
       },
       generateTime(time) {
@@ -180,5 +191,8 @@ import Header from '@/common/_header.vue'
     }
     .jf-title{
       padding: 10px 0  0 15px;
+      font-size: 16px;
+      color: #777;
+      font-weight: bold;
     }
 </style>
