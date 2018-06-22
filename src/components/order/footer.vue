@@ -9,7 +9,7 @@
       继续购物
     </router-link> -->
     <a class="footer-pay" @click="goPay">
-      提交订单
+      支付订单
     </a>
   </footer>
 

@@ -13,11 +13,11 @@
       <mt-tab-container-item id="1">
           <div class="wrap">
             <ul>
-              <li class='order-wrap' v-for="(item,i) in allOrders" :key="i">
+              <li @click='goToOrderDetail(item.orderno)' class='order-wrap' v-for="(item,i) in allOrders" :key="i">
                 <h3 class='ordertitle'>订单标题：{{item.ordertitle}}</h3>
                 <ul class="something" >
                   <div id="deleteOrder">
-                    <span @click='deleteOrder(item)'></span>
+                    <span @click.stop='deleteOrder(item)'></span>
                   </div>
                   <li v-for="(k,i) in item.opd" :key='i'>
                     <div class="something-middle">
@@ -61,7 +61,7 @@
                 <h3 class='ordertitle'>订单标题：{{item.ordertitle}}</h3>
                 <ul class="something" >
                   <div id="deleteOrder">
-                    <span @click='deleteOrder(item)'></span>
+                    <span @click.stop='deleteOrder(item)'></span>
                   </div>
                   <li v-for="(k,i) in item.opd" :key='i'>
                      <div class="something-middle">
@@ -72,7 +72,7 @@
                       <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p>
                       <p>售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;使用积分：{{k.usescore}}</p>
                       <!-- <div class="something-right-bottom">
-                        <span @click='deleteOrder(item)'></span>
+                        <span @click.stop='deleteOrder(item)'></span>
                       </div> -->
                       <div class='state-wrap'>
                         <mt-badge size="small" color='#ccc'>{{generateState(k.state)}}</mt-badge>
@@ -97,7 +97,7 @@
         <div class="wrap">
             <ul>
               <div id="deleteOrder">
-                <span @click='deleteOrder(item)'></span>
+                <span @click.stop='deleteOrder(item)'></span>
               </div>
               <li class='order-wrap' v-for="(item,i) in payedOrders" :key="i">
                 <h3 class='ordertitle'>订单标题：{{item.ordertitle}}</h3>
@@ -111,7 +111,7 @@
                       <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p>
                       <p>售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;使用积分：{{k.usescore}}</p>
                       <!-- <div class="something-right-bottom">
-                        <span @click='deleteOrder(item)'></span>
+                        <span @click.stop='deleteOrder(item)'></span>
                       </div> -->
                       <div class='state-wrap'>
                         <mt-badge size="small" color='#ccc'>{{generateState(k.state)}}</mt-badge>
@@ -325,14 +325,27 @@ import Header from '@/common/_header.vue'
             this.allQuery.pageNo = 1
             this.waitQuery.pageNo = 1
             this.payedQuery.pageNo = 1
+            this.allOrders = []
+            this.payedOrders = []
+            this.waitOrders = []
             this.getAllOrdersList(false)
             this.getWaitOrdersList(false)
             this.getPayedOrdersList(false)
             Toast({
             message: '操作成功'
             });
+          } else {
+            Toast({
+              message: '操作失败，请重试'
+            })
           } 
+        }).catch(err => {
+          Toast(err)
         })
+      },
+      // 订单详情页
+      goToOrderDetail(orderno) {
+        this.$router.push({path: '/shop/orderDetail', query: {orderno: orderno}})
       }
     }
   }
@@ -344,7 +357,7 @@ import Header from '@/common/_header.vue'
   margin-bottom: 20px;
   background: #fff;
   padding-top: 10px;
-  box-shadow: 0px 1px 2px 1px #ddd;
+  box-shadow: 0px 3px 4px 1px #eee;
   h3{
     padding-left: 15px;
   }
