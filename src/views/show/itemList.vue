@@ -51,7 +51,7 @@
           } 
         }).then(response => {
           var data = response.data.data
-          this.list = this.list.concat(data)
+          this.list = this.list.concat(data.list)
           this.loading=false
         }).catch(error => {
           console.log(error)

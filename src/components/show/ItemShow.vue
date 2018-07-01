@@ -11,7 +11,7 @@
     </div>
   </div>
 </template>
-<script>
+<script>  
   export default{
     data() {
       return {
@@ -21,6 +21,10 @@
     props: [
       'itemData'
     ],
+    mounted() {
+      console.log(11111111111111)
+      console.log(this.itemData)
+    },
     methods: {
     
     }

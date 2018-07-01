@@ -62,7 +62,7 @@
         mockapi.show.api_Show_getWzNewsList_get({
           params: this.query
         }).then(response => {
-          var data = response.data.data
+          var data = response.data.data.list
           this.historyList = data
           this.loading = false
           this.busy = false

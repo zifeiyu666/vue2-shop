@@ -52,7 +52,7 @@ import * as mockapi from '@/../mockapi'
         mockapi.show.api_Show_getPicNewsList_get({
           params: this.query
         }).then(response => {
-          var data = response.data.data
+          var data = response.data.data.list
           if (this.firstFlag) {
             this.houseList = data
             this.firstFlag = false

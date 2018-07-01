@@ -17,7 +17,7 @@ export default {
 
 <style lang="less">
 
-.swiper .mint-swipe {
+.swiper-container .mint-swipe {
   width: 100%;
   height:80vw !important;
   a,img {

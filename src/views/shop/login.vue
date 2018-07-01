@@ -10,14 +10,12 @@
         type = "text"
         v-model = "phone"
         ></mt-field>
-      <!-- <mt-field
-       label="密码"
-       placeholder="请输入密码"
-       type="password"
-       v-model="password"
-       :readonly='!toggle'
-       :disableClear = '!toggle'
-        ></mt-field> -->
+      <mt-field
+       label="验证码"
+       placeholder="请输入验证码"
+       type="vcode"
+       v-model="vcode"
+        ></mt-field>
       <p class="tip">Tip : 您尚未绑定手机号，请进行手机号绑定</p>
     </section>
     <mt-button
@@ -45,11 +43,13 @@ export default {
   },
   data(){
     return {
-      phone:''
+      phone:'',
+      vcode: ''
     }
   },
   mounted() {
-    this.getVeriCode()
+    // 这里暂时不需要获取验证码，验证码统一为手机号后六位
+    // this.getVeriCode()
   },
   methods: {
     // 获取验证码
@@ -57,7 +57,7 @@ export default {
       mockapi.shop.api_Shop_generateVeriCode_post({
         data: qs.stringify({
           token: 1,
-          phone: '18554870804'
+          phone: this.phone
         })
       }).then(response => {
         var data = response.data.data
@@ -73,18 +73,26 @@ export default {
           data: qs.stringify({
             token: this.$store.state.userInfo.MemberToken,
             phone: this.phone,
-            VeriCode: '123123',
+            VeriCode: this.vcode ,
           })
         }).then(response => {
-          var data = response.data.data
-          this.navList = data.list
-          this.banner = data.imgurl
-          this.intro = data.itemintro
-          console.log(this.navList)
+          if (response.data.result != 0) {
+            var data = response.data.data
+            this.navList = data.list
+            this.banner = data.imgurl
+            this.intro = data.itemintro
+            console.log(this.navList)
+            Toast('手机号绑定成功');
+            this.$router.push({
+              path: 'shop'
+            })
+          } else {
+            Toast('手机号绑定失败');
+          }
+          
         }).catch(error => {
           console.log(error)
         })
-        Toast('手机号绑定成功');
       }else {
         Toast('手机号不能为空');
       }
