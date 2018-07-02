@@ -130,21 +130,28 @@
       <div class="shade" @click='hidePopside()'></div>
       <div class="main">
         <div class='inner-wrap'>
-          <el-input type='text' :placeholder='标题'></el-input>
-          <el-input type='text' :placeholder='天数'></el-input>
+          <mt-field label="标题" v-model='title' placeholder='请输入'></mt-field>
           <mt-radio
+            v-if = 'ProductOptions.length != 0'
             title="类型"
-            v-model="value"
-            :options="['optionA', 'optionB', 'optionC']">
+            v-model="ProductValue"
+            :options="ProductOptions">
           </mt-radio>
           <mt-radio
+            v-if = 'SuitableOptions'
             title="使用人群"
-            v-model="value"
-            :options="['optionA', 'optionB', 'optionC']">
+            v-model="SuitableValue"
+            :options="SuitableOptions">
+          </mt-radio>
+          <mt-radio
+            v-if = 'DestinationOptions'
+            title="目的地类型"
+            v-model="DestinationValue"
+            :options="DestinationOptions">
           </mt-radio>
           <div class="btn-wrap">
-            <mt-button class='btn-left' size='small' type='primary'>重置</mt-button>
-            <mt-button class='btn-right' size='small' type='primary' @click='hidePopside()'>完成</mt-button>
+            <mt-button @click='concleSearch()' class='btn-left' size='small' type='primary'>取消</mt-button>
+            <mt-button @click='confirmSearch()' class='btn-right' size='small' type='primary'>完成</mt-button>
           </div>
         </div>
       </div>
@@ -165,7 +172,14 @@ export default {
   data() {
     return {
       selected: '1',
+      title: '',
       popsideVisible: false,
+      SuitableOptions: [],
+      ProductOptions: [],
+      DestinationOptions: [],
+      DestinationValue: '',
+      SuitableValue: '',
+      ProductValue: '',
       allQuery: {
         pageNo: 1,
         pageSize: 10,
@@ -201,14 +215,80 @@ export default {
     this.getQYKProductList()
     this.getLTDBProductList()
     this.getDDProductList()
+    this.getProductTypeDicList()
+    this.getSuitableUserDicList()
+    this.getDestinationTypeDicList()
   },
   methods: {
+    concleSearch() {
+      this.popsideVisible = false
+    },
+    confirmSearch() {
+      this.allList = []
+      this.QYKList = []
+      this.DDList = []
+      this.LTDBList = []
+      this.getAllProductList()
+      this.getQYKProductList()
+      this.getLTDBProductList()
+      this.getDDProductList()
+      this.popsideVisible = false
+    },
+    getDestinationTypeDicList() {
+      mockapi.shop.api_Shop_getDicEntryList_get({
+        params: {
+          typeCode: "DestinationType",
+        }
+      }).then(res => {
+        var data = res.data.data
+        data.forEach((item, index) => {
+          this.DestinationOptions.push({
+            label: item.EntryName,
+            value: item.EntryCode
+          })
+        })
+      })
+    },
+    getProductTypeDicList() {
+      mockapi.shop.api_Shop_getDicEntryList_get({
+        params: {
+          typeCode: "ProductType",
+        }
+      }).then(res => {
+        var data = res.data.data
+        data.forEach((item, index) => {
+          this.ProductOptions.push({
+            label: item.EntryName,
+            value: item.EntryCode
+          })
+        })
+      })
+    },
+    getSuitableUserDicList() {
+      mockapi.shop.api_Shop_getDicEntryList_get({
+        params: {
+          typeCode: "SuitableUser",
+        }
+      }).then(res => {
+        var data = res.data.data
+        data.forEach((item, index) => {
+          this.SuitableOptions.push({
+            label: item.EntryName,
+            value: item.EntryCode
+          })
+        })
+      })
+    },
     // 所有商品加载更多
     getAllProductList() {
       mockapi.shop.api_Shop_getAllProductList_get({
         params: {
           pageNo: this.allQuery.pageNo,
-          pageSize: this.allQuery.pageSize
+          pageSize: this.allQuery.pageSize,
+          Title: this.title,
+          ProductType: this.ProductValue,
+          SuitableUser: this.SuitableValue,
+          DestinationType: this.DestinationValue,
         }
       }).then(res => {
         var data = res.data.data.list
@@ -228,10 +308,13 @@ export default {
     getQYKProductList() {
       mockapi.shop.api_Shop_getProductList_get({
         params: {
+          ProjectType: '',
           pageNo: this.QYKQuery.pageNo,
           pageSize: this.QYKQuery.pageSize,
           ProductType: 'QYKL',
-          ProjectType: ''
+          Title: '',
+          SuitableUser: '',
+          DestinationType: '',
         }
       }).then(res => {
         var data = res.data.data.list
@@ -251,10 +334,13 @@ export default {
     getLTDBProductList() {
       mockapi.shop.api_Shop_getProductList_get({
         params: {
+          ProjectType: '',
           pageNo: this.LTDBQuery.pageNo,
           pageSize: this.LTDBQuery.pageSize,
           ProductType: 'LTDBL',
-          ProjectType: ''
+          Title: this.title,
+          SuitableUser: this.SuitableValue,
+          DestinationType: this.DestinationValue,
         }
       }).then(res => {
         var data = res.data.data.list
@@ -274,10 +360,13 @@ export default {
     getDDProductList() {
       mockapi.shop.api_Shop_getProductList_get({
         params: {
+          ProjectType: '',
           pageNo: this.DDQuery.pageNo,
           pageSize: this.DDQuery.pageSize,
           ProductType: 'DDL',
-          ProjectType: ''
+          Title: this.title,
+          SuitableUser: this.SuitableValue,
+          DestinationType: this.DestinationValue,
         }
       }).then(res => {
         var data = res.data.data.list
@@ -302,9 +391,6 @@ export default {
     },
     showPopside() {
       this.popsideVisible = true
-    },
-    hidePopside() {
-      this.popsideVisible = false
     }
 
   }
@@ -428,11 +514,11 @@ input{
   }
   .main{
     background: #fff;
-    width: 50vw;
+    width: 80vw;
     height: 100vh;
     box-sizing: border-box;
     position: absolute;
-    left: 50vw;
+    left: 20vw;
     top: 0;
     overflow: auto;
     .inner-wrap{
@@ -440,9 +526,9 @@ input{
     }
     .btn-wrap{
       position: fixed;
-      bottom: 55px;
+      bottom: 0px;
       right: 0px;
-      width: 50vw;
+      width: 80vw;
       height: 40px;
       .btn-left, .btn-right{
         float: left;
@@ -536,12 +622,14 @@ input{
                     -webkit-box-orient: vertical;
                     .fz(font-size,26);
                 }
+                p:first-of-type{
+                  height: 36px;
+                }
                 p:last-of-type {
-                    .fz(font-size,22);
-                    color: rgb(168, 168, 168);
+                  .fz(font-size,22);
+                  color: rgb(168, 168, 168);
                 }
                 .something-right-bottom {
-
                     > div {
                         display: -ms-flex;
                         display: -webkit-box;

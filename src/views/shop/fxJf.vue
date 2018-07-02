@@ -59,7 +59,7 @@
       <el-input v-model="usescore" placeholder="请输入提现积分"></el-input>
       <div class="totalScore">
         <span>当前可用积分：{{score}}</span>
-        <p>可提现现金：{{usescore/scoreRate ? usescore/scoreRate : '0'}}元</p>
+        <p>可提现现金：{{usescore/scoreRate ? Math.floor((usescore/scoreRate) * 100) / 100 : '0'}}元</p>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button size='small' @click="concleTx()">取 消</el-button>
@@ -124,6 +124,18 @@ import Header from '@/common/_header.vue'
         this.dialogVisible = false
       },
       confirmTx() {
+        mockapi.shop.api_MustBeJustSoSo_MustBeLQ_get({
+          params: {
+            MemberToken: this.$store.state.userInfo.MemberToken,
+            MustBeJ: Math.floor((this.usescore/this.scoreRate) * 100) / 100,
+            MustBeF: this.usescore
+          }
+        }).then(res => {
+          if (res.data.result == 1) {
+            Toast('兑换成功')
+            this.dialogVisible = false
+          }
+        })
         
       },
       handleClose(done) {

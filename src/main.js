@@ -6,6 +6,8 @@ import store from '@/vuex/store.js'   //vuex
 import less from 'less'
 import Mint from 'mint-ui';    //移动端UI
 import 'mint-ui/lib/style.css'
+import { Toast } from 'mint-ui';
+
 Vue.use(Mint);
 Vue.config.productionTip = false
 // Vue.prototype.$api = api;
@@ -84,36 +86,37 @@ router.beforeEach((to, from, next) => {
           })
         } else {
           console.log('未能成功获取到code，走测试接口')
-          alert('获取用户信息失败')
-          // return
-          mockapi.shop.api_TestGetUserInfo_get({
-            params: {
-              code: 123
-            }
-          }).then(response => {
-            console.log('成功获取到token')
+          Toast('获取用户信息失败，请重试！')
+          // alert('获取用户信息失败')
+          return
+          // mockapi.shop.api_TestGetUserInfo_get({
+          //   params: {
+          //     code: 123
+          //   }
+          // }).then(response => {
+          //   console.log('成功获取到token')
             
-            var data = response.data.data
-            // TODO: 为了测试添加手机号
-            // data.Phone = '18554870804'
-            console.log(data)
-            // 用户信息存在vuex中
-            store.commit('setUserInfo', data)
-            // 已经绑定手机放行
-            if(data.Phone) {
-              console.log('已经绑定手机')
-              next()
-            } else {
-              // 未绑定手机去绑定
-              console.log('没有绑定手机')
-              next({
-                path: '/shop/login',
-                query: {oldUrl: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
-              })
-            }
-          }).catch(err => {
-            console.log(err)
-          })
+          //   var data = response.data.data
+          //   // TODO: 为了测试添加手机号
+          //   // data.Phone = '18554870804'
+          //   console.log(data)
+          //   // 用户信息存在vuex中
+          //   store.commit('setUserInfo', data)
+          //   // 已经绑定手机放行
+          //   if(data.Phone) {
+          //     console.log('已经绑定手机')
+          //     next()
+          //   } else {
+          //     // 未绑定手机去绑定
+          //     console.log('没有绑定手机')
+          //     next({
+          //       path: '/shop/login',
+          //       query: {oldUrl: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
+          //     })
+          //   }
+          // }).catch(err => {
+          //   console.log(err)
+          // })
         }
         
       }

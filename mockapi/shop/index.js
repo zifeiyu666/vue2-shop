@@ -1,6 +1,15 @@
 import instance from './instance';
 import { convertRESTAPI } from '../util';
 
+/** 提现 */
+function api_MustBeJustSoSo_MustBeLQ_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/MustBeJustSoSo/MustBeLQ',
+    opts: opts
+  });
+}
+
 /** 获取购物积分抵现比例和分销积分提现比例 */
 function api_Shop_getRatio_get(opts) {
   return instance({
@@ -596,6 +605,7 @@ function shop_getBanner_get(opts) {
 }
 
 export {
+  api_MustBeJustSoSo_MustBeLQ_get,
   api_Shop_getRatio_get,
   api_Shop_getRefundApplyList_get,
   api_Shop_getRefundApply_get,
