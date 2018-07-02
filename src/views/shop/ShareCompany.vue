@@ -9,7 +9,7 @@
           <mt-tab-item id="1">全部</mt-tab-item>
           <mt-tab-item id="2">一级</mt-tab-item>
           <mt-tab-item id="3">二级</mt-tab-item>
-          <mt-tab-item id="4">三级</mt-tab-item>
+          <!-- <mt-tab-item id="4">三级</mt-tab-item> -->
         </mt-navbar>
       </div>
     </div>
@@ -159,7 +159,7 @@ import Header from '@/common/_header.vue'
       this.getAllList()
       this.getOneList()
       this.getTwoList()
-      this.getThreeList()
+      // this.getThreeList()
     },
     methods: {
 

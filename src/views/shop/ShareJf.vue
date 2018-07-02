@@ -94,6 +94,7 @@ import { Toast } from 'mint-ui';
         }
         mockapi.shop.api_Shop_getMyScoreList_get({
           params: {
+            type: 1,
             token: this.$store.state.userInfo.MemberToken,
             pageNo: this.pageNo,
             pageSize: this.pageSize

@@ -28,7 +28,7 @@ const shareOrders = resolve => require(['@/views/shop/ShareOrders.vue'], resolve
 const chouJiang = resolve => require(['@/views/shop/choujiang.vue'], resolve)
 const refund = resolve => require(['@/views/shop/refund.vue'], resolve)
 const refundList = resolve => require(['@/views/shop/refundList.vue'], resolve)
-
+const refundDetail = resolve => require(['@/views/shop/refundDetail.vue'], resolve)
 // show
 const ShowIndex = resolve => require(['@/views/show/index.vue'], resolve)
 const ShowItem = resolve => require(['@/views/show/item.vue'], resolve)
@@ -219,8 +219,16 @@ const shopRouters = [{
   },
   {
     path: '/shop/refund',
-    name: '申请退款',
+    name: '退款操作',
     component: refund,
+    meta: {
+      requireAuth: true,
+    }
+  },
+  {
+    path: '/shop/refundDetail',
+    name: '退款详情',
+    component: refundDetail,
     meta: {
       requireAuth: true,
     }

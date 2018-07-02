@@ -7,6 +7,7 @@
       <mt-tab-item id="1">全部</mt-tab-item>
       <mt-tab-item id="2">待付款</mt-tab-item>
       <mt-tab-item id="3">已付款</mt-tab-item>
+      <mt-tab-item id="4">待审核</mt-tab-item>
     </mt-navbar>
     <mt-tab-container v-model="selected">
       <!-- 全部订单 -->
@@ -57,7 +58,7 @@
       <mt-tab-container-item id="2">
         <div class="wrap">
             <ul>
-              <li class='order-wrap' v-for="(item,i) in waitOrders" :key="i">
+              <li @click='goToOrderDetail(item.orderno)' class='order-wrap' v-for="(item,i) in waitOrders" :key="i">
                 <h3 class='ordertitle'>订单标题：{{item.ordertitle}}</h3>
                 <ul class="something" >
                   <div id="deleteOrder">
@@ -99,7 +100,46 @@
               <div id="deleteOrder">
                 <span @click.stop='deleteOrder(item)'></span>
               </div>
-              <li class='order-wrap' v-for="(item,i) in payedOrders" :key="i">
+              <li @click='goToOrderDetail(item.orderno)' class='order-wrap' v-for="(item,i) in payedOrders" :key="i">
+                <h3 class='ordertitle'>订单标题：{{item.ordertitle}}</h3>
+                <ul class="something" >
+                  <li v-for="(k,i) in item.opd" :key='i'>
+                     <div class="something-middle">
+                      <img :src="k.imgurl[0]">
+                    </div>
+                    <div class="something-right">
+                      <p>{{k.producttitle}}</p>
+                      <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p>
+                      <p>售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;使用积分：{{k.usescore}}</p>
+                      <!-- <div class="something-right-bottom">
+                        <span @click.stop='deleteOrder(item)'></span>
+                      </div> -->
+                      <div class='state-wrap'>
+                        <mt-badge size="small" color='#ccc'>{{generateState(k.state)}}</mt-badge>
+                        <mt-button v-if='k.state == 2'  class='refund-btn1'  @click.stop='refund([k,item])'>申请退款</mt-button>
+                      </div>
+                    </div>
+                  </li>
+                  <mt-button class='refund-btn-2'>{{item.orderstate}}</mt-button>
+                  <!-- <mt-badge size="normal" color='#ccc'>{{item.orderstate}}</mt-badge> -->
+                </ul>
+                
+              </li>
+              <div class="btn-wrap" style='text-align: center'>
+                <mt-button @click='loadMorePayed' v-if='payedQuery.loadMore'>加载更多</mt-button>
+                <v-baseline v-else></v-baseline>
+              </div>
+            </ul>
+          </div>
+      </mt-tab-container-item>
+      <!-- 待审核 -->
+      <mt-tab-container-item id="4">
+        <div class="wrap">
+            <ul>
+              <div id="deleteOrder">
+                <span @click.stop='deleteOrder(item)'></span>
+              </div>
+              <li @click='goToOrderDetail(item.orderno)' class='order-wrap' v-for="(item,i) in payedOrders" :key="i">
                 <h3 class='ordertitle'>订单标题：{{item.ordertitle}}</h3>
                 <ul class="something" >
                   <li v-for="(k,i) in item.opd" :key='i'>

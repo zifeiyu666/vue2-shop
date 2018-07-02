@@ -40,7 +40,7 @@
           <h1>请选择{{view.diclist[0].DicTypeName}}:</h1>
           <div @click.native="clickToggle0">
             <el-radio-group v-model="radio[0].radio" @change='changeSelect' size="medium">
-              <el-radio-button v-for="(item, k) in modal1" :label="item.code">{{item.name}}</el-radio-button>
+              <el-radio-button v-for="(item, k) in modal1" :label="item.code" :key='k'>{{item.name}}</el-radio-button>
             </el-radio-group>
           </div>
         </div>
@@ -48,7 +48,7 @@
           <h1>请选择{{view.diclist[1].DicTypeName}}:</h1>
           <div @click.native="clickToggle1" >
             <el-radio-group v-model="radio[1].radio" @change='changeSelect' size="medium">
-              <el-radio-button v-for="(item, k) in modal2" :label="item.code">{{item.name}}</el-radio-button>
+              <el-radio-button v-for="(item, k) in modal2" :label="item.code"  :key='k'>{{item.name}}</el-radio-button>
             </el-radio-group>
           </div>
         </div>
@@ -56,7 +56,7 @@
           <h1>请选择{{view.diclist[2].DicTypeName}}:</h1>
           <div @click.native="clickToggle2">
             <el-radio-group v-model="radio[2].radio" @change='changeSelect' size="medium">
-              <el-radio-button v-for="(item, k) in modal3" :label="item.code">{{item.name}}</el-radio-button>
+              <el-radio-button v-for="(item, k) in modal3" :label="item.code"  :key='k'>{{item.name}}</el-radio-button>
             </el-radio-group>
           </div>
         </div>

@@ -84,6 +84,8 @@ router.beforeEach((to, from, next) => {
           })
         } else {
           console.log('未能成功获取到code，走测试接口')
+          alert('获取用户信息失败')
+          // return
           mockapi.shop.api_TestGetUserInfo_get({
             params: {
               code: 123
@@ -93,7 +95,7 @@ router.beforeEach((to, from, next) => {
             
             var data = response.data.data
             // TODO: 为了测试添加手机号
-            data.Phone = '18554870804'
+            // data.Phone = '18554870804'
             console.log(data)
             // 用户信息存在vuex中
             store.commit('setUserInfo', data)

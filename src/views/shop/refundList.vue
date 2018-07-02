@@ -7,30 +7,27 @@
       <ul class="something" >
         <li v-for="(k,i) in allList" @click='gotoDetail(k)' :key="i">
           <div class="something-middle">
-            <img :src="k.imgurl[0]">
+            <!-- <img :src="k.imgurl[0]"> -->
           </div>
           <div class="something-right">
-            <p style='height: 36px'>{{k.title}}</p>
-            <!-- <p style="color:rgb(199, 108, 28);height: 20px;"> {{k.intro}}</p> -->
-            <p style="color:rgb(199, 108, 28);height: 20px;">售价：{{k.price}}元</p>
-            <p>退款中</p>
-            <!-- <div class="something-right-bottom">
-              <span @click='deleteCollection(k)'></span>
-            </div> -->
+            <p style='height: 36px'>{{k.producttitle}}</p>
+            <p style="color:rgb(199, 108, 28);height: 20px;">退款原因：{{k.RefundReason}}</p>
+            <p>{{ k.IsRefund == 1 ? '已退款' : '未退款'}}</p>
           </div>
         </li>
       </ul>
       <div style='text-align: center; margin: 40px'>
-        <mt-button @click='loadMoreAll'>加载更多</mt-button>
+        <mt-button @click='loadMoreAll' v-if='loadMore'>加载更多</mt-button>
+        <v-baseline v-else></v-baseline>
       </div>
     </div>
-    <!-- <v-footer></v-footer> -->
   </div>
   
   
 </template>
 
 <script>
+import Baseline from '@/common/_baseline.vue'
 import Footer from '@/common/_footer.vue'
 import Header from '@/common/_header.vue'
 import * as mockapi from '@/../mockapi'
@@ -45,116 +42,45 @@ export default {
         pageSize: 10,
       },
       allList: [],
-      QYKQuery: {
-        pageNo: 1,
-        pageSize: 10,
-      },
-      QYKList: [],
-      DDQuery: {
-        pageNo: 1,
-        pageSize: 10,
-      },
-      DDList: [],
-      LTDBQuery: {
-        pageNo: 1,
-        pageSize: 10,
-      },
-      LTDBList: []
+      loadMore: true
     }
   },
   components: {
      'v-footer':Footer,
-     'v-header':Header
+     'v-header':Header,
+     'v-baseline': Baseline
   },
   mounted() {
-    this.getAllProductList()
-    this.getQYKProductList()
-    this.getLTDBProductList()
-    this.getDDProductList()
+    this.getAllRefundList()
+    // this.getQYKProductList()
+    // this.getLTDBProductList()
+    // this.getDDProductList()
   },
   methods: {
-    // 所有商品加载更多
-    getAllProductList() {
-      mockapi.shop.api_Shop_getAllProductList_get({
+    // 全部退款商品列表
+    getAllRefundList() {
+      mockapi.shop.api_Shop_getRefundApplyList_get({
         params: {
+          token: this.$store.state.userInfo.MemberToken,
           pageNo: this.allQuery.pageNo,
           pageSize: this.allQuery.pageSize
         }
       }).then(res => {
-        var data = res.data.data
+        var data = res.data.data.list
+        var isLastPage = res.data.data.pager.isLastPage
+        if (isLastPage) {
+          this.loadMore = false
+        }
         this.allList = this.allList.concat(data)
+        console.log(this.allList)
         this.allQuery.pageNo++
       })
     },
     loadMoreAll() {
-      this.getAllProductList()
+      this.getAllRefundList()
     },
-    // 获取权益卡商品列表
-    getQYKProductList() {
-      mockapi.shop.api_Shop_getProductList_get({
-        params: {
-          pageNo: this.QYKQuery.pageNo,
-          pageSize: this.QYKQuery.pageSize,
-          ProductType: 'QYKL',
-          ProjectType: ''
-        }
-      }).then(res => {
-        var data = res.data.data
-        this.QYKList = this.QYKList.concat(data)
-        this.QYKQuery.pageNo++
-      })
-    },
-    loadMoreQYK() {
-      this.getQYKProductList()
-    },
-     // 获取旅游打包商品列表
-    getLTDBProductList() {
-      mockapi.shop.api_Shop_getProductList_get({
-        params: {
-          pageNo: this.LTDBQuery.pageNo,
-          pageSize: this.LTDBQuery.pageSize,
-          ProductType: 'LTDBL',
-          ProjectType: ''
-        }
-      }).then(res => {
-        var data = res.data.data
-        this.LTDBList = this.LTDBList.concat(data)
-        this.LTDBQuery.pageNo++
-      })
-    },
-    loadMoreLTDB() {
-      this.getLTDBProductList()
-    },
-     // 获取单独商品列表
-    getDDProductList() {
-      mockapi.shop.api_Shop_getProductList_get({
-        params: {
-          pageNo: this.DDQuery.pageNo,
-          pageSize: this.DDQuery.pageSize,
-          ProductType: 'DDL',
-          ProjectType: ''
-        }
-      }).then(res => {
-        var data = res.data.data
-        this.DDList = this.DDList.concat(data)
-        this.DDQuery.pageNo++
-      })
-    },
-    loadMoreDD() {
-      this.getDDProductList()
-    },
-    gotoDetail(i) {
-      console.log()
-      this.$router.push({path: '/shop/detail', query: {pid: i.id}})
-    },
-    back() {
-      this.$router.go('-1')
-    },
-    showPopside() {
-      this.popsideVisible = true
-    },
-    hidePopside() {
-      this.popsideVisible = false
+    gotoDetail(k) {
+      this.$router.push({path: '/shop/refundDetail', query: {pid: k.Id}})
     }
 
   }

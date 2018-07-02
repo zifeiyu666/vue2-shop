@@ -4,6 +4,7 @@
       <mt-field label="积分抵扣:" placeholder="请输入要使用的积分" type="number" v-model="usescore" ></mt-field>
       <div class="totalScore">
         <span>当前可用积分：{{score}}</span>
+        <p>可抵扣金额：{{usescore/scoreRate}}元</p>
       </div>
     </div>
         
@@ -52,7 +53,8 @@ export default {
     return {
       params: [],
       score: '',
-      usescore: ''
+      usescore: '',
+      scoreRate: '' //提现比例
     }
   },
   watch: {
@@ -76,16 +78,29 @@ export default {
   },
   mounted() {
     this.getScore()
+    this.getScoreRate()
   },
   methods:{
     getScore() {
       mockapi.shop.api_Shop_getMyScore_get({
         params: {
+          type: 1,
           token: this.$store.state.userInfo.MemberToken
         }
       }).then(res => {
         var data = res.data.data
         this.score = data
+      })
+    },
+    getScoreRate() {
+      mockapi.shop.api_Shop_getRatio_get({
+        params: {
+          type: 1,
+          token: this.$store.state.userInfo.MemberToken
+        }
+      }).then(res => {
+        var data = res.data.data
+        this.scoreRate = data
       })
     },
     //点击跳转到支付页

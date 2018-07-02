@@ -130,20 +130,17 @@
       <div class="shade" @click='hidePopside()'></div>
       <div class="main">
         <div class='inner-wrap'>
+          <el-input type='text' :placeholder='标题'></el-input>
+          <el-input type='text' :placeholder='天数'></el-input>
           <mt-radio
-            title="分类1"
+            title="类型"
             v-model="value"
             :options="['optionA', 'optionB', 'optionC']">
           </mt-radio>
           <mt-radio
-            title="分类2"
+            title="使用人群"
             v-model="value"
             :options="['optionA', 'optionB', 'optionC']">
-          </mt-radio>
-          <mt-radio
-            title="分类3"
-            v-model="value"
-            :options="['optionA', 'optionB']">
           </mt-radio>
           <div class="btn-wrap">
             <mt-button class='btn-left' size='small' type='primary'>重置</mt-button>

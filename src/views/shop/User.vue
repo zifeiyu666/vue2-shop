@@ -11,7 +11,7 @@
           <div class="header-content">
             <p>欢迎您：{{username}}</p>
             <p>注册时间：{{time}}</p>
-            <p>积分：{{jifen}}</p>
+            <!-- <p>积分：{{jifen}}</p> -->
           </div>
           <img class='qrcode' :src="qrcode" alt="">
       </header>

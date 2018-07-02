@@ -1,6 +1,33 @@
 import instance from './instance';
 import { convertRESTAPI } from '../util';
 
+/** 获取购物积分抵现比例和分销积分提现比例 */
+function api_Shop_getRatio_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Shop/getRatio',
+    opts: opts
+  });
+}
+
+/** 获取退款申请记录列表 */
+function api_Shop_getRefundApplyList_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Shop/getRefundApplyList',
+    opts: opts
+  });
+}
+
+/** 获取退款申请记录详情 */
+function api_Shop_getRefundApply_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Shop/getRefundApply',
+    opts: opts
+  });
+}
+
 /** 取消订单 */
 function api_Shop_CancleOrder_post(opts) {
   return instance({
@@ -569,6 +596,9 @@ function shop_getBanner_get(opts) {
 }
 
 export {
+  api_Shop_getRatio_get,
+  api_Shop_getRefundApplyList_get,
+  api_Shop_getRefundApply_get,
   api_Shop_CancleOrder_post,
   api_Shop_saveRefundApply_post,
   api_Shop_getMyScore_get,

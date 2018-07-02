@@ -5,12 +5,12 @@
     </v-header>
     <header class="header">
         <div class="header-icon">
-          <img :src="avatar" style='width: 100%; height: 100%' alt="">
+          <img v-if='avatar' :src="avatar" style='width: 100%; height: 100%' alt="">
         </div>
         <!-- <span>登录/注册</span> -->
         <div class="header-content">
           <p>欢迎您：{{username}}</p>
-          <p>总积分：{{jifen}}</p>
+          <p>总积分：{{score}}</p>
         </div>
     </header>
     <!-- <mt-navbar v-model="selected">
@@ -25,7 +25,7 @@
         <mt-cell v-for="n in 4" :key='n' :title="'content ' + n" />
       </mt-tab-container-item>
     </mt-tab-container> -->
-    <p class='title jf-title'>积分获取记录</p>
+    <p class='title jf-title'>积分获取记录<mt-button @click='openDialog' size="small" type='primary' style='float: right; margin-right: 10px;'>提现</mt-button></p>
     <div v-for="(i, index) in JfList" :key='index' style='margin: 0 10px;'>
       <div class="company-wrap clearfix">
         <!-- <div class="avatar">
@@ -51,6 +51,21 @@
       </div>
 
     </div>
+
+    <el-dialog
+      title="提现"
+      :visible.sync="dialogVisible"
+      :before-close="handleClose">
+      <el-input v-model="usescore" placeholder="请输入提现积分"></el-input>
+      <div class="totalScore">
+        <span>当前可用积分：{{score}}</span>
+        <p>可提现现金：{{usescore/scoreRate ? usescore/scoreRate : '0'}}元</p>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button size='small' @click="concleTx()">取 消</el-button>
+        <el-button size='small' type="primary" @click="confirmTx()">确 定</el-button>
+      </span>
+    </el-dialog>
     
   </div>
   
@@ -66,26 +81,62 @@ import Header from '@/common/_header.vue'
         pageNo: 1,
         pageSize: 10,
         isLastPage: false,
-        JfList: []
+        JfList: [],
+        dialogVisible: false,
+        score: null,
+        usescore: null,
+        scoreRate: '' //提现比例
       }
     },
     components: {
       'v-header':Header,
       'v-baseline': Baseline,
     },
-    mounted() {
-      this.getJfList()
+    created() {
       var userInfo = this.$store.state.userInfo
       this.qrcode = userInfo.SharedQRCode
       this.avatar = userInfo.headimgurl
       this.username = userInfo.nickname
-      this.jifen = userInfo.Score,
       this.time = userInfo.subscribe_time
     },
+    mounted() {
+      this.getJfList()
+      this.getScoreRate()
+      this.getScore()
+    },
+    watch: {
+      usescore() {
+        if (this.usescore > this.score) {
+          this.usescore = '0'
+          Toast('不能超过最大可用积分')
+        } else if (isNaN(parseInt(this.usescore)) ) {
+          this.usescore = '0'
+          Toast('请输入整形数字')
+        }
+      }
+    },
     methods: {
+      openDialog() {
+        this.dialogVisible = true
+      },
+      concleTx() {
+        this.usescore = ''
+        this.dialogVisible = false
+      },
+      confirmTx() {
+        
+      },
+      handleClose(done) {
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {});
+      },
       getJfList() {
         mockapi.shop.api_Shop_getMyScoreList_get({
           params: {
+            type: 2,
             token: this.$store.state.userInfo.MemberToken,
             pageNo: this.pageNo,
             pageSize: this.pageSize
@@ -94,8 +145,34 @@ import Header from '@/common/_header.vue'
           var data = res.data.data.list
           var pager = res.data.data.pager
           this.JfList = this.JfList.concat(data)
-          console.log(this.JfList)
+          // console.log(this.JfList)
           this.isLastPage = pager.isLastPage
+        })
+      },
+      getScore() {
+        mockapi.shop.api_Shop_getMyScore_get({
+          params: {
+            type: 2,
+            token: this.$store.state.userInfo.MemberToken
+          }
+        }).then(res => {
+          var data = res.data.data
+          this.score = data
+          console.log(111)
+          console.log(this.score)
+        })
+      },
+      getScoreRate() {
+        mockapi.shop.api_Shop_getRatio_get({
+          params: {
+            type: 2,
+            token: this.$store.state.userInfo.MemberToken
+          }
+        }).then(res => {
+          var data = res.data.data
+          this.scoreRate = data
+          console.log(222)
+          console.log(this.scoreRate)
         })
       },
       generateTime(time) {
@@ -117,6 +194,23 @@ import Header from '@/common/_header.vue'
   @import '../../assets/fz.less';
   @import '../../assets/index/style.css';
   @import '../../assets/user/icon/carstyle.css';
+  .el-dialog{
+    width: 80%;
+  }
+  .mint-toast{
+    z-index: 10000;
+  }
+  .el-message-box{
+    width: 90%;
+  }
+  .totalScore{
+    text-align: right;
+    padding: 0px 10px;
+    span{
+      font-size: 12px;
+      color: #FFAA00;
+    }
+  }
   .company-wrap{
     margin-top: 20px;
     padding-left: 10px;
