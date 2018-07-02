@@ -69,7 +69,7 @@
           </section> -->
 
           <section class="my-service">
-              <router-link class="my-service-top" :to="{path: '/shop/shareproduct'}">
+              <!-- <router-link class="my-service-top" :to="{path: '/shop/shareproduct'}">
                   <div>
                     <span class="icon2-service">
                         <img src='../../assets/img/cp.png' style='width: 26px;margin-top:-4px' >
@@ -79,7 +79,7 @@
                   <p>
                     <span>分销产品</span><i class="icon-go"></i>
                   </p>
-              </router-link>
+              </router-link> -->
               <router-link class="my-service-bottom" to="/shop/shareCompany">
                   <div>
                     <!-- <span class="icon2-milogo"></span> -->

@@ -52,10 +52,26 @@ router.beforeEach((to, from, next) => {
         console.log('没有token')
         // 测试接口 api_TestGetUserInfo_get
         // 正式接口 api_GetUserInfo_get
-        var code = to.query.code
-        console.log(`微信取到的code: ${to.query.code}`)
+        // if (localStorage.getItem('code') != 'undefined') {
+        //   var code = localStorage.getItem('code')
+        //   console.log(code)
+        // } else {
+        //   var code = to.query.code
+        //   console.log(`微信取到的code: ${to.query.code}`)
+        //   localStorage.setItem('code', code)
+        // }
 
-        if (code) {
+        if (to.query.code) {
+          var code = to.query.code
+          console.log(`微信取到的code: ${to.query.code}`)
+          localStorage.setItem('code', code)
+        } else {
+          console.log('local code')
+          var code = localStorage.getItem('code')
+          console.log(code) 
+        }
+
+        if (code && code != 'undefined' && code != '') {
           mockapi.shop.api_GetUserInfo_get({
             params: {
               code: code ? code : '' // 微信传递过来的code
@@ -88,35 +104,35 @@ router.beforeEach((to, from, next) => {
           console.log('未能成功获取到code，走测试接口')
           Toast('获取用户信息失败，请重试！')
           // alert('获取用户信息失败')
-          return
-          // mockapi.shop.api_TestGetUserInfo_get({
-          //   params: {
-          //     code: 123
-          //   }
-          // }).then(response => {
-          //   console.log('成功获取到token')
+          // return
+          mockapi.shop.api_TestGetUserInfo_get({
+            params: {
+              code: 123
+            }
+          }).then(response => {
+            console.log('成功获取到token')
             
-          //   var data = response.data.data
-          //   // TODO: 为了测试添加手机号
-          //   // data.Phone = '18554870804'
-          //   console.log(data)
-          //   // 用户信息存在vuex中
-          //   store.commit('setUserInfo', data)
-          //   // 已经绑定手机放行
-          //   if(data.Phone) {
-          //     console.log('已经绑定手机')
-          //     next()
-          //   } else {
-          //     // 未绑定手机去绑定
-          //     console.log('没有绑定手机')
-          //     next({
-          //       path: '/shop/login',
-          //       query: {oldUrl: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
-          //     })
-          //   }
-          // }).catch(err => {
-          //   console.log(err)
-          // })
+            var data = response.data.data
+            // TODO: 为了测试添加手机号
+            // data.Phone = '18554870804'
+            console.log(data)
+            // 用户信息存在vuex中
+            store.commit('setUserInfo', data)
+            // 已经绑定手机放行
+            if(data.Phone) {
+              console.log('已经绑定手机')
+              next()
+            } else {
+              // 未绑定手机去绑定
+              console.log('没有绑定手机')
+              next({
+                path: '/shop/login',
+                query: {oldUrl: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
+              })
+            }
+          }).catch(err => {
+            console.log(err)
+          })
         }
         
       }

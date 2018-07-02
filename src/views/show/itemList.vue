@@ -50,7 +50,7 @@
             pageSize: this.pageSize
           } 
         }).then(response => {
-          var data = response.data.data
+          var data = response.data.data.list
           this.list = this.list.concat(data)
           this.loading=false
         }).catch(error => {

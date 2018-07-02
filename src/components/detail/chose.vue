@@ -7,8 +7,9 @@
       </h1>
       <p class="chose-view-intro">{{view.ProductIntro}}</p>
       <div class='item-wrap'>
-        <span>原价：{{view.OriginalPrice}}元</span>
-        <span>折扣价：{{view.DiscountPrice}}元</span>
+        <p v-if='enabledProp.length != 1'>价格：{{view.minPrice}} - {{view.maxPrice}}元</p>
+        <p class='discountprice' v-if='enabledProp.length == 1'>价格：{{this.DiscountPrice}}元</p>
+        <span class='originalprice' v-if='enabledProp.length == 1 && this.DiscountPrice != this.OriginalPrice'>原价：{{this.OriginalPrice}}元</span>
       </div>
       <div class='item-wrap'>
         <span>浏览次数： {{view.VisitTimes}}</span>
@@ -38,7 +39,7 @@
       <div class="pick" >
         <div  v-if='view.diclist[0]'>
           <h1>请选择{{view.diclist[0].DicTypeName}}:</h1>
-          <div @click.native="clickToggle0">
+          <div @click="clickToggle0">
             <el-radio-group v-model="radio[0].radio" @change='changeSelect' size="medium">
               <el-radio-button v-for="(item, k) in modal1" :label="item.code" :key='k'>{{item.name}}</el-radio-button>
             </el-radio-group>
@@ -46,7 +47,8 @@
         </div>
         <div v-if='view.diclist[1]'>
           <h1>请选择{{view.diclist[1].DicTypeName}}:</h1>
-          <div @click.native="clickToggle1" >
+          <!-- @click.native的情况下无法实现toggle效果 -->
+          <div @click="clickToggle1" >
             <el-radio-group v-model="radio[1].radio" @change='changeSelect' size="medium">
               <el-radio-button v-for="(item, k) in modal2" :label="item.code"  :key='k'>{{item.name}}</el-radio-button>
             </el-radio-group>
@@ -54,7 +56,7 @@
         </div>
         <div v-if='view.diclist[2]'>
           <h1>请选择{{view.diclist[2].DicTypeName}}:</h1>
-          <div @click.native="clickToggle2">
+          <div @click="clickToggle2">
             <el-radio-group v-model="radio[2].radio" @change='changeSelect' size="medium">
               <el-radio-button v-for="(item, k) in modal3" :label="item.code"  :key='k'>{{item.name}}</el-radio-button>
             </el-radio-group>
@@ -123,7 +125,9 @@ export default {
       enabledProp: [],
       modal1: [],
       modal2: [],
-      modal3: []
+      modal3: [],
+      OriginalPrice: '',
+      DiscountPrice: ''
     }
   },
   computed: {
@@ -167,6 +171,10 @@ export default {
       }).then(res => {
         var data = res.data.data
         this.enabledProp = data
+        if (this.enabledProp.length == 1) {
+          this.OriginalPrice = this.enabledProp[0].OriginalPrice
+          this.DiscountPrice = this.enabledProp[0].DiscountPrice
+        }
         this.$store.commit('saveSelectedProp', this.enabledProp)
         this.modal1 = []
         this.modal2 = []
@@ -235,6 +243,12 @@ export default {
 
 <style lang="less" scoped>
 @import '../../assets/fz.less';
+.originalprice{
+  text-decoration:line-through;
+}
+.discountprice{
+  color: red;
+}
 .chose {
     padding: 3vw;
     .chose-view {

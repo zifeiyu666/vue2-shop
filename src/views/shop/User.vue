@@ -11,7 +11,7 @@
           <div class="header-content">
             <p>欢迎您：{{username}}</p>
             <p>注册时间：{{time}}</p>
-            <!-- <p>积分：{{jifen}}</p> -->
+            <p>会员等级：{{memberrank}}</p>
           </div>
           <img class='qrcode' :src="qrcode" alt="">
       </header>
@@ -70,6 +70,14 @@
                 <span>购物积分</span><i class="icon-go"></i>
               </p>
             </router-link>
+            <router-link :to="{ name: '分销积分'}" class="my-settle-top">
+              <div>
+                <span class="icon2-f"></span>
+              </div>
+              <p>
+                <span>分销积分</span><i class="icon-go"></i>
+              </p>
+            </router-link>
             <router-link class="my-vip-bottom ho" to="/shop/edit">
               <div>
                 <span class="icon2-settle"></span>
@@ -105,7 +113,8 @@
         username: '',
         avatar: '',
         time: '',
-        jifen: ''
+        jifen: '',
+        memberrank: ''
       }
     },
     mounted() {
@@ -114,7 +123,8 @@
       this.avatar = userInfo.headimgurl
       this.username = userInfo.nickname
       this.jifen = userInfo.Score,
-      this.time = userInfo.subscribe_time
+      this.time = userInfo.subscribe_time,
+      this.memberrank = userInfo.MemberRankName
     } 
   }
 </script>

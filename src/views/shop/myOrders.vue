@@ -32,8 +32,8 @@
                       <!-- TODO -->
                       <!-- v-if='k.orderstate=="已付款"' -->
                       <div class='state-wrap'>
-                        <mt-badge size="small" color='#ccc'>{{generateState(k.state)}}</mt-badge>
-                        <mt-button v-if='k.state == 2'  class='refund-btn1'  @click.stop='refund([k,item])'>申请退款</mt-button>
+                        <mt-badge size="small" color='#ccc'>{{k.state}}</mt-badge>
+                        <mt-button v-if='k.state == "已付款"'  class='refund-btn1'  @click.stop='refund([k,item])'>申请退款</mt-button>
                         
                       </div>
                       
@@ -76,7 +76,7 @@
                         <span @click.stop='deleteOrder(item)'></span>
                       </div> -->
                       <div class='state-wrap'>
-                        <mt-badge size="small" color='#ccc'>{{generateState(k.state)}}</mt-badge>
+                        <mt-badge size="small" color='#ccc'>{{k.state}}</mt-badge>
                         <mt-button v-if='k.state == 2'  class='refund-btn1'  @click.stop='refund([k,item])'>申请退款</mt-button>
                       </div>
                     </div>
@@ -115,7 +115,7 @@
                         <span @click.stop='deleteOrder(item)'></span>
                       </div> -->
                       <div class='state-wrap'>
-                        <mt-badge size="small" color='#ccc'>{{generateState(k.state)}}</mt-badge>
+                        <mt-badge size="small" color='#ccc'>{{k.state}}</mt-badge>
                         <mt-button v-if='k.state == 2'  class='refund-btn1'  @click.stop='refund([k,item])'>申请退款</mt-button>
                       </div>
                     </div>
@@ -154,7 +154,7 @@
                         <span @click.stop='deleteOrder(item)'></span>
                       </div> -->
                       <div class='state-wrap'>
-                        <mt-badge size="small" color='#ccc'>{{generateState(k.state)}}</mt-badge>
+                        <mt-badge size="small" color='#ccc'>{{k.state}}</mt-badge>
                         <mt-button v-if='k.state == 2'  class='refund-btn1'  @click.stop='refund([k,item])'>申请退款</mt-button>
                       </div>
                     </div>

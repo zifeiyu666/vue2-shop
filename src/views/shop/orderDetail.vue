@@ -13,6 +13,14 @@
           <p>需付款： {{orderDetail.realtotalprice}}</p>
         </div>
       </div>
+      <div v-if='orderDetail.orderstate=="已取消"'>
+        <div class="left">
+          <span><i class='icon-yiwanchengdingdan iconfont'></i> 订单已经取消</span>
+        </div>
+        <div class="right">
+          <p>欢迎再次光临！</p>
+        </div>
+      </div>
       <div v-else>
         <div class="left">
           <span><i class='iconfont icon-yiwanchengdingdan'></i> 完成</span>
@@ -39,9 +47,9 @@
         <div class='order-wrap'>
           <h3 class='ordertitle'>订单标题：{{orderDetail.ordertitle}}</h3>
           <ul class="something" >
-            <div id="deleteOrder">
+            <!-- <div id="deleteOrder">
               <span @click='deleteOrder(orderDetail)'></span>
-            </div>
+            </div> -->
             <li v-for="(k,i) in orderDetail.opd" :key='i'>
               <div class="something-middle">
                 <img :src="k.imgurl[0]">
@@ -53,7 +61,7 @@
                 <!-- TODO -->
                 <!-- v-if='k.orderstate=="已付款"' -->
                 <div class='state-wrap'>
-                  <mt-badge size="small" color='#ccc'>{{generateState(k.state)}}</mt-badge>
+                  <mt-badge size="small" color='#ccc'>{{k.state}}</mt-badge>
                   <mt-button v-if='k.state == 2'  class='refund-btn1'  @click.stop='refund([k,item])'>申请退款</mt-button>
                 </div>
               </div>
