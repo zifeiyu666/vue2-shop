@@ -63,7 +63,7 @@ router.beforeEach((to, from, next) => {
             
             var data = response.data.data
             // TODO: 为了测试添加手机号
-            data.Phone = '18554870804'
+            // data.Phone = '18554870804'
             console.log(data)
             // 用户信息存在vuex中
             store.commit('setUserInfo', data)
