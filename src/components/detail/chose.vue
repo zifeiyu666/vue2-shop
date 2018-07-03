@@ -39,25 +39,25 @@
       <div class="pick" >
         <div  v-if='view.diclist[0]'>
           <h1>请选择{{view.diclist[0].DicTypeName}}:</h1>
-          <div @click="clickToggle0">
+          <div @click.native="clickToggle0" style='cursor:pointer'>
             <el-radio-group v-model="radio[0].radio" @change='changeSelect' size="medium">
-              <el-radio-button v-for="(item, k) in modal1" :label="item.code" :key='k'>{{item.name}}</el-radio-button>
+              <el-radio-button style='cursor:pointer' v-for="(item, k) in modal1" :label="item.code" :key='k'>{{item.name}}</el-radio-button>
             </el-radio-group>
           </div>
         </div>
         <div v-if='view.diclist[1]'>
           <h1>请选择{{view.diclist[1].DicTypeName}}:</h1>
           <!-- @click.native的情况下无法实现toggle效果 -->
-          <div @click="clickToggle1" >
-            <el-radio-group v-model="radio[1].radio" @change='changeSelect' size="medium">
+          <div @click.native="clickToggle1" >
+            <el-radio-group v-model="radio[1].radio" @change='changeSelect' size="medium"  @click.native="clickToggle1">
               <el-radio-button v-for="(item, k) in modal2" :label="item.code"  :key='k'>{{item.name}}</el-radio-button>
             </el-radio-group>
           </div>
         </div>
         <div v-if='view.diclist[2]'>
           <h1>请选择{{view.diclist[2].DicTypeName}}:</h1>
-          <div @click="clickToggle2">
-            <el-radio-group v-model="radio[2].radio" @change='changeSelect' size="medium">
+          <div @click.native="clickToggle2">
+            <el-radio-group v-model="radio[2].radio" @change='changeSelect' size="medium"  @click.native="clickToggle2">
               <el-radio-button v-for="(item, k) in modal3" :label="item.code"  :key='k'>{{item.name}}</el-radio-button>
             </el-radio-group>
           </div>
@@ -222,7 +222,7 @@ export default {
     },
 
     clickToggle1() {
-      console.log(1111111111111)
+      console.log(2222222222222)
       if (this.radio[1].radio) {
         this.radio[1].radio = ''
         this.changeSelect()
@@ -230,7 +230,7 @@ export default {
     },
 
     clickToggle2() {
-      console.log(1111111111111)
+      console.log(3333333333333)
       if (this.radio[2].radio) {
         this.radio[2].radio = ''
         this.changeSelect()

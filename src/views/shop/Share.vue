@@ -8,10 +8,13 @@
           <!-- <span>登录/注册</span> -->
            <div class="header-content">
             <p>欢迎您：{{username}}</p>
-            <p>注册时间：{{time}}</p>
-            <!-- <p>积分：{{jifen}}</p> -->
+            <!-- <p>注册时间：{{time}}</p> -->
+            <!-- <p>会员等级：{{memberrank}}</p> -->
+            <!-- <p>购物积分：{{score}}</p> -->
+            <p>分销积分：{{fxscore}}</p>
+            <P>手机号：{{phone}}</P>
           </div>
-          <img class='qrcode' :src="qrcode" alt="">
+          <img class='qrcode' :src="qrcode" alt="" @click='showQrCode()'>
       </header>
       <div class="main">
           <!-- <router-link class="my-indent" :to="{ name: ''}">
@@ -123,6 +126,15 @@
       </div>
       <!-- <v-baseline></v-baseline> -->
       <v-footer></v-footer>
+
+      <!-- 二维码弹窗 -->
+      <el-dialog
+        title='我的分享码'
+        :visible.sync="dialogVisible"
+        width="80%"
+        center>
+        <span><img style='width: 100%; display: inline-block' :src="qrcode" alt=""></span>
+      </el-dialog>
     </div>
 </template>
 
@@ -151,6 +163,10 @@
       this.username = userInfo.nickname
       this.jifen = userInfo.Score,
       this.time = userInfo.subscribe_time
+      this.memberrank = userInfo.MemberRankName
+      this.score = userInfo.Score
+      this.fxscore = userInfo.FenXiaoScore
+      this.phone = userInfo.Phone
     }
   }
 </script>
@@ -169,11 +185,15 @@
     background-color: #F8FCFF;
     .qrcode{
         position: absolute;
-        width: 60px;
-        height: 60px;
+        width: 50px;
+        height: 50px;
         right: 20px;
+        border: 1px solid #eee;
       }
     .header-content{
+      p{
+        font-size: 12px;
+      }
       color: #fff;
       position: absolute;
       left: 80px;

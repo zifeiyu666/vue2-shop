@@ -9,9 +9,12 @@
           </div>
           <!-- <span>登录/注册</span> -->
           <div class="header-content">
-            <p>欢迎您：{{username}}</p>
+            <p>{{username}} <span style='font-size: 16px; font-weight: bold; margin-left: 5px'>v</span> {{memberrank}}</p>
             <!-- <p>注册时间：{{time}}</p> -->
-            <p>会员等级：{{memberrank}}</p>
+            <!-- <p>会员等级：{{memberrank}}</p> -->
+            <p>购物积分：{{score}}</p>
+            <p>手机号：{{phone}}</p>
+            <!-- <p>分销积分：{{fxscore}}</p> -->
           </div>
           <img class='qrcode' :src="qrcode" alt="" @click='showQrCode()'>
       </header>
@@ -70,14 +73,14 @@
                 <span>购物积分</span><i class="icon-go"></i>
               </p>
             </router-link>
-            <router-link :to="{ name: '分销积分'}" class="my-settle-top">
+            <!-- <router-link :to="{ name: '分销积分'}" class="my-settle-top">
               <div>
                 <span class="icon2-f"></span>
               </div>
               <p>
                 <span>分销积分</span><i class="icon-go"></i>
               </p>
-            </router-link>
+            </router-link> -->
             <router-link class="my-vip-bottom ho" to="/shop/edit">
               <div>
                 <span class="icon2-settle"></span>
@@ -97,12 +100,12 @@
 
       <!-- 二维码弹窗 -->
       <el-dialog
-      title='我的分享码'
-      :visible.sync="dialogVisible"
-      width="80%"
-      center>
-      <span><img style='width: 100%; display: inline-block' :src="qrcode" alt=""></span>
-    </el-dialog>
+        title='我的分享码'
+        :visible.sync="dialogVisible"
+        width="80%"
+        center>
+        <span><img style='width: 100%; display: inline-block' :src="qrcode" alt=""></span>
+      </el-dialog>
     </div>
 </template>
 
@@ -135,6 +138,9 @@
       this.jifen = userInfo.Score,
       this.time = userInfo.subscribe_time,
       this.memberrank = userInfo.MemberRankName
+      this.score = userInfo.Score
+      this.fxscore = userInfo.FenXiaoScore
+      this.phone = userInfo.Phone
     },
     methods: {
       showQrCode() {
@@ -162,6 +168,9 @@
         border: 1px solid #eee;
       }
     .header-content{
+      p{
+        font-size: 12px;
+      }
       color: #fff;
       position: absolute;
       left: 80px;
