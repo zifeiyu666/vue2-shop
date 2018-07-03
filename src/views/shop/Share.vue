@@ -153,7 +153,8 @@
         username: '',
         avatar: '',
         time: '',
-        jifen: ''
+        jifen: '',
+        dialogVisible: false
       }
     },
     mounted() {
@@ -167,6 +168,12 @@
       this.score = userInfo.Score
       this.fxscore = userInfo.FenXiaoScore
       this.phone = userInfo.Phone
+    },
+    methods: {
+      showQrCode() {
+        console.log(11111)
+        this.dialogVisible = true
+      }
     }
   }
 </script>

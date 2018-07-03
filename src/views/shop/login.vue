@@ -108,21 +108,26 @@ export default {
         }).then(response => {
           console.log(111111)
           console.log(response.data.result)
-          if (response.data.result != 0) {
-            console.log('success')
-            // var data = response.data.data
-            // this.navList = data.list
-            // this.banner = data.imgurl
-            // this.intro = data.itemintro
-            // console.log(this.navList)
-            Toast('手机号绑定成功')
-            // 绑定成功调到首页
-            this.$router.push({
-              path: '/shop'
-            })
-          } else {
-            Toast('手机号绑定失败:' + response.data.msg);
-          }
+          Toast('手机号绑定成功')
+          // 绑定成功调到首页
+          this.$router.push({
+            path: '/shop'
+          })
+          // if (response.data.result != 0) {
+          //   console.log('success')
+          //   // var data = response.data.data
+          //   // this.navList = data.list
+          //   // this.banner = data.imgurl
+          //   // this.intro = data.itemintro
+          //   // console.log(this.navList)
+          //   Toast('手机号绑定成功')
+          //   // 绑定成功调到首页
+          //   this.$router.push({
+          //     path: '/shop'
+          //   })
+          // } else {
+          //   Toast('手机号绑定失败:' + response.data.msg);
+          // }
           
         }).catch(error => {
           console.log(error)

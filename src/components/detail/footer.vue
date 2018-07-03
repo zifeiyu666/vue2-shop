@@ -123,9 +123,12 @@ export default {
   // TODO： 检测数据
   watch: {
     usescore() {
-      if (this.usescore > this.score) {
-        this.usescore = this.score
+      if (this.usescore > this.score || this.usescore > (this.payprice*this.scoreRate)) {
+        this.usescore = this.score > this.payprice*this.scoreRate ? this.payprice*this.scoreRate : this.score
         Toast('不能超过最大可用积分')
+      } else if (isNaN(parseInt(this.usescore)) ) {
+        // this.usescore = '0'
+        Toast('请输入整形数字')
       }
     }
   },
@@ -295,8 +298,11 @@ export default {
       }
     },
     confirmPay() {
+      if(this.usescore && isNaN(parseInt(this.usescore))) {
+        Toast('请输入正确的积分格式')
+        return 
+      }
       this.payVisible = false
-      console.log(1111)
       mockapi.shop.api_Shop_generateOrder_post({
         data: qs.stringify({
           token: this.$store.state.userInfo.MemberToken,

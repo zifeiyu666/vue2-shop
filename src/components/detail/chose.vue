@@ -39,26 +39,26 @@
       <div class="pick" >
         <div  v-if='view.diclist[0]'>
           <h1>请选择{{view.diclist[0].DicTypeName}}:</h1>
-          <div @click.native="clickToggle0" style='cursor:pointer'>
+          <div style='cursor:pointer'>
             <el-radio-group v-model="radio[0].radio" @change='changeSelect' size="medium">
-              <el-radio-button style='cursor:pointer' v-for="(item, k) in modal1" :label="item.code" :key='k'>{{item.name}}</el-radio-button>
+              <el-radio-button style='cursor:pointer' @click.native.prevent="clickToggle0(item.code)" v-for="(item, k) in modal1" :label="item.code" :key='k'>{{item.name}}</el-radio-button>
             </el-radio-group>
           </div>
         </div>
         <div v-if='view.diclist[1]'>
           <h1>请选择{{view.diclist[1].DicTypeName}}:</h1>
           <!-- @click.native的情况下无法实现toggle效果 -->
-          <div @click.native="clickToggle1" >
-            <el-radio-group v-model="radio[1].radio" @change='changeSelect' size="medium"  @click.native="clickToggle1">
-              <el-radio-button v-for="(item, k) in modal2" :label="item.code"  :key='k'>{{item.name}}</el-radio-button>
+          <div  style='cursor:pointer'>
+            <el-radio-group v-model="radio[1].radio" @change='changeSelect' size="medium">
+              <el-radio-button style='cursor:pointer' @click.native.prevent="clickToggle1(item.code)"  v-for="(item, k) in modal2" :label="item.code"  :key='k'>{{item.name}}</el-radio-button>
             </el-radio-group>
           </div>
         </div>
         <div v-if='view.diclist[2]'>
           <h1>请选择{{view.diclist[2].DicTypeName}}:</h1>
-          <div @click.native="clickToggle2">
-            <el-radio-group v-model="radio[2].radio" @change='changeSelect' size="medium"  @click.native="clickToggle2">
-              <el-radio-button v-for="(item, k) in modal3" :label="item.code"  :key='k'>{{item.name}}</el-radio-button>
+          <div>
+            <el-radio-group v-model="radio[2].radio" @change='changeSelect' size="medium">
+              <el-radio-button style='cursor:pointer' @click.native.prevent="clickToggle2(item.code)"  v-for="(item, k) in modal3" :label="item.code"  :key='k'>{{item.name}}</el-radio-button>
             </el-radio-group>
           </div>
         </div>
@@ -213,28 +213,22 @@ export default {
       })
     },
 
-    clickToggle0() {
+    clickToggle0(e) {
       console.log(1111111111111)
-      if (this.radio[0].radio) {
-        this.radio[0].radio = ''
-        this.changeSelect()
-      }
+      e === this.radio[0].radio ? this.radio[0].radio = '' : this.radio[0].radio = e
+      this.changeSelect()
     },
 
-    clickToggle1() {
+    clickToggle1(e) {
       console.log(2222222222222)
-      if (this.radio[1].radio) {
-        this.radio[1].radio = ''
-        this.changeSelect()
-      }
+      e === this.radio[1].radio ? this.radio[1].radio = '' : this.radio[1].radio = e
+      this.changeSelect()
     },
 
-    clickToggle2() {
+    clickToggle2(e) {
       console.log(3333333333333)
-      if (this.radio[2].radio) {
-        this.radio[2].radio = ''
-        this.changeSelect()
-      }
+      e === this.radio[2].radio ? this.radio[2].radio = '' : this.radio[2].radio = e
+      this.changeSelect()
     }
 
   }

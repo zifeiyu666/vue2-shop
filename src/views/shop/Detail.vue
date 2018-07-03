@@ -65,4 +65,14 @@ export default {
   display: block;
   height: 200px;
 }
+.pick{
+  span, div, label{
+    outline: 0!important;
+  }
+  label{
+    box-shadow: 0 0 0 0!important;
+  }
+  
+}
+
 </style>

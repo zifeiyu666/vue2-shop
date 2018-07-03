@@ -110,7 +110,7 @@ import Header from '@/common/_header.vue'
           this.usescore = '0'
           Toast('不能超过最大可用积分')
         } else if (isNaN(parseInt(this.usescore)) ) {
-          this.usescore = '0'
+          // this.usescore = '0'
           Toast('请输入整形数字')
         }
       }
@@ -120,10 +120,17 @@ import Header from '@/common/_header.vue'
         this.dialogVisible = true
       },
       concleTx() {
-        this.usescore = ''
+        this.usescore = 0
         this.dialogVisible = false
       },
       confirmTx() {
+        console.log(this.usescore)
+        console.log(isNaN(parseInt(this.usescore)))
+        if(isNaN(parseInt(this.usescore))) {
+          Toast('请输入正确的积分格式')
+          return 
+        }
+        
         mockapi.shop.api_MustBeJustSoSo_MustBeLQ_get({
           params: {
             MemberToken: this.$store.state.userInfo.MemberToken,

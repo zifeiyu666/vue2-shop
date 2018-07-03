@@ -50,46 +50,25 @@ router.beforeEach((to, from, next) => {
       else {    
         //如果没有token，获取token
         console.log('没有token')
-        if (to.query.code) {
-          var code = to.query.code
-          console.log(`微信取到的code: ${to.query.code}`)
-        } else {
+        // if (to.query.code) {
+        //   var code = to.query.code
+        //   console.log(`微信取到的code: ${to.query.code}`)
+        // } else {
+        //   console.log('获取membertoken')
+        //   var membertoken = sessionStorage.getItem('membertoken')
+        //   // var membertoken = '95d031ca-669a-406a-adcc-caa85bd398e6'
+        // }
+
+        if (sessionStorage.getItem('membertoken')) {
           console.log('获取membertoken')
           var membertoken = sessionStorage.getItem('membertoken')
           // var membertoken = '95d031ca-669a-406a-adcc-caa85bd398e6'
+        } else {
+          var code = to.query.code
+          console.log(`微信取到的code: ${to.query.code}`)
         }
 
-        if (code && code != 'undefined' && code != '') {
-          mockapi.shop.api_GetUserInfo_get({
-            params: {
-              code: code // 微信传递过来的code
-            }
-          }).then(response => {
-            console.log('成功获取到token')
-            
-            var data = response.data.data
-            // TODO: 为了测试添加手机号
-            // data.Phone = '18554870804'
-            console.log(data)
-            sessionStorage.setItem('membertoken', data.MemberToken)
-            // 用户信息存在vuex中
-            store.commit('setUserInfo', data)
-            // 已经绑定手机放行
-            if(data.Phone) {
-              console.log('已经绑定手机')
-              next()
-            } else {
-              // 未绑定手机去绑定
-              console.log('没有绑定手机')
-              next({
-                path: '/shop/login',
-                query: {oldUrl: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
-              })
-            }
-          }).catch(err => {
-            console.log(err)
-          })
-        } else if (membertoken && membertoken != 'undefined' && membertoken != '') {
+        if (membertoken && membertoken != 'undefined' && membertoken != '') {
           console.log('未能成功获取到code，通过membertoken接口获取')
           // alert('获取用户信息失败')
           // return
@@ -121,6 +100,38 @@ router.beforeEach((to, from, next) => {
           }).catch(err => {
             console.log(err)
           })
+        } else if (code && code != 'undefined' && code != '') {
+          mockapi.shop.api_GetUserInfo_get({
+            params: {
+              code: code // 微信传递过来的code
+            }
+          }).then(response => {
+            console.log('成功获取到token')
+            
+            var data = response.data.data
+            // TODO: 为了测试添加手机号
+            // data.Phone = '18554870804'
+            console.log(data)
+            var MemberToken = data.MemberToken
+            console.log(MemberToken)
+            sessionStorage.setItem('membertoken', MemberToken)
+            // 用户信息存在vuex中
+            store.commit('setUserInfo', data)
+            // 已经绑定手机放行
+            if(data.Phone) {
+              console.log('已经绑定手机')
+              next()
+            } else {
+              // 未绑定手机去绑定
+              console.log('没有绑定手机')
+              next({
+                path: '/shop/login',
+                query: {oldUrl: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
+              })
+            }
+          }).catch(err => {
+            console.log(err)
+          })
         } else {
           console.log('获取code和membertoken都失败了')
           Toast('获取用户信息失败，请重关闭页面并重试！')
@@ -133,7 +144,13 @@ router.beforeEach((to, from, next) => {
           }).then(response => {
             console.log('成功获取到token')
             
+
             var data = response.data.data
+
+            console.log(data)
+            var MemberToken = data.MemberToken
+            console.log(MemberToken)
+            sessionStorage.setItem('membertoken', data.MemberToken)
             // TODO: 为了测试添加手机号
             // data.Phone = '18554870804'
             console.log(data)

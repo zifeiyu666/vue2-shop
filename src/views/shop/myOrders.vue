@@ -17,9 +17,9 @@
               <li @click='goToOrderDetail(item.orderno)' class='order-wrap' v-for="(item,i) in allOrders" :key="i">
                 <h3 class='ordertitle'>订单标题：{{item.ordertitle}}</h3>
                 <ul class="something" >
-                  <!-- <div id="deleteOrder">
+                  <div v-if="item.orderstate == '未付款'" id="deleteOrder">
                     <span @click.stop='deleteOrder(item)'></span>
-                  </div> -->
+                  </div>
                   <li v-for="(k,i) in item.opd" :key='i'>
                     <div class="something-middle">
                       <img :src="k.imgurl[0]">
@@ -33,7 +33,7 @@
                       <!-- v-if='k.orderstate=="已付款"' -->
                       <div class='state-wrap'>
                         <mt-badge size="small" color='#ccc'>{{k.state}}</mt-badge>
-                        <mt-button v-if='k.state == "已付款"'  class='refund-btn1'  @click.stop='refund([k,item])'>申请退款</mt-button>
+                        <mt-button v-if='k.state == "已付款" || k.state == "已接受"'  class='refund-btn1'  @click.stop='refund([k,item])'>申请退款</mt-button>
                         
                       </div>
                       
@@ -61,9 +61,9 @@
               <li @click='goToOrderDetail(item.orderno)' class='order-wrap' v-for="(item,i) in waitOrders" :key="i">
                 <h3 class='ordertitle'>订单标题：{{item.ordertitle}}</h3>
                 <ul class="something" >
-                  <!-- <div id="deleteOrder">
+                  <div id="deleteOrder">
                     <span @click.stop='deleteOrder(item)'></span>
-                  </div> -->
+                  </div>
                   <li v-for="(k,i) in item.opd" :key='i'>
                      <div class="something-middle">
                       <img :src="k.imgurl[0]">
@@ -77,7 +77,7 @@
                       </div> -->
                       <div class='state-wrap'>
                         <mt-badge size="small" color='#ccc'>{{k.state}}</mt-badge>
-                        <mt-button v-if='k.state == 2'  class='refund-btn1'  @click.stop='refund([k,item])'>申请退款</mt-button>
+                        <mt-button v-if='k.state == "已付款" || k.state == "已接受"'  class='refund-btn1'  @click.stop='refund([k,item])'>申请退款</mt-button>
                       </div>
                     </div>
                   </li>
@@ -116,7 +116,7 @@
                       </div> -->
                       <div class='state-wrap'>
                         <mt-badge size="small" color='#ccc'>{{k.state}}</mt-badge>
-                        <mt-button v-if='k.state == 2'  class='refund-btn1'  @click.stop='refund([k,item])'>申请退款</mt-button>
+                        <mt-button v-if='k.state == "已付款" || k.state == "已接受"'  class='refund-btn1'  @click.stop='refund([k,item])'>申请退款</mt-button>
                       </div>
                     </div>
                   </li>
@@ -139,7 +139,7 @@
               <div id="deleteOrder">
                 <span @click.stop='deleteOrder(item)'></span>
               </div>
-              <li @click='goToOrderDetail(item.orderno)' class='order-wrap' v-for="(item,i) in payedOrders" :key="i">
+              <li @click='goToOrderDetail(item.orderno)' class='order-wrap' v-for="(item,i) in unconfirmedOrders" :key="i">
                 <h3 class='ordertitle'>订单标题：{{item.ordertitle}}</h3>
                 <ul class="something" >
                   <li v-for="(k,i) in item.opd" :key='i'>
@@ -155,7 +155,7 @@
                       </div> -->
                       <div class='state-wrap'>
                         <mt-badge size="small" color='#ccc'>{{k.state}}</mt-badge>
-                        <mt-button v-if='k.state == 2'  class='refund-btn1'  @click.stop='refund([k,item])'>申请退款</mt-button>
+                        <mt-button v-if='k.state == "已付款" || k.state == "已接受"'  class='refund-btn1'  @click.stop='refund([k,item])'>申请退款</mt-button>
                       </div>
                     </div>
                   </li>
@@ -165,7 +165,7 @@
                 
               </li>
               <div class="btn-wrap" style='text-align: center'>
-                <mt-button @click='loadMorePayed' v-if='payedQuery.loadMore'>加载更多</mt-button>
+                <mt-button @click='loadMorePayed' v-if='unconfirmedQuery.loadMore'>加载更多</mt-button>
                 <v-baseline v-else></v-baseline>
               </div>
             </ul>
@@ -176,6 +176,7 @@
   
 </template>
 <script>
+import { MessageBox } from 'mint-ui'
 import Baseline from '@/common/_baseline.vue'
 import Footer from '@/common/_footer.vue'
 import * as mockapi from '@/../mockapi'
@@ -381,32 +382,34 @@ import Header from '@/common/_header.vue'
       deleteOrder(item) {
         console.log('取消订单')
         var that = this
-        mockapi.shop.api_Shop_CancleOrder_post({
-          data: qs.stringify({
-            token: this.$store.state.userInfo.MemberToken,
-            orderid: item.orderid
-          })
-        }).then(res => {
-          if (res.data.result == 1) {
-            this.allQuery.pageNo = 1
-            this.waitQuery.pageNo = 1
-            this.payedQuery.pageNo = 1
-            this.allOrders = []
-            this.payedOrders = []
-            this.waitOrders = []
-            this.getAllOrdersList(false)
-            this.getWaitOrdersList(false)
-            this.getPayedOrdersList(false)
-            Toast({
-            message: '操作成功'
-            });
-          } else {
-            Toast({
-              message: '操作失败，请重试'
+        MessageBox.confirm('确定取消订单?').then(action => {
+          mockapi.shop.api_Shop_CancleOrder_post({
+            data: qs.stringify({
+              token: this.$store.state.userInfo.MemberToken,
+              orderid: item.orderid
             })
-          } 
-        }).catch(err => {
-          Toast(err)
+          }).then(res => {
+            if (res.data.result == 1) {
+              this.allQuery.pageNo = 1
+              this.waitQuery.pageNo = 1
+              this.payedQuery.pageNo = 1
+              this.allOrders = []
+              this.payedOrders = []
+              this.waitOrders = []
+              this.getAllOrdersList(false)
+              this.getWaitOrdersList(false)
+              this.getPayedOrdersList(false)
+              Toast({
+              message: '操作成功'
+              });
+            } else {
+              Toast({
+                message: '操作失败，请重试'
+              })
+            } 
+          }).catch(err => {
+            Toast(err)
+          })
         })
       },
       // 订单详情页

@@ -178,5 +178,9 @@ p{
     text-align: center;
     padding: 20px;
 }
+.el-radio-button:focus:not(.is-focus):not(:active) {
+    -webkit-box-shadow: 0 0 0 0 !important;
+    box-shadow: 0 0 0 0 !important;
+}
 
 </style>

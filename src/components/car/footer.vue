@@ -70,9 +70,12 @@ export default {
       // this.params = JSON.stringify(this.params)
     },
     usescore() {
-      if (this.usescore > this.score) {
-        this.usescore = this.score
+      if (this.usescore > this.score || this.usescore > (this.allpay*this.scoreRate)) {
+        this.usescore = this.score > this.allpay*this.scoreRate ? this.allpay*this.scoreRate : this.score
         Toast('不能超过最大可用积分')
+      } else if (isNaN(parseInt(this.usescore)) ) {
+        // this.usescore = '0'
+        Toast('请输入整形数字')
       }
     }
   },
@@ -105,6 +108,10 @@ export default {
     },
     //点击跳转到支付页
     goPay(){
+      if(this.usescore && isNaN(parseInt(this.usescore))) {
+        Toast('请输入正确的积分格式')
+        return 
+      }
       console.log(this.$store.state.userInfo.MemberToken)
       console.log(this.params[0].propid)
       mockapi.shop.api_Shop_generateCarOrder_post({

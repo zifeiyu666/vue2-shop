@@ -29,6 +29,7 @@
   
 </template>
 <script>
+import qs from 'qs'
 import {Toast} from 'mint-ui'
 import Footer from '@/common/_footer.vue'
 import * as mockapi from '@/../mockapi'
@@ -60,14 +61,16 @@ import Header from '@/common/_header.vue'
       },
       submitRefund() {
         mockapi.shop.api_Shop_saveRefundApply_post({
-          params: {
+          data: qs.stringify({
             token: this.$store.state.userInfo.MemberToken,
             Id: this.$route.query.id,
             Reason: this.reason
-          }
-        }).then(res => {
+          })
+        }
+        ).then(res => {
           if (res.data.result == 1) {
             Toast('退款申请成功！')
+            this.$router.push('/shop/myorder')
           }
         })
       }
