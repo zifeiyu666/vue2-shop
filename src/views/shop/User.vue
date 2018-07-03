@@ -10,10 +10,10 @@
           <!-- <span>登录/注册</span> -->
           <div class="header-content">
             <p>欢迎您：{{username}}</p>
-            <p>注册时间：{{time}}</p>
+            <!-- <p>注册时间：{{time}}</p> -->
             <p>会员等级：{{memberrank}}</p>
           </div>
-          <img class='qrcode' :src="qrcode" alt="">
+          <img class='qrcode' :src="qrcode" alt="" @click='showQrCode()'>
       </header>
       <div class="main">
           <router-link class="my-indent" :to="{ path: '/shop/myorder'}">
@@ -94,6 +94,15 @@
       </div>
       <v-baseline></v-baseline>
       <v-footer></v-footer>
+
+      <!-- 二维码弹窗 -->
+      <el-dialog
+      title='我的分享码'
+      :visible.sync="dialogVisible"
+      width="80%"
+      center>
+      <span><img style='width: 100%; display: inline-block' :src="qrcode" alt=""></span>
+    </el-dialog>
     </div>
 </template>
 
@@ -114,7 +123,8 @@
         avatar: '',
         time: '',
         jifen: '',
-        memberrank: ''
+        memberrank: '',
+        dialogVisible: false
       }
     },
     mounted() {
@@ -125,7 +135,13 @@
       this.jifen = userInfo.Score,
       this.time = userInfo.subscribe_time,
       this.memberrank = userInfo.MemberRankName
-    } 
+    },
+    methods: {
+      showQrCode() {
+        console.log(11111)
+        this.dialogVisible = true
+      }
+    }
   }
 </script>
 
@@ -140,9 +156,10 @@
     background-color: #F8FCFF;
     .qrcode{
         position: absolute;
-        width: 60px;
-        height: 60px;
+        width: 50px;
+        height: 50px;
         right: 20px;
+        border: 1px solid #eee;
       }
     .header-content{
       color: #fff;

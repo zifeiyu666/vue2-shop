@@ -9,8 +9,8 @@
           <span><i class='icon-clock iconfont'></i> 等待付款</span>
         </div>
         <div class="right">
-          <p>剩余：0天2小时25分</p>
-          <p>需付款： {{orderDetail.realtotalprice}}</p>
+          <p>{{deadlineTime(orderDetail.expiretime)}}</p>
+          <p>需付款： ￥{{orderDetail.realtotalprice}}</p>
         </div>
       </div>
       <div v-if='orderDetail.orderstate=="已取消"'>
@@ -21,12 +21,68 @@
           <p>欢迎再次光临！</p>
         </div>
       </div>
-      <div v-else>
+      <div v-if='orderDetail.orderstate=="待审核"'>
+        <div class="left">
+          <span><i class='icon-yiwanchengdingdan iconfont'></i> 订单审核中...</span>
+        </div>
+        <div class="right">
+          <!-- <p>欢迎再次光临！</p> -->
+        </div>
+      </div>
+      <div v-if='orderDetail.orderstate=="已付款"'>
         <div class="left">
           <span><i class='iconfont icon-yiwanchengdingdan'></i> 完成</span>
         </div>
         <div class="right">
           <p>欢迎再次光临！</p>
+        </div>
+      </div>
+      <div v-if='orderDetail.orderstate=="核销中"'>
+        <div class="left">
+          <span><i class='iconfont icon-yiwanchengdingdan'></i> 订单核销中...</span>
+        </div>
+        <div class="right">
+          <!-- <p>欢迎再次光临！</p> -->
+        </div>
+      </div>
+      <div v-if='orderDetail.orderstate=="已退款"'>
+        <div class="left">
+          <span><i class='iconfont icon-yiwanchengdingdan'></i> 订单已退款</span>
+        </div>
+        <div class="right">
+          <p>欢迎再次光临！</p>
+        </div>
+      </div>
+      <div v-if='orderDetail.orderstate=="已接受"'>
+        <div class="left">
+          <span><i class='iconfont icon-yiwanchengdingdan'></i> 订单已接受</span>
+        </div>
+        <div class="right">
+          <!-- <p>欢迎再次光临！</p> -->
+        </div>
+      </div>
+      <div v-if='orderDetail.orderstate=="已拒绝"'>
+        <div class="left">
+          <span><i class='iconfont icon-yiwanchengdingdan'></i> 订单已拒绝</span>
+        </div>
+        <div class="right">
+          <!-- <p>欢迎再次光临！</p> -->
+        </div>
+      </div>
+      <div v-if='orderDetail.orderstate=="已核销"'>
+        <div class="left">
+          <span><i class='iconfont icon-yiwanchengdingdan'></i> 订单已核销</span>
+        </div>
+        <div class="right">
+          <!-- <p>欢迎再次光临！</p> -->
+        </div>
+      </div>
+      <div v-if='orderDetail.orderstate=="退款失败"'>
+        <div class="left">
+          <span><i class='iconfont icon-yiwanchengdingdan'></i> 订单退款失败</span>
+        </div>
+        <div class="right">
+          <!-- <p>欢迎再次光临！</p> -->
         </div>
       </div>
       
@@ -51,19 +107,30 @@
               <span @click='deleteOrder(orderDetail)'></span>
             </div> -->
             <li v-for="(k,i) in orderDetail.opd" :key='i'>
-              <div class="something-middle">
-                <img :src="k.imgurl[0]">
-              </div>
-              <div class="something-right">
-                <p>{{k.producttitle}}</p>
-                <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p>
-                <p>售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;使用积分：{{k.usescore}}</p>
-                <!-- TODO -->
-                <!-- v-if='k.orderstate=="已付款"' -->
-                <div class='state-wrap'>
-                  <mt-badge size="small" color='#ccc'>{{k.state}}</mt-badge>
-                  <mt-button v-if='k.state == 2'  class='refund-btn1'  @click.stop='refund([k,item])'>申请退款</mt-button>
+              <div class="flex">
+                <div class="something-middle">
+                  <img :src="k.imgurl[0]">
                 </div>
+                <div class="something-right">
+                  <p>{{k.producttitle}}</p>
+                  <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p>
+                  <p>售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;使用积分：{{k.usescore}}</p>
+                  <!-- TODO -->
+                  <!-- v-if='k.orderstate=="已付款"' -->
+                  <div class='state-wrap'>
+                    <mt-badge size="small" color='#ccc'>{{k.state}}</mt-badge>
+                    <mt-button v-if='k.state == 2'  class='refund-btn1'  @click.stop='refund([k,item])'>申请退款</mt-button>
+                  </div>
+                </div>
+              </div>
+              <!-- v-if='k.kqh.length != 0' -->
+              <div class="kqh" v-if='k.kqh.length != 0'>
+                <p>tips: 通过卡券号到指定商家消费</p>
+                <el-card class="box-card">
+                  <div v-for="(item, index) in k.kqh" :key="index" class="text item">
+                    <span class='sm_title'>卡券号： </span>{{ item }}
+                  </div>
+                </el-card>
               </div>
             </li>
             <mt-button class='refund-btn-2' :class="{'refund-btn-right': (orderDetail.orderstate == '未付款' ? true : false)}">{{orderDetail.orderstate}}</mt-button>
@@ -143,6 +210,33 @@ import Header from '@/common/_header.vue'
       
     },
     methods: {
+      deadlineTime(data) {
+        console.log(data)
+        var date1= data;  //开始时间
+        var date2 = new Date();    //结束时间
+        console.log(date2)
+        var date3 = new Date(date1).getTime() - date2.getTime();   //时间差的毫秒数      
+        if (date3 < 0) {
+          return '支付时间已过期'
+        }
+        //------------------------------
+ 
+        //计算出相差天数
+        var days=Math.floor(date3/(24*3600*1000))
+ 
+        //计算出小时数
+ 
+        var leave1=date3%(24*3600*1000)    //计算天数后剩余的毫秒数
+        var hours=Math.floor(leave1/(3600*1000))
+        //计算相差分钟数
+        var leave2=leave1%(3600*1000)        //计算小时数后剩余的毫秒数
+        var minutes=Math.floor(leave2/(60*1000))
+        //计算相差秒数
+        var leave3=leave2%(60*1000)      //计算分钟数后剩余的毫秒数
+        var seconds=Math.round(leave3/1000)
+        // alert(" 相差 "+days+"天 "+hours+"小时 "+minutes+" 分钟"+seconds+" 秒")
+        return (days+"天 "+hours+"小时 "+minutes+" 分钟"+seconds+" 秒")
+      },
       getOrderDetail() {
         mockapi.shop.api_Shop_getOrders_get({
           params: {
@@ -197,6 +291,22 @@ import Header from '@/common/_header.vue'
 </script>
 <style lang="less" scoped>
 @import '../../assets/fz.less';
+.kqh{
+  margin-top: -15px;
+  p{
+    margin-bottom: 10px;
+    margin-left: 4px;
+  }
+  .el-card{
+    .sm_title{
+      font-size: 12px;
+      color: #666;
+    }
+    font-size: 14px;
+  }
+  padding: 10px;
+  color: #999;
+}
 .order-wrap{
   // border-bottom: 1px solid #999;
   margin-bottom: 20px;
@@ -371,7 +481,10 @@ input{
                 background: url("../../assets/car/images/laji.svg") no-repeat center/50%;
             }
         }
-        > li {
+        >li{
+          .bd();
+        }
+        .flex {
             display: -ms-flex;
             display: -webkit-box;
             display: -ms-flexbox;
@@ -383,7 +496,7 @@ input{
             position: relative;
             height: 40vw;
             margin: 0 2vw;
-            .bd();
+            
             .something-left {
                 -ms-flex: 2;
                 -webkit-box-flex: 2;

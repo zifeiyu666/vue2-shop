@@ -7,9 +7,9 @@
       </h1>
       <p class="chose-view-intro">{{view.ProductIntro}}</p>
       <div class='item-wrap'>
-        <p v-if='enabledProp.length != 1'>价格：{{view.minPrice}} - {{view.maxPrice}}元</p>
-        <p class='discountprice' v-if='enabledProp.length == 1'>价格：{{this.DiscountPrice}}元</p>
-        <span class='originalprice' v-if='enabledProp.length == 1 && this.DiscountPrice != this.OriginalPrice'>原价：{{this.OriginalPrice}}元</span>
+        <p class='discountprice' v-if='enabledProp.length != 1'><i>￥</i>{{view.minPrice}}-{{view.maxPrice}}</p>
+        <p class='discountprice' v-if='enabledProp.length == 1'><i>￥</i>{{this.DiscountPrice}}</p>
+        <span class='originalprice' v-if='enabledProp.length == 1 && this.DiscountPrice != this.OriginalPrice'>原价{{this.OriginalPrice}}元</span>
       </div>
       <div class='item-wrap'>
         <span>浏览次数： {{view.VisitTimes}}</span>
@@ -247,7 +247,11 @@ export default {
   text-decoration:line-through;
 }
 .discountprice{
+  font-size: 16px;
   color: red;
+  i{
+    font-size: 12px;
+  }
 }
 .chose {
     padding: 3vw;

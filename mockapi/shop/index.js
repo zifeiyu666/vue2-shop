@@ -1,6 +1,24 @@
 import instance from './instance';
 import { convertRESTAPI } from '../util';
 
+/** 待审核订单列表 */
+function api_Shop_getSHOrders_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Shop/getSHOrders',
+    opts: opts
+  });
+}
+
+/** 根据MemberToken获取用户信息 */
+function api_GetUserInfoByMemberToken_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/GetUserInfoByMemberToken',
+    opts: opts
+  });
+}
+
 /** 提现 */
 function api_MustBeJustSoSo_MustBeLQ_get(opts) {
   return instance({
@@ -605,6 +623,8 @@ function shop_getBanner_get(opts) {
 }
 
 export {
+  api_Shop_getSHOrders_get,
+  api_GetUserInfoByMemberToken_get,
   api_MustBeJustSoSo_MustBeLQ_get,
   api_Shop_getRatio_get,
   api_Shop_getRefundApplyList_get,

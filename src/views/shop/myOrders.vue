@@ -17,9 +17,9 @@
               <li @click='goToOrderDetail(item.orderno)' class='order-wrap' v-for="(item,i) in allOrders" :key="i">
                 <h3 class='ordertitle'>订单标题：{{item.ordertitle}}</h3>
                 <ul class="something" >
-                  <div id="deleteOrder">
+                  <!-- <div id="deleteOrder">
                     <span @click.stop='deleteOrder(item)'></span>
-                  </div>
+                  </div> -->
                   <li v-for="(k,i) in item.opd" :key='i'>
                     <div class="something-middle">
                       <img :src="k.imgurl[0]">
@@ -61,9 +61,9 @@
               <li @click='goToOrderDetail(item.orderno)' class='order-wrap' v-for="(item,i) in waitOrders" :key="i">
                 <h3 class='ordertitle'>订单标题：{{item.ordertitle}}</h3>
                 <ul class="something" >
-                  <div id="deleteOrder">
+                  <!-- <div id="deleteOrder">
                     <span @click.stop='deleteOrder(item)'></span>
-                  </div>
+                  </div> -->
                   <li v-for="(k,i) in item.opd" :key='i'>
                      <div class="something-middle">
                       <img :src="k.imgurl[0]">
@@ -209,6 +209,13 @@ import Header from '@/common/_header.vue'
           loadMore: true
         },
         waitOrders: [],
+        unconfirmedQuery: {
+          pageNo: 1,
+          pageSize: 10,
+          busy: false, // 判断loadMore是否正在加载中
+          loadMore: true
+        },
+        unconfirmedOrders: [],
         state: [
           {
             id: 1,
@@ -248,6 +255,7 @@ import Header from '@/common/_header.vue'
       this.getAllOrdersList(false)
       this.getWaitOrdersList(false)
       this.getPayedOrdersList(false)
+      this.getUnconfirmedOrdersList(false)
     },
     methods: {
       getAllOrdersList(flag) {
@@ -303,6 +311,24 @@ import Header from '@/common/_header.vue'
             this.payedQuery.loadMore = false
           }
           this.payedOrders = this.payedOrders.concat(data)
+        })
+      },
+      getUnconfirmedOrdersList(flag) {
+        mockapi.shop.api_Shop_getSHOrders_get({
+          params: {
+            token: this.$store.state.userInfo.MemberToken,
+            name: '',
+            pageNo: this.unconfirmedQuery.pageNo,
+            pageSize: this.unconfirmedQuery.pageSize
+          }
+        }).then(res => {
+          this.unconfirmedQuery.busy = false
+          var data = res.data.data.list
+          var isLastPage = res.data.data.pager.isLastPage
+          if (isLastPage) {
+            this.unconfirmedQuery.loadMore = false
+          }
+          this.unconfirmedOrders = this.unconfirmedOrders.concat(data)
         })
       },
       loadMoreAll() {
