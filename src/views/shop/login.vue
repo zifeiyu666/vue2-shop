@@ -61,7 +61,8 @@ export default {
   data(){
     return {
       phone:'',
-      identifyCode: ''
+      identifyCode: '',
+      disabled: null
     }
   },
   mounted() {
@@ -98,6 +99,7 @@ export default {
     },
     // 绑定手机
     bindPhone(){
+      var that = this
       if(this.account!=="") {
         mockapi.shop.api_Shop_bindPhone_post({
           data: qs.stringify({
@@ -108,11 +110,16 @@ export default {
         }).then(response => {
           console.log(111111)
           console.log(response.data.result)
-          Toast('手机号绑定成功')
-          // 绑定成功调到首页
-          this.$router.push({
-            path: '/shop'
-          })
+          if (response.data.result == 0){
+            console.log('success')
+            Toast('手机号绑定成功,页面跳转中...')
+            // 绑定成功调到首页
+            console.log(this)
+            console.log(this.$router.replace)
+            that.$router.replace({name: '首页'})
+            // window.location="http://www.yunhi.vip/dist/index.html#/shop"
+          }
+          
           // if (response.data.result != 0) {
           //   console.log('success')
           //   // var data = response.data.data
