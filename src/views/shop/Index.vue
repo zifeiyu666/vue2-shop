@@ -221,6 +221,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+
 .index {
     width: 100%;
     padding-bottom: 14vw;
@@ -259,7 +260,7 @@ export default {
       width: 100%;
       height: 100%;
       border-radius: 4px;
-      box-shadow: 1px 1px 3px #666;
+      box-shadow: 0px 1px 2px #999;
     }
   }
   .part{

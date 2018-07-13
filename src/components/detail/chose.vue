@@ -341,12 +341,12 @@ export default {
             line-height: 14vw;
             padding-top: 1.6vw;
             span {
-                height: 5.5vw;
-                width: 5.5vw;
-                line-height: 5.5vw;
+                height: 5vw;
+                width: 5vw;
+                line-height: 5vw;
                 position: absolute;
                 top: 0.5vw;
-                right: 5.5vw;
+                right: 5vw;
                 background-color: @cl;
                 border-radius: 50%;
                 color: #fff;

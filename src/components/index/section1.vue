@@ -1,6 +1,7 @@
 <template lang="html">
   <section class="section1" v-if='section1'>
     <h1 class="section1-title">
+      <img class='icon' src="../../assets/img/dandu.png" alt="">
       单独类
       <i class="icon-right"></i>
     </h1>
@@ -42,12 +43,20 @@ import { Lazyload } from 'mint-ui';
     background: #fff;
     .section1-title {
       .bt();
-      text-align: center;
-      .fz(font-size, 40);
-      padding: 4vw 0;
+      text-align: left;
+      .fz(font-size, 34);
+      padding: 4vw 6vw;
+      margin-bottom: 4vw;
       position: relative;
-      background-color: #ffffff;
-      i {
+      background-color: rgb(248, 248, 248);
+      color: #333;
+      .icon{
+        width: 20px;
+        position: relative;
+        top: 2px;
+        margin-right: 5px;
+      }
+      .icon-right {
         position: absolute;
         right: 6vw;
         top: 50%;
@@ -83,6 +92,9 @@ import { Lazyload } from 'mint-ui';
           img {
             display: block;
             width: 100%;
+            // border-top-left-radius: 6px; 
+            // border-top-right-radius: 6px; 
+            border-radius: 4px;
           }
           p {
             overflow: hidden;

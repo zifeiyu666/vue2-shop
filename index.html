@@ -47,11 +47,75 @@
   <script src="http://webapi.amap.com/maps?v=1.4.5&key=dfe6d225575fc95e99cf82d29e32265e&plugin=AMap.Scale,AMap.OverView,AMap.ToolBar,AMap.Driving"></script>
 
   <!-- iconfont -->
-  <link rel="stylesheet" href="http://at.alicdn.com/t/font_596723_9kz0z6539ab.css">
+  <link rel="stylesheet" href="http://at.alicdn.com/t/font_596723_c11wlz7dbuh.css">
 </head>
 
 <body ontouchstart="">
   <div id="app"></div>
  </body>
+ <!-- 重置样式 全局样式 -->
+<style>
+.el-button--primary {
+    color: #fff;
+    background-color: #ff4800;
+    border-color: #ff4800;
+}
+.el-button--primary:focus, .el-button--primary:hover {
+    background: #ff4800;
+    border-color: #ff4800;
+    color: #fff;
+}
+.el-button:focus, .el-button:hover {
+    color: #ff4800;
+    border-color: #ffe1c6;
+    background-color: #ffe1c6;
+}
+  
+.el-radio-button__orig-radio:checked + .el-radio-button__inner{
+  background-color: #ff4800;
+  border-color: #ff4800;
+}
+.el-radio-button__inner:hover {
+    color: #ff4800;
+}
 
+.bottm-btn-group{
+  border-radius: 18px;
+  overflow: hidden;
+  margin-top: 15px;
+  height: 36px;
+}
+.confirm-btn{
+  background: #ff4800;
+}
+.confirm-btn, .concel-btn{
+  height: 36px;
+}
+.confirm-btn label, .concel-btn label{
+  font-size: 16px;
+}
+
+.jfmx{
+  text-align: center;
+  position: relative;
+  margin-left: 40px;
+  margin-right: 40px;
+}
+.jfmx span{
+  background: #fff;
+  position: relative;
+  top: -10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-size: 16px;
+}
+.jfmx:before{
+  content: '';
+  display: block;
+  height: 1px;
+  background: #999;
+  width: 100%;
+  margin-top: 20px;
+}
+</style>
 </html>

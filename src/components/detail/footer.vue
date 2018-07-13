@@ -10,7 +10,7 @@
       
     </div>
     <router-link :to="{path:'/shop/car'}" class="footer-gocar">
-      <i class="icon-car"></i>
+      <i class="iconfont icon-gouwuche3-copy-copy-copy-copy"></i>
       <span v-if="carnum">{{carnum}}</span>
     </router-link>
     <span class="footer-addcar" @click="addIntoCar">
@@ -42,9 +42,9 @@
   width: 30px;" @click='reduce'>-</button> {{num}} <button style="padding: 4px 5px;
   width: 30px;" @click='add'>+</button>
         </p>
-        <div class="bottom clearfix">
-          <mt-button type="primary" @click='confirmShopCar'>确定</mt-button>
-          <mt-button type="default" @click='consoleAddIntoCar'>取消</mt-button>
+        <div class="bottm-btn-group bottom clearfix">
+          <mt-button class='confirm-btn' type="primary" @click='confirmShopCar'>确定</mt-button>
+          <mt-button class='concel-btn' type="concel-btn" @click='consoleAddIntoCar'>取消</mt-button>
         </div>
       </div>
     </mt-popup>
@@ -79,9 +79,9 @@
           </div>
         </div>
 
-        <div class="bottom clearfix">
-          <mt-button type="primary" @click='confirmPay'>确定</mt-button>
-          <mt-button type="default" @click='consolePay'>取消</mt-button>
+        <div class="bottm-btn-group bottom clearfix">
+          <mt-button class='confirm-btn' type="primary" @click='confirmPay'>确定</mt-button>
+          <mt-button class='concel-btn' type="default" @click='consolePay'>取消</mt-button>
         </div>
         
       </div>
@@ -409,12 +409,12 @@ export default {
     line-height: 14vw;
     padding-top: 1.6vw;
     span {
-      height: 5.5vw;
-      width: 5.5vw;
-      line-height: 5.5vw;
+      height: 5vw;
+      width: 5vw;
+      line-height: 5vw;
       position: absolute;
       top: .5vw;
-      right: 5.5vw;
+      right: 5vw;
       background-color: @cl;
       border-radius: 50%;
       color: #fff;
@@ -463,15 +463,15 @@ export default {
 }
 .shopcar{
   padding: 15px;
-  padding-bottom: 60px;
+  // padding-bottom: 60px;
   p{
     word-break: break-all;
   }
   .bottom{
-    position: absolute;
-    bottom: 0;
-    width: 100vw;
-    left:0;
+    // position: absolute;
+    // bottom: 0;
+    // width: 100vw;
+    // left:0;
     button{
       width: 50%;
       float:left;
@@ -479,5 +479,9 @@ export default {
       border-radius: 0;
     }
   }
+}
+.footer .mint-popup{
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
 }
 </style>

@@ -59,7 +59,7 @@
             </router-link>
             <router-link class="my-vip-bottom ho" :to="{ path: '/shop/choujiang'}">
               <div>
-                <span class="icon2-money"></span>
+                <img class='icon' src="../../assets/img/choujiang.png" alt="">
               </div>
               <p>
                 <span>每日抽奖</span><i class="icon-go"></i>
@@ -286,6 +286,9 @@
         .mt();
         .bd();
         .bt();
+        .icon{
+          width: 27px;
+        }
         >a {
           background-color: #fff;
           display: block;

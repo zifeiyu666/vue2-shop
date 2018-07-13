@@ -1,6 +1,7 @@
 <template lang="html">
   <section class="section4" >
     <h2 class="section4-title">
+      <img src="../../assets/img/quanyika.png" alt="" class="icon">
       权益卡类
       <i class="icon-right"></i>
     </h2>
@@ -40,12 +41,21 @@
     .pt();
     .section4-title {
       .bt();
-      text-align: center;
-      .fz(font-size, 40);
-      padding: 4vw 0;
+      text-align: left;
+      .fz(font-size, 34);
+      padding: 4vw 6vw;
+      margin-bottom: 4vw;
       position: relative;
-      background-color: #ffffff;
-      i {
+      background-color: rgb(248, 248, 248);
+      color: #333;
+      .icon{
+        width: 20px;
+        height: 24px;
+        position: relative;
+        top: 6px;
+        margin-right: 5px;
+      }
+      .icon-right {
         position: absolute;
         right: 6vw;
         top: 50%;

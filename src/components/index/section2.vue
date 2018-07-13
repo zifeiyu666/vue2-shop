@@ -1,6 +1,7 @@
 <template>
   <section class="section2" v-if='section2'>
     <h1 class="section1-title">
+        <img src="../../assets/img/lvyou.png" alt="" class="icon">
         旅游打包类
         <i class="icon-right"></i>
       </h1>
@@ -72,6 +73,7 @@ import { Lazyload } from 'mint-ui';
         img {
           display: block;
           width: 100%;
+          border-radius: 4px;
         }
 
         h2,
@@ -113,14 +115,22 @@ import { Lazyload } from 'mint-ui';
   }
   .section1-title {
       .bt();
-      background-color: #ffffff;
-      text-align: center;
-      padding: 4vw 0;
-      .fz(font-size, 40);
+      margin-bottom: 4vw;
+      position: relative;
+      background-color: rgb(248, 248, 248);
+      text-align: left;
+      .fz(font-size, 34);
+      padding: 4vw 6vw;
       color: #333;
       position: relative;
-
-      i {
+      .icon{
+        width: 26px;
+        position: relative;
+        top: 6px;
+        left: -6px;
+        margin-right: -2px;
+      }
+      .icon-right {
         position: absolute;
         right: 6vw;
         top: 50%;

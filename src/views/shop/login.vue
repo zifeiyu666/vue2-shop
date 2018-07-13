@@ -95,11 +95,10 @@ export default {
       } else {
         Toast('请输入手机号')
       }
-        
     },
     // 绑定手机
     bindPhone(){
-      var that = this
+      // var that = this
       if(this.account!=="") {
         mockapi.shop.api_Shop_bindPhone_post({
           data: qs.stringify({
@@ -110,13 +109,12 @@ export default {
         }).then(response => {
           console.log(111111)
           console.log(response.data.result)
-          if (response.data.result == 0){
+          if (response.data.result == 1){
             console.log('success')
             Toast('手机号绑定成功,页面跳转中...')
             // 绑定成功调到首页
-            console.log(this)
-            console.log(this.$router.replace)
-            that.$router.replace({name: '首页'})
+            // this.$router.push({name: '首页'})
+            this.$router.push('/shop/all')
             // window.location="http://www.yunhi.vip/dist/index.html#/shop"
           }
           
