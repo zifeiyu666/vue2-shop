@@ -3,7 +3,7 @@
     <h1 class="section1-title">
       <img class='icon' src="../../assets/img/dandu.png" alt="">
       单独类
-      <i class="icon-right"></i>
+      <i class="icon-right" @click='goAll(4)'></i>
     </h1>
     <ul class="section1-list">
       <li v-for="k in section1">
@@ -15,18 +15,23 @@
         <span>￥ {{k.price}}</span>
       </li>
     </ul>
-  <router-link :to="{ name: '详情页'}"  class="section1-banner">
+  <!-- <router-link :to="{ name: '详情页'}"  class="section1-banner">
     <img :src="banner.imgurl" v-if='banner'>
-  </router-link>
+  </router-link> -->
   </section>
 </template>
 
 <script>
 import { Lazyload } from 'mint-ui';
 
-  export default {
-    props:['section1', 'banner']
+export default {
+  props:['section1', 'banner'],
+  methods: {
+    goAll(id) {
+      this.$router.push({path: '/shop/all', query: {id: id}})
+    }
   }
+}
 
 </script>
 

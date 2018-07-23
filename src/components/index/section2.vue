@@ -3,7 +3,7 @@
     <h1 class="section1-title">
         <img src="../../assets/img/lvyou.png" alt="" class="icon">
         旅游打包类
-        <i class="icon-right"></i>
+        <i class="icon-right" @click='goAll(3)'></i>
       </h1>
     <div class="section2-list">
       
@@ -24,9 +24,9 @@
         </li>
       </ul>
     </div>
-    <router-link class="section2-banner" :to="{name:'详情页'}">
+    <!-- <router-link class="section2-banner" :to="{name:'详情页'}">
       <img :src="banner.imgurl" v-if='banner'>
-    </router-link>
+    </router-link> -->
   </section>
 </template>
 
@@ -34,8 +34,12 @@
 import { Lazyload } from 'mint-ui';
 
   export default {
-    props:['section2', 'banner']
-
+    props:['section2', 'banner'],
+    methods: {
+      goAll(id) {
+        this.$router.push({path: '/shop/all', query: {id: id}})
+      }
+    }
   }
 </script>
 

@@ -3,7 +3,7 @@
     <h2 class="section4-title">
       <img src="../../assets/img/quanyika.png" alt="" class="icon">
       权益卡类
-      <i class="icon-right"></i>
+      <i class="icon-right" @click='goAll(2)'></i>
     </h2>
     <ul class="section4-list" v-if="section4">
       <li v-for="k in section4">
@@ -16,16 +16,21 @@
       </li>
 
     </ul>
-    <router-link :to="{name:'分类页'}" class="section4-banner">
+    <!-- <router-link :to="{name:'分类页'}" class="section4-banner">
       <img :src="banner.imgurl" v-if='banner'>
-    </router-link>
+    </router-link> -->
   </section>
 </template>
 
 <script>
   import { Lazyload } from 'mint-ui';
   export default {
-    props:['section4','banner']
+    props:['section4','banner'],
+    methods: {
+      goAll(id) {
+        this.$router.push({path: '/shop/all', query: {id: id}})
+      }
+    }
   }
 </script>
 

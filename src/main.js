@@ -106,6 +106,10 @@ router.beforeEach((to, from, next) => {
               code: code // 微信传递过来的code
             }
           }).then(response => {
+            if (response.data.result == 0) {
+              router.push('/shop/noauth')
+              return
+            }
             console.log('成功获取到token')
             
             var data = response.data.data
@@ -133,8 +137,11 @@ router.beforeEach((to, from, next) => {
             console.log(err)
           })
         } else {
+
           console.log('获取code和membertoken都失败了')
-          Toast('获取用户信息失败，请重关闭页面并重试！')
+          // Toast('获取用户信息失败，请重关闭页面并重试！')
+          router.push('/shop/noauth')
+
           // alert('获取用户信息失败')
           // return
           mockapi.shop.api_TestGetUserInfo_get({
@@ -144,7 +151,6 @@ router.beforeEach((to, from, next) => {
           }).then(response => {
             console.log('成功获取到token')
             
-
             var data = response.data.data
 
             console.log(data)

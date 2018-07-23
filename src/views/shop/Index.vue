@@ -13,9 +13,9 @@
         <h2 class="title"> </h2>
         <span>全部商品</span>
       </div>
-      <div class="part part02">
+      <div class="part part02" @click='goToCollection'>
         <h2 class="title"> </h2>
-        <span>最新上架</span>
+        <span>我的收藏</span>
       </div>
       <div class="part part03" @click='goToMyOrder'>
         <h2 class="title"> </h2>
@@ -215,6 +215,9 @@ export default {
     },
     goToMyOrder() {
       this.$router.push('/shop/myorder')
+    },
+    goToCollection() {
+      this.$router.push('/shop/collection')
     }
   }
 }
@@ -237,6 +240,10 @@ export default {
       background: rgba(0,0,0,.2);
       padding: 0px 10px;
       height: 36px;
+      width: 36px;
+    }
+    .mint-button::after{
+      opacity: 0.6;
     }
 }
 .mint-searchbar{

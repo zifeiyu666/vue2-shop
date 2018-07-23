@@ -4,8 +4,10 @@
       <h1 slot="title">登录页</h1>
     </v-header>
     <section>
-      <v-timer ref="timerbtn" class="btn btn-default timer" v-on:run="sendCode" 
-:disabled="disabled" :second="60"></v-timer>
+      <span ref="timerbtn" class="btn btn-default timer" @click='getVeriCode'>
+        <span v-if='isFeatching'>{{timer}}秒后重试</span>
+        <span v-else>获取验证码</span>
+      </span>
       <mt-field
         label="手机号"
         placeholder="请输入手机号"
@@ -31,13 +33,21 @@
        :readonly='!toggle'
        :disableClear = '!toggle'
         ></mt-field> -->
-      <p class="tip">Tip : 您尚未绑定手机号，请进行手机号绑定</p>
+      <p v-if='!isBindSuccess' class="tip">Tip : 您尚未绑定手机号，请进行手机号绑定</p>
     </section>
     <mt-button
      plain
      size="large"
      @click="bindPhone"
+     v-if='!isBindSuccess'
      >绑定</mt-button>
+     <mt-button
+     style='margin-top: 20px;'
+     plain
+     size="large"
+     @click="gotoIndex"
+     v-if='isBindSuccess'
+     >点击跳转</mt-button>
     <!-- <mt-button
      plain
      size="large"
@@ -62,19 +72,33 @@ export default {
     return {
       phone:'',
       identifyCode: '',
-      disabled: null
+      disabled: null,
+      isFeatching: false,
+      timer: 60,
+      timerStore: '',
+      isBindSuccess: false
     }
   },
   mounted() {
     // this.getVeriCode()
+    this.timerStore = this.timer
   },
   methods: {
     // 获取验证码
     getVeriCode() {
+      console.log(this.isFeatching)
+      if (!this.phone) {
+        Toast('请输入手机号')
+        return
+      }
+      if (this.isFeatching) {
+        Toast('您已经获取验证码，请稍后重试')
+        return
+      }
       mockapi.shop.api_Shop_generateVeriCode_post({
         data: qs.stringify({
-          token: 1,
-          phone: '18554870804'
+          token: this.$store.state.userInfo.MemberToken,
+          phone: this.phone
         })
       }).then(response => {
         var data = response.data.data
@@ -82,6 +106,22 @@ export default {
       }).catch(error => {
         console.log(error)
       })
+      this.isFeatching = true
+      var that = this
+      var interval = setInterval(() => {
+        that.timer -- 
+        if (that.timer == 0 ) {
+          clearInterval(interval)
+          that.timer = that.timerStore
+          console.log(`that.timer${that.timer}`)
+          console.log(that.timer)
+          console.log(that.timerStore)
+          that.isFeatching = false
+        }
+      }, 1000)
+      // setTimeout(() => {
+      //   that.isFeatching = false
+      // }, 6000)
     },
     sendCode (){
       if (this.phone) {
@@ -110,11 +150,12 @@ export default {
           console.log(111111)
           console.log(response.data.result)
           if (response.data.result == 1){
+            this.isBindSuccess = true
             console.log('success')
-            Toast('手机号绑定成功,页面跳转中...')
+            Toast('手机号绑定成功,页面跳转中... 如果没有跳转请点击手动跳转')
             // 绑定成功调到首页
             // this.$router.push({name: '首页'})
-            this.$router.push('/shop/all')
+            // this.$router.push('/shop/all')
             // window.location="http://www.yunhi.vip/dist/index.html#/shop"
           }
           
@@ -151,6 +192,11 @@ export default {
       this.account = '';
       this.password = '';
 
+    },
+
+    // 点击跳转
+    gotoIndex() {
+      this.$router.push('/shop')
     }
   }
 }
@@ -178,5 +224,6 @@ export default {
   font-size: 13px;
   color: #666;
   background: #eee;
+  line-height: 48px;
 }
 </style>

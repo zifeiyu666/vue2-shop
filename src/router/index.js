@@ -29,6 +29,7 @@ const chouJiang = resolve => require(['@/views/shop/choujiang.vue'], resolve)
 const refund = resolve => require(['@/views/shop/refund.vue'], resolve)
 const refundList = resolve => require(['@/views/shop/refundList.vue'], resolve)
 const refundDetail = resolve => require(['@/views/shop/refundDetail.vue'], resolve)
+const NoAuth = resolve => require(['@/views/shop/NoAuth.vue'],resolve)
 // show
 const ShowIndex = resolve => require(['@/views/show/index.vue'], resolve)
 const ShowItem = resolve => require(['@/views/show/item.vue'], resolve)
@@ -45,6 +46,7 @@ const ShowAutoNav = resolve => require(['@/views/show/item/autoNav.vue'],resolve
 const NewsDetail = resolve => require(['@/views/show/item/newsDetail'],resolve)
 const CommonDetail = resolve => require(['@/views/show/item/commonDetail'],resolve)
 const CommonList = resolve => require(['@/views/show/item/commonList'],resolve)
+
 
 const shopRouters = [{
     path: '/shop',
@@ -240,6 +242,11 @@ const shopRouters = [{
     meta: {
       requireAuth: true,
     }
+  },
+  {
+    path: '/shop/noauth',
+    name: '未关注',
+    component: NoAuth
   }
 ]
 

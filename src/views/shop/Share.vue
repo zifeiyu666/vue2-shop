@@ -14,7 +14,7 @@
             <p>分销积分：{{fxscore}}</p>
             <P>手机号：{{phone}}</P>
           </div>
-          <img class='qrcode' :src="qrcode" alt="" @click='showQrCode()'>
+          <img class='qrcode' :src="smallQrCode" alt="" @click='showQrCode()'>
       </header>
       <div class="main">
           <!-- <router-link class="my-indent" :to="{ name: ''}">
@@ -130,8 +130,9 @@
       <!-- 二维码弹窗 -->
       <el-dialog
         title='我的分享码'
+        fullscreen
         :visible.sync="dialogVisible"
-        width="80%"
+        width="100%"
         center>
         <span><img style='width: 100%; display: inline-block' :src="qrcode" alt=""></span>
       </el-dialog>
@@ -159,7 +160,7 @@
     },
     mounted() {
       var userInfo = this.$store.state.userInfo
-      this.qrcode = userInfo.SharedQRCode
+      this.smallQrCode = userInfo.SharedQRCode
       this.avatar = userInfo.headimgurl
       this.username = userInfo.nickname
       this.jifen = userInfo.Score,
@@ -168,8 +169,21 @@
       this.score = userInfo.Score
       this.fxscore = userInfo.FenXiaoScore
       this.phone = userInfo.Phone
+
+      this.getQrCord()
     },
     methods: {
+      // 获取二维码
+      getQrCord() {
+        mockapi.shop.api_Shop_getMySharedQRCode_get({
+          params:{
+            token: this.$store.state.userInfo.MemberToken
+          }
+        }).then(res => {
+          var data = res.data.data
+          this.qrcode = data
+        })
+      },
       showQrCode() {
         console.log(11111)
         this.dialogVisible = true

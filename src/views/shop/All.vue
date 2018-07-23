@@ -16,10 +16,10 @@
       <div class="catagory clearfix">
         <div class="nav">
           <mt-navbar v-model="selected">
-            <mt-tab-item id="1">全部</mt-tab-item>
-            <mt-tab-item id="2">权益卡</mt-tab-item>
-            <mt-tab-item id="3">旅游打包类</mt-tab-item>
-            <mt-tab-item id="4">单独类</mt-tab-item>
+            <mt-tab-item id="1" ref='all'>全部</mt-tab-item>
+            <mt-tab-item id="2" ref='qyk'>权益卡</mt-tab-item>
+            <mt-tab-item id="3" ref='dbl'>旅游打包类</mt-tab-item>
+            <mt-tab-item id="4" ref='ddl'>单独类</mt-tab-item>
           </mt-navbar>
         </div>
         <div class="btn" style='margin-top:0; color: #666' @click='showPopside()'>
@@ -218,6 +218,32 @@ export default {
     this.getProductTypeDicList()
     this.getSuitableUserDicList()
     this.getDestinationTypeDicList()
+    // TODO: 暂时不好用
+    if (this.$route.query.id) {
+      // this.selected = this.$route.query.id
+      switch (this.$route.query.id) {
+        case 2:
+          var selDOM = this.$refs.qyk.$el
+          break
+        case 3:
+          var selDOM = this.$refs.dbl.$el
+          break
+        case 4:
+          var selDOM = this.$refs.ddl.$el
+          break
+      }
+      
+      //IE
+      if(document.all) {
+          selDOM.click();
+      }
+      // 其它浏览器
+      else {
+        var e = document.createEvent("MouseEvents");
+        e.initEvent("click", true, true);//这里的click可以换成你想触发的行为
+        selDOM.dispatchEvent(e);//这里的clickME可以换成你想触发行为的DOM结点
+      }  
+    }
   },
   methods: {
     concleSearch() {
