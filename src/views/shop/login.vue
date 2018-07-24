@@ -4,35 +4,20 @@
       <h1 slot="title">登录页</h1>
     </v-header>
     <section>
-      <span ref="timerbtn" class="btn btn-default timer" @click='getVeriCode'>
-        <span v-if='isFeatching'>{{timer}}秒后重试</span>
-        <span v-else>获取验证码</span>
-      </span>
+
+      <xp-timer timeout='60' :isReady='Boolean(phone)' tip='请输入手机号' @getCode='getCode'></xp-timer>
       <mt-field
         label="手机号"
         placeholder="请输入手机号"
         type = "text"
         v-model = "phone"
       ></mt-field>
-      <!-- <mt-button
-     plain
-     size="large"
-     @click="bindPhone"
-     >获取验证码</mt-button> -->
       <mt-field
         label="验证码"
         placeholder="请输入验证码"
         type = "text"
         v-model = "identifyCode"
       ></mt-field>
-      <!-- <mt-field
-       label="密码"
-       placeholder="请输入密码"
-       type="password"
-       v-model="password"
-       :readonly='!toggle'
-       :disableClear = '!toggle'
-        ></mt-field> -->
       <p v-if='!isBindSuccess' class="tip">Tip : 您尚未绑定手机号，请进行手机号绑定</p>
     </section>
     <mt-button
@@ -48,11 +33,6 @@
      @click="gotoIndex"
      v-if='isBindSuccess'
      >点击跳转</mt-button>
-    <!-- <mt-button
-     plain
-     size="large"
-     @click="logout"
-     v-else>退出登录</mt-button> -->
 
   </div>
 </template>
@@ -63,10 +43,11 @@ import * as mockapi from '@/../mockapi'
 import qs from 'qs'
 import Header from '@/common/_header.vue'
 import { Toast } from 'mint-ui'
+import timer from '@/components/timer.vue'
 export default {
   components:{
     'v-header':Header,
-    'v-timer': identify
+    'xp-timer': timer
   },
   data(){
     return {
@@ -74,7 +55,7 @@ export default {
       identifyCode: '',
       disabled: null,
       isFeatching: false,
-      timer: 60,
+      timer: 6,
       timerStore: '',
       isBindSuccess: false
     }
@@ -85,16 +66,7 @@ export default {
   },
   methods: {
     // 获取验证码
-    getVeriCode() {
-      console.log(this.isFeatching)
-      if (!this.phone) {
-        Toast('请输入手机号')
-        return
-      }
-      if (this.isFeatching) {
-        Toast('您已经获取验证码，请稍后重试')
-        return
-      }
+    getCode() {
       mockapi.shop.api_Shop_generateVeriCode_post({
         data: qs.stringify({
           token: this.$store.state.userInfo.MemberToken,
@@ -106,22 +78,6 @@ export default {
       }).catch(error => {
         console.log(error)
       })
-      this.isFeatching = true
-      var that = this
-      var interval = setInterval(() => {
-        that.timer -- 
-        if (that.timer == 0 ) {
-          clearInterval(interval)
-          that.timer = that.timerStore
-          console.log(`that.timer${that.timer}`)
-          console.log(that.timer)
-          console.log(that.timerStore)
-          that.isFeatching = false
-        }
-      }, 1000)
-      // setTimeout(() => {
-      //   that.isFeatching = false
-      // }, 6000)
     },
     sendCode (){
       if (this.phone) {
