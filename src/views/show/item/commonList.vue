@@ -10,6 +10,7 @@
       
     </div>
     <ul
+      v-if = 'houseList.length'
       v-infinite-scroll="loadMore"
       infinite-scroll-disabled="loading"
       infinite-scroll-distance="10">
@@ -20,6 +21,9 @@
         </div>
       </li>
     </ul>
+    <div v-else style='text-align: center; margin-top: 26px'>
+      暂无内容，敬请期待！
+    </div>
 
   </div>
   

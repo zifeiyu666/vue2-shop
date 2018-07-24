@@ -7,7 +7,7 @@
       <img :src="banner" alt="">
     </div>
     <div class="intro-wrap">
-      <p>{{intro}}</p>
+      <p class='dec'>{{intro}}</p>
       <!-- <router-link :to="{path:'/shop/detail', query: {id: currentId}}">购买详情</router-link> -->
     </div>
     <router-link v-for='(i, index) in navList' :key='index' class='circle' :class='"nav0" + i.id' :to="{ path: generateRoute(i.name), query: {code: i.code, id: currentId, name: i.name}}">
@@ -111,6 +111,22 @@
   }
 </script>
 <style lang=less scoped>
+  .dec{
+    position:relative;
+    line-height:1.4em;
+    /* 3 times the line-height to show 3 lines */
+    height:5.6em;
+    overflow:hidden;
+  }
+  .dec:after{
+    content:"...";
+    font-weight:bold;
+    position:absolute;
+    bottom:0;
+    right:0;
+    padding:0 10px 1px 45px;
+    background:url(http://newimg88.b0.upaiyun.com/newimg88/2014/09/ellipsis_bg.png) repeat-y;
+  }
   .goback{
     position: fixed;
     z-index: 1000;
@@ -148,12 +164,12 @@
       position: relative;
       p{
         font-size: 14px;
-        width: 100%;
-        height: 100%;
+        /* width: 100%; */
+        /* height: 100%; */
         overflow: hidden;
-        line-height: 20px;
-        padding-bottom: 20px;
-        box-sizing: border-box;
+        /* line-height: 20px; */
+        /* padding-bottom: 20px; */
+        /* box-sizing: border-box; */
       }
       a{
         border: none;
