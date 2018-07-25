@@ -24,10 +24,11 @@
     </div>
     
 
-    <v-section1 :section1="section1" :banner='banner1'></v-section1>
+    <v-section4 :section4="section4" :banner="banner4"></v-section4>
     <v-section2 :section2="section2" :banner="banner2"></v-section2>
     <!-- <v-section3 :section3="section3"></v-section3> -->
-    <v-section4 :section4="section4" :banner="banner4"></v-section4>
+    
+    <v-section1 :section1="section1" :banner='banner1'></v-section1>
     <v-baseline></v-baseline>
     <v-footer></v-footer>
   </div>

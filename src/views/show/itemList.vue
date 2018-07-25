@@ -1,9 +1,9 @@
 <template>
   <div class='index'>
     <mt-header fixed title="项目信息">
-      <router-link to="/show" slot="left">
+      <span @click='goHome()' slot="left" style='fixicon'>
         <mt-button icon="back">返回</mt-button>
-      </router-link>
+      </span>
       <!-- <mt-button icon="more" slot="right"></mt-button> -->
     </mt-header>
     <div class="itemlist">
@@ -43,6 +43,9 @@
       this.getItemList()
     },
     methods: {
+      goHome() {
+        this.$router.push('/show')
+      },
       getItemList() {
         mockapi.show.api_Show_getItemList_get({
           params: {
@@ -87,5 +90,8 @@
 }
 .container{
   margin-bottom: 100px;
+}
+.fixicon .mint-button-icon{
+  position: relative !important;
 }
 </style>

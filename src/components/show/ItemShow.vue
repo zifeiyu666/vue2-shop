@@ -6,7 +6,7 @@
       </div>
       <div class="content-wrap">
         <h3 class="title">{{itemData.name}}</h3>
-        <p>{{itemData.itemintro}}</p> 
+        <p class='dec'>{{itemData.itemintro}}</p> 
       </div>
     </div>
   </div>
@@ -27,6 +27,22 @@
   }
 </script>
 <style lang="less">
+  .dec{
+    position:relative;
+    line-height:1.4em;
+    /* 3 times the line-height to show 3 lines */
+    height:2.8em;
+    overflow:hidden;
+  }
+  .dec:after{
+    content:"...";
+    font-weight:bold;
+    position:absolute;
+    bottom:0;
+    right:0;
+    padding:0 10px 1px 45px;
+    background:url(http://newimg88.b0.upaiyun.com/newimg88/2014/09/ellipsis_bg.png) repeat-y;
+  }
   .item-show { 
     background: #fff;
     padding: 0 10px;

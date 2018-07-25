@@ -34,18 +34,19 @@ router.beforeEach((to, from, next) => {
     if (to.meta.requireAuth) {  // 需要权限,进一步进行判断
       // console.log('进入需要登录信息路由')
       if (store.state.userInfo.MemberToken) {  // 通过vuex state获取当前的token是否存在
-        // console.log('有token')
-        if (store.state.userInfo.Phone) {
-          // console.log('已经绑定手机')
-          next();
-        } else {
-          // 未绑定手机去绑定
-          // console.log('没有绑定手机')
-          next({
-            path: '/shop/login',
-            query: {oldUrl: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
-          })
-        }
+        // 不要求必须有手机号
+        next()
+        // if (store.state.userInfo.Phone) {
+        //   // console.log('已经绑定手机')
+        //   next();
+        // } else {
+        //   // 未绑定手机去绑定
+        //   // console.log('没有绑定手机')
+        //   next({
+        //     path: '/shop/login',
+        //     query: {oldUrl: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
+        //   })
+        // }
       }
       else {    
         //如果没有token，获取token
@@ -85,18 +86,20 @@ router.beforeEach((to, from, next) => {
             console.log(data)
             // 用户信息存在vuex中
             store.commit('setUserInfo', data)
+            // 不强制绑定手机
+            next()
             // 已经绑定手机放行
-            if(data.Phone) {
-              console.log('已经绑定手机')
-              next()
-            } else {
-              // 未绑定手机去绑定
-              console.log('没有绑定手机')
-              next({
-                path: '/shop/login',
-                query: {oldUrl: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
-              })
-            }
+            // if(data.Phone) {
+            //   console.log('已经绑定手机')
+            //   next()
+            // } else {
+            //   // 未绑定手机去绑定
+            //   console.log('没有绑定手机')
+            //   next({
+            //     path: '/shop/login',
+            //     query: {oldUrl: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
+            //   })
+            // }
           }).catch(err => {
             console.log(err)
           })
@@ -121,18 +124,20 @@ router.beforeEach((to, from, next) => {
             sessionStorage.setItem('membertoken', MemberToken)
             // 用户信息存在vuex中
             store.commit('setUserInfo', data)
+            // 不强制绑定手机
+            next()
             // 已经绑定手机放行
-            if(data.Phone) {
-              console.log('已经绑定手机')
-              next()
-            } else {
-              // 未绑定手机去绑定
-              console.log('没有绑定手机')
-              next({
-                path: '/shop/login',
-                query: {oldUrl: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
-              })
-            }
+            // if(data.Phone) {
+            //   console.log('已经绑定手机')
+            //   next()
+            // } else {
+            //   // 未绑定手机去绑定
+            //   console.log('没有绑定手机')
+            //   next({
+            //     path: '/shop/login',
+            //     query: {oldUrl: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
+            //   })
+            // }
           }).catch(err => {
             console.log(err)
           })
@@ -143,7 +148,7 @@ router.beforeEach((to, from, next) => {
           router.push('/shop/noauth')
 
           // alert('获取用户信息失败')
-          // return
+          return
           mockapi.shop.api_TestGetUserInfo_get({
             params: {
               code: 123

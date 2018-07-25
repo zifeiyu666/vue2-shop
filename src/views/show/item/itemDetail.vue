@@ -56,6 +56,12 @@
       width: 100%;
     }
   }
+  .MsoNormal img{
+    border: 0;
+    width: 90vw !important;
+    display: block;
+    margin: 0 auto;
+  }
   .item-title{
     margin-top: 15px;
     text-align: center;
