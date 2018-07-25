@@ -20,8 +20,8 @@
         <span v-if='view.DestinationTypeName'>目的地类别： {{view.DestinationTypeName}}</span>
         <span v-if='view.AvailableNum'>使用天数：{{view.AvailableNum}}</span>
         <span v-if='view.HouseTypeName'>房型类别： {{view.HouseTypeName}}</span>
-        <span v-if='view.UseStartTim'>可使用开始日期： {{view.UseStartTime}}</span>
-        <span v-if='view.UseEndTime'>可使用截止日期：{{view.UseEndTime}}</span>
+        <span v-if='view.UseStartTim'>可使用开始日期： {{parseTime(view.UseStartTime)}}</span>
+        <span v-if='view.UseEndTime'>可使用截止日期：{{parseTime(view.UseEndTime)}}</span>
         <span v-if = 'view.Unable'>不可使用日期: {{view.Unable}}</span>
         <span v-if = 'view.SuitableUserName'>适用人群：{{view.SuitableUserName}}</span>
       </div>
@@ -101,6 +101,7 @@ import {
   mapState
 } from 'vuex'
 
+import {parseTime} from '@/util/data.js'
 import * as mockapi from '@/../mockapi'
 export default {
   props: [
@@ -157,6 +158,7 @@ export default {
     // sizeChose(i) {
     //   this.$store.commit('CHANGE_SIZE_SELECTED', i);
     // },
+    parseTime: parseTime,
     toggleSelected(item) {
       item.IsChecked = !item.IsChecked
     },
@@ -390,7 +392,7 @@ export default {
 }
 .item-wrap span{
   font-size: 12px;
-  width: 45%;
+  width: 100%;
   display: inline-block;
   box-sizing: border-box;
   padding-right: 10px;
