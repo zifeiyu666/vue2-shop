@@ -100,6 +100,7 @@
 
       <!-- 二维码弹窗 -->
       <el-dialog
+        class='code_dialog'
         title='我的分享码'
         fullscreen
         :visible.sync="dialogVisible"
