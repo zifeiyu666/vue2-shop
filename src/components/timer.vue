@@ -2,7 +2,7 @@
   <div>
     <span ref="timerbtn" class="btn btn-default timer" @click='startTimer'>
       <span v-if='isFeatching'>{{timer}}秒后重试</span>
-      <span v-else>获取dd验证码</span>
+      <span v-else>获取验证码</span>
     </span>
   </div>
 </template>

@@ -3,7 +3,7 @@
 
     <div class="footer-result">
       <p>合计：</p>
-      <p><span v-if='orderDetail'>{{allpay}} </span>元</p>
+      <p><span v-if='orderDetail'>{{orderDetail.realtotalprice}} </span>元</p>
     </div>
     <!-- <router-link :to="{ name: '分类页'}" class="footer-goon" >
       继续购物
@@ -32,7 +32,7 @@ export default {
       var all = 0
       if (this.orderDetail.opd) {
         this.orderDetail.opd.forEach((item,i) => {
-          all = all + item.totalprice
+          all = all + item.realprice
         })
       }
       return all
