@@ -115,7 +115,7 @@
     position:relative;
     line-height:1.4em;
     /* 3 times the line-height to show 3 lines */
-    height:5.6em;
+    height:5.5em;
     overflow:hidden;
   }
   .dec:after{

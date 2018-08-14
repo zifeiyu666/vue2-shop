@@ -1,7 +1,7 @@
 <template>
   <div class='index'>
     <mt-header fixed title="项目信息">
-      <span @click='goHome()' slot="left" style='fixicon'>
+      <span @click='goHome()' slot="left" class='fixicon'>
         <mt-button icon="back">返回</mt-button>
       </span>
       <!-- <mt-button icon="more" slot="right"></mt-button> -->
@@ -92,6 +92,6 @@
   margin-bottom: 100px;
 }
 .fixicon .mint-button-icon{
-  position: relative !important;
+  position: static !important;
 }
 </style>

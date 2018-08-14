@@ -148,7 +148,7 @@ router.beforeEach((to, from, next) => {
           router.push('/shop/noauth')
 
           // alert('获取用户信息失败')
-          return
+          // return
           mockapi.shop.api_TestGetUserInfo_get({
             params: {
               code: 123
