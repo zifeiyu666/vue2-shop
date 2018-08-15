@@ -52,7 +52,9 @@ import { Lazyload } from 'mint-ui';
   .section1-title{
     .bt();
     // .pt();
-    margin-top: 6vw;
+    margin-top: 6px;
+    background: #fff!important;
+    margin-bottom: 0px !important;
   }
   .section2-list {
     overflow-x: auto;

@@ -1,11 +1,10 @@
 <template lang="html">
 
   <div class="wrap">
-    <v-gologin></v-gologin>
     <ul
     class="something" 
     v-if='list'>
-      <li v-for="(k,i) in list">
+      <li v-for="(k,i) in list" @click='goToDetail()'>
           <div class="something-middle">
             <img :src="k.imgurl[0]">
           </div>
@@ -77,10 +76,12 @@ export default {
 
 <style lang="less" scoped>
 @import '../../assets/fz.less';
+@import '../../assets/utils.less';
 .wrap {
     width: 100%;
     .something {
         width: 100%;
+        background: #fff;
         > li {
             display: -ms-flex;
             display: -webkit-box;
@@ -153,10 +154,11 @@ export default {
                     -webkit-line-clamp: 2;
                     -webkit-box-orient: vertical;
                     .fz(font-size,26);
+                    color: @fontBlack;
                 }
                 p:last-of-type {
                     .fz(font-size,22);
-                    color: rgb(168, 168, 168);
+                    color: @fontGray;
                 }
                 .something-right-bottom {
 

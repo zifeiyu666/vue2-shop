@@ -10,9 +10,9 @@
           <!-- <span>登录/注册</span> -->
           <div class="header-content">
             <p>{{username}} <span style='font-size: 16px; font-weight: bold; margin-left: 5px'>v</span> {{memberrank}}</p>
-            <!-- <p>注册时间：{{time}}</p> -->
+            <p>注册时间：{{time}}</p>
             <!-- <p>会员等级：{{memberrank}}</p> -->
-            <p>购物积分：{{score}}</p>
+            <!-- <p>购物积分：{{score}}</p> -->
             <p>手机号：{{phone}}</p>
             <!-- <p>分销积分：{{fxscore}}</p> -->
           </div>
@@ -62,17 +62,18 @@
                 <img class='icon' src="../../assets/img/choujiang.png" alt="">
               </div>
               <p>
-                <span>每日抽奖</span><i class="icon-go"></i>
+                <span>每日好礼</span><i class="icon-go"></i>
               </p>
             </router-link>
-            <router-link :to="{ name: '购物积分'}" class="my-settle-top">
+            <!-- 需求变动不需要购物积分 -->
+            <!-- <router-link :to="{ name: '购物积分'}" class="my-settle-top">
               <div>
                 <span class="icon2-f"></span>
               </div>
               <p>
                 <span>购物积分</span><i class="icon-go"></i>
               </p>
-            </router-link>
+            </router-link> -->
             <!-- <router-link :to="{ name: '分销积分'}" class="my-settle-top">
               <div>
                 <span class="icon2-f"></span>
@@ -95,7 +96,6 @@
           
 
       </div>
-      <v-baseline></v-baseline>
       <v-footer></v-footer>
 
       <!-- 二维码弹窗 -->
@@ -168,13 +168,13 @@
 
 <style lang="less" scoped>
   @import '../../assets/fz.less';
+  @import '../../assets/utils.less';
   @import '../../assets/index/style.css';
   @import '../../assets/user/icon/carstyle.css';
 
   .car {
     width: 100%;
     padding-bottom: 14vw;
-    background-color: #F8FCFF;
     .qrcode{
         position: absolute;
         width: 50px;
@@ -237,7 +237,7 @@
         display: block;
         -webkit-box-sizing: border-box;
         box-sizing: border-box;
-        color: #333;
+        color: @fontBlack;
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
@@ -257,7 +257,7 @@
           span {
             display: inline-block;
             .fz(font-size, 28);
-            color: rgba(0, 0, 0, .4);
+            color: @fontGray;
             position: relative;
           }
           i {
@@ -279,7 +279,7 @@
         >a {
           display: block;
           width: 33.33%;
-          color: #999;
+          color: @fontGray;
           text-align: center;
 
           >span {
@@ -301,8 +301,12 @@
         .mt();
         .bd();
         .bt();
+        margin-top: 6px !important;
         .icon{
           width: 27px;
+        }
+        p{
+          color: @fontBlack;
         }
         >a {
           background-color: #fff;

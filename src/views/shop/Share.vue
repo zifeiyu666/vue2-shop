@@ -89,7 +89,7 @@
                     <img src='../../assets/img/fxs.png' style='width: 24px;margin-top:-4px' >
                   </div>
                   <p>
-                    <span>我的分销商</span><i class="icon-go"></i>
+                    <span>我的团队</span><i class="icon-go"></i>
                   </p>
               </router-link>
               <router-link class="my-service-bottom" :to="{ path: '/shop/shareOrders'}">
@@ -101,12 +101,21 @@
                     <span>分销订单</span><i class="icon-go"></i>
                   </p>
               </router-link>
-              <router-link :to="{ name: '分销积分'}" class="my-settle-top">
+              <router-link class="my-service-bottom" :to="{ path: '/shop/shareOrders'}">
+                  <div>
+                    <!-- <span class="icon2-milogo"></span> -->
+                    <img src='../../assets/img/sharegoods1.png' style='width: 22px;margin-top:-4px' >
+                  </div>
+                  <p>
+                    <span>分销产品</span><i class="icon-go"></i>
+                  </p>
+              </router-link>
+              <router-link :to="{ name: '分销积分'}" class="my-service-bottom">
                 <div>
                   <span class="icon2-f"></span>
                 </div>
                 <p>
-                  <span>分销积分</span><i class="icon-go"></i>
+                  <span>返现记录</span><i class="icon-go"></i>
                 </p>
               </router-link>
           </section>
@@ -197,6 +206,13 @@
   @import '../../assets/fz.less';
   @import '../../assets/index/style.css';
   @import '../../assets/user/icon/carstyle.css';
+  
+  .my-service-bottom{
+    p span{
+      color: @fontBlack;
+    }
+  }
+
   .avatar{
       float: left;
       padding: 10px;
@@ -204,7 +220,6 @@
   .car {
     width: 100%;
     padding-bottom: 14vw;
-    background-color: #F8FCFF;
     .qrcode{
         position: absolute;
         width: 50px;
@@ -323,6 +338,9 @@
             text-align: center;
           }
         }
+      }
+      .my-service{
+        color: @fontBlack;
       }
 
       .my-vip,.my-service,.my-settle {
