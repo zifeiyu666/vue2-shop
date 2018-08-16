@@ -4,7 +4,7 @@
     <ul
     class="something" 
     v-if='list'>
-      <li v-for="(k,i) in list" @click='goToDetail()'>
+      <li v-for="(k,i) in list" @click='goToDetail(k)'>
           <div class="something-middle">
             <img :src="k.imgurl[0]">
           </div>
@@ -65,6 +65,9 @@ export default {
           // 每点击一下都会改变choseBool的布尔值,所以要重置数组
           this.$store.dispatch('cutCarList',this.carList)
       }, 0);
+    },
+    goToDetail(k) {
+        this.$router.push('')
     },
     loadMore() {
         this.$emit('loadmore')
