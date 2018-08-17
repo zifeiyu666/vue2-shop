@@ -26,7 +26,7 @@
       </mt-tab-container-item>
     </mt-tab-container> -->
     <div @click='openDialog' class='tx-btn'> <i class='iconfont icon-yiwancheng1'></i></div>
-    <p class='jfmx'><span>积分明细</span></p>
+    <p class='jfmx'><span style='background: #f3f5f7'>积分明细</span></p>
     <div v-for="(i, index) in JfList" :key='index'>
       <div class="company-wrap clearfix">
         <!-- <div class="avatar">
