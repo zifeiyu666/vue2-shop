@@ -70,7 +70,7 @@ import { Toast } from 'mint-ui'
     position: absolute;
     right: 0px;
     z-index: 1000;
-    top: 12vw;
+    top: 16vw;
     height: 48px;
     padding: 0 6px;
     font-size: 13px;

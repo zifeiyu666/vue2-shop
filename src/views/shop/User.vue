@@ -4,7 +4,7 @@
       <header class="header" >
           <div class="header-icon">
               <span>
-                <img :src="avatar" style='width: 100%; height: 100%' alt="">
+                <img v-lazy="avatar" style='width: 100%; height: 100%' alt="">
               </span>
           </div>
           <!-- <span>登录/注册</span> -->
@@ -16,7 +16,7 @@
             <p>手机号：{{phone}}</p>
             <!-- <p>分销积分：{{fxscore}}</p> -->
           </div>
-          <img class='qrcode' :src="smallQrCode" alt="" @click='showQrCode()'>
+          <img class='qrcode' v-lazy="smallQrCode" alt="" @click='showQrCode()'>
       </header>
       <div class="main">
           <router-link class="my-indent" :to="{ path: '/shop/myorder'}">

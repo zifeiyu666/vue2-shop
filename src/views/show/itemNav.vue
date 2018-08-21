@@ -4,7 +4,7 @@
       <i class='iconfont icon-fanhui'></i>
     </div>
     <div class="header-img">
-      <img :src="banner" alt="">
+      <img v-lazy="banner" alt="">
     </div>
     <div class="intro-wrap">
       <p class='dec'>{{intro}}</p>
@@ -111,15 +111,20 @@
   }
 </script>
 <style lang=less scoped>
+.intro-wrap{
+  background: #fff;
+}
   .dec{
     position:relative;
     line-height:1.4em;
     /* 3 times the line-height to show 3 lines */
     height:5.6em;
     overflow:hidden;
+    background: #fff;
   }
   .dec:after{
     content:"...";
+    color: #888;
     font-weight:bold;
     position:absolute;
     bottom:0;

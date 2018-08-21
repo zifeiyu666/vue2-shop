@@ -4,7 +4,7 @@
       <mt-swipe :auto="4000" >
         <mt-swipe-item v-for="k in swiperData" :key="k.id">
           <router-link :to="{ path: '/show/itemnav', params: { id: k.id }}">
-            <img :src="k.imgurl">
+            <img v-lazy="k.imgurl">
             <p class='title'>{{k.title}}</p>
           </router-link>
         </mt-swipe-item>

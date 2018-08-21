@@ -2,7 +2,7 @@
   <div class="item-show">
     <div class="wrap clearfix">
       <div class="img-wrap fl">
-        <img :src="itemData.imgurl" alt="">
+        <img v-lazy="itemData.imgurl" alt="">
       </div>
       <div class="content-wrap">
         <h3 class="title">{{itemData.name}}</h3>
@@ -36,6 +36,7 @@
   }
   .dec:after{
     content:"...";
+    color: #999;
     font-weight:bold;
     position:absolute;
     bottom:0;
