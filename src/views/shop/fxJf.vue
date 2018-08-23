@@ -27,7 +27,7 @@
     </mt-tab-container> -->
     <div @click='openDialog' class='tx-btn'> <i class='iconfont icon-yiwancheng1'></i></div>
     <p class='jfmx'><span style='background: #f3f5f7'>积分明细</span></p>
-    <div v-for="(i, index) in JfList" :key='index'>
+    <div v-for="(i, index) in JfList" :key='index' v-if='JfList.length > 0 && JfList[0]'>
       <div class="company-wrap clearfix">
         <!-- <div class="avatar">
           <img src="" alt="">
@@ -44,7 +44,10 @@
         </div>
       </div>
     </div>
-    <div style='padding-bottom: 40px'>
+    <div v-else>
+      <v-nomore></v-nomore>
+    </div>
+    <div v-if='JfList.length > 0 && JfList[0]' style='padding-bottom: 40px'>
 
       <div style='text-align: center;position: relative;top: 20px;'>
         <mt-button @click='loadMore' v-if='!isLastPage'>加载更多</mt-button>
@@ -76,6 +79,8 @@ import Baseline from '@/common/_baseline.vue'
 import { Toast } from 'mint-ui';
 import * as mockapi from '@/../mockapi'
 import Header from '@/common/_header.vue'
+import NorMore from '@/components/nomore'
+
   export default{
     data() {
       return {
@@ -92,6 +97,7 @@ import Header from '@/common/_header.vue'
     components: {
       'v-header':Header,
       'v-baseline': Baseline,
+      'v-nomore': NorMore
     },
     created() {
       var userInfo = this.$store.state.userInfo
@@ -165,7 +171,8 @@ import Header from '@/common/_header.vue'
           var data = res.data.data.list
           var pager = res.data.data.pager
           this.JfList = this.JfList.concat(data)
-          // console.log(this.JfList)
+          console.log('jflist')
+          console.log(this.JfList)
           this.isLastPage = pager.isLastPage
         })
       },

@@ -13,6 +13,7 @@ export default {
 
 <style lang="less" scoped>
   .content {
+    background: #fff;
     width: 100%;
     overflow: hidden;
     // margin-top: 10px;

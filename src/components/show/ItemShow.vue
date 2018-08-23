@@ -33,16 +33,11 @@
     /* 3 times the line-height to show 3 lines */
     height:2.8em;
     overflow:hidden;
-  }
-  .dec:after{
-    content:"...";
-    color: #999;
-    font-weight:bold;
-    position:absolute;
-    bottom:0;
-    right:0;
-    padding:0 10px 1px 45px;
-    background:url(http://newimg88.b0.upaiyun.com/newimg88/2014/09/ellipsis_bg.png) repeat-y;
+    overflow : hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
   .item-show { 
     background: #fff;

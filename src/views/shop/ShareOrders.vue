@@ -26,7 +26,10 @@
             </ul>
           </li>
         </ul>
-        <div class="btn-wrap" style='text-align: center'>
+        <div v-else>
+          <v-nomore></v-nomore>
+        </div>
+        <div v-if='allOrders.length > 0' class="btn-wrap" style='text-align: center'>
           <mt-button @click='loadMore' v-if='isLoadMore'>加载更多</mt-button>
           <v-baseline v-else></v-baseline>
         </div>
@@ -42,6 +45,7 @@
 import Baseline from '@/common/_baseline.vue'
 import Footer from '@/common/_footer.vue'
 import * as mockapi from '@/../mockapi'
+import NorMore from '@/components/nomore'
 
 import Header from '@/common/_header.vue'
   export default{
@@ -57,7 +61,8 @@ import Header from '@/common/_header.vue'
     },
     components: {
       'v-baseline': Baseline,
-      'v-header':Header
+      'v-header':Header,
+      'v-nomore': NorMore
     },
     mounted() {
       this.getShareOrders()

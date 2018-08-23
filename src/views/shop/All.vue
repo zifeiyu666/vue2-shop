@@ -29,7 +29,7 @@
       <mt-tab-container v-model="selected">
         <mt-tab-container-item id="1">
           <div class="wrap">
-            <ul class="something" >
+            <ul class="something" v-if='allList.length != 0'>
               <li v-for="(k,i) in allList" @click='gotoDetail(k)' :key="i">
                 <div class="something-middle">
                   <img :src="k.imgurl[0]">
@@ -44,7 +44,10 @@
                 </div>
               </li>
             </ul>
-            <div style='text-align: center; margin: 40px'>
+            <div v-else>
+              <v-nomore></v-nomore>
+            </div>
+            <div v-if='allList.length != 0' style='text-align: center; margin: 40px'>
               <mt-button @click='loadMoreAll' v-if='allQuery.loadMore'>加载更多</mt-button>
               <v-baseline v-else></v-baseline>
             </div>
@@ -52,7 +55,7 @@
         </mt-tab-container-item>
         <mt-tab-container-item id="2">
           <div class="wrap">
-            <ul class="something" >
+            <ul class="something" v-if='QYKList.length != 0'>
               <li v-for="(k,i) in QYKList" @click='gotoDetail(k)' :key="i">
                 <div class="something-middle">
                   <img :src="k.imgurl[0]">
@@ -67,7 +70,10 @@
                 </div>
               </li>
             </ul>
-            <div style='text-align: center'>
+            <div v-else>
+              <v-nomore></v-nomore>
+            </div>
+            <div v-if='QYKList.length != 0' style='text-align: center'>
               <mt-button @click='loadMoreQYK' v-if='QYKQuery.loadMore'>加载更多</mt-button>
               <v-baseline v-else></v-baseline>
             </div>
@@ -75,7 +81,7 @@
         </mt-tab-container-item>
         <mt-tab-container-item id="3">
           <div class="wrap">
-            <ul class="something" >
+            <ul class="something" v-if='LTDBList.length != 0'>
               <li v-for="(k,i) in LTDBList" @click='gotoDetail(k)' :key="i">
                 <div class="something-middle">
                   <img :src="k.imgurl[0]">
@@ -90,7 +96,10 @@
                 </div>
               </li>
             </ul>
-            <div style='text-align: center'>
+            <div v-else>
+              <v-nomore></v-nomore>
+            </div>
+            <div v-if='LTDBList.length != 0' style='text-align: center'>
               <mt-button @click='loadMoreLTDB' v-if='LTDBQuery.loadMore'>加载更多</mt-button>
               <v-baseline v-else></v-baseline>
             </div>
@@ -98,7 +107,7 @@
         </mt-tab-container-item>
         <mt-tab-container-item id="4">
           <div class="wrap">
-            <ul class="something" >
+            <ul class="something" v-if='DDList.length != 0'>
               <li v-for="(k,i) in DDList" @click='gotoDetail(k)' :key="i">
                 <div class="something-middle">
                   <img :src="k.imgurl[0]">
@@ -113,7 +122,10 @@
                 </div>
               </li>
             </ul>
-            <div style='text-align: center'>
+            <div v-else>
+              <v-nomore></v-nomore>
+            </div>
+            <div style='text-align: center' v-if='DDList.length != 0'>
               <mt-button @click='loadMoreDD' v-if='DDQuery.loadMore'>加载更多</mt-button>
               <v-baseline v-else></v-baseline>
             </div>
@@ -167,6 +179,7 @@
 import Baseline from '@/common/_baseline.vue'
 import Footer from '@/common/_footer.vue'
 import * as mockapi from '@/../mockapi'
+import NorMore from '@/components/nomore'
 
 export default {
   data() {
@@ -208,9 +221,11 @@ export default {
   },
   components: {
     'v-baseline': Baseline,
-    'v-footer':Footer
+    'v-footer':Footer,
+    'v-nomore': NorMore
   },
   mounted() {
+    
     this.getAllProductList()
     this.getQYKProductList()
     this.getLTDBProductList()
@@ -307,6 +322,7 @@ export default {
     },
     // 所有商品加载更多
     getAllProductList() {
+      this.$store.commit('SET_LOADING', true)
       mockapi.shop.api_Shop_getAllProductList_get({
         params: {
           pageNo: this.allQuery.pageNo,
@@ -317,6 +333,7 @@ export default {
           DestinationType: this.DestinationValue,
         }
       }).then(res => {
+        this.$store.commit('SET_LOADING', false)
         var data = res.data.data.list
         var isLastPage = res.data.data.pager.isLastPage
         if (isLastPage) {

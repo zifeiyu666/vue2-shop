@@ -4,8 +4,8 @@
       <span v-if='star' class='collection'>
         <icon name='star' scale='1.5'></icon>
       </span>
-      <span v-else>
-        <icon name='star-o' scale='1.5'></icon>
+      <span v-else >
+        <icon name='star-o'  style='color: #666' scale='1.5'></icon>
       </span>
       
     </div>

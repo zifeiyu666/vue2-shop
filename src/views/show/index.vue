@@ -9,7 +9,7 @@
     </div>
     <div class="nothing"></div>
     <!-- <v-title title='新闻资讯' @clickMore='moreNews'></v-title>
-    <news-show></news-show>
+    <news-show></news-show> 
     <news-show></news-show>
     <news-show></news-show> -->
     <v-footer></v-footer>
