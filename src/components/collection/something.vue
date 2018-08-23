@@ -3,7 +3,7 @@
   <div class="wrap">
     <ul
     class="something" 
-    v-if='list'>
+    v-if='list.length != 0'>
       <li v-for="(k,i) in list" @click='goToDetail(k)'>
           <div class="something-middle">
             <img :src="k.imgurl[0]">
@@ -19,7 +19,11 @@
       </li>
 
     </ul>
-    <div style='text-align: center'>
+    <div v-else>
+        <v-nomore></v-nomore>
+    </div>
+
+    <div style='text-align: center' v-if='list.length != 0'>
         <mt-button @click='loadMore' v-if='isLoadMore'>加载更多</mt-button>
         <v-baseline v-else></v-baseline>
     </div>
@@ -34,10 +38,13 @@ import qs from 'qs'
 import * as mockapi from '@/../mockapi'
 import { Toast } from 'mint-ui';
 import Baseline from '@/common/_baseline.vue'
+import NorMore from '@/components/nomore'
+
 export default {
   components: {
     'v-baseline': Baseline,
-    'v-gologin': Gologin
+    'v-gologin': Gologin,
+    'v-nomore': NorMore
   },
   props: ['list', 'isLoadMore'],
   mounted() {

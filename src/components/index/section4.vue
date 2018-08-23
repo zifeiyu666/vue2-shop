@@ -107,7 +107,8 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            background-color: gold;
+            background-color: rgba(0,0,0,.5);
+            color: #eee;
             -webkit-box-sizing: border-box;
                     box-sizing: border-box;
             padding:1.2vw 2vw;

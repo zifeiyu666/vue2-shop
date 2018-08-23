@@ -13,6 +13,14 @@ export default {
   components:{
     'v-loading':Loading
   },
+  beforeMount ()  {
+    this.$Lazyload.config({ 
+        preLoad: 1.3,
+        error: require('./assets/error.jpg'),
+        loading: '../static/timg.gif',
+        attempt: 1 
+    })
+  },
   computed:{
     fetchLoading(){
       return this.$store.state.detail.fetchLoading

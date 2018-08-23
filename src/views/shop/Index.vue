@@ -24,17 +24,21 @@
       </div>
     </div> -->
     <el-row  class="search clearfix">
-      <el-col :span='8'>
+      <el-col :span='6' class='sel-icon' @click.native='goToSearch'>
         <img class='icon' src="../../assets/img/all.png" alt="">
         <span class='icon-title'>全部商品</span>
       </el-col>
-      <el-col :span='8'>
+      <el-col :span='6' class='sel-icon' @click.native='goToCollection'>
         <img class='icon' src="../../assets/img/mycol.png" alt="">
         <span class='icon-title'>我的收藏</span>
       </el-col>
-      <el-col :span='8'>
+      <el-col :span='6' class='sel-icon' @click.native='goToMyOrder'>
         <img class='icon' src="../../assets/img/myorder.png" alt="">
         <span class='icon-title'>我的订单</span>
+      </el-col>
+      <el-col :span='6' class='sel-icon' @click.native='goToMyCar'>
+        <img class='icon' src="../../assets/img/shopcar.png" alt="">
+        <span class='icon-title'>购物车</span>
       </el-col>
     </el-row>
     
@@ -260,6 +264,9 @@ export default {
     },
     goToCollection() {
       this.$router.push('/shop/collection')
+    },
+    goToMyCar() {
+      this.$router.push('/shop/car')
     }
   }
 }
@@ -267,6 +274,9 @@ export default {
 
 <style lang="less" scoped>
 @import '../../assets/utils.less';
+.sel-icon{
+  cursor: pointer;
+}
 .index {
     width: 100%;
     padding-bottom: 14vw;
@@ -298,11 +308,11 @@ export default {
   padding-bottom: 5px;
   padding-top: 5px;
   text-align: center;
-  padding: 4% 6%;
+  padding: 4% 2%;
   .icon{
-    width: 40%;
+    width: 50%;
     display: block;
-    margin:0 30%;
+    margin:0 25%;
   }
   .icon-title{
     color: @fontGray;
