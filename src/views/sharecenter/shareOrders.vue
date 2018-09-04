@@ -7,7 +7,7 @@
       <div class="wrap">
         <ul v-if='allOrders.length > 0'>
           <li class='order-wrap' v-for="(k,i) in allOrders" @click='gotoDetail(k)' :key="i">
-            <h3><i class='iconfont icon-leibie'></i>{{k.ordertitle}}</h3>
+            <h3>订单标题：{{k.ordertitle}}</h3>
             <ul class="something" >
               <li v-for="(k,i) in k.opd" :key='i'>
                 <div class="something-middle">
@@ -25,14 +25,14 @@
               </li>
             </ul>
           </li>
+          <div class="btn-wrap" style='text-align: center'>
+            <mt-button @click='loadMore' v-if='isLoadMore'>加载更多</mt-button>
+            <v-baseline v-else></v-baseline>
+          </div>
         </ul>
-        <div class="btn-wrap" style='text-align: center'>
-          <mt-button @click='loadMore' v-if='isLoadMore'>加载更多</mt-button>
-          <v-baseline v-else></v-baseline>
-        </div>
-        <!-- <div class='nomore' v-else>
+        <div class='nomore' v-else>
           没有更多内容了
-        </div> -->
+        </div>
       </div>
     </mt-tab-container>
   </div>
@@ -52,7 +52,7 @@ import Header from '@/common/_header.vue'
         pageNo: 1,
         pageSize: 10,
         allOrders: [],
-        isLoadMore: false
+        isLoadMore: true
       }
     },
     components: {
@@ -88,18 +88,11 @@ import Header from '@/common/_header.vue'
 </script>
 <style lang="less" scoped>
 @import '../../assets/fz.less';
-@import '../../assets/utils.less';
 .order-wrap{
-  margin-bottom: 10px;
-  background: #fff;
+  // border-bottom: 1px solid #999;
+  margin-bottom: 20px;
   h3{
     padding-left: 15px;
-    padding: 10px 15px;
-    border-bottom: 1px solid @lightBorder;
-    .iconfont{
-      font-size: 16px;
-      margin-right: 5px;
-    }
   }
 }
 .back{
@@ -109,7 +102,7 @@ import Header from '@/common/_header.vue'
   height: 40px;
 }
 .wrap{
-  margin-top: 10px;
+  margin-top: 50px;
 }
 .mint-header{
   background: #eee;

@@ -1,11 +1,12 @@
 <template lang="html">
   <!-- 在首页父组件发送http请求,后将数据通过props传递给子组件,可减少请求次数,减少服务器压力 -->
-  <div class="index">
+  <div class="index" v-loading="loading">
     <!-- <v-header></v-header> -->
-    <mt-button icon="search" @click='goToSearch'></mt-button>
+    <!-- 隐藏搜索按钮 -->
+    <!-- <mt-button icon="search" @click='goToSearch'></mt-button> -->
     <v-swiper :swiperData="bannerList"></v-swiper>
     <!-- <v-service></v-service> -->
-    <div class="search clearfix">
+    <!-- <div class="search clearfix">
       <div class="avatar">
         <img :src="avatar" alt="">
       </div>
@@ -21,14 +22,28 @@
         <h2 class="title"> </h2>
         <span>我的订单</span>
       </div>
-    </div>
+    </div> -->
+    <el-row  class="search clearfix">
+      <el-col :span='8'>
+        <img class='icon' src="../../assets/img/all.png" alt="">
+        <span class='icon-title'>全部商品</span>
+      </el-col>
+      <el-col :span='8'>
+        <img class='icon' src="../../assets/img/mycol.png" alt="">
+        <span class='icon-title'>我的收藏</span>
+      </el-col>
+      <el-col :span='8'>
+        <img class='icon' src="../../assets/img/myorder.png" alt="">
+        <span class='icon-title'>我的订单</span>
+      </el-col>
+    </el-row>
     
 
-    <v-section4 :section4="section4" :banner="banner4"></v-section4>
-    <v-section2 :section2="section2" :banner="banner2"></v-section2>
+    <v-section4 v-if='section4.length > 0' :section4="section4" :banner="banner4"></v-section4>
+    <v-section2 v-if='section2.length > 0' :section2="section2" :banner="banner2"></v-section2>
     <!-- <v-section3 :section3="section3"></v-section3> -->
     
-    <v-section1 :section1="section1" :banner='banner1'></v-section1>
+    <v-section1 v-if='section1.length > 0' :section1="section1" :banner='banner1'></v-section1>
     <v-baseline></v-baseline>
     <v-footer></v-footer>
   </div>
@@ -60,7 +75,6 @@ export default {
   },
   data() {
     return {
-      loading:true,
       active: 'tab-container1',
       bannerList: '',
       avatar: '',
@@ -72,7 +86,8 @@ export default {
       banner2: '',
       // banner3: '',
       banner4: '',
-      productTypeList: [] // 商品类别
+      productTypeList: [], // 商品类别
+      loading: true
     }
   },
   beforeCreate() {
@@ -86,13 +101,17 @@ export default {
     this.getBanner1()
     this.getBanner2()
     this.getBanner4()
-    this.avatar = this.$store.state.userInfo.headimgurl
+    if (this.$store.state.userInfo) {
+      this.avatar = this.$store.state.userInfo.headimgurl
+    }
   },
   methods: {
     getProductType() {
+      this.loading = true
       mockapi.shop.api_Shop_getProductType_get({
         params: {}
       }).then(res => {
+        this.loading = false
         var data = res.data.data
         console.log(data)
         this.productTypeList = data
@@ -101,21 +120,26 @@ export default {
         this.getSection2()
         this.getSection4()
       }).catch(err => {
+        this.loading = false
         console.log(err)
       })
     },
     getBanner() {
+      this.loading = true
       mockapi.shop.api_Shop_getShopBanner_get({
         params: {}
       }).then(res => {
+        // this.loading = false
         var data = res.data.data
         console.log(data)
         this.bannerList = data
       }).catch(err => {
+        // this.loading = false
         console.log(err)
       })
     },
     getSection1() {
+      this.loading = true
       mockapi.shop.api_Shop_getTopProduct_get({
         params: {
           ProductType: this.productTypeList[0].EntryCode,
@@ -123,14 +147,17 @@ export default {
           top: 10
         }
       }).then(res => {
+        this.loading = false
         var data = res.data.data
         console.log(data)
         this.section1 = data
       }).catch(err => {
+        this.loading = false
         console.log(err)
       })
     },
     getSection2() {
+      this.loading = true
       mockapi.shop.api_Shop_getTopProduct_get({
         params: {
           ProductType: this.productTypeList[1].EntryCode,
@@ -138,10 +165,12 @@ export default {
           top: 10
         }
       }).then(res => {
+        this.loading = false
         var data = res.data.data
         console.log(data)
         this.section2 = data
       }).catch(err => {
+        this.loading = false
         console.log(err)
       })
     },
@@ -161,6 +190,7 @@ export default {
     //   })
     // },
     getSection4() {
+      this.loading = true
       mockapi.shop.api_Shop_getTopProduct_get({
         params: {
           ProductType: this.productTypeList[2].EntryCode,
@@ -168,46 +198,57 @@ export default {
           top: 10
         }
       }).then(res => {
+        this.loading = false
         var data = res.data.data
         console.log(data)
         this.section4 = data
       }).catch(err => {
+        this.loading = false
         console.log(err)
       })
     },
     getBanner1() {
+      this.loading = true
       mockapi.shop.api_Shop_getADByCode_get({
         params: {
           typeCode: 'ADO'
         }
       }).then(res => {
+        this.loading = false
         var data = res.data.data
         this.banner1 = data
       }).catch(err => {
+        this.loading = false
         console.log(err)
       })
     },
     getBanner2() {
+      this.loading = true
       mockapi.shop.api_Shop_getADByCode_get({
         params: {
           typeCode: 'ADT'
         }
       }).then(res => {
+        this.loading = false
         var data = res.data.data
         this.banner2 = data
       }).catch(err => {
+        this.loading = false
         console.log(err)
       })
     },
     getBanner4() {
+      this.loading = true
       mockapi.shop.api_Shop_getADByCode_get({
         params: {
           typeCode: 'ADF'
         }
       }).then(res => {
+        this.loading = false
         var data = res.data.data
         this.banner4 = data
       }).catch(err => {
+        this.loading = false
         console.log(err)
       })
     },
@@ -225,11 +266,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
+@import '../../assets/utils.less';
 .index {
     width: 100%;
     padding-bottom: 14vw;
-    background-color: #F8FCFF !important;
     position: relative;
     .mint-button{
       position: absolute;
@@ -257,6 +297,17 @@ export default {
   box-shadow: 0px 1px 1px #eee;
   padding-bottom: 5px;
   padding-top: 5px;
+  text-align: center;
+  padding: 4% 6%;
+  .icon{
+    width: 40%;
+    display: block;
+    margin:0 30%;
+  }
+  .icon-title{
+    color: @fontGray;
+    font-size: 14px;
+  }
   .avatar{
     position: absolute;
     float: right;

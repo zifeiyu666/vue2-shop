@@ -15,7 +15,7 @@
           <div class="wrap">
             <ul>
               <li @click='goToOrderDetail(item.orderno)' class='order-wrap' v-for="(item,i) in allOrders" :key="i">
-                <h3 class='ordertitle'>订单标题：{{item.ordertitle}}</h3>
+                <h3 class='ordertitle'>{{item.ordertitle}}</h3>
                 <ul class="something" >
                   <div v-if="item.orderstate == '未付款'" id="deleteOrder">
                     <span @click.stop='deleteOrder(item)'></span>
@@ -59,7 +59,7 @@
         <div class="wrap">
             <ul>
               <li @click='goToOrderDetail(item.orderno)' class='order-wrap' v-for="(item,i) in waitOrders" :key="i">
-                <h3 class='ordertitle'>订单标题：{{item.ordertitle}}</h3>
+                <h3 class='ordertitle'>{{item.ordertitle}}</h3>
                 <ul class="something" >
                   <div id="deleteOrder">
                     <span @click.stop='deleteOrder(item)'></span>
@@ -101,7 +101,7 @@
                 <span @click.stop='deleteOrder(item)'></span>
               </div>
               <li @click='goToOrderDetail(item.orderno)' class='order-wrap' v-for="(item,i) in payedOrders" :key="i">
-                <h3 class='ordertitle'>订单标题：{{item.ordertitle}}</h3>
+                <h3 class='ordertitle'>{{item.ordertitle}}</h3>
                 <ul class="something" >
                   <li v-for="(k,i) in item.opd" :key='i'>
                      <div class="something-middle">
@@ -140,7 +140,7 @@
                 <span @click.stop='deleteOrder(item)'></span>
               </div>
               <li @click='goToOrderDetail(item.orderno)' class='order-wrap' v-for="(item,i) in unconfirmedOrders" :key="i">
-                <h3 class='ordertitle'>订单标题：{{item.ordertitle}}</h3>
+                <h3 class='ordertitle'>{{item.ordertitle}}</h3>
                 <ul class="something" >
                   <li v-for="(k,i) in item.opd" :key='i'>
                      <div class="something-middle">
@@ -429,6 +429,13 @@ import Header from '@/common/_header.vue'
   box-shadow: 0px 3px 4px 1px #eee;
   h3{
     padding-left: 15px;
+    padding-right: 40px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    padding-bottom: 5px;
+    color: #333;
+    padding-top: 5px;
   }
 }
 .ordertitle{

@@ -44,16 +44,15 @@ export default {
   .section1 {
     width: 100%;
     overflow: hidden;
-    margin-top: 6vw;
+    margin-top: 6px !important;
     background: #fff;
     .section1-title {
       .bt();
       text-align: left;
       .fz(font-size, 34);
       padding: 4vw 6vw;
-      margin-bottom: 4vw;
       position: relative;
-      background-color: rgb(248, 248, 248);
+      background-color: #fff;
       color: #333;
       .icon{
         width: 20px;

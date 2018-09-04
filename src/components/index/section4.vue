@@ -43,15 +43,15 @@
   .section4 {
     width: 100%;
     overflow: hidden;
+    padding-top: 6px !important;
     .pt();
     .section4-title {
       .bt();
       text-align: left;
       .fz(font-size, 34);
       padding: 4vw 6vw;
-      margin-bottom: 4vw;
       position: relative;
-      background-color: rgb(248, 248, 248);
+      background-color: #fff;
       color: #333;
       .icon{
         width: 20px;

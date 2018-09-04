@@ -1,7 +1,7 @@
 <template>
-  <div v-loading='isLoading'>
+  <div>
     <v-header>
-      <h1 slot="title">我的团队</h1>
+      <h1 slot="title">我的渠道</h1>
     </v-header>
     <div class='catagory clearfix'>
       <div class="nav">
@@ -23,13 +23,10 @@
                 <img :src="k.headimageurl">
               </div>
               <div class="something-right">
-                <p>{{k.name}} 
-                  <span class="level">
-                    <i class='iconfont icon-huiyuandengji0101'></i> {{k.level}}级
-                  </span>
-                </p>
-                <p><i class='iconfont icon-dianhua'></i>：{{k.phone}}</p>
-                <p><i class='iconfont icon-dizhi-01'></i>：{{k.adress}}</p>
+                <p>姓名：{{k.name}}</p>
+                <p>电话： {{k.phone}}</p>
+                <p>级别： {{k.level}}级</p>
+                <p style="font-size: 14px;">地址：{{k.adress}}</p>
                 <!-- <div class="something-right-bottom">
                   <span @click='deleteCollection(k)'></span>
                 </div> -->
@@ -50,13 +47,10 @@
                 <img :src="k.headimageurl">
               </div>
               <div class="something-right">
-                <p>{{k.name}} 
-                  <span class="level">
-                    <i class='iconfont icon-huiyuandengji0101'></i> {{k.level}}级
-                  </span>
-                </p>
-                <p><i class='iconfont icon-dianhua'></i>：{{k.phone}}</p>
-                <p><i class='iconfont icon-dizhi-01'></i>：{{k.adress}}</p>
+                <p>姓名：{{k.name}}</p>
+                <p>电话： {{k.phone}}</p>
+                <p>级别： {{k.level}}级</p>
+                <p style="font-size: 14px;">地址：{{k.adress}}</p>
                 <!-- <div class="something-right-bottom">
                   <span @click='deleteCollection(k)'></span>
                 </div> -->
@@ -77,13 +71,10 @@
                 <img :src="k.headimageurl">
               </div>
               <div class="something-right">
-                <p>{{k.name}} 
-                  <span class="level">
-                    <i class='iconfont icon-huiyuandengji0101'></i> {{k.level}}级
-                  </span>
-                </p>
-                <p><i class='iconfont icon-dianhua'></i>：{{k.phone}}</p>
-                <p><i class='iconfont icon-dizhi-01'></i>：{{k.adress}}</p>
+                <p>姓名：{{k.name}}</p>
+                <p>电话： {{k.phone}}</p>
+                <p>级别： {{k.level}}级</p>
+                <p style="font-size: 14px;">地址：{{k.adress}}</p>
                 <!-- <div class="something-right-bottom">
                   <span @click='deleteCollection(k)'></span>
                 </div> -->
@@ -104,13 +95,10 @@
                 <img :src="k.headimageurl">
               </div>
               <div class="something-right">
-                <p>{{k.name}} 
-                  <span class="level">
-                    <i class='iconfont icon-huiyuandengji0101'></i> {{k.level}}级
-                  </span>
-                </p>
-                <p><i class='iconfont icon-dianhua'></i>：{{k.phone}}</p>
-                <p><i class='iconfont icon-dizhi-01'></i>：{{k.adress}}</p>
+                <p>姓名：{{k.name}}</p>
+                <p>电话： {{k.phone}}</p>
+                <p>级别： {{k.level}}级</p>
+                <p style="font-size: 14px;">地址：{{k.adress}}</p>
                 <!-- <div class="something-right-bottom">
                   <span @click='deleteCollection(k)'></span>
                 </div> -->
@@ -137,7 +125,6 @@ import Header from '@/common/_header.vue'
     data() {
       return {
         selected: '1',
-        isLoading: true,
         allList: [],
         oneList: [],
         twoList: [],
@@ -145,22 +132,22 @@ import Header from '@/common/_header.vue'
         allQuery: {
           pageNo: 1,
           pageSize: 10,
-          loadMore: false
+          loadMore: true
         },
         oneQuery: {
           pageNo: 1,
           pageSize: 10,
-          loadMore: false
+          loadMore: true
         },
         twoQuery: {
           pageNo: 1,
           pageSize: 10,
-          loadMore: false
+          loadMore: true
         },
         threeQuery: {
           pageNo: 1,
           pageSize: 10,
-          loadMore: false
+          loadMore: true
         },
       }
     },
@@ -177,7 +164,6 @@ import Header from '@/common/_header.vue'
     methods: {
 
       getAllList() {
-        this.isLoading = true
         mockapi.shop.api_Shop_getShareCompany_get({
           params: {
             token: this.$store.state.userInfo.MemberToken,
@@ -185,25 +171,16 @@ import Header from '@/common/_header.vue'
             pageSize: this.allQuery.pageSize
           }
         }).then(res => {
-          this.isLoading = false
           var data = res.data.data.list
-          console.log(111)
-          console.log(data)
           var isLastPage = res.data.data.pager.isLastPage
           if (isLastPage) {
             this.allQuery.loadMore = false
           }
           this.allList = this.allList.concat(data)
-          console.log(222)
-          console.log(this.allList)
           this.allQuery.pageNo++
-        }).catch(err => {
-          this.isLoading = false
-          console.log(err.message || err)
         })
       },
       getOneList() {
-        this.isLoading = true
         mockapi.shop.api_Shop_getOneShareCompany_get({
           params: {
             token: this.$store.state.userInfo.MemberToken,
@@ -211,7 +188,6 @@ import Header from '@/common/_header.vue'
             pageSize: this.oneQuery.pageSize
           }
         }).then(res => {
-          this.isLoading = false
           var data = res.data.data.list
           var isLastPage = res.data.data.pager.isLastPage
           if (isLastPage) {
@@ -219,13 +195,9 @@ import Header from '@/common/_header.vue'
           }
           this.oneList = this.oneList.concat(data)
           // this.oneQuery.pageNo++
-        }).catch(err => {
-          this.isLoading = false
-          console.log(err.message || err)
         })
       },
       getTwoList() {
-        this.isLoading = true
         mockapi.shop.api_Shop_getTwoShareCompany_get({
           params: {
             token: this.$store.state.userInfo.MemberToken,
@@ -233,7 +205,6 @@ import Header from '@/common/_header.vue'
             pageSize: this.twoQuery.pageSize
           }
         }).then(res => {
-          this.isLoading = false
           var data = res.data.data.list
           var isLastPage = res.data.data.pager.isLastPage
           if (isLastPage) {
@@ -241,13 +212,9 @@ import Header from '@/common/_header.vue'
           }
           this.twoList = this.twoList.concat(data)
           // this.twoQuery.pageNo++
-        }).catch(err => {
-          this.isLoading = false
-          console.log(err.message || err)
         })
       },
       getThreeList() {
-        this.isLoading = true
         mockapi.shop.api_Shop_getThreeShareCompany_get({
           params: {
             token: this.$store.state.userInfo.MemberToken,
@@ -255,7 +222,6 @@ import Header from '@/common/_header.vue'
             pageSize: this.threeQuery.pageSize
           }
         }).then(res => {
-          this.isLoading = false
           var data = res.data.data.list
           var isLastPage = res.data.data.pager.isLastPage
           if (isLastPage) {
@@ -263,9 +229,6 @@ import Header from '@/common/_header.vue'
           }
           this.threeList = this.threeList.concat(data)
           // this.threeQuery.pageNo++
-        }).catch(err => {
-          this.isLoading = false
-          console.log(err.message || err)
         })
       },
       loadMoreAll() {
@@ -289,7 +252,6 @@ import Header from '@/common/_header.vue'
 </script>
 <style lang=less>
   @import '../../assets/fz.less';
-  @import '../../assets/utils.less';
 .back{
   position: absolute;
   z-index: 1000;
@@ -443,8 +405,6 @@ input{
             padding: 4vw 2vw;
             position: relative;
             height: 26vw;
-            background: #fff;
-            margin-top: 10px;
             .bd();
             .something-left {
                 -ms-flex: 2;
@@ -499,29 +459,18 @@ input{
                 padding-left: 6vw;
                 -webkit-box-sizing: border-box;
                 box-sizing: border-box;
-                p:first-of-type {
-                  font-size: 16px;
-                  color: @fontBlack !important;
-                  .level{
-                    .fz(font-size,26);
-                    color: @fontRed !important;
-                    margin-left: 20px;
-                  }
-                }
-
                 p {
                     overflow: hidden;
                     text-overflow: ellipsis;
                     display: -webkit-box;
                     -webkit-line-clamp: 2;
                     -webkit-box-orient: vertical;
-                    font-size: 14px;
-                    color: @fontGray;
+                    .fz(font-size,26);
                 }
-                /*p:last-of-type {
+                p:last-of-type {
                     .fz(font-size,22);
                     color: rgb(168, 168, 168);
-                }*/
+                }
                 .something-right-bottom {
 
                     > div {

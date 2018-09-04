@@ -144,11 +144,24 @@ router.beforeEach((to, from, next) => {
         } else {
 
           console.log('获取code和membertoken都失败了')
-          // Toast('获取用户信息失败，请重关闭页面并重试！')
-          router.push('/shop/noauth')
 
+<<<<<<< HEAD
           // alert('获取用户信息失败')
           // return
+=======
+          // 生产环境直接让用户去注册页面
+          if (process.env.NODE_ENV === 'production') {
+            // Toast('获取用户信息失败，请重关闭页面并重试！')
+            router.push('/shop/noauth')
+            console.log('环境变量')
+            console.log(process.env.NODE_ENV)
+            return
+          }
+
+          // 开发环境用测试用户
+          console.log('环境变量')
+          console.log(process.env.NODE_ENV)
+>>>>>>> c060f206dedc3b01d6ea99cccfbaa4fefea9aa1a
           mockapi.shop.api_TestGetUserInfo_get({
             params: {
               code: 123

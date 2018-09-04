@@ -47,8 +47,15 @@ const NewsDetail = resolve => require(['@/views/show/item/newsDetail'],resolve)
 const CommonDetail = resolve => require(['@/views/show/item/commonDetail'],resolve)
 const CommonList = resolve => require(['@/views/show/item/commonList'],resolve)
 
+// sharecenter
+const ShareCenter = resolve => require(['@/views/sharecenter/index.vue'],resolve)
+const MyChannel = resolve => require(['@/views/sharecenter/myChannel.vue'],resolve)
+const SCorders = resolve => require(['@/views/sharecenter/shareOrders.vue'],resolve)
+const SCrouducts = resolve => require(['@/views/sharecenter/shareProducts.vue'],resolve)
+const SCfxjl = resolve => require(['@/views/sharecenter/fxJl.vue'],resolve)
 
-const shopRouters = [{
+const shopRouters = [
+  {
     path: '/shop',
     name: '首页',
     component: Index,
@@ -328,10 +335,39 @@ const showRouters = [
   }
 ]
 
+const shareRouters = [
+  {
+    path: '/sharecenter',
+    name: 'ShareCenter',
+    component: ShareCenter
+  },
+  {
+    path: '/sharecenter/mychannel',
+    name: 'MyChannel',
+    component: MyChannel
+  },
+  {
+    path: '/sharecenter/shareorders',
+    name: 'SCorders',
+    component: SCorders
+  },
+  {
+    path: '/sharecenter/shareproducts',
+    name: 'SCrouducts',
+    component: SCrouducts
+  },
+  {
+    path: '/sharecenter/fxjl',
+    name: 'SCfxjl',
+    component: SCfxjl
+  }
+]
+
 export default new Router({
   // mode: 'history',
   routes: [
     ...shopRouters,
-    ...showRouters
+    ...showRouters,
+    ...shareRouters
   ]
 })

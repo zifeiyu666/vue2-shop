@@ -26,7 +26,7 @@ html,body,#app{
   width: 100%;
   height: 100%;
   -webkit-tap-highlight-color:rgba(0,0,0,0);
-  background: #F8FCFF;
+  background: #f3f5f7;
 }
 
 body,
@@ -110,8 +110,6 @@ i {
 }
 body {
     font-family: PingFangSC-Light,helvetica,'Heiti SC';
-    color: #666;
-    background: #fff;
 }
 
 a {
@@ -153,7 +151,6 @@ p{
 .index{
     width: 100%;
     height: 100%;
-    background-color: #EBEBEB;
 }
 .line{
     height: 1px ;
