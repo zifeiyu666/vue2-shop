@@ -9,8 +9,8 @@ function createAPI(baseURL) {
     return instance(Object.assign({}, {
       url: conf.url,
       baseURL: baseURL,
-      method: conf.method
-      // withCredentials: true
+      method: conf.method,
+      // withCredentials: false
     }, conf.opts));
   };
 }

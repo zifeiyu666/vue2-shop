@@ -341,6 +341,9 @@ export default {
         }
         this.allList = this.allList.concat(data)
         // this.allQuery.pageNo++
+      }).catch(err => {
+        this.$store.commit('SET_LOADING', false)
+        console.log(err)
       })
     },
     loadMoreAll() {

@@ -59,6 +59,8 @@ const CCindex = resolve => require(['@/views/channelcenter/index.vue'],resolve)
 const CCmanager = resolve => require(['@/views/channelcenter/sharemanager.vue'],resolve)
 const CCfxjl = resolve => require(['@/views/channelcenter/fxJl.vue'],resolve)
 const CCproducts = resolve => require(['@/views/channelcenter/shareProducts.vue'],resolve)
+const CClogin = resolve => require(['@/views/channelcenter/login.vue'],resolve)
+
 
 const shopRouters = [
   {
@@ -389,6 +391,11 @@ const channelRouters = [
     path: '/channelcenter/shareproducts',
     name: 'CCproducts',
     component: CCproducts
+  },
+  {
+    path: '/channelcenter/login',
+    name: 'CClogin',
+    component: CClogin
   },
 
 
