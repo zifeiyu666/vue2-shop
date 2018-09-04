@@ -1,20 +1,21 @@
 <template lang="html">
   <footer class="footer">
-    <div class="jf" v-if="score">
+    <!-- 去掉购物积分相关 -->
+    <!-- <div class="jf" v-if="score">
       <mt-field label="积分抵扣:" placeholder="请输入要使用的积分" type="number" v-model="usescore" ></mt-field>
       <div class="totalScore">
         <span>当前可用积分：{{score}}</span>
         <p>可抵扣金额：{{usescore/scoreRate}}元</p>
       </div>
-    </div>
+    </div> -->
         
     <div class="footer-result">
-      <p>共{{count}}件 金额：</p>
-      <p><span>{{allpay}} </span>元</p>
+      <p>共 {{count}} 件商品</p>
+      <p>合计：<span> {{allpay}} </span>元</p>
     </div>
-    <router-link :to="{ path: '/shop/all'}" class="footer-goon" >
+    <!-- <router-link :to="{ path: '/shop/all'}" class="footer-goon" >
       继续购物
-    </router-link>
+    </router-link> -->
     <a class="footer-pay" @click="goPay">
       去结算
     </a>
@@ -134,6 +135,7 @@ export default {
 
 <style lang="less" scoped>
   @import '../../assets/fz.less';
+  @import '../../assets/utils.less';
   .jf{
     position: fixed;
     bottom: 16vw;
@@ -172,22 +174,25 @@ export default {
 
     .footer-result {
       p {
-        .fz(font-size,24);
+        font-size: 12px;
         color: #999;
       }
 
       p:last-of-type {
 
-        padding: 1vw 0 0 1vw;
+        padding: 1vw 0  1vw 0;
+        font-size: 16px;
+        color: @fontBlack;
         span {
           color:@cl;
-          .fz(font-size,42);
+          font-size: 20px;
         }
       }
     }
 
     .footer-goon {
-      background-color: #F4F4F4;
+      background-color: #ff4800;
+      color: #fff;
       line-height: 16vw;
     }
 

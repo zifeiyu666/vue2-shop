@@ -1,9 +1,9 @@
 <template>
-  <div id="app">
+  <div id="app" v-loading='fetchLoading'>
     <!-- <transition name='fade'> -->
         <router-view></router-view>
     <!-- </transition> -->
-    <v-loading v-show="fetchLoading"></v-loading>
+    <!-- <v-loading v-show="fetchLoading"></v-loading> -->
   </div>
 </template>
 
@@ -12,6 +12,14 @@ import Loading from '@/common/_loading'
 export default {
   components:{
     'v-loading':Loading
+  },
+  beforeMount ()  {
+    this.$Lazyload.config({ 
+        preLoad: 1.3,
+        error: require('./assets/error.jpg'),
+        loading: '../static/timg.gif',
+        attempt: 1 
+    })
   },
   computed:{
     fetchLoading(){
@@ -178,6 +186,9 @@ p{
 .el-radio-button:focus:not(.is-focus):not(:active) {
     -webkit-box-shadow: 0 0 0 0 !important;
     box-shadow: 0 0 0 0 !important;
+}
+.mint-button--default{
+    background: #f3f5f7;
 }
 
 </style>

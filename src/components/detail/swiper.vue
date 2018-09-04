@@ -2,7 +2,7 @@
     <div class="swiper">
       <mt-swipe :auto="4000">
         <mt-swipe-item v-for="(i, index) in imgList" :key='index'>
-           <img :src="i">
+           <img v-lazy="i">
         </mt-swipe-item>
       </mt-swipe>
       <div class="back" @click="$router.go(-1)">

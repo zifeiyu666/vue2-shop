@@ -137,7 +137,7 @@
       <v-footer></v-footer>
 
       <!-- 二维码弹窗 -->
-      <el-dialog
+      <!-- <el-dialog
         class='code_dialog'
         title='我的分享码'
         fullscreen
@@ -145,7 +145,8 @@
         width="100%"
         center>
         <span><img style='width: 100%; display: inline-block' :src="qrcode" alt=""></span>
-      </el-dialog>
+      </el-dialog> -->
+      <v-qrcode @close='closeQrCode' :imgurl='qrcode' :isShow='isShow'></v-qrcode>
     </div>
 </template>
 
@@ -153,10 +154,13 @@
   import * as mockapi from '@/../mockapi'
   import Baseline from '@/common/_baseline.vue'
   import Footer from '@/common/_footer.vue'
+  import Qrcode from '@/components/qrcode.vue'
+
   export default {
     components: {
       'v-baseline': Baseline,
-      'v-footer': Footer
+      'v-footer': Footer,
+      'v-qrcode': Qrcode
     },
     data() {
       return {
@@ -165,7 +169,11 @@
         avatar: '',
         time: '',
         jifen: '',
-        dialogVisible: false
+        fxscore: '',
+        phone: '',
+        smallQrCode: '',
+        // dialogVisible: false,
+        isShow: false
       }
     },
     mounted() {
@@ -196,7 +204,11 @@
       },
       showQrCode() {
         console.log(11111)
-        this.dialogVisible = true
+        // this.dialogVisible = true
+        this.isShow = true
+      },
+      closeQrCode() {
+        this.isShow = false
       }
     }
   }

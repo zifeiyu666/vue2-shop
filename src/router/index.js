@@ -51,8 +51,16 @@ const CommonList = resolve => require(['@/views/show/item/commonList'],resolve)
 const ShareCenter = resolve => require(['@/views/sharecenter/index.vue'],resolve)
 const MyChannel = resolve => require(['@/views/sharecenter/myChannel.vue'],resolve)
 const SCorders = resolve => require(['@/views/sharecenter/shareOrders.vue'],resolve)
-const SCrouducts = resolve => require(['@/views/sharecenter/shareProducts.vue'],resolve)
+const SCprouducts = resolve => require(['@/views/sharecenter/shareProducts.vue'],resolve)
 const SCfxjl = resolve => require(['@/views/sharecenter/fxJl.vue'],resolve)
+
+// channelcenter
+const CCindex = resolve => require(['@/views/channelcenter/index.vue'],resolve)
+const CCmanager = resolve => require(['@/views/channelcenter/sharemanager.vue'],resolve)
+const CCfxjl = resolve => require(['@/views/channelcenter/fxJl.vue'],resolve)
+const CCproducts = resolve => require(['@/views/channelcenter/shareProducts.vue'],resolve)
+const CClogin = resolve => require(['@/views/channelcenter/login.vue'],resolve)
+
 
 const shopRouters = [
   {
@@ -339,28 +347,73 @@ const shareRouters = [
   {
     path: '/sharecenter',
     name: 'ShareCenter',
-    component: ShareCenter
+    component: ShareCenter,
+    meta: {
+      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+    }
   },
   {
     path: '/sharecenter/mychannel',
     name: 'MyChannel',
-    component: MyChannel
+    component: MyChannel,
+    meta: {
+      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+    }
   },
   {
     path: '/sharecenter/shareorders',
     name: 'SCorders',
-    component: SCorders
+    component: SCorders,
+    meta: {
+      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+    }
   },
   {
     path: '/sharecenter/shareproducts',
-    name: 'SCrouducts',
-    component: SCrouducts
+    name: 'SCprouducts',
+    component: SCprouducts,
+    meta: {
+      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+    }
   },
   {
     path: '/sharecenter/fxjl',
     name: 'SCfxjl',
-    component: SCfxjl
+    component: SCfxjl,
+    meta: {
+      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+    }
   }
+]
+
+const channelRouters = [
+  {
+    path: '/channelcenter',
+    name: 'ChannelCenter',
+    component: CCindex
+  },
+  {
+    path: '/channelcenter/sharemanager',
+    name: 'sharemanager',
+    component: CCmanager
+  },
+  {
+    path: '/channelcenter/sharefxjl',
+    name: 'sharemanager',
+    component: CCfxjl
+  },
+  {
+    path: '/channelcenter/shareproducts',
+    name: 'CCproducts',
+    component: CCproducts
+  },
+  {
+    path: '/channelcenter/login',
+    name: 'CClogin',
+    component: CClogin
+  },
+
+
 ]
 
 export default new Router({
@@ -368,6 +421,7 @@ export default new Router({
   routes: [
     ...shopRouters,
     ...showRouters,
-    ...shareRouters
+    ...shareRouters,
+    ...channelRouters
   ]
 })

@@ -17,7 +17,7 @@
     <mt-tab-container v-model="selected">
       <mt-tab-container-item id="1">
         <div class="wrap">
-          <ul class="something" >
+          <ul class="something" v-if='allList.length != 0'>
             <li v-for="(k,i) in allList" @click='gotoDetail(k)' :key="i">
               <div class="something-middle">
                 <img :src="k.headimageurl">
@@ -36,7 +36,10 @@
               </div>
             </li>
           </ul>
-          <div style='text-align: center;position: relative;top: 20px;'>
+          <div v-else>
+            <v-nomore></v-nomore>
+          </div>
+          <div v-if='allList.length != 0' style='text-align: center;position: relative;top: 20px;'>
             <mt-button @click='loadMoreAll' v-if='allQuery.loadMore'>加载更多</mt-button>
             <v-baseline v-else></v-baseline>
           </div>
@@ -44,7 +47,7 @@
       </mt-tab-container-item>
       <mt-tab-container-item id="2">
         <div class="wrap">
-          <ul class="something" >
+          <ul class="something" v-if='oneList.length != 0'>
             <li v-for="(k,i) in oneList" @click='gotoDetail(k)' :key="i">
               <div class="something-middle">
                 <img :src="k.headimageurl">
@@ -63,7 +66,10 @@
               </div>
             </li>
           </ul>
-          <div style='text-align: center;position: relative;top: 20px;'>
+          <div v-else>
+            <v-nomore></v-nomore>
+          </div>
+          <div v-if='oneList.length != 0' style='text-align: center;position: relative;top: 20px;'>
             <mt-button @click='loadMoreOne' v-if='oneQuery.loadMore'>加载更多</mt-button>
             <v-baseline v-else></v-baseline>
           </div>
@@ -71,7 +77,7 @@
       </mt-tab-container-item>
       <mt-tab-container-item id="3">
         <div class="wrap">
-          <ul class="something" >
+          <ul class="something" v-if='twoList.length != 0'>
             <li v-for="(k,i) in twoList" @click='gotoDetail(k)' :key="i">
               <div class="something-middle">
                 <img :src="k.headimageurl">
@@ -90,7 +96,10 @@
               </div>
             </li>
           </ul>
-          <div style='text-align: center;position: relative;top: 20px;'>
+          <div v-else>
+            <v-nomore></v-nomore>
+          </div>
+          <div v-if='twoList.length != 0' style='text-align: center;position: relative;top: 20px;'>
             <mt-button @click='loadMoreTwo' v-if='twoQuery.loadMore'>加载更多</mt-button>
             <v-baseline v-else></v-baseline>
           </div>
@@ -98,7 +107,7 @@
       </mt-tab-container-item>
       <mt-tab-container-item id="4">
         <div class="wrap">
-          <ul class="something" >
+          <ul class="something" v-if='threeList.length != 0'>
             <li v-for="(k,i) in threeList" @click='gotoDetail(k)' :key="i">
               <div class="something-middle">
                 <img :src="k.headimageurl">
@@ -117,7 +126,10 @@
               </div>
             </li>
           </ul>
-          <div style='text-align: center;position: relative;top: 20px;'>
+          <div v-else>
+            <v-nomore></v-nomore>
+          </div>
+          <div v-if='threeList.length != 0' style='text-align: center;position: relative;top: 20px;'>
             <mt-button @click='loadMoreThree' v-if='threeQuery.loadMore'>加载更多</mt-button>
             <v-baseline v-else></v-baseline>
           </div>
@@ -133,6 +145,7 @@ import Baseline from '@/common/_baseline.vue'
 import Footer from '@/common/_footer.vue'
 import * as mockapi from '@/../mockapi'
 import Header from '@/common/_header.vue'
+import NorMore from '@/components/nomore'
   export default{
     data() {
       return {
@@ -166,7 +179,8 @@ import Header from '@/common/_header.vue'
     },
     components: {
       'v-baseline': Baseline,
-      'v-header':Header
+      'v-header':Header,
+      'v-nomore': NorMore
     },
     mounted() {
       this.getAllList()

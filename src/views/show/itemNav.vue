@@ -4,7 +4,7 @@
       <i class='iconfont icon-fanhui'></i>
     </div>
     <div class="header-img">
-      <img :src="banner" alt="">
+      <img v-lazy="banner" alt="">
     </div>
     <div class="intro-wrap">
       <p class='dec'>{{intro}}</p>
@@ -111,21 +111,21 @@
   }
 </script>
 <style lang=less scoped>
+.intro-wrap{
+  background: #fff;
+}
   .dec{
     position:relative;
     line-height:1.4em;
     /* 3 times the line-height to show 3 lines */
-    height:5.5em;
+    height:7em;
     overflow:hidden;
-  }
-  .dec:after{
-    content:"...";
-    font-weight:bold;
-    position:absolute;
-    bottom:0;
-    right:0;
-    padding:0 10px 1px 45px;
-    background:url(http://newimg88.b0.upaiyun.com/newimg88/2014/09/ellipsis_bg.png) repeat-y;
+    background: #fff;
+    overflow : hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
   }
   .goback{
     position: fixed;
@@ -157,11 +157,14 @@
       }
     }
     .intro-wrap{
-      height: 25vh;
-      padding: 15px 15px 50px 15px;
+      margin-top: 2vh;
+      height: 20vh;
+      margin-bottom: 2vh;
+      padding: 3vw;
       -webkit-box-sizing: border-box;
       box-sizing: border-box;
       position: relative;
+      box-shadow: 1px 1px 3px #ccc;
       p{
         font-size: 14px;
         /* width: 100%; */

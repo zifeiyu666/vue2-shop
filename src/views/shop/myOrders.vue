@@ -13,7 +13,7 @@
       <!-- 全部订单 -->
       <mt-tab-container-item id="1">
           <div class="wrap">
-            <ul>
+            <ul v-if='allOrders.length != 0'>
               <li @click='goToOrderDetail(item.orderno)' class='order-wrap' v-for="(item,i) in allOrders" :key="i">
                 <h3 class='ordertitle'>{{item.ordertitle}}</h3>
                 <ul class="something" >
@@ -52,12 +52,15 @@
                 <v-baseline v-else></v-baseline>
               </div>
             </ul>
+             <div v-else>
+              <v-nomore></v-nomore>
+            </div>
           </div>
       </mt-tab-container-item>
       <!-- 待付款 -->
       <mt-tab-container-item id="2">
         <div class="wrap">
-            <ul>
+            <ul v-if='waitOrders.length != 0'>
               <li @click='goToOrderDetail(item.orderno)' class='order-wrap' v-for="(item,i) in waitOrders" :key="i">
                 <h3 class='ordertitle'>{{item.ordertitle}}</h3>
                 <ul class="something" >
@@ -91,12 +94,15 @@
                 <v-baseline v-else></v-baseline>
               </div>
             </ul>
+             <div v-else>
+              <v-nomore></v-nomore>
+            </div>
           </div>
       </mt-tab-container-item>
       <!-- 已付款 -->
       <mt-tab-container-item id="3">
         <div class="wrap">
-            <ul>
+            <ul v-if='payedOrders.length != 0'>
               <div id="deleteOrder">
                 <span @click.stop='deleteOrder(item)'></span>
               </div>
@@ -130,12 +136,15 @@
                 <v-baseline v-else></v-baseline>
               </div>
             </ul>
+            <div v-else>
+              <v-nomore></v-nomore>
+            </div>
           </div>
       </mt-tab-container-item>
       <!-- 待审核 -->
       <mt-tab-container-item id="4">
         <div class="wrap">
-            <ul>
+            <ul v-if='unconfirmedOrders.length != 0'>
               <div id="deleteOrder">
                 <span @click.stop='deleteOrder(item)'></span>
               </div>
@@ -169,6 +178,9 @@
                 <v-baseline v-else></v-baseline>
               </div>
             </ul>
+            <div v-else>
+              <v-nomore></v-nomore>
+            </div>
           </div>
       </mt-tab-container-item>
     </mt-tab-container>
@@ -182,6 +194,7 @@ import Footer from '@/common/_footer.vue'
 import * as mockapi from '@/../mockapi'
 import qs from 'qs'
 import {Toast} from 'mint-ui'
+import NorMore from '@/components/nomore'
 
 import Header from '@/common/_header.vue'
   export default{
@@ -247,7 +260,8 @@ import Header from '@/common/_header.vue'
     },
     components: {
       'v-header':Header,
-      'v-baseline': Baseline
+      'v-baseline': Baseline,
+      'v-nomore': NorMore
     },
     mounted() {
       if (this.$route.query.selected) {

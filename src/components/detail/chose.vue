@@ -250,6 +250,7 @@ export default {
   }
 }
 .chose {
+    background: #fff;
     padding: 3vw;
     .chose-view {
         > h1 {

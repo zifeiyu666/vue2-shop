@@ -1,6 +1,132 @@
 import instance from './instance';
 import { convertRESTAPI } from '../util';
 
+/** 获取我的营业额记录 */
+function api_Channel_getMyCrashbackList_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Channel/getMyCrashbackList',
+    opts: opts
+  });
+}
+
+/** 获取我的业务员的返现记录 */
+function api_Channel_getSalesmanCrashbackList_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Channel/getSalesmanCrashbackList',
+    opts: opts
+  });
+}
+
+/** 获取我的业务员发展的会员信息 */
+function api_Channel_getSalesmanMembersList_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Channel/getSalesmanMembersList',
+    opts: opts
+  });
+}
+
+/** 获取我的业务员 */
+function api_Channel_getMySalesmanList_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Channel/getMySalesmanList',
+    opts: opts
+  });
+}
+
+/** 根据商品类型和所属项目获取商品列表 */
+function api_Channel_getProductList_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Channel/getProductList',
+    opts: opts
+  });
+}
+
+/** 获取渠道的二维码 */
+function api_Channel_getChannelQRCode_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Channel/getChannelQRCode',
+    opts: opts
+  });
+}
+
+/** 渠道登录 */
+function api_Channel_ChannelLogin_post(opts) {
+  return instance({
+    method: 'post',
+    url:  '/api/Channel/ChannelLogin',
+    opts: opts
+  });
+}
+
+/** 根据会员的Token，ProductName商品名称，top多少条获取访问记录， */
+function api_ProductsVisit_Get_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/ProductsVisit/Get',
+    opts: opts
+  });
+}
+
+/** 会员浏览记录生成 */
+function api_ProductsVisit_Post_post(opts) {
+  return instance({
+    method: 'post',
+    url:  '/api/ProductsVisit/Post',
+    opts: opts
+  });
+}
+
+/** 获取业务员渠道记录 */
+function api_Share_getMyQudaoList_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Share/getMyQudaoList',
+    opts: opts
+  });
+}
+
+/** 获取业务员相关订单记录 */
+function api_Share_getMyRelationOrdersList_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Share/getMyRelationOrdersList',
+    opts: opts
+  });
+}
+
+/** 获取我的返现记录 */
+function api_Share_getMyCrashbackList_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Share/getMyCrashbackList',
+    opts: opts
+  });
+}
+
+/** 获取我的业务员身份的二维码 */
+function api_Share_getMyYeWuYuanSharedQRCode_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Share/getMyYeWuYuanSharedQRCode',
+    opts: opts
+  });
+}
+
+/** 根据商品类型和所属项目获取商品列表 */
+function api_Share_getProductList_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Share/getProductList',
+    opts: opts
+  });
+}
+
 /** 待审核订单列表 */
 function api_Shop_getSHOrders_get(opts) {
   return instance({
@@ -623,6 +749,20 @@ function shop_getBanner_get(opts) {
 }
 
 export {
+  api_Channel_getMyCrashbackList_get,
+  api_Channel_getSalesmanCrashbackList_get,
+  api_Channel_getSalesmanMembersList_get,
+  api_Channel_getMySalesmanList_get,
+  api_Channel_getProductList_get,
+  api_Channel_getChannelQRCode_get,
+  api_Channel_ChannelLogin_post,
+  api_ProductsVisit_Get_get,
+  api_ProductsVisit_Post_post,
+  api_Share_getMyQudaoList_get,
+  api_Share_getMyRelationOrdersList_get,
+  api_Share_getMyCrashbackList_get,
+  api_Share_getMyYeWuYuanSharedQRCode_get,
+  api_Share_getProductList_get,
   api_Shop_getSHOrders_get,
   api_GetUserInfoByMemberToken_get,
   api_MustBeJustSoSo_MustBeLQ_get,

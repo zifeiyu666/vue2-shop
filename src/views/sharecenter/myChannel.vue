@@ -1,118 +1,52 @@
 <template>
-  <div>
+  <div v-loading='isLoading'>
     <v-header>
       <h1 slot="title">我的渠道</h1>
     </v-header>
     <div class='catagory clearfix'>
-      <div class="nav">
-        <mt-navbar v-model="selected">
-          <mt-tab-item id="1">全部</mt-tab-item>
-          <mt-tab-item id="2">一级</mt-tab-item>
-          <mt-tab-item id="3">二级</mt-tab-item>
-          <!-- <mt-tab-item id="4">三级</mt-tab-item> -->
-        </mt-navbar>
-      </div>
+    </div>
+    <div class="wrap">
+      <ul
+        v-infinite-scroll="loadMore"
+        infinite-scroll-disabled="loading"
+        infinite-scroll-distance="10"
+        class="something"
+        v-if='List.length != 0'>
+        <!-- <li>
+          <div class="something-middle">
+            <img src="">
+          </div>
+          <div class="something-right">
+            <p>当前渠道
+              <span class="level">
+                <i class='iconfont icon-huiyuandengji0101'></i> 
+                xxx渠道
+              </span>
+            </p>
+            <p><i class='iconfont icon-dianhua'></i>：18724798278</p>
+            <p><i class='iconfont icon-dizhi-01'></i>：阿萨德龙凤哈里斯的话费</p>
+          </div>
+        </li> -->
+        <!-- <li style='height: 20px !important'>历史渠道</li> -->    
+        <li v-for="(k,i) in List" :key="i">
+          <!-- <div class="something-middle">
+            <img :src="k.headimageurl">
+          </div> -->
+          <div class="something-right">
+            <p>{{k.qdname}} 
+              <span class="level">
+                <!-- <i class='iconfont icon-huiyuandengji0101'></i>  -->
+              </span>
+            </p>
+            <!-- <p><i class='iconfont icon-dianhua'></i>：{{k.phone}}</p> -->
+            <p><i class='iconfont icon-clock'></i>：{{k.recordTime}}</p>
+
+          </div>
+        </li>
+      </ul>
+      <v-baseline v-if='isLastPage'></v-baseline>
     </div>
     
-    <mt-tab-container v-model="selected">
-      <mt-tab-container-item id="1">
-        <div class="wrap">
-          <ul class="something" >
-            <li v-for="(k,i) in allList" @click='gotoDetail(k)' :key="i">
-              <div class="something-middle">
-                <img :src="k.headimageurl">
-              </div>
-              <div class="something-right">
-                <p>姓名：{{k.name}}</p>
-                <p>电话： {{k.phone}}</p>
-                <p>级别： {{k.level}}级</p>
-                <p style="font-size: 14px;">地址：{{k.adress}}</p>
-                <!-- <div class="something-right-bottom">
-                  <span @click='deleteCollection(k)'></span>
-                </div> -->
-              </div>
-            </li>
-          </ul>
-          <div style='text-align: center;position: relative;top: 20px;'>
-            <mt-button @click='loadMoreAll' v-if='allQuery.loadMore'>加载更多</mt-button>
-            <v-baseline v-else></v-baseline>
-          </div>
-        </div>
-      </mt-tab-container-item>
-      <mt-tab-container-item id="2">
-        <div class="wrap">
-          <ul class="something" >
-            <li v-for="(k,i) in oneList" @click='gotoDetail(k)' :key="i">
-              <div class="something-middle">
-                <img :src="k.headimageurl">
-              </div>
-              <div class="something-right">
-                <p>姓名：{{k.name}}</p>
-                <p>电话： {{k.phone}}</p>
-                <p>级别： {{k.level}}级</p>
-                <p style="font-size: 14px;">地址：{{k.adress}}</p>
-                <!-- <div class="something-right-bottom">
-                  <span @click='deleteCollection(k)'></span>
-                </div> -->
-              </div>
-            </li>
-          </ul>
-          <div style='text-align: center;position: relative;top: 20px;'>
-            <mt-button @click='loadMoreOne' v-if='oneQuery.loadMore'>加载更多</mt-button>
-            <v-baseline v-else></v-baseline>
-          </div>
-        </div>
-      </mt-tab-container-item>
-      <mt-tab-container-item id="3">
-        <div class="wrap">
-          <ul class="something" >
-            <li v-for="(k,i) in twoList" @click='gotoDetail(k)' :key="i">
-              <div class="something-middle">
-                <img :src="k.headimageurl">
-              </div>
-              <div class="something-right">
-                <p>姓名：{{k.name}}</p>
-                <p>电话： {{k.phone}}</p>
-                <p>级别： {{k.level}}级</p>
-                <p style="font-size: 14px;">地址：{{k.adress}}</p>
-                <!-- <div class="something-right-bottom">
-                  <span @click='deleteCollection(k)'></span>
-                </div> -->
-              </div>
-            </li>
-          </ul>
-          <div style='text-align: center;position: relative;top: 20px;'>
-            <mt-button @click='loadMoreTwo' v-if='twoQuery.loadMore'>加载更多</mt-button>
-            <v-baseline v-else></v-baseline>
-          </div>
-        </div>
-      </mt-tab-container-item>
-      <mt-tab-container-item id="4">
-        <div class="wrap">
-          <ul class="something" >
-            <li v-for="(k,i) in threeList" @click='gotoDetail(k)' :key="i">
-              <div class="something-middle">
-                <img :src="k.headimageurl">
-              </div>
-              <div class="something-right">
-                <p>姓名：{{k.name}}</p>
-                <p>电话： {{k.phone}}</p>
-                <p>级别： {{k.level}}级</p>
-                <p style="font-size: 14px;">地址：{{k.adress}}</p>
-                <!-- <div class="something-right-bottom">
-                  <span @click='deleteCollection(k)'></span>
-                </div> -->
-              </div>
-            </li>
-          </ul>
-          <div style='text-align: center;position: relative;top: 20px;'>
-            <mt-button @click='loadMoreThree' v-if='threeQuery.loadMore'>加载更多</mt-button>
-            <v-baseline v-else></v-baseline>
-          </div>
-        </div>
-      </mt-tab-container-item>
-      
-    </mt-tab-container>
   </div>
   
 </template>
@@ -121,137 +55,62 @@ import Baseline from '@/common/_baseline.vue'
 import Footer from '@/common/_footer.vue'
 import * as mockapi from '@/../mockapi'
 import Header from '@/common/_header.vue'
+import NorMore from '@/components/nomore'
   export default{
     data() {
       return {
-        selected: '1',
-        allList: [],
-        oneList: [],
-        twoList: [],
-        threeList: [],
-        allQuery: {
-          pageNo: 1,
-          pageSize: 10,
-          loadMore: true
-        },
-        oneQuery: {
-          pageNo: 1,
-          pageSize: 10,
-          loadMore: true
-        },
-        twoQuery: {
-          pageNo: 1,
-          pageSize: 10,
-          loadMore: true
-        },
-        threeQuery: {
-          pageNo: 1,
-          pageSize: 10,
-          loadMore: true
-        },
+        isLoading: true,
+        loading: false,
+        List: [],
+        pageNo: 1,
+        pageSize: 10,
+        isLastPage: false
       }
     },
     components: {
       'v-baseline': Baseline,
-      'v-header':Header
+      'v-header':Header,
+      'v-nomore': NorMore
     },
     mounted() {
-      this.getAllList()
-      this.getOneList()
-      this.getTwoList()
-      // this.getThreeList()
+      this.getList()
     },
     methods: {
 
-      getAllList() {
-        mockapi.shop.api_Shop_getShareCompany_get({
+      getList() {
+        this.isLoading = true
+        this.loading = true
+        mockapi.shop.api_Share_getMyQudaoList_get({
           params: {
             token: this.$store.state.userInfo.MemberToken,
-            pageNo: this.allQuery.pageNo,
-            pageSize: this.allQuery.pageSize
+            pageNo: this.pageNo,
+            pageSize: this.pageSize
           }
         }).then(res => {
+          this.isLoading = false
+          this.loading = false
           var data = res.data.data.list
-          var isLastPage = res.data.data.pager.isLastPage
-          if (isLastPage) {
-            this.allQuery.loadMore = false
-          }
-          this.allList = this.allList.concat(data)
-          this.allQuery.pageNo++
+          this.isLastPage = res.data.data.pager.isLastPage
+          this.List = this.List.concat(data)
+          this.pageNo++
+        }).catch(err => {
+          this.isLoading = false
+          this.loading = false
+          console.log(err.message || err)
         })
       },
-      getOneList() {
-        mockapi.shop.api_Shop_getOneShareCompany_get({
-          params: {
-            token: this.$store.state.userInfo.MemberToken,
-            pageNo: this.oneQuery.pageNo,
-            pageSize: this.oneQuery.pageSize
-          }
-        }).then(res => {
-          var data = res.data.data.list
-          var isLastPage = res.data.data.pager.isLastPage
-          if (isLastPage) {
-            this.oneQuery.loadMore = false
-          }
-          this.oneList = this.oneList.concat(data)
-          // this.oneQuery.pageNo++
-        })
-      },
-      getTwoList() {
-        mockapi.shop.api_Shop_getTwoShareCompany_get({
-          params: {
-            token: this.$store.state.userInfo.MemberToken,
-            pageNo: this.twoQuery.pageNo,
-            pageSize: this.twoQuery.pageSize
-          }
-        }).then(res => {
-          var data = res.data.data.list
-          var isLastPage = res.data.data.pager.isLastPage
-          if (isLastPage) {
-            this.twoQuery.loadMore = false
-          }
-          this.twoList = this.twoList.concat(data)
-          // this.twoQuery.pageNo++
-        })
-      },
-      getThreeList() {
-        mockapi.shop.api_Shop_getThreeShareCompany_get({
-          params: {
-            token: this.$store.state.userInfo.MemberToken,
-            pageNo: this.threeQuery.pageNo,
-            pageSize: this.threeQuery.pageSize
-          }
-        }).then(res => {
-          var data = res.data.data.list
-          var isLastPage = res.data.data.pager.isLastPage
-          if (isLastPage) {
-            this.threeQuery.loadMore = false
-          }
-          this.threeList = this.threeList.concat(data)
-          // this.threeQuery.pageNo++
-        })
-      },
-      loadMoreAll() {
-        this.allQuery.pageSize++
-        this.getAllList
-      },
-      loadMoreOne() {
-        this.oneQuery.pageSize++
-        this.getOneList
-      },
-      loadMoreTwo() {
-        this.twoQuery.pageSize++
-        this.getTwoList
-      },
-      loadMoreThree() {
-        this.threeQuery.pageSize++
-        this.getThreeList
+      loadMore() {
+        if(!this.isLastPage) {
+          this.getList()
+        }
+        
       }
     }
   }
 </script>
 <style lang=less>
   @import '../../assets/fz.less';
+  @import '../../assets/utils.less';
 .back{
   position: absolute;
   z-index: 1000;
@@ -405,6 +264,8 @@ input{
             padding: 4vw 2vw;
             position: relative;
             height: 26vw;
+            background: #fff;
+            margin-top: 10px;
             .bd();
             .something-left {
                 -ms-flex: 2;
@@ -459,18 +320,29 @@ input{
                 padding-left: 6vw;
                 -webkit-box-sizing: border-box;
                 box-sizing: border-box;
+                p:first-of-type {
+                  font-size: 16px;
+                  color: @fontBlack !important;
+                  .level{
+                    .fz(font-size,26);
+                    color: @fontRed !important;
+                    margin-left: 20px;
+                  }
+                }
+
                 p {
                     overflow: hidden;
                     text-overflow: ellipsis;
                     display: -webkit-box;
                     -webkit-line-clamp: 2;
                     -webkit-box-orient: vertical;
-                    .fz(font-size,26);
+                    font-size: 14px;
+                    color: @fontGray;
                 }
-                p:last-of-type {
+                /*p:last-of-type {
                     .fz(font-size,22);
                     color: rgb(168, 168, 168);
-                }
+                }*/
                 .something-right-bottom {
 
                     > div {

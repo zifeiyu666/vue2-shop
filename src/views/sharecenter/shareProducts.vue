@@ -7,7 +7,7 @@
       <div class="wrap">
         <ul v-if='allOrders.length > 0'>
           <li class='order-wrap' v-for="(k,i) in allOrders" @click='gotoDetail(k)' :key="i">
-            <h3>订单标题：{{k.ordertitle}}</h3>
+            <h3><i class='iconfont icon-leibie'></i>{{k.ordertitle}}</h3>
             <ul class="something" >
               <li v-for="(k,i) in k.opd" :key='i'>
                 <div class="something-middle">
@@ -17,7 +17,7 @@
                   <p>{{k.producttitle}}</p>
                   <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p>
                   <!-- <p style="color:rgb(199, 108, 28);height: 20px;"> {{k.intro}}</p> -->
-                  <p>售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;使用积分：{{k.usescore}}</p>
+                  <p>￥2000<span><i>赚</i>￥100</span> </p>
                   <!-- <div class="something-right-bottom">
                     <span @click='deleteCollection(k)'></span>
                   </div> -->
@@ -25,14 +25,17 @@
               </li>
             </ul>
           </li>
-          <div class="btn-wrap" style='text-align: center'>
-            <mt-button @click='loadMore' v-if='isLoadMore'>加载更多</mt-button>
-            <v-baseline v-else></v-baseline>
-          </div>
         </ul>
-        <div class='nomore' v-else>
-          没有更多内容了
+        <div v-else>
+          <v-nomore></v-nomore>
         </div>
+        <div v-if='allOrders.length > 0' class="btn-wrap" style='text-align: center'>
+          <mt-button @click='loadMore' v-if='isLoadMore'>加载更多</mt-button>
+          <v-baseline v-else></v-baseline>
+        </div>
+        <!-- <div class='nomore' v-else>
+          没有更多内容了
+        </div> -->
       </div>
     </mt-tab-container>
   </div>
@@ -42,6 +45,7 @@
 import Baseline from '@/common/_baseline.vue'
 import Footer from '@/common/_footer.vue'
 import * as mockapi from '@/../mockapi'
+import NorMore from '@/components/nomore'
 
 import Header from '@/common/_header.vue'
   export default{
@@ -52,21 +56,26 @@ import Header from '@/common/_header.vue'
         pageNo: 1,
         pageSize: 10,
         allOrders: [],
-        isLoadMore: true
+        isLoadMore: false
       }
     },
     components: {
       'v-baseline': Baseline,
-      'v-header':Header
+      'v-header':Header,
+      'v-nomore': NorMore
     },
     mounted() {
-      this.getShareOrders()
+      this.getShareProducts()
     },
     methods: {
-      getShareOrders() {
-        mockapi.shop.api_Shop_getShareOrders_get({
+      getShareProducts() {
+        mockapi.shop.api_Share_getProductList_get({
           params: {
-            token: this.$store.state.userInfo.MemberToken,
+            ProductType: '',
+            ProjectType: '',
+            Title: '',
+            SuitableUser: '',
+            DestinationType: '',
             pageNo: this.pageNo,
             pageSize: this.pageSize
           }
@@ -88,11 +97,18 @@ import Header from '@/common/_header.vue'
 </script>
 <style lang="less" scoped>
 @import '../../assets/fz.less';
+@import '../../assets/utils.less';
 .order-wrap{
-  // border-bottom: 1px solid #999;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  background: #fff;
   h3{
     padding-left: 15px;
+    padding: 10px 15px;
+    border-bottom: 1px solid @lightBorder;
+    .iconfont{
+      font-size: 16px;
+      margin-right: 5px;
+    }
   }
 }
 .back{
@@ -102,7 +118,7 @@ import Header from '@/common/_header.vue'
   height: 40px;
 }
 .wrap{
-  margin-top: 50px;
+  margin-top: 10px;
 }
 .mint-header{
   background: #eee;
@@ -317,8 +333,25 @@ input{
                     .fz(font-size,26);
                 }
                 p:last-of-type {
-                    .fz(font-size,22);
-                    color: rgb(168, 168, 168);
+                    font-size: 16px;
+                    span{
+                      float: right;
+                      margin-right: 15px;
+                      i{
+                        background: @fontRed;
+                        color: #fff;
+                        // padding: 4px;
+                        text-align: center;
+                        line-height: 20px;
+                        display: inline-block;
+                        width: 20px;
+                        height: 20px;
+                        box-sizing: border-box;
+                        border-radius: 10px;
+                      }
+                      font-size: 12px;
+                    }
+                    color: @fontRed;
                 }
                 .something-right-bottom {
 

@@ -1,10 +1,13 @@
 <template lang="html">
-  <div class="detail" v-if="detail">
-    <v-swiper :imgList="detail.imgurl"></v-swiper>
-    <v-chose :view="detail"></v-chose>
-    <v-content :content='detail'></v-content>
-    <v-baseline></v-baseline>
-    <v-footer :detail="detail" :carnum="carnum"></v-footer>
+  <div class="detail" v-loading='isLoading'>
+    <div v-if='detail'>
+      <v-share imgurl="https://ss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=91a426229082d158a4825fb1b00819d5/0824ab18972bd4077557733177899e510eb3096d.jpg" />
+      <v-swiper :imgList="detail.imgurl"></v-swiper>
+      <v-chose :view="detail"></v-chose>
+      <v-content :content='detail'></v-content>
+      <v-baseline></v-baseline>
+      <v-footer :detail="detail" :carnum="carnum"></v-footer>
+    </div>
   </div>
 </template>
 
@@ -14,6 +17,7 @@ import Chose from '@/components/detail/chose.vue'
 import Content from '@/components/detail/content.vue'
 import Footer from '@/components/detail/footer.vue'
 import Baseline from '@/common/_baseline.vue'
+import Share from '@/components/shareBtn.vue'
 
 import qs from 'qs'
 import * as mockapi from '@/../mockapi'
@@ -23,12 +27,14 @@ export default {
     'v-chose':Chose,
     'v-content':Content,
     'v-footer':Footer,
-    'v-baseline':Baseline
+    'v-baseline':Baseline,
+    'v-share': Share
   },
   data() {
     return{
       detail: undefined,
-      carnum: undefined
+      carnum: undefined,
+      isLoading: false
     }
   },
   mounted() {
@@ -37,14 +43,19 @@ export default {
   },
   methods: {
     getDetail() {
+      this.isLoading = true
       mockapi.shop.api_Shop_getProduct_get({
         params:{
           token: this.$store.state.userInfo.MemberToken,
           Pid: this.$route.query.pid
         }
       }).then(res => {
+        this.isLoading = false
         var data = res.data.data
         this.detail = data
+      }).catch(err => {
+        console.log(err)
+        this.isLoading = false
       })
     }
   },
@@ -57,8 +68,9 @@ export default {
 <style lang="less" scoped>
 .detail {
   width: 100%;
+  min-height: 100vh;
   padding-bottom: 14vw;
-  background: #fff;
+  // background: #fff;
 }
 .banner{
   width: 100%;
