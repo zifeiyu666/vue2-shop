@@ -1,4 +1,5 @@
 <template lang="html">
+
   <div class="car">
       <header class="header">
           <div class="header-icon">
@@ -10,7 +11,7 @@
             <!-- <p>注册时间：{{time}}</p> -->
             <!-- <p>会员等级：{{memberrank}}</p> -->
             <!-- <p>购物积分：{{score}}</p> -->
-            <!-- <p>分销积分：{{fxscore}}</p> -->
+            <p>分销积分：{{fxscore}}</p>
             <P>手机号：{{phone}}</P>
           </div>
           <img class='qrcode' :src="smallQrCode" alt="" @click='showQrCode()'>
@@ -82,25 +83,16 @@
                     <span>分销产品</span><i class="icon-go"></i>
                   </p>
               </router-link> -->
-              <router-link class="my-service-bottom" to="/sharecenter/mychannel">
+              <router-link class="my-service-bottom" to="/channelcenter/sharemanager">
                   <div>
                     <!-- <span class="icon2-milogo"></span> -->
                     <img src='../../assets/img/fxs.png' style='width: 24px;margin-top:-4px' >
                   </div>
                   <p>
-                    <span>我的渠道</span><i class="icon-go"></i>
+                    <span>业务员管理</span><i class="icon-go"></i>
                   </p>
               </router-link>
-              <router-link class="my-service-bottom" :to="{ path: '/sharecenter/shareorders'}">
-                  <div>
-                    <!-- <span class="icon2-milogo"></span> -->
-                    <img src='../../assets/img/dd.png' style='width: 22px;margin-top:-4px' >
-                  </div>
-                  <p>
-                    <span>推广订单</span><i class="icon-go"></i>
-                  </p>
-              </router-link>
-              <router-link class="my-service-bottom" :to="{ path: '/sharecenter/shareproducts'}">
+              <router-link class="my-service-bottom" :to="{ path: '/channelcenter/shareproducts'}">
                   <div>
                     <!-- <span class="icon2-milogo"></span> -->
                     <img src='../../assets/img/sharegoods1.png' style='width: 22px;margin-top:-4px' >
@@ -109,12 +101,12 @@
                     <span>分销产品</span><i class="icon-go"></i>
                   </p>
               </router-link>
-              <router-link :to="{ path: '/sharecenter/fxjl'}" class="my-service-bottom">
+              <router-link to="/sharecenter/fxjl" class="my-service-bottom">
                 <div>
                   <span class="icon2-f"></span>
                 </div>
                 <p>
-                  <span>返现记录</span><i class="icon-go"></i>
+                  <span>渠道返现</span><i class="icon-go"></i>
                 </p>
               </router-link>
           </section>
@@ -132,6 +124,9 @@
           <!-- </section> -->
 
       </div>
+      <!-- <v-baseline></v-baseline> -->
+      <!-- <v-footer></v-footer> -->
+
       <!-- 二维码弹窗 -->
       <!-- <el-dialog
         class='code_dialog'
@@ -151,7 +146,6 @@
   import Baseline from '@/common/_baseline.vue'
   import Footer from '@/common/_footer.vue'
   import Qrcode from '@/components/qrcode.vue'
-
   export default {
     components: {
       'v-baseline': Baseline,
@@ -164,10 +158,11 @@
         username: '',
         avatar: '',
         time: '',
+        jifen: '',
+        fxscore: '',
         phone: '',
         smallQrCode: '',
-        jifen: '',
-        dialogVisible: false,
+        // dialogVisible: false,
         isShow: false
       }
     },
@@ -180,7 +175,7 @@
       this.time = userInfo.subscribe_time
       this.memberrank = userInfo.MemberRankName
       this.score = userInfo.Score
-      // this.fxscore = userInfo.FenXiaoScore
+      this.fxscore = userInfo.FenXiaoScore
       this.phone = userInfo.Phone
 
       this.getQrCord()

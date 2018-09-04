@@ -1,7 +1,6 @@
 <template>
   <section class='share-btn'>
-    <i class='icon' @click='showPost'>分享海报</i>
-    
+    <!-- <i class='icon' @click='showPost'>分享海报</i> -->
       <transition name="el-fade-in-linear">
         <div v-show='isShow' class="wrap">
           <div class="img-wrap">
@@ -19,20 +18,18 @@ export default {
   props: {
     imgurl: {
       required: true
+    },
+    isShow: {
+      required: true
     }
   },
   data() {
     return {
-      isShow: false
     }
   },
   methods: {
-    showPost() {
-      this.isShow = true
-      
-    },
     close() {
-      this.isShow = false
+      this.$emit('close')
     }
   }
 }

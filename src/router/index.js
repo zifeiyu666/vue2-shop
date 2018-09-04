@@ -51,8 +51,14 @@ const CommonList = resolve => require(['@/views/show/item/commonList'],resolve)
 const ShareCenter = resolve => require(['@/views/sharecenter/index.vue'],resolve)
 const MyChannel = resolve => require(['@/views/sharecenter/myChannel.vue'],resolve)
 const SCorders = resolve => require(['@/views/sharecenter/shareOrders.vue'],resolve)
-const SCrouducts = resolve => require(['@/views/sharecenter/shareProducts.vue'],resolve)
+const SCprouducts = resolve => require(['@/views/sharecenter/shareProducts.vue'],resolve)
 const SCfxjl = resolve => require(['@/views/sharecenter/fxJl.vue'],resolve)
+
+// channelcenter
+const CCindex = resolve => require(['@/views/channelcenter/index.vue'],resolve)
+const CCmanager = resolve => require(['@/views/channelcenter/sharemanager.vue'],resolve)
+const CCfxjl = resolve => require(['@/views/channelcenter/fxJl.vue'],resolve)
+const CCproducts = resolve => require(['@/views/channelcenter/shareProducts.vue'],resolve)
 
 const shopRouters = [
   {
@@ -353,8 +359,8 @@ const shareRouters = [
   },
   {
     path: '/sharecenter/shareproducts',
-    name: 'SCrouducts',
-    component: SCrouducts
+    name: 'SCprouducts',
+    component: SCprouducts
   },
   {
     path: '/sharecenter/fxjl',
@@ -363,11 +369,37 @@ const shareRouters = [
   }
 ]
 
+const channelRouters = [
+  {
+    path: '/channelcenter',
+    name: 'ChannelCenter',
+    component: CCindex
+  },
+  {
+    path: '/channelcenter/sharemanager',
+    name: 'sharemanager',
+    component: CCmanager
+  },
+  {
+    path: '/channelcenter/sharefxjl',
+    name: 'sharemanager',
+    component: CCfxjl
+  },
+  {
+    path: '/channelcenter/shareproducts',
+    name: 'CCproducts',
+    component: CCproducts
+  },
+
+
+]
+
 export default new Router({
   // mode: 'history',
   routes: [
     ...shopRouters,
     ...showRouters,
-    ...shareRouters
+    ...shareRouters,
+    ...channelRouters
   ]
 })
