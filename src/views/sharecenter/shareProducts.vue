@@ -1,116 +1,462 @@
-<template>
+<template lang="html">
   <div>
-    <v-header>
-      <h1 slot="title">分销订单</h1>
-    </v-header>
-    <mt-tab-container v-model="selected">
-      <div class="wrap">
-        <ul v-if='allOrders.length > 0'>
-          <li class='order-wrap' v-for="(k,i) in allOrders" @click='gotoDetail(k)' :key="i">
-            <h3><i class='iconfont icon-leibie'></i>{{k.ordertitle}}</h3>
-            <ul class="something" >
-              <li v-for="(k,i) in k.opd" :key='i'>
+    <div class="search-wrap">
+      <v-header>
+        <h1 slot="title">分销产品</h1>
+      </v-header>
+      <!-- <icon name='angle-left' scale="1.5"></icon>   -->
+      <!-- <div style='background: #eee;height: 40px;'>
+        <div class="back" @click="back">
+          <icon name='angle-left' scale="1.5"></icon>
+        </div>
+        <div class="input-wrap">
+          <div class='input-inner-wrap'>
+            <icon name='search'></icon>  
+            <input type="text" placeholder='搜索'>
+          </div>
+        </div>
+      </div> -->
+      <div class="catagory clearfix">
+        <div class="nav">
+          <mt-navbar v-model="selected">
+            <mt-tab-item id="1" ref='all'>全部</mt-tab-item>
+            <mt-tab-item id="2" ref='qyk'>权益卡</mt-tab-item>
+            <mt-tab-item id="3" ref='dbl'>旅游打包类</mt-tab-item>
+            <mt-tab-item id="4" ref='ddl'>单独类</mt-tab-item>
+          </mt-navbar>
+        </div>
+        <div class="btn" style='margin-top:0; color: #666' @click='showPopside()'>
+          <i class='iconfont icon-fenlei'></i>
+        </div>
+      </div>
+      <mt-tab-container v-model="selected">
+        <mt-tab-container-item id="1">
+          <div class="wrap">
+            <ul class="something" v-if='allList.length != 0'>
+              <li v-for="(k,i) in allList" @click='gotoDetail(k)' :key="i">
                 <div class="something-middle">
                   <img :src="k.imgurl[0]">
                 </div>
                 <div class="something-right">
-                  <p>{{k.producttitle}}</p>
-                  <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p>
-                  <!-- <p style="color:rgb(199, 108, 28);height: 20px;"> {{k.intro}}</p> -->
-                  <p>￥2000<span><i>赚</i>￥100</span> </p>
+                  <p>{{k.title}}</p>
+                  <!-- <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p> -->
+                  <p style="color:rgb(199, 108, 28);height: 20px;"> {{k.intro}}</p>
+                  <p>￥{{k.price}}<span v-if='k.ywyfx && k.ywyfx != 0'><i>赚</i>￥{{k.ywyfx}}</span> </p>
                   <!-- <div class="something-right-bottom">
                     <span @click='deleteCollection(k)'></span>
                   </div> -->
                 </div>
               </li>
             </ul>
-          </li>
-        </ul>
-        <div v-else>
-          <v-nomore></v-nomore>
-        </div>
-        <div v-if='allOrders.length > 0' class="btn-wrap" style='text-align: center'>
-          <mt-button @click='loadMore' v-if='isLoadMore'>加载更多</mt-button>
-          <v-baseline v-else></v-baseline>
-        </div>
-        <!-- <div class='nomore' v-else>
-          没有更多内容了
-        </div> -->
+            <div v-else>
+              <v-nomore></v-nomore>
+            </div>
+            <div v-if='allList.length != 0' style='text-align: center; margin: 40px'>
+              <mt-button @click='loadMoreAll' v-if='allQuery.loadMore'>加载更多</mt-button>
+              <v-baseline v-else></v-baseline>
+            </div>
+          </div>
+        </mt-tab-container-item>
+        <mt-tab-container-item id="2">
+          <div class="wrap">
+            <ul class="something" v-if='QYKList.length != 0'>
+              <li v-for="(k,i) in QYKList" @click='gotoDetail(k)' :key="i">
+                <div class="something-middle">
+                  <img :src="k.imgurl[0]">
+                </div>
+                <div class="something-right">
+                  <p>{{k.title}}</p>
+                  <!-- <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p> -->
+                  <p style="color:rgb(199, 108, 28);height: 20px;"> {{k.intro}}</p>
+                  <p>￥{{k.price}}<span v-if='k.ywyfx && k.ywyfx != 0'><i>赚</i>￥{{k.ywyfx}}</span> </p>
+                  <!-- <div class="something-right-bottom">
+                    <span @click='deleteCollection(k)'></span>
+                  </div> -->
+                </div>
+              </li>
+            </ul>
+            <div v-else>
+              <v-nomore></v-nomore>
+            </div>
+            <div v-if='QYKList.length != 0' style='text-align: center'>
+              <mt-button @click='loadMoreQYK' v-if='QYKQuery.loadMore'>加载更多</mt-button>
+              <v-baseline v-else></v-baseline>
+            </div>
+          </div>
+        </mt-tab-container-item>
+        <mt-tab-container-item id="3">
+          <div class="wrap">
+            <ul class="something" v-if='LTDBList.length != 0'>
+              <li v-for="(k,i) in LTDBList" @click='gotoDetail(k)' :key="i">
+                <div class="something-middle">
+                  <img :src="k.imgurl[0]">
+                </div>
+                <div class="something-right">
+                  <p>{{k.title}}</p>
+                  <!-- <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p> -->
+                  <p style="color:rgb(199, 108, 28);height: 20px;"> {{k.intro}}</p>
+                  <p>￥{{k.price}}<span v-if='k.ywyfx && k.ywyfx != 0'><i>赚</i>￥{{k.ywyfx}}</span> </p>
+                  <!-- <div class="something-right-bottom">
+                    <span @click='deleteCollection(k)'></span>
+                  </div> -->
+                </div>
+              </li>
+            </ul>
+            <div v-else>
+              <v-nomore></v-nomore>
+            </div>
+            <div v-if='LTDBList.length != 0' style='text-align: center'>
+              <mt-button @click='loadMoreLTDB' v-if='LTDBQuery.loadMore'>加载更多</mt-button>
+              <v-baseline v-else></v-baseline>
+            </div>
+          </div>
+        </mt-tab-container-item>
+        <mt-tab-container-item id="4">
+          <div class="wrap">
+            <ul class="something" v-if='DDList.length != 0'>
+              <li v-for="(k,i) in DDList" @click='gotoDetail(k)' :key="i">
+                <div class="something-middle">
+                  <img :src="k.imgurl[0]">
+                </div>
+                <div class="something-right">
+                  <p>{{k.title}}</p>
+                  <!-- <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p> -->
+                  <p style="color:rgb(199, 108, 28);height: 20px;"> {{k.intro}}</p>
+                  <p>￥{{k.price}}<span v-if='k.ywyfx && k.ywyfx != 0'><i>赚</i>￥{{k.ywyfx}}</span> </p>
+                  <!-- <div class="something-right-bottom">
+                    <span @click='deleteCollection(k)'></span>
+                  </div> -->
+                </div>
+              </li>
+            </ul>
+            <div v-else>
+              <v-nomore></v-nomore>
+            </div>
+            <div style='text-align: center' v-if='DDList.length != 0'>
+              <mt-button @click='loadMoreDD' v-if='DDQuery.loadMore'>加载更多</mt-button>
+              <v-baseline v-else></v-baseline>
+            </div>
+          </div>
+        </mt-tab-container-item>
+      </mt-tab-container>
+      <div class="search-history">
       </div>
-    </mt-tab-container>
+
+      
+    </div>
+
+    <div class="popside-wrap" v-if='popsideVisible'>
+      <div class="shade"></div>
+      <div class="main">
+        <div class='inner-wrap'>
+          <mt-field label="标题" v-model='title' placeholder='请输入'></mt-field>
+          <mt-radio
+            v-if = 'ProductOptions.length != 0'
+            title="类型"
+            v-model="ProductValue"
+            :options="ProductOptions">
+          </mt-radio>
+          <mt-radio
+            v-if = 'SuitableOptions'
+            title="使用人群"
+            v-model="SuitableValue"
+            :options="SuitableOptions">
+          </mt-radio>
+          <mt-radio
+            v-if = 'DestinationOptions'
+            title="目的地类型"
+            v-model="DestinationValue"
+            :options="DestinationOptions">
+          </mt-radio>
+          <div class="btn-wrap">
+            <mt-button @click='concleSearch()' class='btn-left' size='small' type='primary'>取消</mt-button>
+            <mt-button @click='confirmSearch()' class='btn-right' size='small' type='primary'>完成</mt-button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <v-footer></v-footer> -->
   </div>
   
+  
 </template>
+
 <script>
 import Baseline from '@/common/_baseline.vue'
 import Footer from '@/common/_footer.vue'
 import * as mockapi from '@/../mockapi'
 import NorMore from '@/components/nomore'
-
 import Header from '@/common/_header.vue'
-  export default{
-    data() {
-      return {
-        selected: '1',
-        popsideVisible: false,
+
+export default {
+  data() {
+    return {
+      selected: '1',
+      title: '',
+      popsideVisible: false,
+      SuitableOptions: [],
+      ProductOptions: [],
+      DestinationOptions: [],
+      DestinationValue: '',
+      SuitableValue: '',
+      ProductValue: '',
+      ProjectType: '',
+      allQuery: {
         pageNo: 1,
         pageSize: 10,
-        allOrders: [],
-        isLoadMore: false
-      }
-    },
-    components: {
-      'v-baseline': Baseline,
-      'v-header':Header,
-      'v-nomore': NorMore
-    },
-    mounted() {
-      this.getShareProducts()
-    },
-    methods: {
-      getShareProducts() {
-        mockapi.shop.api_Share_getProductList_get({
-          params: {
-            ProductType: '',
-            ProjectType: '',
-            Title: '',
-            SuitableUser: '',
-            DestinationType: '',
-            pageNo: this.pageNo,
-            pageSize: this.pageSize
-          }
-        }).then(res => {
-          var data = res.data.data.list
-          var isLastPage = res.data.data.pager.isLastPage
-          if (isLastPage) {
-            this.isLoadMore = false
-          }
-          this.allOrders = this.allOrders.concat(data)
-        })
+        loadMore: true
       },
-      loadMore() {
-        this.pageNo++
-        this.getShareOrders()
+      allList: [],
+      QYKQuery: {
+        pageNo: 1,
+        pageSize: 10,
+        loadMore: true
+      },
+      QYKList: [],
+      DDQuery: {
+        pageNo: 1,
+        pageSize: 10,
+        loadMore: true
+      },
+      DDList: [],
+      LTDBQuery: {
+        pageNo: 1,
+        pageSize: 10,
+        loadMore: true
+      },
+      LTDBList: []
+    }
+  },
+  components: {
+    'v-baseline': Baseline,
+    'v-footer':Footer,
+    'v-header':Header,
+    'v-nomore': NorMore
+  },
+  mounted() {
+    
+    this.getAllProductList()
+    this.getQYKProductList()
+    this.getLTDBProductList()
+    this.getDDProductList()
+    this.getProductTypeDicList()
+    this.getSuitableUserDicList()
+    this.getDestinationTypeDicList()
+    // TODO: 暂时不好用
+    if (this.$route.query.id) {
+      // this.selected = this.$route.query.id
+      switch (this.$route.query.id) {
+        case 2:
+          var selDOM = this.$refs.qyk.$el
+          break
+        case 3:
+          var selDOM = this.$refs.dbl.$el
+          break
+        case 4:
+          var selDOM = this.$refs.ddl.$el
+          break
       }
+      
+      //IE
+      if(document.all) {
+          selDOM.click();
+      }
+      // 其它浏览器
+      else {
+        var e = document.createEvent("MouseEvents");
+        e.initEvent("click", true, true);//这里的click可以换成你想触发的行为
+        selDOM.dispatchEvent(e);//这里的clickME可以换成你想触发行为的DOM结点
+      }  
     }
-  }
-</script>
-<style lang="less" scoped>
-@import '../../assets/fz.less';
-@import '../../assets/utils.less';
-.order-wrap{
-  margin-bottom: 10px;
-  background: #fff;
-  h3{
-    padding-left: 15px;
-    padding: 10px 15px;
-    border-bottom: 1px solid @lightBorder;
-    .iconfont{
-      font-size: 16px;
-      margin-right: 5px;
+  },
+  methods: {
+    concleSearch() {
+      this.popsideVisible = false
+    },
+    confirmSearch() {
+      this.allList = []
+      this.QYKList = []
+      this.DDList = []
+      this.LTDBList = []
+      this.getAllProductList()
+      this.getQYKProductList()
+      this.getLTDBProductList()
+      this.getDDProductList()
+      this.popsideVisible = false
+    },
+    getDestinationTypeDicList() {
+      mockapi.shop.api_Shop_getDicEntryList_get({
+        params: {
+          typeCode: "DestinationType",
+        }
+      }).then(res => {
+        var data = res.data.data
+        data.forEach((item, index) => {
+          this.DestinationOptions.push({
+            label: item.EntryName,
+            value: item.EntryCode
+          })
+        })
+      })
+    },
+    getProductTypeDicList() {
+      mockapi.shop.api_Shop_getDicEntryList_get({
+        params: {
+          typeCode: "ProductType",
+        }
+      }).then(res => {
+        var data = res.data.data
+        data.forEach((item, index) => {
+          this.ProductOptions.push({
+            label: item.EntryName,
+            value: item.EntryCode
+          })
+        })
+      })
+    },
+    getSuitableUserDicList() {
+      mockapi.shop.api_Shop_getDicEntryList_get({
+        params: {
+          typeCode: "SuitableUser",
+        }
+      }).then(res => {
+        var data = res.data.data
+        data.forEach((item, index) => {
+          this.SuitableOptions.push({
+            label: item.EntryName,
+            value: item.EntryCode
+          })
+        })
+      })
+    },
+    // 所有商品加载更多
+    getAllProductList() {
+      this.$store.commit('SET_LOADING', true)
+      mockapi.shop.api_Share_getProductList_get({
+        params: {
+          pageNo: this.allQuery.pageNo,
+          pageSize: this.allQuery.pageSize,
+          Title: this.title,
+          ProductType: this.ProductValue,
+          ProjectType: this.ProjectType,
+          SuitableUser: this.SuitableValue,
+          DestinationType: this.DestinationValue,
+        }
+      }).then(res => {
+        this.$store.commit('SET_LOADING', false)
+        var data = res.data.data.list
+        var isLastPage = res.data.data.pager.isLastPage
+        if (isLastPage) {
+          this.allQuery.loadMore = false
+        }
+        this.allList = this.allList.concat(data)
+        // this.allQuery.pageNo++
+      }).catch(err => {
+        this.$store.commit('SET_LOADING', false)
+        console.log(err)
+      })
+    },
+    loadMoreAll() {
+      this.allQuery.pageSize++
+      this.getAllProductList()
+    },
+    // 获取权益卡商品列表
+    getQYKProductList() {
+      mockapi.shop.api_Share_getProductList_get({
+        params: {
+          ProjectType: '',
+          pageNo: this.QYKQuery.pageNo,
+          pageSize: this.QYKQuery.pageSize,
+          ProductType: 'QYKL',
+          Title: '',
+          SuitableUser: '',
+          DestinationType: '',
+        }
+      }).then(res => {
+        var data = res.data.data.list
+        var isLastPage = res.data.data.pager.isLastPage
+        if (isLastPage) {
+          this.QYKQuery.loadMore = false
+        }
+        this.QYKList = this.QYKList.concat(data)
+        // this.QYKQuery.pageNo++
+      })
+    },
+    loadMoreQYK() {
+      this.QYKQuery.pageSize++
+      this.getQYKProductList()
+    },
+     // 获取旅游打包商品列表
+    getLTDBProductList() {
+      mockapi.shop.api_Share_getProductList_get({
+        params: {
+          ProjectType: '',
+          pageNo: this.LTDBQuery.pageNo,
+          pageSize: this.LTDBQuery.pageSize,
+          ProductType: 'LTDBL',
+          Title: this.title,
+          SuitableUser: this.SuitableValue,
+          DestinationType: this.DestinationValue,
+        }
+      }).then(res => {
+        var data = res.data.data.list
+        var isLastPage = res.data.data.pager.isLastPage
+        if (isLastPage) {
+          this.LTDBQuery.loadMore = false
+        }
+        this.LTDBList = this.LTDBList.concat(data)
+        // this.LTDBQuery.pageNo++
+      })
+    },
+    loadMoreLTDB() {
+      this.LTDBQuery.pageSize++
+      this.getLTDBProductList()
+    },
+     // 获取单独商品列表
+    getDDProductList() {
+      mockapi.shop.api_Share_getProductList_get({
+        params: {
+          ProjectType: '',
+          pageNo: this.DDQuery.pageNo,
+          pageSize: this.DDQuery.pageSize,
+          ProductType: 'DDL',
+          Title: this.title,
+          SuitableUser: this.SuitableValue,
+          DestinationType: this.DestinationValue,
+        }
+      }).then(res => {
+        var data = res.data.data.list
+        var isLastPage = res.data.data.pager.isLastPage
+        if (isLastPage) {
+          this.DDQuery.loadMore = false
+        }
+        this.DDList = this.DDList.concat(data)
+        // this.DDQuery.pageNo++
+      })
+    },
+    loadMoreDD() {
+      this.DDQuery.pageSize++
+      this.getDDProductList()
+    },
+    gotoDetail(i) {
+      console.log()
+      this.$router.push({path: '/shop/detail', query: {pid: i.id}})
+    },
+    back() {
+      this.$router.go('-1')
+    },
+    showPopside() {
+      this.popsideVisible = true
     }
+
   }
 }
+</script>
+
+<style lang="less" scoped>
+
+@import '../../assets/fz.less';
 .back{
   position: absolute;
   z-index: 1000;
@@ -118,7 +464,7 @@ import Header from '@/common/_header.vue'
   height: 40px;
 }
 .wrap{
-  margin-top: 10px;
+  margin-top: 50px;
 }
 .mint-header{
   background: #eee;
@@ -140,7 +486,6 @@ import Header from '@/common/_header.vue'
   background: #fff;
 }
 .search-wrap{
-  background: #F8FCFF;
   height: 100%;
   .fa-icon{
     position: relative;
@@ -190,7 +535,7 @@ input{
 }
 .catagory{
   position: fixed;
-  top: 0;
+  top: 50px;
   z-index: 10;
   .nav{
     width: 85vw;
@@ -225,11 +570,11 @@ input{
   }
   .main{
     background: #fff;
-    width: 50vw;
+    width: 80vw;
     height: 100vh;
     box-sizing: border-box;
     position: absolute;
-    left: 50vw;
+    left: 20vw;
     top: 0;
     overflow: auto;
     .inner-wrap{
@@ -237,9 +582,9 @@ input{
     }
     .btn-wrap{
       position: fixed;
-      bottom: 55px;
+      bottom: 0px;
       right: 0px;
-      width: 50vw;
+      width: 80vw;
       height: 40px;
       .btn-left, .btn-right{
         float: left;
@@ -259,6 +604,7 @@ input{
     padding-bottom: 60px;
     .something {
         width: 100%;
+        background: #fff;
         > li {
             display: -ms-flex;
             display: -webkit-box;
@@ -332,11 +678,15 @@ input{
                     -webkit-box-orient: vertical;
                     .fz(font-size,26);
                 }
+                // p:first-of-type{
+                //   height: 36px;
+                // }
                 p:last-of-type {
-                    font-size: 16px;
-                    span{
-                      float: right;
-                      margin-right: 15px;
+                  font-size: 16px;
+                  span{
+                      // float: right;
+                      margin-left: 15px;
+                      padding-right: 15px;
                       i{
                         background: @fontRed;
                         color: #fff;
@@ -354,7 +704,6 @@ input{
                     color: @fontRed;
                 }
                 .something-right-bottom {
-
                     > div {
                         display: -ms-flex;
                         display: -webkit-box;
@@ -401,4 +750,3 @@ input{
     }
 }
 </style>
-

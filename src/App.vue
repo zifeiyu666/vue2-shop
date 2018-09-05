@@ -36,6 +36,9 @@ html,body,#app{
   -webkit-tap-highlight-color:rgba(0,0,0,0);
   background: #f3f5f7;
 }
+.el-loading-mask{
+    position: fixed;
+}
 
 body,
 dd,

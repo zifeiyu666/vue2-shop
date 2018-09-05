@@ -1,52 +1,43 @@
 <template>
-  <div v-loading='isLoading'>
+  <div>
     <v-header>
-      <h1 slot="title">我的渠道</h1>
+      <h1 slot="title">分销订单</h1>
     </v-header>
-    <div class='catagory clearfix'>
-    </div>
-    <div class="wrap">
-      <ul
-        v-infinite-scroll="loadMore"
-        infinite-scroll-disabled="loading"
-        infinite-scroll-distance="10"
-        class="something"
-        v-if='List.length != 0'>
-        <!-- <li>
-          <div class="something-middle">
-            <img src="">
-          </div>
-          <div class="something-right">
-            <p>当前渠道
-              <span class="level">
-                <i class='iconfont icon-huiyuandengji0101'></i> 
-                xxx渠道
-              </span>
-            </p>
-            <p><i class='iconfont icon-dianhua'></i>：18724798278</p>
-            <p><i class='iconfont icon-dizhi-01'></i>：阿萨德龙凤哈里斯的话费</p>
-          </div>
-        </li> -->
-        <!-- <li style='height: 20px !important'>历史渠道</li> -->    
-        <li v-for="(k,i) in List" :key="i">
-          <!-- <div class="something-middle">
-            <img :src="k.headimageurl">
-          </div> -->
-          <div class="something-right">
-            <p>{{k.qdname}} 
-              <span class="level">
-                <!-- <i class='iconfont icon-huiyuandengji0101'></i>  -->
-              </span>
-            </p>
-            <!-- <p><i class='iconfont icon-dianhua'></i>：{{k.phone}}</p> -->
-            <p><i class='iconfont icon-clock'></i>：{{parseTime(k.recordTime)}}</p>
-
-          </div>
-        </li>
-      </ul>
-      <v-baseline v-if='isLastPage && List.length > 0'></v-baseline>
-    </div>
-    
+    <mt-tab-container v-model="selected">
+      <div class="wrap">
+        <ul v-if='allOrders.length > 0'>
+          <li class='order-wrap' v-for="(k,i) in allOrders" @click='gotoDetail(k)' :key="i">
+            <h3><i class='iconfont icon-leibie'></i>{{k.ordertitle}}</h3>
+            <ul class="something" >
+              <li v-for="(k,i) in k.opd" :key='i'>
+                <div class="something-middle">
+                  <img :src="k.imgurl[0]">
+                </div>
+                <div class="something-right">
+                  <p>{{k.producttitle}}</p>
+                  <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p>
+                  <!-- <p style="color:rgb(199, 108, 28);height: 20px;"> {{k.intro}}</p> -->
+                  <p>￥2000<span><i>赚</i>￥100</span> </p>
+                  <!-- <div class="something-right-bottom">
+                    <span @click='deleteCollection(k)'></span>
+                  </div> -->
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <div v-else>
+          <v-nomore></v-nomore>
+        </div>
+        <div v-if='allOrders.length > 0' class="btn-wrap" style='text-align: center'>
+          <mt-button @click='loadMore' v-if='isLoadMore'>加载更多</mt-button>
+          <v-baseline v-else></v-baseline>
+        </div>
+        <!-- <div class='nomore' v-else>
+          没有更多内容了
+        </div> -->
+      </div>
+    </mt-tab-container>
   </div>
   
 </template>
@@ -54,18 +45,18 @@
 import Baseline from '@/common/_baseline.vue'
 import Footer from '@/common/_footer.vue'
 import * as mockapi from '@/../mockapi'
-import Header from '@/common/_header.vue'
 import NorMore from '@/components/nomore'
-import { parseTime } from '@/util/data.js'
+
+import Header from '@/common/_header.vue'
   export default{
     data() {
       return {
-        isLoading: true,
-        loading: false,
-        List: [],
+        selected: '1',
+        popsideVisible: false,
         pageNo: 1,
         pageSize: 10,
-        isLastPage: false
+        allOrders: [],
+        isLoadMore: false
       }
     },
     components: {
@@ -74,49 +65,60 @@ import { parseTime } from '@/util/data.js'
       'v-nomore': NorMore
     },
     mounted() {
-      this.getList()
+      this.getShareProducts()
     },
     methods: {
-      parseTime,
-      getList() {
-        this.isLoading = true
-        this.loading = true
-        mockapi.shop.api_Share_getMyQudaoList_get({
+      getShareProducts() {
+        mockapi.shop.api_Share_getProductList_get({
           params: {
-            token: this.$store.state.userInfo.MemberToken,
+            ProductType: '',
+            ProjectType: '',
+            Title: '',
+            SuitableUser: '',
+            DestinationType: '',
             pageNo: this.pageNo,
             pageSize: this.pageSize
           }
         }).then(res => {
-          this.isLoading = false
-          this.loading = false
           var data = res.data.data.list
-          this.isLastPage = res.data.data.pager.isLastPage
-          this.List = this.List.concat(data)
-          this.pageNo++
-        }).catch(err => {
-          this.isLoading = false
-          this.loading = false
-          console.log(err.message || err)
+          var isLastPage = res.data.data.pager.isLastPage
+          if (isLastPage) {
+            this.isLoadMore = false
+          }
+          this.allOrders = this.allOrders.concat(data)
         })
       },
       loadMore() {
-        if(!this.isLastPage) {
-          this.getList()
-        }
-        
+        this.pageNo++
+        this.getShareOrders()
       }
     }
   }
 </script>
-<style lang=less>
-  @import '../../assets/fz.less';
-  @import '../../assets/utils.less';
+<style lang="less" scoped>
+@import '../../assets/fz.less';
+@import '../../assets/utils.less';
+.order-wrap{
+  margin-bottom: 10px;
+  background: #fff;
+  h3{
+    padding-left: 15px;
+    padding: 10px 15px;
+    border-bottom: 1px solid @lightBorder;
+    .iconfont{
+      font-size: 16px;
+      margin-right: 5px;
+    }
+  }
+}
 .back{
   position: absolute;
   z-index: 1000;
   width: 40px;
   height: 40px;
+}
+.wrap{
+  margin-top: 10px;
 }
 .mint-header{
   background: #eee;
@@ -187,10 +189,13 @@ input{
   }
 }
 .catagory{
-  /* position: fixed; */
-  top: 50px;
+  position: fixed;
+  top: 0;
   z-index: 10;
-  width: 100%;
+  .nav{
+    width: 85vw;
+    float: left;
+  }
   .btn{
     text-align: center;
     width: 15vw;
@@ -264,9 +269,7 @@ input{
             align-items: center;
             padding: 4vw 2vw;
             position: relative;
-            height: 20vw;
-            background: #fff;
-            margin-top: 10px;
+            height: 26vw;
             .bd();
             .something-left {
                 -ms-flex: 2;
@@ -321,29 +324,35 @@ input{
                 padding-left: 6vw;
                 -webkit-box-sizing: border-box;
                 box-sizing: border-box;
-                p:first-of-type {
-                  font-size: 16px;
-                  color: @fontBlack !important;
-                  .level{
-                    .fz(font-size,26);
-                    color: @fontRed !important;
-                    margin-left: 20px;
-                  }
-                }
-
                 p {
                     overflow: hidden;
                     text-overflow: ellipsis;
                     display: -webkit-box;
                     -webkit-line-clamp: 2;
                     -webkit-box-orient: vertical;
-                    font-size: 14px;
-                    color: @fontGray;
+                    .fz(font-size,26);
                 }
-                /*p:last-of-type {
-                    .fz(font-size,22);
-                    color: rgb(168, 168, 168);
-                }*/
+                p:last-of-type {
+                    font-size: 16px;
+                    span{
+                      float: right;
+                      margin-right: 15px;
+                      i{
+                        background: @fontRed;
+                        color: #fff;
+                        // padding: 4px;
+                        text-align: center;
+                        line-height: 20px;
+                        display: inline-block;
+                        width: 20px;
+                        height: 20px;
+                        box-sizing: border-box;
+                        border-radius: 10px;
+                      }
+                      font-size: 12px;
+                    }
+                    color: @fontRed;
+                }
                 .something-right-bottom {
 
                     > div {
@@ -392,3 +401,4 @@ input{
     }
 }
 </style>
+
