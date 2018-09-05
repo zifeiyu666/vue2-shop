@@ -3,73 +3,47 @@
     <v-header>
       <h1 slot="title">返现记录</h1>
     </v-header>
-    <header class="header">
+    <!-- <header class="header">
         <div class="header-icon">
           <img v-if='avatar' :src="avatar" style='width: 100%; height: 100%' alt="">
         </div>
-        <!-- <span>登录/注册</span> -->
         <div class="header-content">
           <p>欢迎您：{{username}}</p>
           <p>总积分：{{score}}</p>
         </div>
-    </header>
-    <!-- <mt-navbar v-model="selected">
-      <mt-tab-item id="1">当前积分</mt-tab-item>
-      <mt-tab-item id="2">积分记录</mt-tab-item>
-    </mt-navbar>
-    <mt-tab-container v-model="selected">
-      <mt-tab-container-item id="1">
-        
-      </mt-tab-container-item>
-      <mt-tab-container-item id="2">
-        <mt-cell v-for="n in 4" :key='n' :title="'content ' + n" />
-      </mt-tab-container-item>
-    </mt-tab-container> -->
-    <div @click='openDialog' class='tx-btn'> <i class='iconfont icon-yiwancheng1'></i></div>
+    </header> -->
+    <!-- <div @click='openDialog' class='tx-btn'> <i class='iconfont icon-yiwancheng1'></i></div> -->
     <p class='jfmx'><span style='background: #f3f5f7'>返现明细</span></p>
-    <div v-for="(i, index) in JfList" :key='index' v-if='JfList.length > 0 && JfList[0]'>
-      <div class="company-wrap clearfix">
-        <!-- <div class="avatar">
-          <img src="" alt="">
-        </div> -->
-        <div class="content">
-           <ul style='background-color: #F8FCFF!important'>
-              <!-- <li><span>{{i.inout}}</span></li> -->
-              <li><span>存入微信钱包</span></li>
-              <li class='score'><span class="in"><i>+</i> ￥123.00</span></li>
-              <!-- <li>变动前积分数量：<span>{{i.beforescore}}</span></li> -->
-              <!-- <li>变动后积分数量：<span>{{i.afterscore}}</span></li>  -->
-              <li><span style='font-size: 12px; color: #666'>2018-6-12</span></li>
-            </ul>
+    <ul
+      v-if='FxList.length > 0 && FxList[0]'
+      v-infinite-scroll="loadMore"
+      infinite-scroll-disabled="loading"
+      infinite-scroll-distance="10"
+      >
+      <li v-for="(i, index) in FxList" :key='index' >
+        <div class="company-wrap clearfix">
+          <!-- <div class="avatar">
+            <img src="" alt="">
+          </div> -->
+          <div class="content">
+            <ul style='background-color: #F8FCFF!important'>
+                <!-- <li><span>{{i.inout}}</span></li> -->
+                <li><span>{{i.reason}}</span></li>
+                <li class='score'><span class="in"><i>+</i> ￥{{i.amounts}}</span></li>
+                <!-- <li>变动前积分数量：<span>{{i.beforescore}}</span></li> -->
+                <!-- <li>变动后积分数量：<span>{{i.afterscore}}</span></li>  -->
+                <li><span style='font-size: 12px; color: #666'>{{parseTime(i.recordTime)}}</span></li>
+              </ul>
+          </div>
         </div>
-      </div>
-    </div>
+      </li>
+    </ul>
+    
     <div v-else>
       <v-nomore></v-nomore>
     </div>
-    <div v-if='JfList.length > 0 && JfList[0]' style='padding-bottom: 40px'>
 
-      <div style='text-align: center;position: relative;top: 20px;'>
-        <mt-button @click='loadMore' v-if='!isLastPage'>加载更多</mt-button>
-        <v-baseline v-else></v-baseline>
-      </div>
-
-    </div>
-
-    <!-- <el-dialog
-      title="提现"
-      :visible.sync="dialogVisible"
-      :before-close="handleClose">
-      <el-input v-model="usescore" placeholder="请输入提现积分"></el-input>
-      <div class="totalScore">
-        <span>当前可用积分：{{score}}</span>
-        <p>可提现现金：{{usescore/scoreRate ? Math.floor((usescore/scoreRate) * 100) / 100 : '0'}}元</p>
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button size='small' @click="concleTx()">取 消</el-button>
-        <el-button size='small' type="primary" @click="confirmTx()">确 定</el-button>
-      </span>
-    </el-dialog> -->
+    <v-baseline v-if='isLastPage && FxList.length > 0'></v-baseline>
     
   </div>
   
@@ -80,6 +54,7 @@ import { Toast } from 'mint-ui';
 import * as mockapi from '@/../mockapi'
 import Header from '@/common/_header.vue'
 import NorMore from '@/components/nomore'
+import { parseTime } from '@/util/data.js'
 
   export default{
     data() {
@@ -87,13 +62,10 @@ import NorMore from '@/components/nomore'
         pageNo: 1,
         pageSize: 10,
         isLastPage: false,
-        JfList: [{
-          a:1
-        }],
-        dialogVisible: false,
+        FxList: [],
         score: null,
         usescore: null,
-        scoreRate: '' //提现比例
+        loading: false
       }
     },
     components: {
@@ -109,112 +81,39 @@ import NorMore from '@/components/nomore'
       this.time = userInfo.subscribe_time
     },
     mounted() {
-      this.getJfList()
-      this.getScoreRate()
-      this.getScore()
-    },
-    watch: {
-      usescore() {
-        if (this.usescore > this.score) {
-          this.usescore = '0'
-          Toast('不能超过最大可用积分')
-        } else if (isNaN(parseInt(this.usescore)) ) {
-          // this.usescore = '0'
-          Toast('请输入整形数字')
-        }
-      }
+      this.getFxList()
     },
     methods: {
-      openDialog() {
-        this.dialogVisible = true
-      },
-      concleTx() {
-        this.usescore = 0
-        this.dialogVisible = false
-      },
-      confirmTx() {
-        console.log(this.usescore)
-        console.log(isNaN(parseInt(this.usescore)))
-        if(isNaN(parseInt(this.usescore))) {
-          Toast('请输入正确的积分格式')
-          return 
-        }
-        
-        mockapi.shop.api_MustBeJustSoSo_MustBeLQ_get({
+      parseTime,
+      getFxList() {
+        this.isloading = true
+        this.$store.commit('SET_LOADING', true);
+        mockapi.shop.api_Channel_getMyCrashbackList_get({
           params: {
-            MemberToken: this.$store.state.userInfo.MemberToken,
-            MustBeJ: Math.floor((this.usescore/this.scoreRate) * 100) / 100,
-            MustBeF: this.usescore
-          }
-        }).then(res => {
-          if (res.data.result == 1) {
-            Toast('兑换成功')
-            this.dialogVisible = false
-          }
-        })
-        
-      },
-      handleClose(done) {
-        this.$confirm('确认关闭？')
-          .then(_ => {
-            done();
-          })
-          .catch(_ => {});
-      },
-      getJfList() {
-        mockapi.shop.api_Shop_getMyScoreList_get({
-          params: {
-            type: 2,
             token: this.$store.state.userInfo.MemberToken,
             pageNo: this.pageNo,
             pageSize: this.pageSize
           }
         }).then(res => {
           var data = res.data.data.list
-          var pager = res.data.data.pager
-          this.JfList = this.JfList.concat(data)
-          console.log('jflist')
-          console.log(this.JfList)
-          this.isLastPage = pager.isLastPage
+          this.pageNo++
+          this.FxList = this.FxList.concat(data)
+          this.isLastPage = res.data.data.pager.isLastPage
+          console.log({isLastPage: this.isLastPage})
+          this.$store.commit('SET_LOADING', false);
+          this.isloading = false
+        }).catch(err => {
+          console.log(err)
+          this.$store.commit('SET_LOADING', false);
+          this.isloading = false
         })
-      },
-      getScore() {
-        mockapi.shop.api_Shop_getMyScore_get({
-          params: {
-            type: 2,
-            token: this.$store.state.userInfo.MemberToken
-          }
-        }).then(res => {
-          var data = res.data.data
-          this.score = data
-          console.log(111)
-          console.log(this.score)
-        })
-      },
-      getScoreRate() {
-        mockapi.shop.api_Shop_getRatio_get({
-          params: {
-            type: 2,
-            token: this.$store.state.userInfo.MemberToken
-          }
-        }).then(res => {
-          var data = res.data.data
-          this.scoreRate = data
-          console.log(222)
-          console.log(this.scoreRate)
-        })
-      },
-      generateTime(time) {
-        var date = ''
-        var timer = ''
-        date = time.substring(0,10)
-        timer = time.slice(11,19)
-        return (date + " " + timer)
-        
       },
       loadMore() {
-        this.pageNo ++ 
-        this.getJfList()
+        console.log('loadmore')
+        console.log({isLastPage: this.isLastPage})
+        if (!this.isLastPage) {
+          this.getFxList()
+        }
       } 
     }
   }

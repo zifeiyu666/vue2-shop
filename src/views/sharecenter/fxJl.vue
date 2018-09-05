@@ -98,7 +98,7 @@ import { parseTime } from '@/util/data.js'
           var data = res.data.data.list
           this.pageNo++
           this.FxList = this.FxList.concat(data)
-          this.isLastPage = res.data.pager.isLastPage
+          this.isLastPage = res.data.data.pager.isLastPage
           this.$store.commit('SET_LOADING', false);
           this.isloading = false
         }).catch(err => {

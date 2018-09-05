@@ -90,6 +90,16 @@ router.beforeEach((to, from, next) => {
             console.log('通过membertoken请求成功')
             
             var data = response.data.data
+
+            // 验证业务员身份
+            var userType = data.AttentionMethod
+            if (to.meta.ywyAuth) {
+              if (userType != 4) {
+                Toast('当前页面没有访问权限')
+                return
+              }
+            }
+
             // TODO: 为了测试添加手机号
             // data.Phone = '18554870804'
             console.log(data)

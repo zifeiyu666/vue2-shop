@@ -350,6 +350,7 @@ const shareRouters = [
     component: ShareCenter,
     meta: {
       requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+      ywyAuth: true
     }
   },
   {
@@ -358,6 +359,7 @@ const shareRouters = [
     component: MyChannel,
     meta: {
       requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+      ywyAuth: true
     }
   },
   {
@@ -366,6 +368,7 @@ const shareRouters = [
     component: SCorders,
     meta: {
       requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+      ywyAuth: true
     }
   },
   {
@@ -374,6 +377,7 @@ const shareRouters = [
     component: SCprouducts,
     meta: {
       requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+      ywyAuth: true
     }
   },
   {
@@ -382,6 +386,7 @@ const shareRouters = [
     component: SCfxjl,
     meta: {
       requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+      ywyAuth: true
     }
   }
 ]
@@ -398,7 +403,7 @@ const channelRouters = [
     component: CCmanager
   },
   {
-    path: '/channelcenter/sharefxjl',
+    path: '/channelcenter/fxjl',
     name: 'sharemanager',
     component: CCfxjl
   },

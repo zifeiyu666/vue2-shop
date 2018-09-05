@@ -1,41 +1,54 @@
 <template>
-  <div v-loading='isLoading'>
+  <div class='sharemanager' :style="{ overflow: !popupVisible ? 'scroll' : 'hidden'}">
     <v-header>
       <h1 slot="title">业务员管理</h1>
     </v-header>
     <div class='catagory clearfix'>
-      <!-- <div class="nav">
-        <mt-navbar v-model="selected">
-          <mt-tab-item id="1">全部</mt-tab-item>
-          <mt-tab-item id="2">一级</mt-tab-item>
-          <mt-tab-item id="3">二级</mt-tab-item>
-          <mt-tab-item id="4">三级</mt-tab-item>
-        </mt-navbar>
-      </div> -->
     </div>
     <div class="wrap">
-      <ul v-for="(item, index) in 4" :key='index' class="something" v-if='allList.length != 0'>
-        <li>
+      <ul 
+        v-infinite-scroll="ywyLoadMore"
+        infinite-scroll-disabled="ywyLoading"
+        infinite-scroll-distance="10"
+        class="something" 
+        v-if='YWYlist.length != 0'>
+        <li v-for="(item, index) in YWYlist" :key='index' >
           <div class="something-middle">
-            <img src="">
+            <img :src="item.headimageurl">
           </div>
           <div class="something-right">
-            <p>一级业务员
+            <p>{{item.name}}
               <span class="level">
                 <router-link to='/channelcenter/sharefxjl'>
                   查看返现记录
                 </router-link>
               </span>
             </p>
-            <p><i class='iconfont icon-dianhua'></i>：18724798278</p>
-            <p><i class='iconfont icon-dizhi-01'></i>：阿萨德龙凤哈里斯的话费</p>
-            <!-- <div class="something-right-bottom">
-              <span @click='deleteCollection(k)'></span>
-            </div> -->
+            <p><i class='iconfont icon-dianhua'></i>：{{item.phone}}</p>
+            <p><i class='iconfont icon-dizhi-01'></i>{{item.adress}}</p>
+            <i class='iconfont icon-jiantou' @click='showHY(item.openid)'></i>
           </div>
         </li>
-        <li style='height: 20px !important'>下级业务员</li>
-        <li v-for="(k,i) in allList" @click='gotoDetail(k)' :key="i">
+      </ul>
+    </div>
+    <v-baseline v-if='this.ywyQuery.isLastPage && YWYlist.length > 0'></v-baseline>
+    <v-nomore v-if='YWYlist.length = 0'></v-nomore>
+    
+    <!-- 查看业务员下的会员信息 -->
+    <mt-popup
+      v-model="popupVisible"
+      position="right"
+      :style="{ overflow: popupVisible ? 'scroll' : 'hidden'}"
+      class='popup wrap'>
+      <h3 class='title'>下级业务员</h3>
+      <ul 
+        class='something'
+        v-infinite-scroll="hyLoadMore"
+        infinite-scroll-disabled="hyLoading"
+        infinite-scroll-distance="10"
+        infinite-scroll-immediate-check=false
+        >
+        <li v-for="(k,i) in HYlist" :key="i">
           <div class="something-middle">
             <img :src="k.headimageurl">
           </div>
@@ -47,13 +60,10 @@
             </p>
             <p><i class='iconfont icon-dianhua'></i>：{{k.phone}}</p>
             <p><i class='iconfont icon-dizhi-01'></i>：{{k.adress}}</p>
-            <!-- <div class="something-right-bottom">
-              <span @click='deleteCollection(k)'></span>
-            </div> -->
           </div>
         </li>
       </ul>
-    </div>
+    </mt-popup>
     
   </div>
   
@@ -67,31 +77,20 @@ import NorMore from '@/components/nomore'
   export default{
     data() {
       return {
-        selected: '1',
-        isLoading: true,
-        allList: [],
-        oneList: [],
-        twoList: [],
-        threeList: [],
-        allQuery: {
+        YWYlist: [],
+        ywyLoading: false,
+        HYlist: [],
+        hyLoading: false,
+        popupVisible: false,
+        ywyQuery: {
           pageNo: 1,
           pageSize: 10,
-          loadMore: false
+          isLastPage: false
         },
-        oneQuery: {
+        hyQuery: {
           pageNo: 1,
           pageSize: 10,
-          loadMore: false
-        },
-        twoQuery: {
-          pageNo: 1,
-          pageSize: 10,
-          loadMore: false
-        },
-        threeQuery: {
-          pageNo: 1,
-          pageSize: 10,
-          loadMore: false
+          isLastPage: false
         },
       }
     },
@@ -101,120 +100,63 @@ import NorMore from '@/components/nomore'
       'v-nomore': NorMore
     },
     mounted() {
-      this.getAllList()
-      this.getOneList()
-      this.getTwoList()
-      // this.getThreeList()
+      this.getYWYList()
     },
     methods: {
-
-      getAllList() {
-        this.isLoading = true
-        mockapi.shop.api_Shop_getShareCompany_get({
+      showHY(openid) {
+        this.popupVisible = true
+        this.getHYList(openid)
+      },
+      getHYList(id){
+        this.hyLoading = true
+        this.HYlist = []
+        this.hyQuery.pageNo = 1
+        mockapi.shop.api_Channel_getSalesmanMembersList_get({
           params: {
             token: this.$store.state.userInfo.MemberToken,
-            pageNo: this.allQuery.pageNo,
-            pageSize: this.allQuery.pageSize
+            pageNo: this.hyQuery.pageNo,
+            pageSize: this.hyQuery.pageSize,
+            openid: id
           }
         }).then(res => {
-          this.isLoading = false
+          this.hyLoading = false
           var data = res.data.data.list
-          console.log(111)
-          console.log(data)
-          var isLastPage = res.data.data.pager.isLastPage
-          if (isLastPage) {
-            this.allQuery.loadMore = false
-          }
-          this.allList = this.allList.concat(data)
-          console.log(222)
-          console.log(this.allList)
-          this.allQuery.pageNo++
+          this.hyQuery.isLastPage = res.data.data.pager.isLastPage
+          this.HYlist = this.HYlist.concat(data)
+          this.hyQuery.pageNo++
         }).catch(err => {
-          this.isLoading = false
+          this.hyLoading = false
           console.log(err.message || err)
         })
       },
-      getOneList() {
-        this.isLoading = true
-        mockapi.shop.api_Shop_getOneShareCompany_get({
+      getYWYList() {
+        this.ywyLoading = true
+        mockapi.shop.api_Channel_getMySalesmanList_get({
           params: {
             token: this.$store.state.userInfo.MemberToken,
-            pageNo: this.oneQuery.pageNo,
-            pageSize: this.oneQuery.pageSize
+            pageNo: this.ywyQuery.pageNo,
+            pageSize: this.ywyQuery.pageSize
           }
         }).then(res => {
-          this.isLoading = false
+          this.ywyLoading = false
           var data = res.data.data.list
-          var isLastPage = res.data.data.pager.isLastPage
-          if (isLastPage) {
-            this.oneQuery.loadMore = false
-          }
-          this.oneList = this.oneList.concat(data)
-          // this.oneQuery.pageNo++
+          this.ywyQuery.isLastPage = res.data.data.pager.isLastPage
+          this.YWYlist = this.YWYlist.concat(data)
+          this.ywyQuery.pageNo++
         }).catch(err => {
-          this.isLoading = false
+          this.ywyLoading = false
           console.log(err.message || err)
         })
       },
-      getTwoList() {
-        this.isLoading = true
-        mockapi.shop.api_Shop_getTwoShareCompany_get({
-          params: {
-            token: this.$store.state.userInfo.MemberToken,
-            pageNo: this.twoQuery.pageNo,
-            pageSize: this.twoQuery.pageSize
-          }
-        }).then(res => {
-          this.isLoading = false
-          var data = res.data.data.list
-          var isLastPage = res.data.data.pager.isLastPage
-          if (isLastPage) {
-            this.twoQuery.loadMore = false
-          }
-          this.twoList = this.twoList.concat(data)
-          // this.twoQuery.pageNo++
-        }).catch(err => {
-          this.isLoading = false
-          console.log(err.message || err)
-        })
+      ywyLoadMore() {
+        if (!this.ywyQuery.isLastPage){
+          this.getYWYList()
+        }
       },
-      getThreeList() {
-        this.isLoading = true
-        mockapi.shop.api_Shop_getThreeShareCompany_get({
-          params: {
-            token: this.$store.state.userInfo.MemberToken,
-            pageNo: this.threeQuery.pageNo,
-            pageSize: this.threeQuery.pageSize
-          }
-        }).then(res => {
-          this.isLoading = false
-          var data = res.data.data.list
-          var isLastPage = res.data.data.pager.isLastPage
-          if (isLastPage) {
-            this.threeQuery.loadMore = false
-          }
-          this.threeList = this.threeList.concat(data)
-          // this.threeQuery.pageNo++
-        }).catch(err => {
-          this.isLoading = false
-          console.log(err.message || err)
-        })
-      },
-      loadMoreAll() {
-        this.allQuery.pageSize++
-        this.getAllList
-      },
-      loadMoreOne() {
-        this.oneQuery.pageSize++
-        this.getOneList
-      },
-      loadMoreTwo() {
-        this.twoQuery.pageSize++
-        this.getTwoList
-      },
-      loadMoreThree() {
-        this.threeQuery.pageSize++
-        this.getThreeList
+      hyLoadMore() {
+        if (!this.hyQuery.isLastPage){
+          this.getHYList()
+        }
       }
     }
   }
@@ -222,7 +164,21 @@ import NorMore from '@/components/nomore'
 <style lang=less>
   @import '../../assets/fz.less';
   @import '../../assets/utils.less';
-.back{
+  .sharemanager{
+    height: 100%;
+    .popup{
+      .title{
+        text-align: center;
+        line-height: 40px;
+      }
+      width: 85%!important;
+      padding-bottom: 0!important;
+      height: 100%;
+      .something-middle{
+        height: 22vw!important;
+      }
+    }
+    .back{
   position: absolute;
   z-index: 1000;
   width: 40px;
@@ -361,7 +317,6 @@ input{
 }
 .wrap {
     width: 100%;
-    padding-bottom: 60px;
     .something {
         width: 100%;
         > li {
@@ -378,6 +333,17 @@ input{
             background: #fff;
             margin-top: 10px;
             .bd();
+            position: relative;
+            .icon-jiantou{
+              color: #666;
+              font-size: 20px;
+              line-height: 20px;
+              cursor: pointer;
+              position: absolute;
+              right: 10px;
+              top: 50%;
+              margin-top: -10px;
+            }
             .something-left {
                 -ms-flex: 2;
                 -webkit-box-flex: 2;
@@ -505,4 +471,6 @@ input{
         }
     }
 }
+  }
+
 </style>
