@@ -1,7 +1,7 @@
 <template>
   <div v-loading='isLoading'>
     <v-header>
-      <h1 slot="title">业务员管理</h1>
+      <h1 slot="title">会员信息</h1>
     </v-header>
     <div class='catagory clearfix'>
     </div>
@@ -28,19 +28,18 @@
           </div>
         </li> -->
         <!-- <li style='height: 20px !important'>历史渠道</li> -->    
-        <li v-for="(item, index) in List" :key='index+"a"' >
+        <li v-for="(k,i) in List" :key="i">
           <div class="something-middle">
-            <img :src="item.headimageurl">
+            <img :src="k.headimageurl">
           </div>
           <div class="something-right">
-            <p>{{item.name}}
-              <span class="level" style='margin-left: 0' >
-                <a @click.stop='goToFx(item.openid)'>查看返现记录</a>
+            <p>{{k.name}} 
+              <span class="level">
+                <i class='iconfont icon-huiyuandengji0101'></i> {{k.level}}级
               </span>
             </p>
-            <p><i class='iconfont icon-dianhua'></i>：{{item.phone}}</p>
-            <p><i class='iconfont icon-dizhi-01'></i>{{item.adress}}</p>
-            <i class='iconfont icon-jiantou' @click='showHY(item.openid)'></i>
+            <p><i class='iconfont icon-dianhua'></i>：{{k.phone}}</p>
+            <p><i class='iconfont icon-dizhi-01'></i>：{{k.adress}}</p>
           </div>
         </li>
       </ul>
@@ -78,20 +77,15 @@ import { parseTime } from '@/util/data.js'
     },
     methods: {
       parseTime,
-      showHY(openid) {
-        this.$router.push({path: '/channelcenter/hylist', query: {id: openid}})
-      },
-      goToFx(openid) {
-        this.$router.push({path: '/channelcenter/ywyfxjl', query: {id: openid}})
-      },
       getList() {
         this.isLoading = true
         this.loading = true
-        mockapi.shop.api_Channel_getMySalesmanList_get({
+        mockapi.shop.api_Channel_getSalesmanMembersList_get({
           params: {
             token: this.$store.state.userInfo.MemberToken,
             pageNo: this.pageNo,
-            pageSize: this.pageSize
+            pageSize: this.pageSize,
+            openid: this.$route.query.id
           }
         }).then(res => {
           this.isLoading = false

@@ -23,6 +23,10 @@ export default {
       required: true
     }
   },
+  mounted() {
+    console.log('codecode')
+    console.log(this.imgurl)
+  },
   data() {
     return {
     }

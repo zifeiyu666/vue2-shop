@@ -60,6 +60,9 @@ const CCmanager = resolve => require(['@/views/channelcenter/sharemanager.vue'],
 const CCfxjl = resolve => require(['@/views/channelcenter/fxJl.vue'],resolve)
 const CCproducts = resolve => require(['@/views/channelcenter/shareProducts.vue'],resolve)
 const CClogin = resolve => require(['@/views/channelcenter/login.vue'],resolve)
+const CChylist = resolve => require(['@/views/channelcenter/hyList.vue'],resolve)
+const CCywyFxjl = resolve => require(['@/views/channelcenter/ywyfxJl.vue'],resolve)
+const CCdetail = resolve => require(['@/views/channelcenter/productDetail.vue'],resolve)
 
 
 const shopRouters = [
@@ -416,6 +419,21 @@ const channelRouters = [
     path: '/channelcenter/login',
     name: 'CClogin',
     component: CClogin
+  },
+  {
+    path: '/channelcenter/hylist',
+    name: 'CChylist',
+    component: CChylist
+  },
+  {
+    path: '/channelcenter/ywyfxjl',
+    name: 'CCywyFxjl',
+    component: CCywyFxjl
+  },
+  {
+    path: '/channelcenter/detail',
+    name: 'CCdetail',
+    component: CCdetail
   },
 
 

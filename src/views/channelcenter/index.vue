@@ -2,17 +2,17 @@
 
   <div class="car">
       <header class="header">
-          <div class="header-icon">
+          <!-- <div class="header-icon">
             <img :src="avatar" style='width: 100%; height: 100%' alt="">
-          </div>
+          </div> -->
           <!-- <span>登录/注册</span> -->
            <div class="header-content">
             <p>欢迎您：{{username}}</p>
             <!-- <p>注册时间：{{time}}</p> -->
             <!-- <p>会员等级：{{memberrank}}</p> -->
             <!-- <p>购物积分：{{score}}</p> -->
-            <p>分销积分：{{fxscore}}</p>
-            <P>手机号：{{phone}}</P>
+            <!-- <p>分销积分：{{fxscore}}</p>
+            <P>手机号：{{phone}}</P> -->
           </div>
           <img class='qrcode' :src="smallQrCode" alt="" @click='showQrCode()'>
       </header>
@@ -96,13 +96,17 @@
     methods: {
       // 获取二维码
       getQrCord() {
-        mockapi.shop.api_Shop_getMySharedQRCode_get({
+        mockapi.shop.api_Channel_getChannelQRCode_get({
           params:{
             token: this.$store.state.userInfo.MemberToken
           }
         }).then(res => {
           var data = res.data.data
-          this.qrcode = data
+          console.log(data)
+          var qrcodeList = data.split(',')
+          console.log(qrcodeList)
+          this.smallQrCode = qrcodeList[0]
+          this.qrcode = qrcodeList[1]
         })
       },
       showQrCode() {
@@ -144,11 +148,11 @@
       }
     .header-content{
       p{
-        font-size: 12px;
+        font-size: 18px;
       }
       color: #fff;
       position: absolute;
-      left: 80px;
+      left: 20px;
     }
     .header {
       width: 100%;
