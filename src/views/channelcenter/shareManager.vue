@@ -7,12 +7,9 @@
     </div>
     <div class="wrap">
       <ul 
-        v-infinite-scroll="ywyLoadMore"
-        infinite-scroll-disabled="ywyLoading"
-        infinite-scroll-distance="10"
         class="something" 
         v-if='YWYlist.length != 0'>
-        <li v-for="(item, index) in YWYlist" :key='index' >
+        <li v-for="(item, index) in YWYlist" :key='index+"a"' >
           <div class="something-middle">
             <img :src="item.headimageurl">
           </div>
@@ -31,24 +28,24 @@
         </li>
       </ul>
     </div>
-    <v-baseline v-if='this.ywyQuery.isLastPage && YWYlist.length > 0'></v-baseline>
-    <v-nomore v-if='YWYlist.length = 0'></v-nomore>
+    <div v-if='YWYlist.length != 0' style='text-align: center; margin: 40px'>
+      <mt-button @click='ywyLoadMore' v-if='!this.ywyQuery.isLastPage'>加载更多</mt-button>
+      <v-baseline v-if='this.ywyQuery.isLastPage && YWYlist.length > 0'></v-baseline>
+      <v-nomore v-if='YWYlist.length = 0'></v-nomore>
+    </div>
     
     <!-- 查看业务员下的会员信息 -->
     <mt-popup
       v-model="popupVisible"
       position="right"
+      modal=false
       :style="{ overflow: popupVisible ? 'scroll' : 'hidden'}"
-      class='popup wrap'>
+      class='popup wrap2'>
       <h3 class='title'>下级业务员</h3>
       <ul 
         class='something'
-        v-infinite-scroll="hyLoadMore"
-        infinite-scroll-disabled="hyLoading"
-        infinite-scroll-distance="10"
-        infinite-scroll-immediate-check=false
         >
-        <li v-for="(k,i) in HYlist" :key="i">
+        <li v-for="(k,i) in HYlist" :key="i+'b'">
           <div class="something-middle">
             <img :src="k.headimageurl">
           </div>
@@ -63,8 +60,14 @@
           </div>
         </li>
       </ul>
+      <div v-if='HYlist.length != 0' style='text-align: center; margin: 40px'>
+        <mt-button @click='hyLoadMore' v-if='!this.hyQuery.isLastPage'>加载更多</mt-button>
+        <v-baseline v-if='this.hyQuery.isLastPage && HYlist.length > 0'></v-baseline>
+        <v-nomore v-if='HYlist.length = 0'></v-nomore>
+      </div>
+      
     </mt-popup>
-    
+
   </div>
   
 </template>
@@ -78,9 +81,7 @@ import NorMore from '@/components/nomore'
     data() {
       return {
         YWYlist: [],
-        ywyLoading: false,
         HYlist: [],
-        hyLoading: false,
         popupVisible: false,
         ywyQuery: {
           pageNo: 1,
@@ -89,7 +90,7 @@ import NorMore from '@/components/nomore'
         },
         hyQuery: {
           pageNo: 1,
-          pageSize: 10,
+          pageSize: 20,
           isLastPage: false
         },
       }
@@ -104,13 +105,14 @@ import NorMore from '@/components/nomore'
     },
     methods: {
       showHY(openid) {
+        // debugger
+        console.log({a: this.YWYlist})
         this.popupVisible = true
-        this.getHYList(openid)
+        // this.getHYList(openid)
       },
       getHYList(id){
-        this.hyLoading = true
-        this.HYlist = []
-        this.hyQuery.pageNo = 1
+        console.log({b: this.YWYlist})
+        this.$store.commit('SET_LOADING', true);
         mockapi.shop.api_Channel_getSalesmanMembersList_get({
           params: {
             token: this.$store.state.userInfo.MemberToken,
@@ -119,18 +121,20 @@ import NorMore from '@/components/nomore'
             openid: id
           }
         }).then(res => {
-          this.hyLoading = false
+          console.log({c: this.YWYlist})
+          this.$store.commit('SET_LOADING', false)
           var data = res.data.data.list
           this.hyQuery.isLastPage = res.data.data.pager.isLastPage
           this.HYlist = this.HYlist.concat(data)
           this.hyQuery.pageNo++
+          console.log({d: this.YWYlist})
         }).catch(err => {
-          this.hyLoading = false
+          this.$store.commit('SET_LOADING', false)
           console.log(err.message || err)
         })
       },
       getYWYList() {
-        this.ywyLoading = true
+        this.$store.commit('SET_LOADING', true)
         mockapi.shop.api_Channel_getMySalesmanList_get({
           params: {
             token: this.$store.state.userInfo.MemberToken,
@@ -138,13 +142,15 @@ import NorMore from '@/components/nomore'
             pageSize: this.ywyQuery.pageSize
           }
         }).then(res => {
-          this.ywyLoading = false
+          console.log({a1: this.YWYlist})
+          this.$store.commit('SET_LOADING', false)
           var data = res.data.data.list
           this.ywyQuery.isLastPage = res.data.data.pager.isLastPage
           this.YWYlist = this.YWYlist.concat(data)
           this.ywyQuery.pageNo++
+          console.log({a2: this.YWYlist})
         }).catch(err => {
-          this.ywyLoading = false
+          this.$store.commit('SET_LOADING', false)
           console.log(err.message || err)
         })
       },
@@ -315,7 +321,7 @@ input{
     }
   }
 }
-.wrap {
+.wrap, .wrap2 {
     width: 100%;
     .something {
         width: 100%;

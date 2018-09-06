@@ -404,7 +404,7 @@ const channelRouters = [
   },
   {
     path: '/channelcenter/fxjl',
-    name: 'sharemanager',
+    name: 'fxjl',
     component: CCfxjl
   },
   {
