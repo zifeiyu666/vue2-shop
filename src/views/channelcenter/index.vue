@@ -87,6 +87,7 @@
         this.token = data[1]
       } else {
         this.$router.push('/channelcenter/login')
+        return
       }
       this.getQrCord()
     },
