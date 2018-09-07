@@ -1,8 +1,9 @@
 <template>
   <section class="section2" v-if='section2'>
     <h1 class="section1-title">
+        <img src="../../assets/img/lvyou.png" alt="" class="icon">
         旅游打包类
-        <i class="icon-right"></i>
+        <i class="icon-right" @click='goAll(3)'></i>
       </h1>
     <div class="section2-list">
       
@@ -23,9 +24,9 @@
         </li>
       </ul>
     </div>
-    <router-link class="section2-banner" :to="{name:'详情页'}">
+    <!-- <router-link class="section2-banner" :to="{name:'详情页'}">
       <img :src="banner.imgurl" v-if='banner'>
-    </router-link>
+    </router-link> -->
   </section>
 </template>
 
@@ -33,8 +34,12 @@
 import { Lazyload } from 'mint-ui';
 
   export default {
-    props:['section2', 'banner']
-
+    props:['section2', 'banner'],
+    methods: {
+      goAll(id) {
+        this.$router.push({path: '/shop/all', query: {id: id}})
+      }
+    }
   }
 </script>
 
@@ -47,7 +52,9 @@ import { Lazyload } from 'mint-ui';
   .section1-title{
     .bt();
     // .pt();
-    margin-top: 6vw;
+    margin-top: 6px;
+    background: #fff!important;
+    margin-bottom: 0px !important;
   }
   .section2-list {
     overflow-x: auto;
@@ -72,6 +79,7 @@ import { Lazyload } from 'mint-ui';
         img {
           display: block;
           width: 100%;
+          border-radius: 4px;
         }
 
         h2,
@@ -113,14 +121,22 @@ import { Lazyload } from 'mint-ui';
   }
   .section1-title {
       .bt();
-      background-color: #ffffff;
-      text-align: center;
-      padding: 4vw 0;
-      .fz(font-size, 40);
+      margin-bottom: 4vw;
+      position: relative;
+      background-color: rgb(248, 248, 248);
+      text-align: left;
+      .fz(font-size, 34);
+      padding: 4vw 6vw;
       color: #333;
       position: relative;
-
-      i {
+      .icon{
+        width: 26px;
+        position: relative;
+        top: 6px;
+        left: -6px;
+        margin-right: -2px;
+      }
+      .icon-right {
         position: absolute;
         right: 6vw;
         top: 50%;

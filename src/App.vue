@@ -1,9 +1,9 @@
 <template>
-  <div id="app">
+  <div id="app" v-loading='fetchLoading'>
     <!-- <transition name='fade'> -->
         <router-view></router-view>
     <!-- </transition> -->
-    <v-loading v-show="fetchLoading"></v-loading>
+    <!-- <v-loading v-show="fetchLoading"></v-loading> -->
   </div>
 </template>
 
@@ -12,6 +12,14 @@ import Loading from '@/common/_loading'
 export default {
   components:{
     'v-loading':Loading
+  },
+  beforeMount ()  {
+    this.$Lazyload.config({ 
+        preLoad: 1.3,
+        error: require('./assets/error.jpg'),
+        loading: '../static/timg.gif',
+        attempt: 1 
+    })
   },
   computed:{
     fetchLoading(){
@@ -26,7 +34,10 @@ html,body,#app{
   width: 100%;
   height: 100%;
   -webkit-tap-highlight-color:rgba(0,0,0,0);
-  background: #F8FCFF;
+  background: #f3f5f7;
+}
+.el-loading-mask{
+    position: fixed;
 }
 
 body,
@@ -110,8 +121,6 @@ i {
 }
 body {
     font-family: PingFangSC-Light,helvetica,'Heiti SC';
-    color: #666;
-    background: #fff;
 }
 
 a {
@@ -153,7 +162,6 @@ p{
 .index{
     width: 100%;
     height: 100%;
-    background-color: #EBEBEB;
 }
 .line{
     height: 1px ;
@@ -177,6 +185,13 @@ p{
 .nomore{
     text-align: center;
     padding: 20px;
+}
+.el-radio-button:focus:not(.is-focus):not(:active) {
+    -webkit-box-shadow: 0 0 0 0 !important;
+    box-shadow: 0 0 0 0 !important;
+}
+.mint-button--default{
+    background: #f3f5f7;
 }
 
 </style>

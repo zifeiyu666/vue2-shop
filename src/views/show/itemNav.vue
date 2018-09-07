@@ -4,10 +4,10 @@
       <i class='iconfont icon-fanhui'></i>
     </div>
     <div class="header-img">
-      <img :src="banner" alt="">
+      <img v-lazy="banner" alt="">
     </div>
     <div class="intro-wrap">
-      <p>{{intro}}</p>
+      <p class='dec'>{{intro}}</p>
       <!-- <router-link :to="{path:'/shop/detail', query: {id: currentId}}">购买详情</router-link> -->
     </div>
     <router-link v-for='(i, index) in navList' :key='index' class='circle' :class='"nav0" + i.id' :to="{ path: generateRoute(i.name), query: {code: i.code, id: currentId, name: i.name}}">
@@ -111,6 +111,22 @@
   }
 </script>
 <style lang=less scoped>
+.intro-wrap{
+  background: #fff;
+}
+  .dec{
+    position:relative;
+    line-height:1.4em;
+    /* 3 times the line-height to show 3 lines */
+    height:7em;
+    overflow:hidden;
+    background: #fff;
+    overflow : hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+  }
   .goback{
     position: fixed;
     z-index: 1000;
@@ -141,19 +157,22 @@
       }
     }
     .intro-wrap{
-      height: 25vh;
-      padding: 15px 15px 50px 15px;
+      margin-top: 2vh;
+      height: 20vh;
+      margin-bottom: 2vh;
+      padding: 3vw;
       -webkit-box-sizing: border-box;
       box-sizing: border-box;
       position: relative;
+      box-shadow: 1px 1px 3px #ccc;
       p{
         font-size: 14px;
-        width: 100%;
-        height: 100%;
+        /* width: 100%; */
+        /* height: 100%; */
         overflow: hidden;
-        line-height: 20px;
-        padding-bottom: 20px;
-        box-sizing: border-box;
+        /* line-height: 20px; */
+        /* padding-bottom: 20px; */
+        /* box-sizing: border-box; */
       }
       a{
         border: none;

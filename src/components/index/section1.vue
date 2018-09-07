@@ -1,8 +1,9 @@
 <template lang="html">
   <section class="section1" v-if='section1'>
     <h1 class="section1-title">
+      <img class='icon' src="../../assets/img/dandu.png" alt="">
       单独类
-      <i class="icon-right"></i>
+      <i class="icon-right" @click='goAll(4)'></i>
     </h1>
     <ul class="section1-list">
       <li v-for="k in section1">
@@ -14,18 +15,23 @@
         <span>￥ {{k.price}}</span>
       </li>
     </ul>
-  <router-link :to="{ name: '详情页'}"  class="section1-banner">
+  <!-- <router-link :to="{ name: '详情页'}"  class="section1-banner">
     <img :src="banner.imgurl" v-if='banner'>
-  </router-link>
+  </router-link> -->
   </section>
 </template>
 
 <script>
 import { Lazyload } from 'mint-ui';
 
-  export default {
-    props:['section1', 'banner']
+export default {
+  props:['section1', 'banner'],
+  methods: {
+    goAll(id) {
+      this.$router.push({path: '/shop/all', query: {id: id}})
+    }
   }
+}
 
 </script>
 
@@ -38,16 +44,23 @@ import { Lazyload } from 'mint-ui';
   .section1 {
     width: 100%;
     overflow: hidden;
-    margin-top: 6vw;
+    margin-top: 6px !important;
     background: #fff;
     .section1-title {
       .bt();
-      text-align: center;
-      .fz(font-size, 40);
-      padding: 4vw 0;
+      text-align: left;
+      .fz(font-size, 34);
+      padding: 4vw 6vw;
       position: relative;
-      background-color: #ffffff;
-      i {
+      background-color: #fff;
+      color: #333;
+      .icon{
+        width: 20px;
+        position: relative;
+        top: 2px;
+        margin-right: 5px;
+      }
+      .icon-right {
         position: absolute;
         right: 6vw;
         top: 50%;
@@ -83,6 +96,9 @@ import { Lazyload } from 'mint-ui';
           img {
             display: block;
             width: 100%;
+            // border-top-left-radius: 6px; 
+            // border-top-right-radius: 6px; 
+            border-radius: 4px;
           }
           p {
             overflow: hidden;
@@ -92,7 +108,8 @@ import { Lazyload } from 'mint-ui';
             bottom: 0;
             left: 0;
             width: 100%;
-            background-color: gold;
+            background-color: rgba(0,0,0,.5);
+            color: #fff;
             -webkit-box-sizing: border-box;
                     box-sizing: border-box;
             padding:1.2vw 2vw;

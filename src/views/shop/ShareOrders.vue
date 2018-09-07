@@ -7,7 +7,7 @@
       <div class="wrap">
         <ul v-if='allOrders.length > 0'>
           <li class='order-wrap' v-for="(k,i) in allOrders" @click='gotoDetail(k)' :key="i">
-            <h3>订单标题：{{k.ordertitle}}</h3>
+            <h3><i class='iconfont icon-leibie'></i>{{k.ordertitle}}</h3>
             <ul class="something" >
               <li v-for="(k,i) in k.opd" :key='i'>
                 <div class="something-middle">
@@ -25,21 +25,27 @@
               </li>
             </ul>
           </li>
-          <div class="btn-wrap" style='text-align: center'>
-            <mt-button @click='loadMore'>加载更多</mt-button>
-          </div>
         </ul>
-        <div class='nomore' v-else>
-          没有更多内容了
+        <div v-else>
+          <v-nomore></v-nomore>
         </div>
+        <div v-if='allOrders.length > 0' class="btn-wrap" style='text-align: center'>
+          <mt-button @click='loadMore' v-if='isLoadMore'>加载更多</mt-button>
+          <v-baseline v-else></v-baseline>
+        </div>
+        <!-- <div class='nomore' v-else>
+          没有更多内容了
+        </div> -->
       </div>
     </mt-tab-container>
   </div>
   
 </template>
 <script>
+import Baseline from '@/common/_baseline.vue'
 import Footer from '@/common/_footer.vue'
 import * as mockapi from '@/../mockapi'
+import NorMore from '@/components/nomore'
 
 import Header from '@/common/_header.vue'
   export default{
@@ -49,11 +55,14 @@ import Header from '@/common/_header.vue'
         popsideVisible: false,
         pageNo: 1,
         pageSize: 10,
-        allOrders: []
+        allOrders: [],
+        isLoadMore: false
       }
     },
     components: {
-      'v-header':Header
+      'v-baseline': Baseline,
+      'v-header':Header,
+      'v-nomore': NorMore
     },
     mounted() {
       this.getShareOrders()
@@ -67,7 +76,11 @@ import Header from '@/common/_header.vue'
             pageSize: this.pageSize
           }
         }).then(res => {
-          var data = res.data.data
+          var data = res.data.data.list
+          var isLastPage = res.data.data.pager.isLastPage
+          if (isLastPage) {
+            this.isLoadMore = false
+          }
           this.allOrders = this.allOrders.concat(data)
         })
       },
@@ -80,11 +93,18 @@ import Header from '@/common/_header.vue'
 </script>
 <style lang="less" scoped>
 @import '../../assets/fz.less';
+@import '../../assets/utils.less';
 .order-wrap{
-  // border-bottom: 1px solid #999;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  background: #fff;
   h3{
     padding-left: 15px;
+    padding: 10px 15px;
+    border-bottom: 1px solid @lightBorder;
+    .iconfont{
+      font-size: 16px;
+      margin-right: 5px;
+    }
   }
 }
 .back{
@@ -94,7 +114,7 @@ import Header from '@/common/_header.vue'
   height: 40px;
 }
 .wrap{
-  margin-top: 50px;
+  margin-top: 10px;
 }
 .mint-header{
   background: #eee;
@@ -116,7 +136,7 @@ import Header from '@/common/_header.vue'
   background: #fff;
 }
 .search-wrap{
-  background: #F8FCFF;
+  // background: #F8FCFF;
   height: 100%;
   .fa-icon{
     position: relative;

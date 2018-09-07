@@ -16,7 +16,7 @@
     <img src="../../assets/img/fail.png" id="sorry-img" style="display:none;  width: 10px; height: 10px" />
     <div class="banner">
       <div class="turnplate">
-        <canvas class="item" id="wheelcanvas" width="422px" height="422px"></canvas>
+        <canvas style='width: 100%' id="wheelcanvas" width="422px" height="422px"></canvas>
         <img class="pointer" src="../../assets/img/pointer.png"  v-on:click="pointer"/>
       </div>
     </div>

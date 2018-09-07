@@ -2,11 +2,11 @@
   <div class="item-show">
     <div class="wrap clearfix">
       <div class="img-wrap fl">
-        <img :src="itemData.imgurl" alt="">
+        <img v-lazy="itemData.imgurl" alt="">
       </div>
       <div class="content-wrap">
         <h3 class="title">{{itemData.name}}</h3>
-        <p>{{itemData.itemintro}}</p> 
+        <p class='dec'>{{itemData.itemintro}}</p> 
       </div>
     </div>
   </div>
@@ -27,6 +27,18 @@
   }
 </script>
 <style lang="less">
+  .dec{
+    position:relative;
+    line-height:1.4em;
+    /* 3 times the line-height to show 3 lines */
+    height:2.8em;
+    overflow:hidden;
+    overflow : hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
   .item-show { 
     background: #fff;
     padding: 0 10px;

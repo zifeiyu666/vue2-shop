@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-header>
-      <h1 slot="title">我的积分</h1>
+      <h1 slot="title">购物积分</h1>
     </v-header>
     <header class="header">
         <div class="header-icon">
@@ -25,43 +25,59 @@
         <mt-cell v-for="n in 4" :key='n' :title="'content ' + n" />
       </mt-tab-container-item>
     </mt-tab-container> -->
-    <p class='title jf-title'>积分获取记录</p>
-    <div v-for="(i, index) in JfList" :key='index'>
-      <div class="company-wrap clearfix">
-        <!-- <div class="avatar">
-          <img src="" alt="">
-        </div> -->
-        <div class="content">
-          <ul style='background-color: #F8FCFF!important'>
-            <li>变动类型：<span>{{i.inout}}</span></li>
-            <li>原因： <span>{{i.reason}}</span></li>
-            <li>数量： <span>{{i.score}}</span></li>
-            <li>变动前积分数量：<span>{{i.beforescore}}</span></li>
-            <li>变动后积分数量：<span>{{i.afterscore}}</span></li> 
-            <li>时间：<span>{{generateTime(i.recordTime)}}</span></li>
-          </ul>
+    <p class='jfmx'><span>积分明细</span></p>
+    <div style='border-top:1px solid #ddd'>
+      <div v-for="(i, index) in JfList" :key='index'>
+        <div class="company-wrap clearfix">
+          <!-- <div class="avatar">
+            <img src="" alt="">
+          </div> -->
+          <div class="content">
+            <ul style='background-color: #F8FCFF!important'>
+              <!-- <li><span>{{i.inout}}</span></li> -->
+              <li><span>{{i.reason}}</span></li>
+              <li class='score'><span :class="{ in: i.inout == '收入' }"><i v-if='i.inout == "收入"'>+</i> <i v-else>-</i> {{i.score}}</span></li>
+              <!-- <li>变动前积分数量：<span>{{i.beforescore}}</span></li> -->
+              <!-- <li>变动后积分数量：<span>{{i.afterscore}}</span></li>  -->
+              <li><span style='font-size: 12px; color: #666'>{{generateTime(i.recordTime)}}</span></li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
-    <div class="btn-wrap" style='text-align: center;margin-top:30px;margin-bottom: 20px;'>
+    
+    <!-- <div class="btn-wrap" style='text-align: center;margin-top:30px;margin-bottom: 20px;'>
       <mt-button @click='loadMore'>加载更多</mt-button>
+    </div> -->
+    <div style='padding-bottom: 40px'>
+
+      <div style='text-align: center;position: relative;top: 20px;'>
+        <mt-button @click='loadMore' v-if='!isLastPage'>加载更多</mt-button>
+        <v-baseline v-else></v-baseline>
+      </div>
+
     </div>
+    
     
   </div>
   
 </template>
 <script>
+import Baseline from '@/common/_baseline.vue'
 import * as mockapi from '@/../mockapi'
 import Header from '@/common/_header.vue'
+import { Toast } from 'mint-ui';
   export default{
     data() {
       return {
         pageNo: 1,
         pageSize: 10,
+        isLastPage: false,
         JfList: []
       }
     },
     components: {
+      'v-baseline': Baseline,
       'v-header':Header
     },
     mounted() {
@@ -75,16 +91,23 @@ import Header from '@/common/_header.vue'
     },
     methods: {
       getJfList() {
+        if (this.isLastPage) {
+          Toast('已经是最后一页了')
+          return 
+        }
         mockapi.shop.api_Shop_getMyScoreList_get({
           params: {
+            type: 1,
             token: this.$store.state.userInfo.MemberToken,
             pageNo: this.pageNo,
             pageSize: this.pageSize
           }
         }).then(res => {
-          var data = res.data.data
+          var data = res.data.data.list
+          var pager = res.data.data.pager
           this.JfList = this.JfList.concat(data)
           console.log(this.JfList)
+          this.isLastPage = pager.isLastPage
         })
       },
       generateTime(time) {
@@ -107,11 +130,13 @@ import Header from '@/common/_header.vue'
   @import '../../assets/index/style.css';
   @import '../../assets/user/icon/carstyle.css';
   .company-wrap{
-    margin-top: 20px;
+    padding-top: 5px; 
     padding-left: 10px;
     background: #F8FCFF;
-    /* border-bottom: 1px solid #eee; */
-    box-shadow: 0px 1px 2px 1px #ddd;
+    border-bottom: 1px solid #eee;
+    position: relative;
+    /* box-shadow: 0px 1px 2px 1px #ddd;
+     */
     .avatar{
       float: left;
       padding: 10px;
@@ -128,6 +153,19 @@ import Header from '@/common/_header.vue'
           font-size: 14px;
           color: #333;
           margin-left: 5px;
+        }
+      }
+      .score{
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        span{
+          color: #ff4800;
+          font-size: 25px !important;
+        }
+
+        .in{
+          color: green
         }
       }
     }
@@ -180,5 +218,8 @@ import Header from '@/common/_header.vue'
     }
     .jf-title{
       padding: 10px 0  0 15px;
+      font-size: 16px;
+      color: #777;
+      font-weight: bold;
     }
 </style>

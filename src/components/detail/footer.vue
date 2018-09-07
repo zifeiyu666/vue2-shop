@@ -4,13 +4,13 @@
       <span v-if='star' class='collection'>
         <icon name='star' scale='1.5'></icon>
       </span>
-      <span v-else>
-        <icon name='star-o' scale='1.5'></icon>
+      <span v-else >
+        <icon name='star-o'  style='color: #666' scale='1.5'></icon>
       </span>
       
     </div>
     <router-link :to="{path:'/shop/car'}" class="footer-gocar">
-      <i class="icon-car"></i>
+      <i class="iconfont icon-gouwuche3-copy-copy-copy-copy"></i>
       <span v-if="carnum">{{carnum}}</span>
     </router-link>
     <span class="footer-addcar" @click="addIntoCar">
@@ -42,9 +42,9 @@
   width: 30px;" @click='reduce'>-</button> {{num}} <button style="padding: 4px 5px;
   width: 30px;" @click='add'>+</button>
         </p>
-        <div class="bottom clearfix">
-          <mt-button type="primary" @click='confirmShopCar'>确定</mt-button>
-          <mt-button type="default" @click='consoleAddIntoCar'>取消</mt-button>
+        <div class="bottm-btn-group bottom clearfix">
+          <mt-button class='confirm-btn' type="primary" @click='confirmShopCar'>确定</mt-button>
+          <mt-button class='concel-btn' type="concel-btn" @click='consoleAddIntoCar'>取消</mt-button>
         </div>
       </div>
     </mt-popup>
@@ -75,12 +75,13 @@
           <mt-field label="积分抵扣:" placeholder="请输入要使用的积分" type="number" v-model="usescore" ></mt-field>
           <div class="totalScore">
             <span>当前可用积分：{{score}}</span>
+            <p>可抵扣金额：{{usescore/scoreRate}}元</p>
           </div>
         </div>
 
-        <div class="bottom clearfix">
-          <mt-button type="primary" @click='confirmPay'>确定</mt-button>
-          <mt-button type="default" @click='consolePay'>取消</mt-button>
+        <div class="bottm-btn-group bottom clearfix">
+          <mt-button class='confirm-btn' type="primary" @click='confirmPay'>确定</mt-button>
+          <mt-button class='concel-btn' type="default" @click='consolePay'>取消</mt-button>
         </div>
         
       </div>
@@ -107,7 +108,8 @@ export default {
       selectedProp: [],
       carnum: '',
       score: '',
-      usescore: ''
+      usescore: '',
+      scoreRate: '' //提现比例
     }
   },
   computed:{
@@ -121,9 +123,12 @@ export default {
   // TODO： 检测数据
   watch: {
     usescore() {
-      if (this.usescore > this.score) {
-        this.usescore = this.score
+      if (this.usescore > this.score || this.usescore > (this.payprice*this.scoreRate)) {
+        this.usescore = this.score > this.payprice*this.scoreRate ? this.payprice*this.scoreRate : this.score
         Toast('不能超过最大可用积分')
+      } else if (isNaN(parseInt(this.usescore)) ) {
+        // this.usescore = '0'
+        Toast('请输入整形数字')
       }
     }
   },
@@ -131,16 +136,29 @@ export default {
     this.initCollectStar()
     this.getMyCarNum()
     this.getScore()
+    this.getScoreRate()
   },
   methods:{
     getScore() {
       mockapi.shop.api_Shop_getMyScore_get({
         params: {
+          type: 1,
           token: this.$store.state.userInfo.MemberToken
         }
       }).then(res => {
         var data = res.data.data
         this.score = data
+      })
+    },
+    getScoreRate() {
+      mockapi.shop.api_Shop_getRatio_get({
+        params: {
+          type: 1,
+          token: this.$store.state.userInfo.MemberToken
+        }
+      }).then(res => {
+        var data = res.data.data
+        this.scoreRate = data
       })
     },
     initCollectStar() {
@@ -235,18 +253,19 @@ export default {
     },
     add() {
       if (this.num < (this.selectedProp[0].TotalNum - this.selectedProp[0].SoldNum)){
-        mockapi.shop.api_Shop_updateCar_post({
-          data: qs.stringify({
-            token: this.$store.state.userInfo.MemberToken,
-            PId: this.detail.PId,
-            PropId: this.PropId,
-            Num: this.num + 1
-          })
-        }).then(res => {
-          this.num++
-        }).catch(err => {
-          console.log(err)
-        })
+        // mockapi.shop.api_Shop_updateCar_post({
+        //   data: qs.stringify({
+        //     token: this.$store.state.userInfo.MemberToken,
+        //     PId: this.detail.PId,
+        //     PropId: this.PropId,
+        //     Num: this.num + 1
+        //   })
+        // }).then(res => {
+        //   this.num++
+        // }).catch(err => {
+        //   console.log(err)
+        // })
+        this.num++
       } else {
         Toast('已达到最大数量')
       }
@@ -279,8 +298,11 @@ export default {
       }
     },
     confirmPay() {
+      if(this.usescore && isNaN(parseInt(this.usescore))) {
+        Toast('请输入正确的积分格式')
+        return 
+      }
       this.payVisible = false
-      console.log(1111)
       mockapi.shop.api_Shop_generateOrder_post({
         data: qs.stringify({
           token: this.$store.state.userInfo.MemberToken,
@@ -387,12 +409,12 @@ export default {
     line-height: 14vw;
     padding-top: 1.6vw;
     span {
-      height: 5.5vw;
-      width: 5.5vw;
-      line-height: 5.5vw;
+      height: 5vw;
+      width: 5vw;
+      line-height: 5vw;
       position: absolute;
       top: .5vw;
-      right: 5.5vw;
+      right: 5vw;
       background-color: @cl;
       border-radius: 50%;
       color: #fff;
@@ -441,15 +463,15 @@ export default {
 }
 .shopcar{
   padding: 15px;
-  padding-bottom: 60px;
+  // padding-bottom: 60px;
   p{
     word-break: break-all;
   }
   .bottom{
-    position: absolute;
-    bottom: 0;
-    width: 100vw;
-    left:0;
+    // position: absolute;
+    // bottom: 0;
+    // width: 100vw;
+    // left:0;
     button{
       width: 50%;
       float:left;
@@ -457,5 +479,9 @@ export default {
       border-radius: 0;
     }
   }
+}
+.footer .mint-popup{
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
 }
 </style>

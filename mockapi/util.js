@@ -9,7 +9,7 @@ function createAPI(baseURL) {
     return instance(Object.assign({}, {
       url: conf.url,
       baseURL: baseURL,
-      method: conf.method
+      method: conf.method,
       // withCredentials: true
     }, conf.opts));
   };
@@ -27,16 +27,15 @@ function convertRESTAPI(url, opts) {
 }
 
 // request拦截器
-// instance.interceptors.request.use(config => {
-//   // Do something before request is sent
-//   config.headers.common['X-Requested-With'] = 'XMLHttpRequest'
-
-//   return config
-// }, error => {
-//   // Do something with request error
-//   console.log(error) // for debug
-//   Promise.reject(error)
-// })
+instance.interceptors.request.use(config => {
+  // Do something before request is sent
+  // config.headers.Authorization = 'test'
+  return config
+}, error => {
+  // Do something with request error
+  console.log(error) // for debug
+  Promise.reject(error)
+})
 
 // respone拦截器
 instance.interceptors.response.use(

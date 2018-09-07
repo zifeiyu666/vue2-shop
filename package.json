@@ -24,6 +24,8 @@
     "vue-awesome": "^2.3.5",
     "vue-awesome-swiper": "^2.6.7",
     "vue-cute-timeline": "^1.2.4",
+    "vue-lazyload": "^1.2.6",
+    "vue-lazyload-cosmo-zp": "^1.0.1",
     "vue-router": "^2.7.0",
     "vuex": "^2.4.0"
   },

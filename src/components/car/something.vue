@@ -4,7 +4,7 @@
     <v-gologin></v-gologin>
     <ul 
     class="something" 
-    v-if='carList'>
+    v-if='carList.length != 0'>
       <li v-for="(k,i) in carList" :key="i">
           <!-- 暂时屏蔽购物车选择，直接全部提交 -->
           <!-- <div class="something-left">
@@ -29,23 +29,32 @@
           </div>
       </li>
       <div style='text-align:center; padding: 30px'>
-        <mt-button @click='loadMore'>加载更多</mt-button>
+        <mt-button @click='loadMore' v-if='isLoadMore'>加载更多</mt-button>
+        <v-baseline v-else></v-baseline>
       </div>
 
     </ul>
+    <div v-else>
+      <v-nomore></v-nomore>
+    </div>
   </div>
 </template>
 
 <script>
+import Baseline from '@/common/_baseline.vue'
 import qs from 'qs'
 import * as mockapi from '@/../mockapi'
 // 提示登录组件
 import Gologin from '@/components/car/gologin.vue'
 import Util from '../../util/common'
 import {Toast} from 'mint-ui'
+import NorMore from '@/components/nomore'
+
 export default {
   components: {
-    'v-gologin': Gologin
+    'v-baseline': Baseline,
+    'v-gologin': Gologin,
+    'v-nomore': NorMore
   },
   computed: {
 
@@ -61,7 +70,8 @@ export default {
       pageSize: 10,
       carList: [],
       token: '',
-      selectedProp: []
+      selectedProp: [],
+      isLoadMore: true
     }
   },
   watch: {
@@ -95,7 +105,11 @@ export default {
           pageSize: this.pageSize
         }
       }).then(res => {
-        var data = res.data.data
+        var data = res.data.data.list
+        var isLastPage = res.data.data.pager.isLastPage
+        if (isLastPage) {
+          this.isLoadMore = false
+        }
         this.carList = this.carList.concat(data)
       })
     },
@@ -107,7 +121,11 @@ export default {
           pageSize: this.pageSize
         }
       }).then(res => {
-        var data = res.data.data
+        var data = res.data.data.list
+        var isLastPage = res.data.data.pager.isLastPage
+        if (isLastPage) {
+          this.isLoadMore = false
+        }
         this.carList = data
       })
     },

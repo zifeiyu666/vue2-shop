@@ -7,15 +7,19 @@
       <mt-tab-item id="1">全部</mt-tab-item>
       <mt-tab-item id="2">待付款</mt-tab-item>
       <mt-tab-item id="3">已付款</mt-tab-item>
+      <mt-tab-item id="4">待审核</mt-tab-item>
     </mt-navbar>
     <mt-tab-container v-model="selected">
       <!-- 全部订单 -->
       <mt-tab-container-item id="1">
           <div class="wrap">
-            <ul>
-              <li class='order-wrap' v-for="(item,i) in allOrders" @click='gotoDetail(item)' :key="i">
-                <h3>订单标题：{{item.ordertitle}}</h3>
+            <ul v-if='allOrders.length != 0'>
+              <li @click='goToOrderDetail(item.orderno)' class='order-wrap' v-for="(item,i) in allOrders" :key="i">
+                <h3 class='ordertitle'>{{item.ordertitle}}</h3>
                 <ul class="something" >
+                  <div v-if="item.orderstate == '未付款'" id="deleteOrder">
+                    <span @click.stop='deleteOrder(item)'></span>
+                  </div>
                   <li v-for="(k,i) in item.opd" :key='i'>
                     <div class="something-middle">
                       <img :src="k.imgurl[0]">
@@ -24,38 +28,46 @@
                       <p>{{k.producttitle}}</p>
                       <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p>
                       <p>售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;使用积分：{{k.usescore}}</p>
-                      <!-- <div class="something-right-bottom">
-                        <span @click='deleteCollection(k)'></span>
-                      </div> -->
+                      
                       <!-- TODO -->
                       <!-- v-if='k.orderstate=="已付款"' -->
                       <div class='state-wrap'>
-                        <mt-button  class='refund-btn1'  @click='refund([k,item])'>申请退款</mt-button>
+                        <mt-badge size="small" color='#ccc'>{{k.state}}</mt-badge>
+                        <mt-button v-if='k.state == "已付款" || k.state == "已接受"'  class='refund-btn1'  @click.stop='refund([k,item])'>申请退款</mt-button>
+                        
                       </div>
                       
                     </div>
                     
                   </li>
-                  <mt-button v-if='item.orderstate=="未付款"' class='refund-btn'  @click='goPay(k)'>去支付</mt-button>
+                  <mt-button class='refund-btn-2' :class="{'refund-btn-right': (item.orderstate == '未付款' ? true : false)}">{{item.orderstate}}</mt-button>
+                  <mt-button v-if='item.orderstate=="未付款"' class='refund-btn'  @click.stop='goPay(item)'>去支付</mt-button>
                 </ul>
                 
                 <!-- <div class="line"></div> -->
                 
               </li>
               <div class="btn-wrap" style='text-align: center'>
-                <mt-button @click='loadMoreAll'>加载更多</mt-button>
+                <mt-button @click='loadMoreAll' v-if='allQuery.loadMore'>加载更多</mt-button>
+                <v-baseline v-else></v-baseline>
               </div>
             </ul>
+             <div v-else>
+              <v-nomore></v-nomore>
+            </div>
           </div>
       </mt-tab-container-item>
       <!-- 待付款 -->
       <mt-tab-container-item id="2">
         <div class="wrap">
-            <ul>
-              <li class='order-wrap' v-for="(k,i) in waitOrders" @click='gotoDetail(k)' :key="i">
-                <h3>订单标题：{{k.ordertitle}}</h3>
+            <ul v-if='waitOrders.length != 0'>
+              <li @click='goToOrderDetail(item.orderno)' class='order-wrap' v-for="(item,i) in waitOrders" :key="i">
+                <h3 class='ordertitle'>{{item.ordertitle}}</h3>
                 <ul class="something" >
-                  <li v-for="(k,i) in k.opd" :key='i'>
+                  <div id="deleteOrder">
+                    <span @click.stop='deleteOrder(item)'></span>
+                  </div>
+                  <li v-for="(k,i) in item.opd" :key='i'>
                      <div class="something-middle">
                       <img :src="k.imgurl[0]">
                     </div>
@@ -64,28 +76,40 @@
                       <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p>
                       <p>售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;使用积分：{{k.usescore}}</p>
                       <!-- <div class="something-right-bottom">
-                        <span @click='deleteCollection(k)'></span>
+                        <span @click.stop='deleteOrder(item)'></span>
                       </div> -->
+                      <div class='state-wrap'>
+                        <mt-badge size="small" color='#ccc'>{{k.state}}</mt-badge>
+                        <mt-button v-if='k.state == "已付款" || k.state == "已接受"'  class='refund-btn1'  @click.stop='refund([k,item])'>申请退款</mt-button>
+                      </div>
                     </div>
                   </li>
-                  <mt-button class='refund-btn'  @click='goPay(k)'>去支付</mt-button>
+                  <mt-button class='refund-btn-2' :class="{'refund-btn-right': (item.orderstate == '未付款' ? true : false)}">{{item.orderstate}}</mt-button>
+                  <mt-button class='refund-btn'  @click.stop='goPay(item)'>去支付</mt-button>
                 </ul>
                 
               </li>
               <div class="btn-wrap" style='text-align: center'>
-                <mt-button @click='loadMoreWait'>加载更多</mt-button>
+                <mt-button @click='loadMoreWait' v-if='waitQuery.loadMore'>加载更多</mt-button>
+                <v-baseline v-else></v-baseline>
               </div>
             </ul>
+             <div v-else>
+              <v-nomore></v-nomore>
+            </div>
           </div>
       </mt-tab-container-item>
       <!-- 已付款 -->
       <mt-tab-container-item id="3">
         <div class="wrap">
-            <ul>
-              <li class='order-wrap' v-for="(k,i) in payedOrders" @click='gotoDetail(k)' :key="i">
-                <h3>订单标题：{{k.ordertitle}}</h3>
+            <ul v-if='payedOrders.length != 0'>
+              <div id="deleteOrder">
+                <span @click.stop='deleteOrder(item)'></span>
+              </div>
+              <li @click='goToOrderDetail(item.orderno)' class='order-wrap' v-for="(item,i) in payedOrders" :key="i">
+                <h3 class='ordertitle'>{{item.ordertitle}}</h3>
                 <ul class="something" >
-                  <li v-for="(k,i) in k.opd" :key='i'>
+                  <li v-for="(k,i) in item.opd" :key='i'>
                      <div class="something-middle">
                       <img :src="k.imgurl[0]">
                     </div>
@@ -94,18 +118,69 @@
                       <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p>
                       <p>售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;使用积分：{{k.usescore}}</p>
                       <!-- <div class="something-right-bottom">
-                        <span @click='deleteCollection(k)'></span>
+                        <span @click.stop='deleteOrder(item)'></span>
                       </div> -->
+                      <div class='state-wrap'>
+                        <mt-badge size="small" color='#ccc'>{{k.state}}</mt-badge>
+                        <mt-button v-if='k.state == "已付款" || k.state == "已接受"'  class='refund-btn1'  @click.stop='refund([k,item])'>申请退款</mt-button>
+                      </div>
                     </div>
                   </li>
-                  <mt-button class='refund-btn'  @click='refund(k)'>申请退款</mt-button>
+                  <mt-button class='refund-btn-2'>{{item.orderstate}}</mt-button>
+                  <!-- <mt-badge size="normal" color='#ccc'>{{item.orderstate}}</mt-badge> -->
                 </ul>
                 
               </li>
               <div class="btn-wrap" style='text-align: center'>
-                <mt-button @click='loadMorePayed'>加载更多</mt-button>
+                <mt-button @click='loadMorePayed' v-if='payedQuery.loadMore'>加载更多</mt-button>
+                <v-baseline v-else></v-baseline>
               </div>
             </ul>
+            <div v-else>
+              <v-nomore></v-nomore>
+            </div>
+          </div>
+      </mt-tab-container-item>
+      <!-- 待审核 -->
+      <mt-tab-container-item id="4">
+        <div class="wrap">
+            <ul v-if='unconfirmedOrders.length != 0'>
+              <div id="deleteOrder">
+                <span @click.stop='deleteOrder(item)'></span>
+              </div>
+              <li @click='goToOrderDetail(item.orderno)' class='order-wrap' v-for="(item,i) in unconfirmedOrders" :key="i">
+                <h3 class='ordertitle'>{{item.ordertitle}}</h3>
+                <ul class="something" >
+                  <li v-for="(k,i) in item.opd" :key='i'>
+                     <div class="something-middle">
+                      <img :src="k.imgurl[0]">
+                    </div>
+                    <div class="something-right">
+                      <p>{{k.producttitle}}</p>
+                      <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p>
+                      <p>售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;使用积分：{{k.usescore}}</p>
+                      <!-- <div class="something-right-bottom">
+                        <span @click.stop='deleteOrder(item)'></span>
+                      </div> -->
+                      <div class='state-wrap'>
+                        <mt-badge size="small" color='#ccc'>{{k.state}}</mt-badge>
+                        <mt-button v-if='k.state == "已付款" || k.state == "已接受"'  class='refund-btn1'  @click.stop='refund([k,item])'>申请退款</mt-button>
+                      </div>
+                    </div>
+                  </li>
+                  <mt-button class='refund-btn-2'>{{item.orderstate}}</mt-button>
+                  <!-- <mt-badge size="normal" color='#ccc'>{{item.orderstate}}</mt-badge> -->
+                </ul>
+                
+              </li>
+              <div class="btn-wrap" style='text-align: center'>
+                <mt-button @click='loadMorePayed' v-if='unconfirmedQuery.loadMore'>加载更多</mt-button>
+                <v-baseline v-else></v-baseline>
+              </div>
+            </ul>
+            <div v-else>
+              <v-nomore></v-nomore>
+            </div>
           </div>
       </mt-tab-container-item>
     </mt-tab-container>
@@ -113,8 +188,13 @@
   
 </template>
 <script>
+import { MessageBox } from 'mint-ui'
+import Baseline from '@/common/_baseline.vue'
 import Footer from '@/common/_footer.vue'
 import * as mockapi from '@/../mockapi'
+import qs from 'qs'
+import {Toast} from 'mint-ui'
+import NorMore from '@/components/nomore'
 
 import Header from '@/common/_header.vue'
   export default{
@@ -126,24 +206,62 @@ import Header from '@/common/_header.vue'
           pageNo: 1,
           pageSize: 10,
           busy: false, // 判断loadMore是否正在加载中
+          loadMore: true
         },
         allOrders: [],
         payedQuery: {
           pageNo: 1,
           pageSize: 10,
           busy: false, // 判断loadMore是否正在加载中
+          loadMore: true
         },
         payedOrders: [],
         waitQuery: {
           pageNo: 1,
           pageSize: 10,
           busy: false, // 判断loadMore是否正在加载中
+          loadMore: true
         },
-        waitOrders: []
+        waitOrders: [],
+        unconfirmedQuery: {
+          pageNo: 1,
+          pageSize: 10,
+          busy: false, // 判断loadMore是否正在加载中
+          loadMore: true
+        },
+        unconfirmedOrders: [],
+        state: [
+          {
+            id: 1,
+            state: '未付款'
+          },
+          {
+            id: 2,
+            state: '已付款'
+          },
+          {
+            id: 3,
+            state: '已使用'
+          },
+          {
+            id: 4,
+            state: '已完成'
+          },
+          {
+            id: 5,
+            state: '已取消'
+          },
+          {
+            id: 6,
+            state: '已退款'
+          }
+        ]
       }
     },
     components: {
-      'v-header':Header
+      'v-header':Header,
+      'v-baseline': Baseline,
+      'v-nomore': NorMore
     },
     mounted() {
       if (this.$route.query.selected) {
@@ -152,6 +270,7 @@ import Header from '@/common/_header.vue'
       this.getAllOrdersList(false)
       this.getWaitOrdersList(false)
       this.getPayedOrdersList(false)
+      this.getUnconfirmedOrdersList(false)
     },
     methods: {
       getAllOrdersList(flag) {
@@ -164,7 +283,11 @@ import Header from '@/common/_header.vue'
           }
         }).then(res => {
           this.allQuery.busy = false
-          var data = res.data.data
+          var data = res.data.data.list
+          var isLastPage = res.data.data.pager.isLastPage
+          if (isLastPage) {
+            this.allQuery.loadMore = false
+          }
           this.allOrders = this.allOrders.concat(data)
           
         })
@@ -179,7 +302,11 @@ import Header from '@/common/_header.vue'
           }
         }).then(res => {
           this.waitQuery.busy = false
-          var data = res.data.data
+          var data = res.data.data.list
+          var isLastPage = res.data.data.pager.isLastPage
+          if (isLastPage) {
+            this.waitQuery.loadMore = false
+          }
           this.waitOrders = this.waitOrders.concat(data)
         })
       },
@@ -193,8 +320,30 @@ import Header from '@/common/_header.vue'
           }
         }).then(res => {
           this.payedQuery.busy = false
-          var data = res.data.data
+          var data = res.data.data.list
+          var isLastPage = res.data.data.pager.isLastPage
+          if (isLastPage) {
+            this.payedQuery.loadMore = false
+          }
           this.payedOrders = this.payedOrders.concat(data)
+        })
+      },
+      getUnconfirmedOrdersList(flag) {
+        mockapi.shop.api_Shop_getSHOrders_get({
+          params: {
+            token: this.$store.state.userInfo.MemberToken,
+            name: '',
+            pageNo: this.unconfirmedQuery.pageNo,
+            pageSize: this.unconfirmedQuery.pageSize
+          }
+        }).then(res => {
+          this.unconfirmedQuery.busy = false
+          var data = res.data.data.list
+          var isLastPage = res.data.data.pager.isLastPage
+          if (isLastPage) {
+            this.unconfirmedQuery.loadMore = false
+          }
+          this.unconfirmedOrders = this.unconfirmedOrders.concat(data)
         })
       },
       loadMoreAll() {
@@ -227,8 +376,59 @@ import Header from '@/common/_header.vue'
           }, 1000);
         }
       },
+      // TODO
       refund(data) {
         this.$router.push({path: '/shop/refund', query: {orderno: data[1].orderno, id: data[0].id}})
+      },
+      goPay(data) {
+        console.log('去支付')
+        this.$router.push({path: '/shop/order', query: {orderno: data.orderno, orderid: data.orderid}})
+      },
+      generateState(id) {
+        var state = ''
+        this.state.forEach((item,i) => {
+          if (id == item.id) {
+            state = item.state
+          }
+        })
+        return state
+      },
+      deleteOrder(item) {
+        console.log('取消订单')
+        var that = this
+        MessageBox.confirm('确定取消订单?').then(action => {
+          mockapi.shop.api_Shop_CancleOrder_post({
+            data: qs.stringify({
+              token: this.$store.state.userInfo.MemberToken,
+              orderid: item.orderid
+            })
+          }).then(res => {
+            if (res.data.result == 1) {
+              this.allQuery.pageNo = 1
+              this.waitQuery.pageNo = 1
+              this.payedQuery.pageNo = 1
+              this.allOrders = []
+              this.payedOrders = []
+              this.waitOrders = []
+              this.getAllOrdersList(false)
+              this.getWaitOrdersList(false)
+              this.getPayedOrdersList(false)
+              Toast({
+              message: '操作成功'
+              });
+            } else {
+              Toast({
+                message: '操作失败，请重试'
+              })
+            } 
+          }).catch(err => {
+            Toast(err)
+          })
+        })
+      },
+      // 订单详情页
+      goToOrderDetail(orderno) {
+        this.$router.push({path: '/shop/orderDetail', query: {orderno: orderno}})
       }
     }
   }
@@ -240,10 +440,20 @@ import Header from '@/common/_header.vue'
   margin-bottom: 20px;
   background: #fff;
   padding-top: 10px;
-  box-shadow: 0px 1px 2px 1px #ddd;
+  box-shadow: 0px 3px 4px 1px #eee;
   h3{
     padding-left: 15px;
+    padding-right: 40px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    padding-bottom: 5px;
+    color: #333;
+    padding-top: 5px;
   }
+}
+.ordertitle{
+  font-size: 16px;
 }
 .back{
   position: absolute;
@@ -274,7 +484,7 @@ import Header from '@/common/_header.vue'
   background: #fff;
 }
 .search-wrap{
-  background: #F8FCFF;
+  // background: #F8FCFF;
   height: 100%;
   .fa-icon{
     position: relative;
@@ -395,6 +605,17 @@ input{
         width: 100%;
         padding-bottom: 50px;
         position: relative;
+        #deleteOrder {
+          position: relative;
+            span {
+                position: absolute;
+                right: 0;
+                bottom: -10px;
+                width: 46px;
+                height: 46px;
+                background: url("../../assets/car/images/laji.svg") no-repeat center/50%;
+            }
+        }
         > li {
             display: -ms-flex;
             display: -webkit-box;
@@ -533,6 +754,21 @@ input{
   bottom: 7px;
   z-index: 10;
 }
+.refund-btn-2{
+  font-size: 13px;
+  width: 80px;
+  height: 35px;
+  color: #ccc;
+  background: #fff;
+  margin-top: 2vw;
+  position: absolute;
+  right: 8vw;
+  bottom: 7px;
+  z-index: 10;
+}
+.refund-btn-right{
+  right: 30vw !important;
+}
 .refund-btn1{
   display: inline-block;
   font-size: 13px;
@@ -540,6 +776,8 @@ input{
   height: 8vw;
   color: #FFAA00;
   margin-top: 2vw;
+  float: right;
+  // border-radius: 3vw;
   // position: absolute;
   // right: 4vw;
   // bottom: 7px;

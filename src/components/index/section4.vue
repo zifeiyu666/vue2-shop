@@ -1,8 +1,9 @@
 <template lang="html">
   <section class="section4" >
     <h2 class="section4-title">
+      <img src="../../assets/img/quanyika.png" alt="" class="icon">
       权益卡类
-      <i class="icon-right"></i>
+      <i class="icon-right" @click='goAll(2)'></i>
     </h2>
     <ul class="section4-list" v-if="section4">
       <li v-for="k in section4">
@@ -15,16 +16,21 @@
       </li>
 
     </ul>
-    <router-link :to="{name:'分类页'}" class="section4-banner">
+    <!-- <router-link :to="{name:'分类页'}" class="section4-banner">
       <img :src="banner.imgurl" v-if='banner'>
-    </router-link>
+    </router-link> -->
   </section>
 </template>
 
 <script>
   import { Lazyload } from 'mint-ui';
   export default {
-    props:['section4','banner']
+    props:['section4','banner'],
+    methods: {
+      goAll(id) {
+        this.$router.push({path: '/shop/all', query: {id: id}})
+      }
+    }
   }
 </script>
 
@@ -37,15 +43,24 @@
   .section4 {
     width: 100%;
     overflow: hidden;
+    padding-top: 6px !important;
     .pt();
     .section4-title {
       .bt();
-      text-align: center;
-      .fz(font-size, 40);
-      padding: 4vw 0;
+      text-align: left;
+      .fz(font-size, 34);
+      padding: 4vw 6vw;
       position: relative;
-      background-color: #ffffff;
-      i {
+      background-color: #fff;
+      color: #333;
+      .icon{
+        width: 20px;
+        height: 24px;
+        position: relative;
+        top: 6px;
+        margin-right: 5px;
+      }
+      .icon-right {
         position: absolute;
         right: 6vw;
         top: 50%;
@@ -92,7 +107,8 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            background-color: gold;
+            background-color: rgba(0,0,0,.5);
+            color: #eee;
             -webkit-box-sizing: border-box;
                     box-sizing: border-box;
             padding:1.2vw 2vw;

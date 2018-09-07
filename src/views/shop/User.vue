@@ -9,11 +9,14 @@
           </div>
           <!-- <span>登录/注册</span> -->
           <div class="header-content">
-            <p>欢迎您：{{username}}</p>
+            <p>{{username}} <span style='font-size: 16px; font-weight: bold; margin-left: 5px'>v</span> {{memberrank}}</p>
             <p>注册时间：{{time}}</p>
-            <p>积分：{{jifen}}</p>
+            <!-- <p>会员等级：{{memberrank}}</p> -->
+            <!-- <p>购物积分：{{score}}</p> -->
+            <p>手机号：{{phone}}</p>
+            <!-- <p>分销积分：{{fxscore}}</p> -->
           </div>
-          <img class='qrcode' :src="qrcode" alt="">
+          <img class='qrcode' :src="smallQrCode" alt="" @click='showQrCode()'>
       </header>
       <div class="main">
           <router-link class="my-indent" :to="{ path: '/shop/myorder'}">
@@ -56,20 +59,29 @@
             </router-link>
             <router-link class="my-vip-bottom ho" :to="{ path: '/shop/choujiang'}">
               <div>
-                <span class="icon2-money"></span>
+                <img class='icon' src="../../assets/img/choujiang.png" alt="">
               </div>
               <p>
-                <span>每日抽奖</span><i class="icon-go"></i>
+                <span>每日好礼</span><i class="icon-go"></i>
               </p>
             </router-link>
-            <router-link :to="{ name: '我的积分'}" class="my-settle-top">
+            <!-- 需求变动不需要购物积分 -->
+            <!-- <router-link :to="{ name: '购物积分'}" class="my-settle-top">
               <div>
                 <span class="icon2-f"></span>
               </div>
               <p>
-                <span>我的积分</span><i class="icon-go"></i>
+                <span>购物积分</span><i class="icon-go"></i>
               </p>
-            </router-link>
+            </router-link> -->
+            <!-- <router-link :to="{ name: '分销积分'}" class="my-settle-top">
+              <div>
+                <span class="icon2-f"></span>
+              </div>
+              <p>
+                <span>分销积分</span><i class="icon-go"></i>
+              </p>
+            </router-link> -->
             <router-link class="my-vip-bottom ho" to="/shop/edit">
               <div>
                 <span class="icon2-settle"></span>
@@ -84,57 +96,110 @@
           
 
       </div>
-      <v-baseline></v-baseline>
       <v-footer></v-footer>
+
+      <!-- 二维码弹窗 -->
+      <!-- <el-dialog
+        class='code_dialog'
+        title='我的分享码'
+        fullscreen
+        :visible.sync="dialogVisible"
+        width="100%"
+        center>
+        <span><img style='width: 100%; display: inline-block' :src="qrcode" alt=""></span>
+      </el-dialog> -->
+      <v-qrcode @close='closeQrCode' :imgurl='qrcode' :isShow='isShow'></v-qrcode>
     </div>
 </template>
 
 <script>
-
+  import * as mockapi from '@/../mockapi'
   import Baseline from '@/common/_baseline.vue'
   import Footer from '@/common/_footer.vue'
   import { mapState } from 'vuex'
+  import Qrcode from '@/components/qrcode.vue'
+  
   export default {
     components: {
       'v-baseline': Baseline,
-      'v-footer': Footer
+      'v-footer': Footer,
+      'v-qrcode': Qrcode
     },
     data() {
       return {
         qrcode: '',
         username: '',
+        phone: '',
         avatar: '',
         time: '',
-        jifen: ''
+        jifen: '',
+        smallQrCode: '',
+        memberrank: '',
+        // dialogVisible: false,
+        isShow: false
       }
     },
     mounted() {
       var userInfo = this.$store.state.userInfo
-      this.qrcode = userInfo.SharedQRCode
+      console.log({userInfo: userInfo})
+      console.log(userInfo)
+      console.log(userInfo.nickname)
       this.avatar = userInfo.headimgurl
+      this.smallQrCode = userInfo.SharedQRCode
       this.username = userInfo.nickname
       this.jifen = userInfo.Score,
-      this.time = userInfo.subscribe_time
-    } 
+      this.time = userInfo.subscribe_time,
+      this.memberrank = userInfo.MemberRankName
+      this.score = userInfo.Score
+      this.fxscore = userInfo.FenXiaoScore
+      this.phone = userInfo.Phone
+
+      this.getQrCord()
+    },
+    methods: {
+      // 获取二维码
+      getQrCord() {
+        mockapi.shop.api_Shop_getMySharedQRCode_get({
+          params:{
+            token: this.$store.state.userInfo.MemberToken
+          }
+        }).then(res => {
+          var data = res.data.data
+          this.qrcode = data
+        })
+      },
+      showQrCode() {
+        console.log(11111)
+        // this.dialogVisible = true
+        this.isShow = true
+      },
+      closeQrCode() {
+        this.isShow = false
+      }
+    }
   }
 </script>
 
 <style lang="less" scoped>
   @import '../../assets/fz.less';
+  @import '../../assets/utils.less';
   @import '../../assets/index/style.css';
   @import '../../assets/user/icon/carstyle.css';
 
   .car {
     width: 100%;
     padding-bottom: 14vw;
-    background-color: #F8FCFF;
     .qrcode{
         position: absolute;
-        width: 60px;
-        height: 60px;
+        width: 50px;
+        height: 50px;
         right: 20px;
+        border: 1px solid #eee;
       }
     .header-content{
+      p{
+        font-size: 12px;
+      }
       color: #fff;
       position: absolute;
       left: 80px;
@@ -186,7 +251,7 @@
         display: block;
         -webkit-box-sizing: border-box;
         box-sizing: border-box;
-        color: #333;
+        color: @fontBlack;
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
@@ -206,7 +271,7 @@
           span {
             display: inline-block;
             .fz(font-size, 28);
-            color: rgba(0, 0, 0, .4);
+            color: @fontGray;
             position: relative;
           }
           i {
@@ -228,7 +293,7 @@
         >a {
           display: block;
           width: 33.33%;
-          color: #999;
+          color: @fontGray;
           text-align: center;
 
           >span {
@@ -250,6 +315,13 @@
         .mt();
         .bd();
         .bt();
+        margin-top: 6px !important;
+        .icon{
+          width: 27px;
+        }
+        p{
+          color: @fontBlack;
+        }
         >a {
           background-color: #fff;
           display: block;

@@ -19,13 +19,15 @@
       </li>
     </ul>
     <div style='text-align: center'>
-      <mt-button @click='loadMoreAll'>加载更多</mt-button>
+      <mt-button @click='loadMoreAll' v-if='loadMore'>加载更多</mt-button>
+      <v-baseline v-else></v-baseline>
     </div>
   </div>
 </template>
 
 <script>
-import Header from '@/common/_header.vue'
+  import Baseline from '@/common/_baseline.vue'
+  import Header from '@/common/_header.vue'
   import * as mockapi from '@/../mockapi'
   export default {
     data() {
@@ -35,9 +37,11 @@ import Header from '@/common/_header.vue'
           pageSize: 10,
         },
         allList: [],
+        loadMore: true
       }
     },
     components: {
+      'v-baseline': Baseline,
       'v-header':Header
     },
     mounted() {
@@ -52,7 +56,11 @@ import Header from '@/common/_header.vue'
             pageSize: this.allQuery.pageSize
           }
         }).then(res => {
-          var data = res.data.data
+          var data = res.data.data.list
+          var isLastPage = res.data.data.pager.isLastPage
+          if (isLastPage) {
+            this.loadMore = false
+          }
           this.allList = this.allList.concat(data)
           this.allQuery.pageNo++
         })
@@ -93,7 +101,7 @@ import Header from '@/common/_header.vue'
   background: #fff;
 }
 .search-wrap{
-  background: #F8FCFF;
+  // background: #F8FCFF;
   height: 100%;
   .fa-icon{
     position: relative;

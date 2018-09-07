@@ -10,6 +10,7 @@ const CategoryMain = resolve => require(['@/components/category/main.vue'], reso
 const Car = resolve => require(['@/views/shop/Car.vue'],resolve)
 const Collection = resolve => require(['@/views/shop/Collection.vue'],resolve)
 const Order = resolve => require(['@/views/shop/Order.vue'],resolve)
+const orderDetail = resolve => require(['@/views/shop/orderDetail.vue'],resolve)
 const Share = resolve => require(['@/views/shop/Share.vue'],resolve)
 const User = resolve => require(['@/views/shop/User.vue'], resolve)
 const Detail = resolve => require(['@/views/shop/Detail.vue'], resolve)
@@ -20,13 +21,15 @@ const Edit = resolve => require(['@/views/shop/Edit.vue'], resolve)
 const ShareCompany = resolve => require(['@/views/shop/ShareCompany.vue'], resolve)
 const All = resolve => require(['@/views/shop/All.vue'], resolve)
 const ShareJf = resolve => require(['@/views/shop/ShareJf.vue'], resolve)
+const fxJf = resolve => require(['@/views/shop/fxJf.vue'], resolve)
 const myOrder = resolve => require(['@/views/shop/myOrders.vue'], resolve)
 const shareProduct = resolve => require(['@/views/shop/ShareProduct.vue'], resolve)
 const shareOrders = resolve => require(['@/views/shop/ShareOrders.vue'], resolve)
 const chouJiang = resolve => require(['@/views/shop/choujiang.vue'], resolve)
 const refund = resolve => require(['@/views/shop/refund.vue'], resolve)
 const refundList = resolve => require(['@/views/shop/refundList.vue'], resolve)
-
+const refundDetail = resolve => require(['@/views/shop/refundDetail.vue'], resolve)
+const NoAuth = resolve => require(['@/views/shop/NoAuth.vue'],resolve)
 // show
 const ShowIndex = resolve => require(['@/views/show/index.vue'], resolve)
 const ShowItem = resolve => require(['@/views/show/item.vue'], resolve)
@@ -44,7 +47,26 @@ const NewsDetail = resolve => require(['@/views/show/item/newsDetail'],resolve)
 const CommonDetail = resolve => require(['@/views/show/item/commonDetail'],resolve)
 const CommonList = resolve => require(['@/views/show/item/commonList'],resolve)
 
-const shopRouters = [{
+// sharecenter
+const ShareCenter = resolve => require(['@/views/sharecenter/index.vue'],resolve)
+const MyChannel = resolve => require(['@/views/sharecenter/myChannel.vue'],resolve)
+const SCorders = resolve => require(['@/views/sharecenter/shareOrders.vue'],resolve)
+const SCprouducts = resolve => require(['@/views/sharecenter/shareProducts.vue'],resolve)
+const SCfxjl = resolve => require(['@/views/sharecenter/fxJl.vue'],resolve)
+
+// channelcenter
+const CCindex = resolve => require(['@/views/channelcenter/index.vue'],resolve)
+const CCmanager = resolve => require(['@/views/channelcenter/sharemanager.vue'],resolve)
+const CCfxjl = resolve => require(['@/views/channelcenter/fxJl.vue'],resolve)
+const CCproducts = resolve => require(['@/views/channelcenter/shareProducts.vue'],resolve)
+const CClogin = resolve => require(['@/views/channelcenter/login.vue'],resolve)
+const CChylist = resolve => require(['@/views/channelcenter/hyList.vue'],resolve)
+const CCywyFxjl = resolve => require(['@/views/channelcenter/ywyfxJl.vue'],resolve)
+const CCdetail = resolve => require(['@/views/channelcenter/productDetail.vue'],resolve)
+
+
+const shopRouters = [
+  {
     path: '/shop',
     name: '首页',
     component: Index,
@@ -134,8 +156,16 @@ const shopRouters = [{
   },
   {
     path: '/shop/shareJf',
-    name: '我的积分',
+    name: '购物积分',
     component: ShareJf,
+    meta: {
+      requireAuth: true
+    }
+  },
+  {
+    path: '/shop/fxJf',
+    name: '分销积分',
+    component: fxJf,
     meta: {
       requireAuth: true
     }
@@ -176,6 +206,14 @@ const shopRouters = [{
     }
   },
   {
+    path: '/shop/orderDetail',
+    name: '订单详情',
+    component: orderDetail,
+    meta: {
+      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+    }
+  },
+  {
     path: '/shop/shareproduct',
     name: '分销产品',
     component: shareProduct,
@@ -201,8 +239,16 @@ const shopRouters = [{
   },
   {
     path: '/shop/refund',
-    name: '申请退款',
+    name: '退款操作',
     component: refund,
+    meta: {
+      requireAuth: true,
+    }
+  },
+  {
+    path: '/shop/refundDetail',
+    name: '退款详情',
+    component: refundDetail,
     meta: {
       requireAuth: true,
     }
@@ -214,6 +260,11 @@ const shopRouters = [{
     meta: {
       requireAuth: true,
     }
+  },
+  {
+    path: '/shop/noauth',
+    name: '未关注',
+    component: NoAuth
   }
 ]
 
@@ -295,10 +346,105 @@ const showRouters = [
   }
 ]
 
+const shareRouters = [
+  {
+    path: '/sharecenter',
+    name: 'ShareCenter',
+    component: ShareCenter,
+    meta: {
+      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+      ywyAuth: true
+    }
+  },
+  {
+    path: '/sharecenter/mychannel',
+    name: 'MyChannel',
+    component: MyChannel,
+    meta: {
+      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+      ywyAuth: true
+    }
+  },
+  {
+    path: '/sharecenter/shareorders',
+    name: 'SCorders',
+    component: SCorders,
+    meta: {
+      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+      ywyAuth: true
+    }
+  },
+  {
+    path: '/sharecenter/shareproducts',
+    name: 'SCprouducts',
+    component: SCprouducts,
+    meta: {
+      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+      ywyAuth: true
+    }
+  },
+  {
+    path: '/sharecenter/fxjl',
+    name: 'SCfxjl',
+    component: SCfxjl,
+    meta: {
+      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+      ywyAuth: true
+    }
+  }
+]
+
+const channelRouters = [
+  {
+    path: '/channelcenter',
+    name: 'ChannelCenter',
+    component: CCindex
+  },
+  {
+    path: '/channelcenter/sharemanager',
+    name: 'sharemanager',
+    component: CCmanager
+  },
+  {
+    path: '/channelcenter/fxjl',
+    name: 'fxjl',
+    component: CCfxjl
+  },
+  {
+    path: '/channelcenter/shareproducts',
+    name: 'CCproducts',
+    component: CCproducts
+  },
+  {
+    path: '/channelcenter/login',
+    name: 'CClogin',
+    component: CClogin
+  },
+  {
+    path: '/channelcenter/hylist',
+    name: 'CChylist',
+    component: CChylist
+  },
+  {
+    path: '/channelcenter/ywyfxjl',
+    name: 'CCywyFxjl',
+    component: CCywyFxjl
+  },
+  {
+    path: '/channelcenter/detail',
+    name: 'CCdetail',
+    component: CCdetail
+  },
+
+
+]
+
 export default new Router({
   // mode: 'history',
   routes: [
     ...shopRouters,
-    ...showRouters
+    ...showRouters,
+    ...shareRouters,
+    ...channelRouters
   ]
 })

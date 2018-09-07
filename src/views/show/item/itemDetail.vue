@@ -56,6 +56,11 @@
       width: 100%;
     }
   }
+  img{
+    width: 90vw !important;
+    display: block !important;
+    margin: 0 auto !important;
+  }
   .item-title{
     margin-top: 15px;
     text-align: center;

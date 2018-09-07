@@ -7,8 +7,9 @@
       </h1>
       <p class="chose-view-intro">{{view.ProductIntro}}</p>
       <div class='item-wrap'>
-        <span>原价：{{view.OriginalPrice}}元</span>
-        <span>折扣价：{{view.DiscountPrice}}元</span>
+        <p class='discountprice' v-if='enabledProp.length != 1'><i>￥</i>{{view.minPrice}}-{{view.maxPrice}}</p>
+        <p class='discountprice' v-if='enabledProp.length == 1'><i>￥</i>{{this.DiscountPrice}}</p>
+        <span class='originalprice' v-if='enabledProp.length == 1 && this.DiscountPrice != this.OriginalPrice'>原价{{this.OriginalPrice}}元</span>
       </div>
       <div class='item-wrap'>
         <span>浏览次数： {{view.VisitTimes}}</span>
@@ -19,8 +20,8 @@
         <span v-if='view.DestinationTypeName'>目的地类别： {{view.DestinationTypeName}}</span>
         <span v-if='view.AvailableNum'>使用天数：{{view.AvailableNum}}</span>
         <span v-if='view.HouseTypeName'>房型类别： {{view.HouseTypeName}}</span>
-        <span v-if='view.UseStartTim'>可使用开始日期： {{view.UseStartTime}}</span>
-        <span v-if='view.UseEndTime'>可使用截止日期：{{view.UseEndTime}}</span>
+        <span v-if='view.UseStartTim'>可使用开始日期： {{parseTime(view.UseStartTime)}}</span>
+        <span v-if='view.UseEndTime'>可使用截止日期：{{parseTime(view.UseEndTime)}}</span>
         <span v-if = 'view.Unable'>不可使用日期: {{view.Unable}}</span>
         <span v-if = 'view.SuitableUserName'>适用人群：{{view.SuitableUserName}}</span>
       </div>
@@ -38,21 +39,28 @@
       <div class="pick" >
         <div  v-if='view.diclist[0]'>
           <h1>请选择{{view.diclist[0].DicTypeName}}:</h1>
-          <el-radio-group v-model="radio[0].radio" @change='changeSelect' @click.native="clickToggle0" size="medium">
-            <el-radio-button v-for="(item, k) in modal1" :label="item.code">{{item.name}}</el-radio-button>
-          </el-radio-group>
+          <div style='cursor:pointer'>
+            <el-radio-group v-model="radio[0].radio" @change='changeSelect' size="medium">
+              <el-radio-button style='cursor:pointer' @click.native.prevent="clickToggle0(item.code)" v-for="(item, k) in modal1" :label="item.code" :key='k'>{{item.name}}</el-radio-button>
+            </el-radio-group>
+          </div>
         </div>
         <div v-if='view.diclist[1]'>
           <h1>请选择{{view.diclist[1].DicTypeName}}:</h1>
-          <el-radio-group v-model="radio[1].radio" @change='changeSelect' @click.native="clickToggle1" size="medium">
-            <el-radio-button v-for="(item, k) in modal2" :label="item.code">{{item.name}}</el-radio-button>
-          </el-radio-group>
+          <!-- @click.native的情况下无法实现toggle效果 -->
+          <div  style='cursor:pointer'>
+            <el-radio-group v-model="radio[1].radio" @change='changeSelect' size="medium">
+              <el-radio-button style='cursor:pointer' @click.native.prevent="clickToggle1(item.code)"  v-for="(item, k) in modal2" :label="item.code"  :key='k'>{{item.name}}</el-radio-button>
+            </el-radio-group>
+          </div>
         </div>
         <div v-if='view.diclist[2]'>
           <h1>请选择{{view.diclist[2].DicTypeName}}:</h1>
-          <el-radio-group v-model="radio[2].radio" @change='changeSelect' @click.native="clickToggle2" size="medium">
-            <el-radio-button v-for="(item, k) in modal3" :label="item.code">{{item.name}}</el-radio-button>
-          </el-radio-group>
+          <div>
+            <el-radio-group v-model="radio[2].radio" @change='changeSelect' size="medium">
+              <el-radio-button style='cursor:pointer' @click.native.prevent="clickToggle2(item.code)"  v-for="(item, k) in modal3" :label="item.code"  :key='k'>{{item.name}}</el-radio-button>
+            </el-radio-group>
+          </div>
         </div>
       </div>
       <div class='line'></div>
@@ -93,6 +101,7 @@ import {
   mapState
 } from 'vuex'
 
+import {parseTime} from '@/util/data.js'
 import * as mockapi from '@/../mockapi'
 export default {
   props: [
@@ -117,7 +126,9 @@ export default {
       enabledProp: [],
       modal1: [],
       modal2: [],
-      modal3: []
+      modal3: [],
+      OriginalPrice: '',
+      DiscountPrice: ''
     }
   },
   computed: {
@@ -147,6 +158,7 @@ export default {
     // sizeChose(i) {
     //   this.$store.commit('CHANGE_SIZE_SELECTED', i);
     // },
+    parseTime: parseTime,
     toggleSelected(item) {
       item.IsChecked = !item.IsChecked
     },
@@ -161,6 +173,10 @@ export default {
       }).then(res => {
         var data = res.data.data
         this.enabledProp = data
+        if (this.enabledProp.length == 1) {
+          this.OriginalPrice = this.enabledProp[0].OriginalPrice
+          this.DiscountPrice = this.enabledProp[0].DiscountPrice
+        }
         this.$store.commit('saveSelectedProp', this.enabledProp)
         this.modal1 = []
         this.modal2 = []
@@ -199,28 +215,22 @@ export default {
       })
     },
 
-    clickToggle0() {
+    clickToggle0(e) {
       console.log(1111111111111)
-      if (this.radio[0].radio) {
-        this.radio[0].radio = ''
-        this.changeSelect()
-      }
+      e === this.radio[0].radio ? this.radio[0].radio = '' : this.radio[0].radio = e
+      this.changeSelect()
     },
 
-    clickToggle1() {
-      console.log(1111111111111)
-      if (this.radio[1].radio) {
-        this.radio[1].radio = ''
-        this.changeSelect()
-      }
+    clickToggle1(e) {
+      console.log(2222222222222)
+      e === this.radio[1].radio ? this.radio[1].radio = '' : this.radio[1].radio = e
+      this.changeSelect()
     },
 
-    clickToggle2() {
-      console.log(1111111111111)
-      if (this.radio[2].radio) {
-        this.radio[2].radio = ''
-        this.changeSelect()
-      }
+    clickToggle2(e) {
+      console.log(3333333333333)
+      e === this.radio[2].radio ? this.radio[2].radio = '' : this.radio[2].radio = e
+      this.changeSelect()
     }
 
   }
@@ -229,7 +239,18 @@ export default {
 
 <style lang="less" scoped>
 @import '../../assets/fz.less';
+.originalprice{
+  text-decoration:line-through;
+}
+.discountprice{
+  font-size: 16px;
+  color: red;
+  i{
+    font-size: 12px;
+  }
+}
 .chose {
+    background: #fff;
     padding: 3vw;
     .chose-view {
         > h1 {
@@ -323,12 +344,12 @@ export default {
             line-height: 14vw;
             padding-top: 1.6vw;
             span {
-                height: 5.5vw;
-                width: 5.5vw;
-                line-height: 5.5vw;
+                height: 5vw;
+                width: 5vw;
+                line-height: 5vw;
                 position: absolute;
                 top: 0.5vw;
-                right: 5.5vw;
+                right: 5vw;
                 background-color: @cl;
                 border-radius: 50%;
                 color: #fff;
@@ -372,7 +393,7 @@ export default {
 }
 .item-wrap span{
   font-size: 12px;
-  width: 45%;
+  width: 100%;
   display: inline-block;
   box-sizing: border-box;
   padding-right: 10px;

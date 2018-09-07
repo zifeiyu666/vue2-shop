@@ -1,28 +1,32 @@
 <template lang="html">
 
   <div class="wrap">
-    <v-gologin></v-gologin>
     <ul
     class="something" 
-    v-if='list'
-    v-infinite-scroll="loadMore"
-    infinite-scroll-disabled="loading"
-    infinite-scroll-distance="10">
-      <li v-for="(k,i) in list">
+    v-if='list.length != 0'>
+      <li v-for="(k,i) in list" @click='goToDetail(k)'>
           <div class="something-middle">
             <img :src="k.imgurl[0]">
           </div>
           <div class="something-right">
-            <p>{{k.title}}</p>
-            <p style="color:rgb(199, 108, 28)"> {{k.intro}}</p>
+            <p style='height:36px; overflow:hidden'>{{k.title}}</p>
+            <p style="color:rgb(199, 108, 28);height:20px;"> {{k.intro}}</p>
             <p>售价：{{k.price}}元</p>
             <div class="something-right-bottom">
-
               <span @click='deleteCollection(k)'></span>
             </div>
           </div>
       </li>
+
     </ul>
+    <div v-else>
+        <v-nomore></v-nomore>
+    </div>
+
+    <div style='text-align: center' v-if='list.length != 0'>
+        <mt-button @click='loadMore' v-if='isLoadMore'>加载更多</mt-button>
+        <v-baseline v-else></v-baseline>
+    </div>
   </div>
 </template>
 
@@ -33,21 +37,26 @@ import Util from '../../util/common'
 import qs from 'qs'
 import * as mockapi from '@/../mockapi'
 import { Toast } from 'mint-ui';
+import Baseline from '@/common/_baseline.vue'
+import NorMore from '@/components/nomore'
+
 export default {
   components: {
-    'v-gologin': Gologin
+    'v-baseline': Baseline,
+    'v-gologin': Gologin,
+    'v-nomore': NorMore
   },
-  props: ['list'],
-
+  props: ['list', 'isLoadMore'],
   mounted() {
   },
+
   methods: {
     deleteCollection(k) {
       var that = this
       mockapi.shop.api_Shop_cancleCollection_post({
         data: qs.stringify({
           token: this.$store.state.userInfo.MemberToken,
-          Pid: k.id
+          PId: k.id
         })
       }).then(res => {
         if (res.data.result == 1) {
@@ -64,6 +73,9 @@ export default {
           this.$store.dispatch('cutCarList',this.carList)
       }, 0);
     },
+    goToDetail(k) {
+        this.$router.push('')
+    },
     loadMore() {
         this.$emit('loadmore')
     }
@@ -74,10 +86,12 @@ export default {
 
 <style lang="less" scoped>
 @import '../../assets/fz.less';
+@import '../../assets/utils.less';
 .wrap {
     width: 100%;
     .something {
         width: 100%;
+        background: #fff;
         > li {
             display: -ms-flex;
             display: -webkit-box;
@@ -150,10 +164,11 @@ export default {
                     -webkit-line-clamp: 2;
                     -webkit-box-orient: vertical;
                     .fz(font-size,26);
+                    color: @fontBlack;
                 }
                 p:last-of-type {
                     .fz(font-size,22);
-                    color: rgb(168, 168, 168);
+                    color: @fontGray;
                 }
                 .something-right-bottom {
 

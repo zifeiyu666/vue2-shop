@@ -1,0 +1,47 @@
+.pre(@style,@value){
+  -webkit-@{style}: @value;
+     -moz-@{style}: @value;
+      -ms-@{style}: @value;
+          @{style}: @value;
+}
+//动画
+.transition(@arg){
+  .pre(transition,@arg);
+}
+.transition-delay(@delay:0) {
+  .pre(transition-delay,@delay);
+}
+.transition-duration(@duration:200ms) {
+  .pre(transition-duration,@duration);
+}
+.transition-property(@property:all) {
+  .pre(transition-property,@property);
+}
+.transition-timing-function(@function:ease) {
+  .pre(transition-timing-function,@function);
+}
+.transform(@arg){
+  .pre(transform,@arg);
+}
+.transform-origin(@args) {
+  .pre(transform-origin,@args);
+}
+.transform-style(@style) {
+  .pre(transform-style,@style);
+}
+.rotate(@deg:45deg){
+  .transform(rotate(@deg));
+}
+.scale(@factor:.5){
+  .transform(scale(@factor));
+}
+.translate(@x,@y){
+  .transform(translate(@x,@y));
+}
+.translate3d(@x,@y,@z){
+  .transform(translate3d(@x,@y,@z));
+}
+.translateHardware(@x,@y) {
+  .translate(@x,@y);
+  .pre(transform,translate3d(@x,@y,0));
+}

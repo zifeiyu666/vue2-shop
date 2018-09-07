@@ -8,10 +8,13 @@
           <!-- <span>登录/注册</span> -->
            <div class="header-content">
             <p>欢迎您：{{username}}</p>
-            <p>注册时间：{{time}}</p>
-            <p>积分：{{jifen}}</p>
+            <!-- <p>注册时间：{{time}}</p> -->
+            <!-- <p>会员等级：{{memberrank}}</p> -->
+            <!-- <p>购物积分：{{score}}</p> -->
+            <p>分销积分：{{fxscore}}</p>
+            <P>手机号：{{phone}}</P>
           </div>
-          <img class='qrcode' :src="qrcode" alt="">
+          <img class='qrcode' :src="smallQrCode" alt="" @click='showQrCode()'>
       </header>
       <div class="main">
           <!-- <router-link class="my-indent" :to="{ name: ''}">
@@ -69,7 +72,7 @@
           </section> -->
 
           <section class="my-service">
-              <router-link class="my-service-top" :to="{path: '/shop/shareproduct'}">
+              <!-- <router-link class="my-service-top" :to="{path: '/shop/shareproduct'}">
                   <div>
                     <span class="icon2-service">
                         <img src='../../assets/img/cp.png' style='width: 26px;margin-top:-4px' >
@@ -79,14 +82,14 @@
                   <p>
                     <span>分销产品</span><i class="icon-go"></i>
                   </p>
-              </router-link>
+              </router-link> -->
               <router-link class="my-service-bottom" to="/shop/shareCompany">
                   <div>
                     <!-- <span class="icon2-milogo"></span> -->
                     <img src='../../assets/img/fxs.png' style='width: 24px;margin-top:-4px' >
                   </div>
                   <p>
-                    <span>我的分销商</span><i class="icon-go"></i>
+                    <span>我的团队</span><i class="icon-go"></i>
                   </p>
               </router-link>
               <router-link class="my-service-bottom" :to="{ path: '/shop/shareOrders'}">
@@ -97,6 +100,23 @@
                   <p>
                     <span>分销订单</span><i class="icon-go"></i>
                   </p>
+              </router-link>
+              <router-link class="my-service-bottom" :to="{ path: '/shop/shareOrders'}">
+                  <div>
+                    <!-- <span class="icon2-milogo"></span> -->
+                    <img src='../../assets/img/sharegoods1.png' style='width: 22px;margin-top:-4px' >
+                  </div>
+                  <p>
+                    <span>分销产品</span><i class="icon-go"></i>
+                  </p>
+              </router-link>
+              <router-link :to="{ name: '分销积分'}" class="my-service-bottom">
+                <div>
+                  <span class="icon2-f"></span>
+                </div>
+                <p>
+                  <span>返现记录</span><i class="icon-go"></i>
+                </p>
               </router-link>
           </section>
 
@@ -115,6 +135,18 @@
       </div>
       <!-- <v-baseline></v-baseline> -->
       <v-footer></v-footer>
+
+      <!-- 二维码弹窗 -->
+      <!-- <el-dialog
+        class='code_dialog'
+        title='我的分享码'
+        fullscreen
+        :visible.sync="dialogVisible"
+        width="100%"
+        center>
+        <span><img style='width: 100%; display: inline-block' :src="qrcode" alt=""></span>
+      </el-dialog> -->
+      <v-qrcode @close='closeQrCode' :imgurl='qrcode' :isShow='isShow'></v-qrcode>
     </div>
 </template>
 
@@ -122,10 +154,13 @@
   import * as mockapi from '@/../mockapi'
   import Baseline from '@/common/_baseline.vue'
   import Footer from '@/common/_footer.vue'
+  import Qrcode from '@/components/qrcode.vue'
+
   export default {
     components: {
       'v-baseline': Baseline,
-      'v-footer': Footer
+      'v-footer': Footer,
+      'v-qrcode': Qrcode
     },
     data() {
       return {
@@ -133,16 +168,48 @@
         username: '',
         avatar: '',
         time: '',
-        jifen: ''
+        jifen: '',
+        fxscore: '',
+        phone: '',
+        smallQrCode: '',
+        // dialogVisible: false,
+        isShow: false
       }
     },
     mounted() {
       var userInfo = this.$store.state.userInfo
-      this.qrcode = userInfo.SharedQRCode
+      this.smallQrCode = userInfo.SharedQRCode
       this.avatar = userInfo.headimgurl
       this.username = userInfo.nickname
       this.jifen = userInfo.Score,
       this.time = userInfo.subscribe_time
+      this.memberrank = userInfo.MemberRankName
+      this.score = userInfo.Score
+      this.fxscore = userInfo.FenXiaoScore
+      this.phone = userInfo.Phone
+
+      this.getQrCord()
+    },
+    methods: {
+      // 获取二维码
+      getQrCord() {
+        mockapi.shop.api_Shop_getMySharedQRCode_get({
+          params:{
+            token: this.$store.state.userInfo.MemberToken
+          }
+        }).then(res => {
+          var data = res.data.data
+          this.qrcode = data
+        })
+      },
+      showQrCode() {
+        console.log(11111)
+        // this.dialogVisible = true
+        this.isShow = true
+      },
+      closeQrCode() {
+        this.isShow = false
+      }
     }
   }
 </script>
@@ -151,6 +218,13 @@
   @import '../../assets/fz.less';
   @import '../../assets/index/style.css';
   @import '../../assets/user/icon/carstyle.css';
+  
+  .my-service-bottom{
+    p span{
+      color: @fontBlack;
+    }
+  }
+
   .avatar{
       float: left;
       padding: 10px;
@@ -158,14 +232,17 @@
   .car {
     width: 100%;
     padding-bottom: 14vw;
-    background-color: #F8FCFF;
     .qrcode{
         position: absolute;
-        width: 60px;
-        height: 60px;
+        width: 50px;
+        height: 50px;
         right: 20px;
+        border: 1px solid #eee;
       }
     .header-content{
+      p{
+        font-size: 12px;
+      }
       color: #fff;
       position: absolute;
       left: 80px;
@@ -273,6 +350,9 @@
             text-align: center;
           }
         }
+      }
+      .my-service{
+        color: @fontBlack;
       }
 
       .my-vip,.my-service,.my-settle {
