@@ -41,7 +41,7 @@
                   <p>{{k.title}}</p>
                   <!-- <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p> -->
                   <p style="color:rgb(199, 108, 28);height: 20px;"> {{k.intro}}</p>
-                  <p>￥{{k.price}}<span v-if='k.ywyfx && k.ywyfx != 0'><i>赚</i>￥{{k.ywyfx}}</span> </p>
+                  <p>￥{{k.price}} </p>
                   <!-- <div class="something-right-bottom">
                     <span @click='deleteCollection(k)'></span>
                   </div> -->
@@ -68,7 +68,7 @@
                   <p>{{k.title}}</p>
                   <!-- <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p> -->
                   <p style="color:rgb(199, 108, 28);height: 20px;"> {{k.intro}}</p>
-                  <p>￥{{k.price}}<span v-if='k.ywyfx && k.ywyfx != 0'><i>赚</i>￥{{k.ywyfx}}</span> </p>
+                  <p>￥{{k.price}} </p>
                   <!-- <div class="something-right-bottom">
                     <span @click='deleteCollection(k)'></span>
                   </div> -->
@@ -95,7 +95,7 @@
                   <p>{{k.title}}</p>
                   <!-- <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p> -->
                   <p style="color:rgb(199, 108, 28);height: 20px;"> {{k.intro}}</p>
-                  <p>￥{{k.price}}<span v-if='k.ywyfx && k.ywyfx != 0'><i>赚</i>￥{{k.ywyfx}}</span> </p>
+                  <p>￥{{k.price}} </p>
                   <!-- <div class="something-right-bottom">
                     <span @click='deleteCollection(k)'></span>
                   </div> -->
@@ -122,7 +122,7 @@
                   <p>{{k.title}}</p>
                   <!-- <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p> -->
                   <p style="color:rgb(199, 108, 28);height: 20px;"> {{k.intro}}</p>
-                  <p>￥{{k.price}}<span v-if='k.ywyfx && k.ywyfx != 0'><i>赚</i>￥{{k.ywyfx}}</span> </p>
+                  <p>￥{{k.price}}</p>
                   <!-- <div class="something-right-bottom">
                     <span @click='deleteCollection(k)'></span>
                   </div> -->
@@ -351,6 +351,7 @@ export default {
           this.allQuery.loadMore = false
         }
         this.allList = this.allList.concat(data)
+        console.log({allList: this.allList})
         // this.allQuery.pageNo++
       }).catch(err => {
         this.$store.commit('SET_LOADING', false)
@@ -363,6 +364,7 @@ export default {
     },
     // 获取权益卡商品列表
     getQYKProductList() {
+      this.$store.commit('SET_LOADING', true)
       mockapi.shop.api_Channel_getProductList_get({
         params: {
           ProjectType: '',
@@ -374,6 +376,7 @@ export default {
           DestinationType: '',
         }
       }).then(res => {
+        this.$store.commit('SET_LOADING', false)
         var data = res.data.data.list
         var isLastPage = res.data.data.pager.isLastPage
         if (isLastPage) {
@@ -381,6 +384,9 @@ export default {
         }
         this.QYKList = this.QYKList.concat(data)
         // this.QYKQuery.pageNo++
+      }).catch(err => {
+        console.log(err)
+        this.$store.commit('SET_LOADING', false)
       })
     },
     loadMoreQYK() {
@@ -389,6 +395,7 @@ export default {
     },
      // 获取旅游打包商品列表
     getLTDBProductList() {
+      this.$store.commit('SET_LOADING', true)
       mockapi.shop.api_Channel_getProductList_get({
         params: {
           ProjectType: '',
@@ -400,6 +407,7 @@ export default {
           DestinationType: this.DestinationValue,
         }
       }).then(res => {
+        this.$store.commit('SET_LOADING', false)
         var data = res.data.data.list
         var isLastPage = res.data.data.pager.isLastPage
         if (isLastPage) {
@@ -407,6 +415,9 @@ export default {
         }
         this.LTDBList = this.LTDBList.concat(data)
         // this.LTDBQuery.pageNo++
+      }).catch(err => {
+        console.log(err)
+        this.$store.commit('SET_LOADING', false)
       })
     },
     loadMoreLTDB() {
@@ -415,6 +426,7 @@ export default {
     },
      // 获取单独商品列表
     getDDProductList() {
+      this.$store.commit('SET_LOADING', false)
       mockapi.shop.api_Channel_getProductList_get({
         params: {
           ProjectType: '',
@@ -426,6 +438,7 @@ export default {
           DestinationType: this.DestinationValue,
         }
       }).then(res => {
+        this.$store.commit('SET_LOADING', false)
         var data = res.data.data.list
         var isLastPage = res.data.data.pager.isLastPage
         if (isLastPage) {
@@ -433,6 +446,9 @@ export default {
         }
         this.DDList = this.DDList.concat(data)
         // this.DDQuery.pageNo++
+      }).catch(err => {
+        console.log(err)
+        this.$store.commit('SET_LOADING', false)
       })
     },
     loadMoreDD() {
@@ -601,7 +617,7 @@ input{
 }
 .wrap {
     width: 100%;
-    padding-bottom: 60px;
+    // padding-bottom: 60px;
     .something {
         width: 100%;
         background: #fff;

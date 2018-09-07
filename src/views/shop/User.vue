@@ -141,6 +141,9 @@
     },
     mounted() {
       var userInfo = this.$store.state.userInfo
+      console.log({userInfo: userInfo})
+      console.log(userInfo)
+      console.log(userInfo.nickname)
       this.avatar = userInfo.headimgurl
       this.smallQrCode = userInfo.SharedQRCode
       this.username = userInfo.nickname

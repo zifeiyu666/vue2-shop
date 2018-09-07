@@ -1,6 +1,15 @@
 import instance from './instance';
 import { convertRESTAPI } from '../util';
 
+/** 获取像请 */
+function api_Channel_getProduct_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Channel/getProduct',
+    opts: opts
+  });
+}
+
 /** 获取我的营业额记录 */
 function api_Channel_getMyCrashbackList_get(opts) {
   return instance({
@@ -749,6 +758,7 @@ function shop_getBanner_get(opts) {
 }
 
 export {
+  api_Channel_getProduct_get,
   api_Channel_getMyCrashbackList_get,
   api_Channel_getSalesmanCrashbackList_get,
   api_Channel_getSalesmanMembersList_get,

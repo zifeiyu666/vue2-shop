@@ -80,17 +80,14 @@
       }
     },
     mounted() {
-      var userInfo = this.$store.state.userInfo
-      this.smallQrCode = userInfo.SharedQRCode
-      this.avatar = userInfo.headimgurl
-      this.username = userInfo.nickname
-      this.jifen = userInfo.Score,
-      this.time = userInfo.subscribe_time
-      this.memberrank = userInfo.MemberRankName
-      this.score = userInfo.Score
-      this.fxscore = userInfo.FenXiaoScore
-      this.phone = userInfo.Phone
-
+      let userInfo = sessionStorage.getItem('token')
+      if (userInfo) {
+        let data = userInfo.split(',')
+        this.username = data[0]
+        this.token = data[1]
+      } else {
+        this.$router.push('/channelcenter/login')
+      }
       this.getQrCord()
     },
     methods: {
@@ -98,7 +95,7 @@
       getQrCord() {
         mockapi.shop.api_Channel_getChannelQRCode_get({
           params:{
-            token: this.$store.state.userInfo.MemberToken
+            token: this.token
           }
         }).then(res => {
           var data = res.data.data

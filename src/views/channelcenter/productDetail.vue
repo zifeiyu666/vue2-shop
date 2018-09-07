@@ -1,12 +1,15 @@
 <template lang="html">
   <div class="detail" v-loading='isLoading'>
     <div v-if='detail'>
-      <v-share imgurl="https://ss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=91a426229082d158a4825fb1b00819d5/0824ab18972bd4077557733177899e510eb3096d.jpg" />
+      <!-- <v-share imgurl="https://ss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=91a426229082d158a4825fb1b00819d5/0824ab18972bd4077557733177899e510eb3096d.jpg" /> -->
       <v-swiper :imgList="detail.imgurl"></v-swiper>
       <v-chose :view="detail"></v-chose>
       <v-content :content='detail'></v-content>
       <v-baseline></v-baseline>
       <!-- <v-footer :detail="detail" :carnum="carnum"></v-footer> -->
+    </div>
+    <div v-else>
+      <v-nomore></v-nomore>
     </div>
   </div>
 </template>
@@ -18,6 +21,7 @@ import Content from '@/components/detail/content.vue'
 import Footer from '@/components/detail/footer.vue'
 import Baseline from '@/common/_baseline.vue'
 import Share from '@/components/shareBtn.vue'
+import NorMore from '@/components/nomore'
 
 import qs from 'qs'
 import * as mockapi from '@/../mockapi'
@@ -28,7 +32,8 @@ export default {
     'v-content':Content,
     'v-footer':Footer,
     'v-baseline':Baseline,
-    'v-share': Share
+    'v-share': Share,
+    'v-nomore': NorMore
   },
   data() {
     return{
@@ -38,16 +43,24 @@ export default {
     }
   },
   mounted() {
+    let userInfo = sessionStorage.getItem('token')
+    if (userInfo) {
+      let data = userInfo.split(',')
+      this.username = data[0]
+      this.token = data[1]
+    } else {
+      this.$router.push('/channelcenter/login')
+    }
     this.getDetail()
     // this.getCarNum()
   },
   methods: {
     getDetail() {
       this.isLoading = true
-      mockapi.shop.api_Shop_getProduct_get({
+      mockapi.shop.api_Channel_getProduct_get({
         params:{
-          token: this.$store.state.userInfo.MemberToken,
-          Pid: this.$route.query.pid
+          token: this.token,
+          PId: this.$route.query.pid
         }
       }).then(res => {
         this.isLoading = false

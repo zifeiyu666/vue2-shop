@@ -173,10 +173,8 @@
     },
     mounted() {
       var userInfo = this.$store.state.userInfo
-      this.smallQrCode = userInfo.SharedQRCode
       this.avatar = userInfo.headimgurl
       this.username = userInfo.nickname
-      this.jifen = userInfo.Score,
       this.time = userInfo.subscribe_time
       this.memberrank = userInfo.MemberRankName
       this.score = userInfo.Score
@@ -188,13 +186,15 @@
     methods: {
       // 获取二维码
       getQrCord() {
-        mockapi.shop.api_Shop_getMySharedQRCode_get({
+        mockapi.shop.api_Share_getMyYeWuYuanSharedQRCode_get({
           params:{
             token: this.$store.state.userInfo.MemberToken
           }
         }).then(res => {
-          var data = res.data.data
-          this.qrcode = data
+          var data = res.data.data.split(',')
+          this.smallQrCode = data[0]
+          this.qrcode = data[1]
+
         })
       },
       showQrCode() {

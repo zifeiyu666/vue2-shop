@@ -45,6 +45,7 @@
         </li>
       </ul>
       <v-baseline v-if='isLastPage && List.length > 0'></v-baseline>
+      <v-nomore v-if='(!List) || (List.length == 0)'></v-nomore>
     </div>
     
   </div>
@@ -93,10 +94,12 @@ import { parseTime } from '@/util/data.js'
           var data = res.data.data.list
           this.isLastPage = res.data.data.pager.isLastPage
           this.List = this.List.concat(data)
+          console.log({List: this.List})
           this.pageNo++
         }).catch(err => {
           this.isLoading = false
           this.loading = false
+          console.log({List: this.List})  
           console.log(err.message || err)
         })
       },
@@ -138,7 +141,7 @@ import { parseTime } from '@/util/data.js'
   background: #fff;
 }
 .search-wrap{
-  background: #F8FCFF;
+  /* background: #F8FCFF; */
   height: 100%;
   .fa-icon{
     position: relative;

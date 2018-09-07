@@ -69,7 +69,7 @@ export default {
   background: #fff;
 }
 .search-wrap{
-  background: #F8FCFF;
+  // background: #F8FCFF;
   height: 100%;
   .fa-icon{
     position: relative;

@@ -65,7 +65,9 @@ import { parseTime } from '@/util/data.js'
         FxList: [],
         score: null,
         usescore: null,
-        loading: false
+        loading: false,
+        token: '',
+        username: ''
       }
     },
     components: {
@@ -81,6 +83,14 @@ import { parseTime } from '@/util/data.js'
       this.time = userInfo.subscribe_time
     },
     mounted() {
+      let userInfo = sessionStorage.getItem('token')
+      if (userInfo) {
+        let data = userInfo.split(',')
+        this.username = data[0]
+        this.token = data[1]
+      } else {
+        this.$router.push('/channelcenter/login')
+      }
       this.getFxList()
     },
     methods: {
@@ -90,7 +100,8 @@ import { parseTime } from '@/util/data.js'
         this.$store.commit('SET_LOADING', true);
         mockapi.shop.api_Channel_getMyCrashbackList_get({
           params: {
-            token: this.$store.state.userInfo.MemberToken,
+            token: this.token,
+            openid: this.$route.query.id,
             pageNo: this.pageNo,
             pageSize: this.pageSize
           }

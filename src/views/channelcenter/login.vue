@@ -14,6 +14,7 @@
 <script>
   import * as mockapi from '@/../mockapi'
   import { Toast } from 'mint-ui';
+  import qs from 'qs'
   export default{
     data() {
       return {
@@ -39,12 +40,16 @@
             })
           )
         }).then(res => {
+          console.log('success')
           if(res.data.result == 1) {
             Toast('登陆成功，跳转中。。。')
-            this.$router.push('/channelcenter/index')
+            sessionStorage.setItem('token', res.data.data)
+            this.$router.push('/channelcenter')
           } else {
             Toast(res.data.msg)
           }
+        }).catch(err => {
+          console.log(err)
         })
       }
     }

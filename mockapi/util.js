@@ -10,7 +10,7 @@ function createAPI(baseURL) {
       url: conf.url,
       baseURL: baseURL,
       method: conf.method,
-      // withCredentials: false
+      // withCredentials: true
     }, conf.opts));
   };
 }

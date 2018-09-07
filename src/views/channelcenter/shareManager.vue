@@ -74,6 +74,14 @@ import { parseTime } from '@/util/data.js'
       'v-nomore': NorMore
     },
     mounted() {
+      let userInfo = sessionStorage.getItem('token')
+      if (userInfo) {
+        let data = userInfo.split(',')
+        this.username = data[0]
+        this.token = data[1]
+      } else {
+        this.$router.push('/channelcenter/login')
+      }
       this.getList()
     },
     methods: {
@@ -89,7 +97,7 @@ import { parseTime } from '@/util/data.js'
         this.loading = true
         mockapi.shop.api_Channel_getMySalesmanList_get({
           params: {
-            token: this.$store.state.userInfo.MemberToken,
+            token: this.token,
             pageNo: this.pageNo,
             pageSize: this.pageSize
           }
@@ -144,7 +152,7 @@ import { parseTime } from '@/util/data.js'
   background: #fff;
 }
 .search-wrap{
-  background: #F8FCFF;
+  /* background: #F8FCFF; */
   height: 100%;
   .fa-icon{
     position: relative;

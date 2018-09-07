@@ -41,9 +41,10 @@ import * as mockapi from '@/../mockapi'
 // 用钩子函数beforeEach()对路由进行判断
 router.beforeEach((to, from, next) => {
     if (to.meta.requireAuth) {  // 需要权限,进一步进行判断
-      // console.log('进入需要登录信息路由')
-      if (store.state.userInfo || store.state.userInfo.MemberToken) {  // 通过vuex state获取当前的token是否存在
+      console.log('进入需要登录信息路由')
+      if (store.state.userInfo && store.state.userInfo.MemberToken) {  // 通过vuex state获取当前的token是否存在
         // 不要求必须有手机号
+        console.log('已有登录信息')
         next()
         // if (store.state.userInfo.Phone) {
         //   // console.log('已经绑定手机')
@@ -96,7 +97,10 @@ router.beforeEach((to, from, next) => {
             if (to.meta.ywyAuth) {
               if (userType != 4) {
                 Toast('当前页面没有访问权限')
+                console.log('不是业务员')
                 return
+              } else {
+                console.log('是业务员')
               }
             }
 
@@ -132,6 +136,18 @@ router.beforeEach((to, from, next) => {
               router.push('/shop/noauth')
               return
             }
+            // 验证业务员身份
+            var userType = data.AttentionMethod
+            if (to.meta.ywyAuth) {
+              if (userType != 4) {
+                Toast('当前页面没有访问权限')
+                console.log('不是业务员')
+                return
+              } else {
+                console.log('是业务员')
+              }
+            }
+
             console.log('成功获取到token')
             
             var data = response.data.data
@@ -139,6 +155,8 @@ router.beforeEach((to, from, next) => {
             // data.Phone = '18554870804'
             console.log(data)
             var MemberToken = data.MemberToken
+
+            
             console.log(MemberToken)
             sessionStorage.setItem('membertoken', MemberToken)
             // 用户信息存在vuex中

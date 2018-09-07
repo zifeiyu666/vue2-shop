@@ -17,7 +17,7 @@
     <ul
       v-if='FxList.length > 0 && FxList[0]'
       v-infinite-scroll="loadMore"
-      infinite-scroll-disabled="loading"
+      infinite-scroll-disabled="isloading"
       infinite-scroll-distance="10"
       >
       <li v-for="(i, index) in FxList" :key='index' >
@@ -73,14 +73,15 @@ import { parseTime } from '@/util/data.js'
       'v-baseline': Baseline,
       'v-nomore': NorMore
     },
-    created() {
-      var userInfo = this.$store.state.userInfo
-      this.qrcode = userInfo.SharedQRCode
-      this.avatar = userInfo.headimgurl
-      this.username = userInfo.nickname
-      this.time = userInfo.subscribe_time
-    },
     mounted() {
+      let userInfo = sessionStorage.getItem('token')
+      if (userInfo) {
+        let data = userInfo.split(',')
+        this.username = data[0]
+        this.token = data[1]
+      } else {
+        this.$router.push('/channelcenter/login')
+      }
       this.getFxList()
     },
     methods: {
@@ -90,19 +91,18 @@ import { parseTime } from '@/util/data.js'
         this.$store.commit('SET_LOADING', true);
         mockapi.shop.api_Channel_getSalesmanCrashbackList_get({
           params: {
-            token: this.$store.state.userInfo.MemberToken,
+            token: this.token,
             pageNo: this.pageNo,
             pageSize: this.pageSize,
             openid: this.$route.query.id
           }
         }).then(res => {
+          this.isloading = false
           var data = res.data.data.list
           this.pageNo++
           this.FxList = this.FxList.concat(data)
           this.isLastPage = res.data.data.pager.isLastPage
-          console.log({isLastPage: this.isLastPage})
           this.$store.commit('SET_LOADING', false);
-          this.isloading = false
         }).catch(err => {
           console.log(err)
           this.$store.commit('SET_LOADING', false);
