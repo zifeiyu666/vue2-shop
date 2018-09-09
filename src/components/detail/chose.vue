@@ -10,6 +10,7 @@
         <p class='discountprice' v-if='enabledProp.length != 1'><i>￥</i>{{view.minPrice}}-{{view.maxPrice}}</p>
         <p class='discountprice' v-if='enabledProp.length == 1'><i>￥</i>{{this.DiscountPrice}}</p>
         <span class='originalprice' v-if='enabledProp.length == 1 && this.DiscountPrice != this.OriginalPrice'>原价{{this.OriginalPrice}}元</span>
+        <span class='fx' v-if='view.prop[0].ywyfx && view.prop[0].ywyfx != 0'><i>赚</i>￥{{view.prop[0].ywyfx}}</span>
       </div>
       <div class='item-wrap'>
         <span>浏览次数： {{view.VisitTimes}}</span>
@@ -241,6 +242,23 @@ export default {
 @import '../../assets/fz.less';
 .originalprice{
   text-decoration:line-through;
+}
+.fx{
+  margin-left: 15px;
+  padding-right: 15px;
+  i{
+    background: @fontRed;
+    color: #fff;
+    // padding: 4px;
+    text-align: center;
+    line-height: 20px;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    box-sizing: border-box;
+    border-radius: 10px;
+  }
+  font-size: 12px;
 }
 .discountprice{
   font-size: 16px;

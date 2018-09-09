@@ -129,7 +129,7 @@
       color: @fontBlack;
     }
   }
-
+  
   .avatar{
       float: left;
       padding: 10px;

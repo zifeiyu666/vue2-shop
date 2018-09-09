@@ -53,6 +53,7 @@ const MyChannel = resolve => require(['@/views/sharecenter/myChannel.vue'],resol
 const SCorders = resolve => require(['@/views/sharecenter/shareOrders.vue'],resolve)
 const SCprouducts = resolve => require(['@/views/sharecenter/shareProducts.vue'],resolve)
 const SCfxjl = resolve => require(['@/views/sharecenter/fxJl.vue'],resolve)
+const SCproductDetail = resolve => require(['@/views/sharecenter/productDetail.vue'],resolve)
 
 // channelcenter
 const CCindex = resolve => require(['@/views/channelcenter/index.vue'],resolve)
@@ -387,6 +388,15 @@ const shareRouters = [
     path: '/sharecenter/fxjl',
     name: 'SCfxjl',
     component: SCfxjl,
+    meta: {
+      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+      ywyAuth: true
+    }
+  },
+  {
+    path: '/sharecenter/productdetail',
+    name: 'SCproductDetail',
+    component: SCproductDetail,
     meta: {
       requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
       ywyAuth: true

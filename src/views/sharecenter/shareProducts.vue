@@ -441,7 +441,7 @@ export default {
     },
     gotoDetail(i) {
       console.log()
-      this.$router.push({path: '/shop/detail', query: {pid: i.id}})
+      this.$router.push({path: '/sharecenter/productdetail', query: {pid: i.id}})
     },
     back() {
       this.$router.go('-1')
