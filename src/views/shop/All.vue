@@ -333,13 +333,16 @@ export default {
           DestinationType: this.DestinationValue,
         }
       }).then(res => {
+        console.log('获取所有')
         this.$store.commit('SET_LOADING', false)
         var data = res.data.data.list
+        console.log(data)
         var isLastPage = res.data.data.pager.isLastPage
         if (isLastPage) {
           this.allQuery.loadMore = false
         }
         this.allList = this.allList.concat(data)
+        console.log(this.allList)
         // this.allQuery.pageNo++
       }).catch(err => {
         this.$store.commit('SET_LOADING', false)

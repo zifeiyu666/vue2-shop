@@ -1,28 +1,12 @@
 <template lang="html">
   <!-- 在首页父组件发送http请求,后将数据通过props传递给子组件,可减少请求次数,减少服务器压力 -->
-  <div class="index" v-loading="loading">
+  <div class="index_wrap">
     <!-- <v-header></v-header> -->
     <!-- 隐藏搜索按钮 -->
     <!-- <mt-button icon="search" @click='goToSearch'></mt-button> -->
     <v-swiper :swiperData="bannerList"></v-swiper>
-    <!-- <v-service></v-service> -->
-    <!-- <div class="search clearfix">
-      <div class="avatar">
-        <img :src="avatar" alt="">
-      </div>
-      <div class="part part01" @click='goToSearch'>
-        <h2 class="title"> </h2>
-        <span>全部商品</span>
-      </div>
-      <div class="part part02" @click='goToCollection'>
-        <h2 class="title"> </h2>
-        <span>我的收藏</span>
-      </div>
-      <div class="part part03" @click='goToMyOrder'>
-        <h2 class="title"> </h2>
-        <span>我的订单</span>
-      </div>
-    </div> -->
+
+    <!-- 小分类 -->
     <el-row  class="search clearfix">
       <el-col :span='6' class='sel-icon' @click.native='goToSearch'>
         <img class='icon' src="../../assets/img/all.png" alt="">
@@ -41,13 +25,37 @@
         <span class='icon-title'>购物车</span>
       </el-col>
     </el-row>
-    
 
-    <v-section4 v-if='section4.length > 0' :section4="section4" :banner="banner4"></v-section4>
-    <v-section2 v-if='section2.length > 0' :section2="section2" :banner="banner2"></v-section2>
-    <!-- <v-section3 :section3="section3"></v-section3> -->
-    
-    <v-section1 v-if='section1.length > 0' :section1="section1" :banner='banner1'></v-section1>
+    <div class="wrap">
+      <h3 class='title'>
+        全部商品
+        <span class="more">查看更多></span>
+      </h3>
+      <ul 
+        class="something" 
+        v-if='allList.length != 0'
+        v-infinite-scroll="loadMore"
+        infinite-scroll-disabled="loading"
+        infinite-scroll-distance="0"
+        >
+        <li v-for="(k,i) in allList" @click='gotoDetail(k)' :key="i">
+          <div class="something-middle">
+            <img :src="k.imgurl[0]">
+          </div>
+          <div class="something-right">
+            <p>{{k.title}}</p>
+            <p style="color:rgb(199, 108, 28);"> {{k.intro}}</p>
+            <p>￥{{k.price}}元</p>
+            <!-- <div class="something-right-bottom">
+              <span @click='deleteCollection(k)'></span>
+            </div> -->
+          </div>
+        </li>
+      </ul>
+      <div v-else>
+        <v-nomore></v-nomore>
+      </div>
+    </div>
     <v-baseline></v-baseline>
     <v-footer></v-footer>
   </div>
@@ -58,203 +66,86 @@ import qs from 'qs'
 import * as mockapi from '@/../mockapi'
 import Header from '@/components/index/header.vue'
 import Swiper from '@/components/shop/swiper.vue'
-import Service from '@/components/index/service.vue'
-import Section1 from '@/components/index/section1.vue'
-import Section2 from '@/components/index/section2.vue'
-// import Section3 from '@/components/index/section3.vue'
-import Section4 from '@/components/index/section4.vue'
 import Baseline from '@/common/_baseline.vue'
 import Footer from '@/common/_footer.vue'
+import NorMore from '@/components/nomore'
 export default {
   components: {
     'v-header': Header,
     'v-swiper': Swiper,
-    'v-service': Service,
-    'v-section1': Section1,
-    'v-section2': Section2,
-    // 'v-section3': Section3,
-    'v-section4': Section4,
     'v-baseline': Baseline,
-    'v-footer': Footer
+    'v-footer': Footer,
+    'v-nomore': NorMore
   },
   data() {
     return {
-      active: 'tab-container1',
       bannerList: '',
       avatar: '',
-      section1: '',
-      section2: '',
-      // section3: '',
-      section4: '',
-      banner1: '',
-      banner2: '',
-      // banner3: '',
-      banner4: '',
       productTypeList: [], // 商品类别
-      loading: true
+      pageNo: 1,
+      pageSize: 10,
+      isLastPage: false,
+      allList: [],
+      loading: false
     }
   },
   beforeCreate() {
   },
   mounted() {
-    this.getProductType()
-    this.getBanner()
-    
-    // this.getSection3()
-    
-    this.getBanner1()
-    this.getBanner2()
-    this.getBanner4()
     if (this.$store.state.userInfo) {
       this.avatar = this.$store.state.userInfo.headimgurl
     }
+    this.getBanner()
+    this.getAllProductList()
   },
   methods: {
-    getProductType() {
-      this.loading = true
-      mockapi.shop.api_Shop_getProductType_get({
-        params: {}
-      }).then(res => {
-        this.loading = false
-        var data = res.data.data
-        console.log(data)
-        this.productTypeList = data
-        // 请求数据
-        this.getSection1()
-        this.getSection2()
-        this.getSection4()
-      }).catch(err => {
-        this.loading = false
-        console.log(err)
-      })
+    gotoDetail(i) {
+      console.log()
+      this.$router.push({path: '/shop/detail', query: {pid: i.id}})
     },
     getBanner() {
-      this.loading = true
       mockapi.shop.api_Shop_getShopBanner_get({
         params: {}
       }).then(res => {
-        // this.loading = false
         var data = res.data.data
         console.log(data)
         this.bannerList = data
       }).catch(err => {
-        // this.loading = false
         console.log(err)
       })
     },
-    getSection1() {
+    // 所有商品加载更多
+    getAllProductList() {
       this.loading = true
-      mockapi.shop.api_Shop_getTopProduct_get({
+      this.$store.commit('SET_LOADING', true)
+      mockapi.shop.api_Shop_getAllProductList_get({
         params: {
-          ProductType: this.productTypeList[0].EntryCode,
-          ProjectType: '',
-          top: 10
+          pageNo: this.pageNo,
+          pageSize: this.pageSize,
+          Title: '',
+          ProductType: '',
+          SuitableUser: '',
+          DestinationType: '',
         }
       }).then(res => {
+        var data = res.data.data.list
+        this.pageNo++
+        this.allList = this.allList.concat(data)
+        this.isLastPage = res.data.data.pager.isLastPage
+        this.$store.commit('SET_LOADING', false)
         this.loading = false
-        var data = res.data.data
-        console.log(data)
-        this.section1 = data
       }).catch(err => {
-        this.loading = false
-        console.log(err)
-      })
-    },
-    getSection2() {
-      this.loading = true
-      mockapi.shop.api_Shop_getTopProduct_get({
-        params: {
-          ProductType: this.productTypeList[1].EntryCode,
-          ProjectType: '',
-          top: 10
-        }
-      }).then(res => {
-        this.loading = false
-        var data = res.data.data
-        console.log(data)
-        this.section2 = data
-      }).catch(err => {
+        this.$store.commit('SET_LOADING', false)
         this.loading = false
         console.log(err)
       })
     },
-    // getSection3() {
-    //   mockapi.shop.api_Shop_getTopProduct_get({
-    //     params: {
-    //       ProductType: 3,
-    //       ProjectType: 1, // typecode
-    //       top: 10
-    //     }
-    //   }).then(res => {
-    //     var data = res.data.data
-    //     console.log(data)
-    //     this.section3 = data
-    //   }).catch(err => {
-    //     console.log(err)
-    //   })
-    // },
-    getSection4() {
-      this.loading = true
-      mockapi.shop.api_Shop_getTopProduct_get({
-        params: {
-          ProductType: this.productTypeList[2].EntryCode,
-          ProjectType: '',
-          top: 10
-        }
-      }).then(res => {
-        this.loading = false
-        var data = res.data.data
-        console.log(data)
-        this.section4 = data
-      }).catch(err => {
-        this.loading = false
-        console.log(err)
-      })
-    },
-    getBanner1() {
-      this.loading = true
-      mockapi.shop.api_Shop_getADByCode_get({
-        params: {
-          typeCode: 'ADO'
-        }
-      }).then(res => {
-        this.loading = false
-        var data = res.data.data
-        this.banner1 = data
-      }).catch(err => {
-        this.loading = false
-        console.log(err)
-      })
-    },
-    getBanner2() {
-      this.loading = true
-      mockapi.shop.api_Shop_getADByCode_get({
-        params: {
-          typeCode: 'ADT'
-        }
-      }).then(res => {
-        this.loading = false
-        var data = res.data.data
-        this.banner2 = data
-      }).catch(err => {
-        this.loading = false
-        console.log(err)
-      })
-    },
-    getBanner4() {
-      this.loading = true
-      mockapi.shop.api_Shop_getADByCode_get({
-        params: {
-          typeCode: 'ADF'
-        }
-      }).then(res => {
-        this.loading = false
-        var data = res.data.data
-        this.banner4 = data
-      }).catch(err => {
-        this.loading = false
-        console.log(err)
-      })
+    loadMore() {
+      console.log('loadmore')
+      console.log({isLastPage: this.isLastPage})
+      if (!this.isLastPage) {
+        this.getAllProductList()
+      }
     },
     goToSearch() {
       this.$router.push('/shop/all')
@@ -274,13 +165,167 @@ export default {
 
 <style lang="less" scoped>
 @import '../../assets/utils.less';
+@import '../../assets/fz.less';
 .sel-icon{
   cursor: pointer;
 }
-.index {
+.index_wrap {
+  padding-bottom: 60px;
+  .wrap {
     width: 100%;
-    padding-bottom: 14vw;
-    position: relative;
+    padding-bottom: 10px;
+    background: #fff;
+    margin-top: 10px;
+    .title{
+      padding: 4px 10px;
+      font-size: 14px;
+      .more{
+        font-size: 12px;
+        color: @fontGray;
+        float: right;
+      }
+      border-bottom: 1px solid @lightBorder;
+    }
+    .something {
+        width: 100%;
+        > li {
+            display: -ms-flex;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            padding: 4vw 2vw;
+            position: relative;
+            height: 26vw;
+            .bd();
+            .something-left {
+                -ms-flex: 2;
+                -webkit-box-flex: 2;
+                flex: 2;
+
+                label {
+                    float: left;
+                    background: url("../../assets/car/images/t.svg") no-repeat center center/50% 50%;
+                    input {
+                        height: 14vw;
+                        width: 14vw;
+                        opacity: 0;
+                        filter: alpha(opacity=0);
+                    }
+                }
+                .false {
+                    background: url("../../assets/car/images/f.svg") no-repeat center center /50% 50%!important;
+                }
+
+            }
+            .something-middle {
+                -ms-flex: 3;
+                -webkit-box-flex: 3;
+                flex: 3;
+                height: 26vw;
+                padding-left: 2vw;
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+                img {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+            .something-right {
+                -ms-flex: 7;
+                -webkit-box-flex: 7;
+                flex: 7;
+                height: 100%;
+                display: -ms-flex;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-orient: vertical;
+                -webkit-box-direction: normal;
+                -ms-flex-flow: column wrap;
+                flex-flow: column wrap;
+                -webkit-box-pack: justify;
+                -ms-flex-pack: justify;
+                justify-content: space-between;
+                padding-left: 6vw;
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+                p {
+                    // overflow: hidden;
+                    // text-overflow: ellipsis;
+                    // display: -webkit-box;
+                    // -webkit-line-clamp: 2;
+                    // -webkit-box-orient: vertical;
+                    // .fz(font-size,26);
+
+                    
+                    font-size: 14px;
+                }
+                p:nth-of-type(2){
+                  overflow : hidden;
+                  text-overflow: ellipsis;
+                  display: -webkit-box;
+                  -webkit-line-clamp: 2;
+                  -webkit-box-orient: vertical;
+                  height: 38px;
+                }
+                // p:first-of-type{
+                //   height: 36px;
+                // }
+                p:last-of-type {
+                  font-size: 18px;
+                  color:@fontRed;
+                }
+                .something-right-bottom {
+                    > div {
+                        display: -ms-flex;
+                        display: -webkit-box;
+                        display: -ms-flexbox;
+                        display: flex;
+                        -webkit-box-align: center;
+                        -ms-flex-align: center;
+                        align-items: center;
+                        input {
+                            width: 6vw;
+                            text-align: center;
+                        }
+
+                        span {
+                            height: 7vw;
+                            line-height: 7vw;
+                            width: 8vw;
+                            display: inline-block;
+                            border: 0.2vw solid #f1f1f1;
+                            border-radius: 1vw;
+                            text-align: center;
+                            font-size: 20px;
+                            cursor: pointer;
+                        }
+                    }
+                    > span {
+                        position: absolute;
+                        right: 0;
+                        bottom: 0;
+                        width: 13vw;
+                        height: 13vw;
+                        background: url("../../assets/car/images/laji.svg") no-repeat center/50%;
+                    }
+                }
+            }
+        }
+    }
+    label,
+    span {
+        &:active {
+            -webkit-transform: scale(1.3);
+            transform: scale(1.3);
+        }
+    }
+}
+    width: 100%;
     .mint-button{
       position: absolute;
       right: 15px;
@@ -309,6 +354,7 @@ export default {
   padding-top: 5px;
   text-align: center;
   padding: 4% 2%;
+  box-shadow: 0px 1px 4px #ccc;
   .icon{
     width: 50%;
     display: block;

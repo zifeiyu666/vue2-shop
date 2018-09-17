@@ -5,6 +5,9 @@
       <v-swiper :imgList="detail.imgurl"></v-swiper>
       <v-chose :view="detail"></v-chose>
       <v-content :content='detail'></v-content>
+      <back-to-top bottom="50px" right="50px">
+        <button type="button" class="btn-to-top"><i class="fa fa-chevron-up"></i></button>
+      </back-to-top>
       <v-baseline></v-baseline>
       <v-footer :detail="detail" :carnum="carnum"></v-footer>
     </div>
@@ -19,6 +22,8 @@ import Footer from '@/components/detail/footer.vue'
 import Baseline from '@/common/_baseline.vue'
 import Share from '@/components/shareBtn.vue'
 
+import BackToTop from 'vue-backtotop'
+
 import qs from 'qs'
 import * as mockapi from '@/../mockapi'
 export default {
@@ -28,7 +33,8 @@ export default {
     'v-content':Content,
     'v-footer':Footer,
     'v-baseline':Baseline,
-    'v-share': Share
+    'v-share': Share,
+    'v-backtotop': BackToTop
   },
   data() {
     return{

@@ -8,9 +8,14 @@
       <p class="chose-view-intro">{{view.ProductIntro}}</p>
       <div class='item-wrap'>
         <p class='discountprice' v-if='enabledProp.length != 1'><i>￥</i>{{view.minPrice}}-{{view.maxPrice}}</p>
-        <p class='discountprice' v-if='enabledProp.length == 1'><i>￥</i>{{this.DiscountPrice}}</p>
+        <p class='discountprice' v-if='enabledProp.length == 1'>
+          <i>￥</i>{{this.DiscountPrice}}
+          <span class='fx' v-if='view.prop[0].ywyfx && view.prop[0].ywyfx != 0'>
+            <i>赚</i>￥{{view.prop[0].ywyfx}}
+          </span>
+        </p>
         <span class='originalprice' v-if='enabledProp.length == 1 && this.DiscountPrice != this.OriginalPrice'>原价{{this.OriginalPrice}}元</span>
-        <span class='fx' v-if='view.prop[0].ywyfx && view.prop[0].ywyfx != 0'><i>赚</i>￥{{view.prop[0].ywyfx}}</span>
+        
       </div>
       <div class='item-wrap'>
         <span>浏览次数： {{view.VisitTimes}}</span>
@@ -244,9 +249,14 @@ export default {
   text-decoration:line-through;
 }
 .fx{
-  margin-left: 15px;
-  padding-right: 15px;
+  display: inline!important;
+  margin-left: 5px;
+  position: relative;
+  top: -2px;
   i{
+    position: relative;
+    top: -2px;
+    font-size: 12px!important;
     background: @fontRed;
     color: #fff;
     // padding: 4px;
@@ -258,13 +268,14 @@ export default {
     box-sizing: border-box;
     border-radius: 10px;
   }
-  font-size: 12px;
+  font-size: 14px !important;
+  color: @fontRed !important;
 }
 .discountprice{
-  font-size: 16px;
-  color: red;
+  font-size: 24px;
+  color: @fontRed;
   i{
-    font-size: 12px;
+    font-size: 16px;
   }
 }
 .chose {
@@ -272,7 +283,7 @@ export default {
     padding: 3vw;
     .chose-view {
         > h1 {
-            .fz(font-size,36);
+           font-size: 16px;
             color: #2c3e50;
             > span {
                 color: rgb(238, 113, 80);

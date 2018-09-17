@@ -11,13 +11,17 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
   .content {
     background: #fff;
     width: 100%;
     overflow: hidden;
     // margin-top: 10px;
     // border-top: 20px solid #F8FCFF;
+    img {
+        display: block;
+        width: 100% !important;
+      }
     .img-wrap {
     height: 120vw;
       img {

@@ -23,6 +23,7 @@
     "vue-amap": "^0.5.4",
     "vue-awesome": "^2.3.5",
     "vue-awesome-swiper": "^2.6.7",
+    "vue-backtotop": "^1.4.12",
     "vue-cute-timeline": "^1.2.4",
     "vue-lazyload": "^1.2.6",
     "vue-lazyload-cosmo-zp": "^1.0.1",
