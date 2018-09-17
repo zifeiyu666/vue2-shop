@@ -295,6 +295,7 @@ export default {
         this.payVisible = !this.payVisible
       } else {
         Toast('请选择商品规格')
+        
       }
     },
     confirmPay() {

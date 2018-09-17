@@ -5,9 +5,9 @@
       <v-swiper :imgList="detail.imgurl"></v-swiper>
       <v-chose :view="detail"></v-chose>
       <v-content :content='detail'></v-content>
-      <back-to-top bottom="50px" right="50px">
-        <button type="button" class="btn-to-top"><i class="fa fa-chevron-up"></i></button>
-      </back-to-top>
+      <v-backtotop bottom="50px" right="10px">
+        <i class='btn-to-top iconfont icon-fanhuidingbu'></i>
+      </v-backtotop>
       <v-baseline></v-baseline>
       <v-footer :detail="detail" :carnum="carnum"></v-footer>
     </div>
@@ -92,5 +92,14 @@ export default {
   }
   
 }
-
+.btn-to-top {
+  font-size: 16vw;
+  color: #ff4800;
+  background: #fff;
+  width: 15vw;
+  height: 15vw;
+  display: inline-block;
+  padding: 0;
+  border-radius: 8vw;
+}
 </style>
