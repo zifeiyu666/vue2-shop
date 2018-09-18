@@ -3,9 +3,13 @@ var utils = require('./utils')
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
 
+// 骨架图
+// const HtmlWebpackPlugin = require('html-webpack-plugin')
+// const { SkeletonPlugin } = require('page-skeleton-webpack-plugin')
+
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
-}
+} 
 
 module.exports = {
   entry: {
@@ -26,6 +30,18 @@ module.exports = {
       'assets': path.resolve(__dirname, '../src/assets'),
     }
   },
+  // 骨架图
+  // plugins: [
+  //   new HtmlWebpackPlugin({
+  //      // Your HtmlWebpackPlugin config
+  //   }),
+
+  //   new SkeletonPlugin({
+  //     pathname: path.resolve(__dirname, `/dist`), // 用来存储 shell 文件的地址
+  //     staticDir: path.resolve(__dirname, config.build.assetsRoot), // 最好和 `output.path` 相同
+  //     routes: ['/'], // 将需要生成骨架屏的路由添加到数组中
+  //   })
+  // ],
   module: {
     rules: [
       {

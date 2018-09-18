@@ -25,7 +25,7 @@
         <mt-cell v-for="n in 4" :key='n' :title="'content ' + n" />
       </mt-tab-container-item>
     </mt-tab-container> -->
-    <div @click='openDialog' class='tx-btn'> <i class='iconfont icon-yiwancheng1'></i></div>
+    <!-- <div @click='openDialog' class='tx-btn'> <i class='iconfont icon-yiwancheng1'></i></div> -->
     <p class='jfmx'><span style='background: #f3f5f7'>积分明细</span></p>
     <div v-for="(i, index) in JfList" :key='index' v-if='JfList.length > 0 && JfList[0]'>
       <div class="company-wrap clearfix">
@@ -56,7 +56,7 @@
 
     </div>
 
-    <el-dialog
+    <!-- <el-dialog
       title="提现"
       :visible.sync="dialogVisible"
       :before-close="handleClose">
@@ -69,7 +69,7 @@
         <el-button size='small' @click="concleTx()">取 消</el-button>
         <el-button size='small' type="primary" @click="confirmTx()">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
     
   </div>
   
@@ -79,7 +79,7 @@ import Baseline from '@/common/_baseline.vue'
 import { Toast } from 'mint-ui';
 import * as mockapi from '@/../mockapi'
 import Header from '@/common/_header.vue'
-import NorMore from '@/components/nomore'
+import NoMore from '@/components/nomore'
 
   export default{
     data() {
@@ -97,7 +97,7 @@ import NorMore from '@/components/nomore'
     components: {
       'v-header':Header,
       'v-baseline': Baseline,
-      'v-nomore': NorMore
+      'v-nomore': NoMore
     },
     created() {
       var userInfo = this.$store.state.userInfo
@@ -108,7 +108,7 @@ import NorMore from '@/components/nomore'
     },
     mounted() {
       this.getJfList()
-      this.getScoreRate()
+      // this.getScoreRate()
       this.getScore()
     },
     watch: {
@@ -149,6 +149,8 @@ import NorMore from '@/components/nomore'
             Toast('兑换成功')
             this.dialogVisible = false
           }
+        }).catch(err => {
+          console.log(err)
         })
         
       },
@@ -174,6 +176,8 @@ import NorMore from '@/components/nomore'
           console.log('jflist')
           console.log(this.JfList)
           this.isLastPage = pager.isLastPage
+        }).catch(err => {
+          console.log(err)
         })
       },
       getScore() {
@@ -187,6 +191,8 @@ import NorMore from '@/components/nomore'
           this.score = data
           console.log(111)
           console.log(this.score)
+        }).catch(err => {
+          console.log(err)
         })
       },
       getScoreRate() {
@@ -200,6 +206,8 @@ import NorMore from '@/components/nomore'
           this.scoreRate = data
           console.log(222)
           console.log(this.scoreRate)
+        }).catch(err => {
+          console.log(err)
         })
       },
       generateTime(time) {

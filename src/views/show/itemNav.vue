@@ -4,7 +4,7 @@
       <i class='iconfont icon-fanhui'></i>
     </div>
     <div class="header-img">
-      <img v-lazy="banner" alt="">
+      <img v-lazy="banner" alt="banner图">
     </div>
     <div class="intro-wrap">
       <p class='dec'>{{intro}}</p>
@@ -34,19 +34,20 @@
     },
     methods: {
       getItemNav() {
-        console.log(1111111111111)
-        console.log(this.currentId)
+        this.$store.commit('SET_LOADING', true)
         mockapi.show.api_Show_getItemNav_get({
           params: {
             itemId: this.currentId
           }
         }).then(response => {
+          this.$store.commit('SET_LOADING', false)
           var data = response.data.data
           this.navList = data.list.concat({name: '一键导航'})
           this.banner = data.imgurl
           this.intro = data.itemintro
           console.log(this.navList)
         }).catch(error => {
+          this.$store.commit('SET_LOADING', false)
           console.log(error)
         })
       },

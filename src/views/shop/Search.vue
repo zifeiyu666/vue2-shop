@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="search-wrap">
     <!-- <icon name='angle-left' scale="1.5"></icon>   -->
-    <div style='background: #eee;height: 40px;'>
+    <div style='background: #eee;height: 40px;box-shadow: 0px 1px 4px #ccc;'>
       <div class="back" @click="back">
         <icon name='angle-left' scale="1.5"></icon>
       </div>
@@ -10,17 +10,22 @@
           <icon name='search'></icon>  
           <input type="text" placeholder='搜索'>
         </div>
+        <button class='search-btn'>搜索</button>
       </div>
     </div>
-    <mt-navbar v-model="selected">
+    <!-- <mt-navbar v-model="selected">
       <mt-tab-item id="1">分类1</mt-tab-item>
       <mt-tab-item id="2">分类2</mt-tab-item>
       <mt-tab-item id="3">分类3</mt-tab-item>
-    </mt-navbar>
+    </mt-navbar> -->
     <div class="search-history">
-      <h2 class='title'>搜索历史<icon name='trash'></icon></h2>
+      <h2 class='title'>
+        快速搜索
+        <!-- <icon name='trash'></icon> -->
+      </h2>
       <button>历史一</button>
       <button>历史二</button>
+      <button>历史三</button>
       <button>历史三</button>
     </div>
   </div>
@@ -43,6 +48,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import '../../assets/utils.less';
 .back{
   position: absolute;
   z-index: 1000;
@@ -64,12 +70,20 @@ export default {
   padding-left: 40px;
   padding-top: 5px;
   box-sizing: border-box;
+  .search-btn{
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    background: @fontRed;
+    color: #fff;
+  }
 }
 .mint-navbar{
   background: #fff;
 }
 .search-wrap{
-  // background: #F8FCFF;
   height: 100%;
   .fa-icon{
     position: relative;
@@ -78,13 +92,14 @@ export default {
   }
 }
 .input-inner-wrap{
-  margin-right: 20px;
+  margin-right: 60px;
   position: relative;
   .fa-icon{
     position: absolute;
     top: 6px;
     left: 8px;
   }
+  
 }
 input{
   width: 100%;
@@ -101,9 +116,14 @@ input{
     margin-bottom: -3px;
 }
 .search-history{
+  background: #fff;
   margin-top: 10px;
+  padding-bottom: 10px;
   .title{
     margin: 10px;
+    font-size: 12px;
+    text-align: center;
+    color: @fontGray;
   }
   .fa-icon{
     float: right;
@@ -112,9 +132,10 @@ input{
     margin-top: 1px;
   }
   button{
-    padding: 8px 12px;
+    font-size: 12px;
+    padding: 6px 10px;
     border-radius: 22px; 
-    margin: 5px 8px;
+    margin: 2px 4px;
   }
 }
 </style>

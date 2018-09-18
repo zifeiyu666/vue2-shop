@@ -82,6 +82,23 @@
                 <span>分销积分</span><i class="icon-go"></i>
               </p>
             </router-link> -->
+            
+            <a @click='goToCar()' class="my-service-bottom">
+                <div>
+                  <img src='../../assets/img/carcar.png' style='width: 30px;margin-left:-4px' >
+                </div>
+                <p>
+                  <span>我的购物车</span><i class="icon-go"></i>
+                </p>
+              </a>
+              <a @click='showQrCode()' class="my-service-bottom">
+                <div>
+                  <img src='../../assets/img/qrcode.png' style='width: 22px;' >
+                </div>
+                <p>
+                  <span>我的二维码</span><i class="icon-go"></i>
+                </p>
+              </a>
             <router-link class="my-vip-bottom ho" to="/shop/edit">
               <div>
                 <span class="icon2-settle"></span>
@@ -90,6 +107,7 @@
                 <span>资料修改</span><i class="icon-go"></i>
               </p>
             </router-link>
+            
             
           </section>
 
@@ -175,6 +193,9 @@
       },
       closeQrCode() {
         this.isShow = false
+      },
+      goToCar() {
+        this.$router.push('/shop/car')
       }
     }
   }

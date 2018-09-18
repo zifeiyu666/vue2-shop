@@ -40,6 +40,13 @@ import * as mockapi from '@/../mockapi'
 
 // 用钩子函数beforeEach()对路由进行判断
 router.beforeEach((to, from, next) => {
+    if (to.meta.title) {
+      console.log(to.meta.title)
+      document.title = to.meta.title
+    } else {
+      console.log('没有title')
+    }
+
     if (to.meta.requireAuth) {  // 需要权限,进一步进行判断
       console.log('进入需要登录信息路由')
       if (store.state.userInfo && store.state.userInfo.MemberToken) {  // 通过vuex state获取当前的token是否存在

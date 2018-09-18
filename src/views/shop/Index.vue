@@ -3,7 +3,7 @@
   <div class="index_wrap">
     <!-- <v-header></v-header> -->
     <!-- 隐藏搜索按钮 -->
-    <!-- <mt-button icon="search" @click='goToSearch'></mt-button> -->
+    <mt-button icon="search" @click='goToSearch'></mt-button>
     <v-swiper :swiperData="bannerList"></v-swiper>
 
     <!-- 小分类 -->
@@ -26,7 +26,7 @@
       </el-col>
     </el-row>
 
-    <div class="wrap">
+    <div class="product_list_wrap">
       <h3 class='title'>
         全部商品
         <span class="more">查看更多></span>
@@ -35,7 +35,7 @@
         class="something" 
         v-if='allList.length != 0'
         v-infinite-scroll="loadMore"
-        infinite-scroll-disabled="loading"
+        infinite-scroll-disabled="isLoading"
         infinite-scroll-distance="0"
         >
         <li v-for="(k,i) in allList" @click='gotoDetail(k)' :key="i">
@@ -69,6 +69,8 @@ import Swiper from '@/components/shop/swiper.vue'
 import Baseline from '@/common/_baseline.vue'
 import Footer from '@/common/_footer.vue'
 import NorMore from '@/components/nomore'
+import {scrollTo} from '@/assets/utils'
+
 export default {
   components: {
     'v-header': Header,
@@ -99,6 +101,7 @@ export default {
     this.getAllProductList()
   },
   methods: {
+    scrollTo,
     gotoDetail(i) {
       console.log()
       this.$router.push({path: '/shop/detail', query: {pid: i.id}})
@@ -116,7 +119,7 @@ export default {
     },
     // 所有商品加载更多
     getAllProductList() {
-      this.loading = true
+      this.isLoading = true
       this.$store.commit('SET_LOADING', true)
       mockapi.shop.api_Shop_getAllProductList_get({
         params: {
@@ -133,22 +136,20 @@ export default {
         this.allList = this.allList.concat(data)
         this.isLastPage = res.data.data.pager.isLastPage
         this.$store.commit('SET_LOADING', false)
-        this.loading = false
+        this.isLoading = false
       }).catch(err => {
         this.$store.commit('SET_LOADING', false)
-        this.loading = false
+        this.isLoading = false
         console.log(err)
       })
     },
     loadMore() {
-      console.log('loadmore')
-      console.log({isLastPage: this.isLastPage})
       if (!this.isLastPage) {
         this.getAllProductList()
       }
     },
     goToSearch() {
-      this.$router.push('/shop/all')
+      this.$router.push('/shop/search')
     },
     goToMyOrder() {
       this.$router.push('/shop/myorder')
@@ -171,160 +172,7 @@ export default {
 }
 .index_wrap {
   padding-bottom: 60px;
-  .wrap {
-    width: 100%;
-    padding-bottom: 10px;
-    background: #fff;
-    margin-top: 10px;
-    .title{
-      padding: 4px 10px;
-      font-size: 14px;
-      .more{
-        font-size: 12px;
-        color: @fontGray;
-        float: right;
-      }
-      border-bottom: 1px solid @lightBorder;
-    }
-    .something {
-        width: 100%;
-        > li {
-            display: -ms-flex;
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-align: center;
-            -ms-flex-align: center;
-            align-items: center;
-            padding: 4vw 2vw;
-            position: relative;
-            height: 26vw;
-            .bd();
-            .something-left {
-                -ms-flex: 2;
-                -webkit-box-flex: 2;
-                flex: 2;
-
-                label {
-                    float: left;
-                    background: url("../../assets/car/images/t.svg") no-repeat center center/50% 50%;
-                    input {
-                        height: 14vw;
-                        width: 14vw;
-                        opacity: 0;
-                        filter: alpha(opacity=0);
-                    }
-                }
-                .false {
-                    background: url("../../assets/car/images/f.svg") no-repeat center center /50% 50%!important;
-                }
-
-            }
-            .something-middle {
-                -ms-flex: 3;
-                -webkit-box-flex: 3;
-                flex: 3;
-                height: 26vw;
-                padding-left: 2vw;
-                -webkit-box-sizing: border-box;
-                box-sizing: border-box;
-                img {
-                    display: block;
-                    width: 100%;
-                    height: 100%;
-                }
-            }
-            .something-right {
-                -ms-flex: 7;
-                -webkit-box-flex: 7;
-                flex: 7;
-                height: 100%;
-                display: -ms-flex;
-                display: -webkit-box;
-                display: -ms-flexbox;
-                display: flex;
-                -webkit-box-orient: vertical;
-                -webkit-box-direction: normal;
-                -ms-flex-flow: column wrap;
-                flex-flow: column wrap;
-                -webkit-box-pack: justify;
-                -ms-flex-pack: justify;
-                justify-content: space-between;
-                padding-left: 6vw;
-                -webkit-box-sizing: border-box;
-                box-sizing: border-box;
-                p {
-                    // overflow: hidden;
-                    // text-overflow: ellipsis;
-                    // display: -webkit-box;
-                    // -webkit-line-clamp: 2;
-                    // -webkit-box-orient: vertical;
-                    // .fz(font-size,26);
-
-                    
-                    font-size: 14px;
-                }
-                p:nth-of-type(2){
-                  overflow : hidden;
-                  text-overflow: ellipsis;
-                  display: -webkit-box;
-                  -webkit-line-clamp: 2;
-                  -webkit-box-orient: vertical;
-                  height: 38px;
-                }
-                // p:first-of-type{
-                //   height: 36px;
-                // }
-                p:last-of-type {
-                  font-size: 18px;
-                  color:@fontRed;
-                }
-                .something-right-bottom {
-                    > div {
-                        display: -ms-flex;
-                        display: -webkit-box;
-                        display: -ms-flexbox;
-                        display: flex;
-                        -webkit-box-align: center;
-                        -ms-flex-align: center;
-                        align-items: center;
-                        input {
-                            width: 6vw;
-                            text-align: center;
-                        }
-
-                        span {
-                            height: 7vw;
-                            line-height: 7vw;
-                            width: 8vw;
-                            display: inline-block;
-                            border: 0.2vw solid #f1f1f1;
-                            border-radius: 1vw;
-                            text-align: center;
-                            font-size: 20px;
-                            cursor: pointer;
-                        }
-                    }
-                    > span {
-                        position: absolute;
-                        right: 0;
-                        bottom: 0;
-                        width: 13vw;
-                        height: 13vw;
-                        background: url("../../assets/car/images/laji.svg") no-repeat center/50%;
-                    }
-                }
-            }
-        }
-    }
-    label,
-    span {
-        &:active {
-            -webkit-transform: scale(1.3);
-            transform: scale(1.3);
-        }
-    }
-}
+  
     width: 100%;
     .mint-button{
       position: absolute;

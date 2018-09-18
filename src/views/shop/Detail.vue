@@ -1,11 +1,20 @@
 <template lang="html">
   <div class="detail" v-loading='isLoading'>
+    <div class="header">
+      <mt-header title="商品详情">
+        <router-link to="/shop" slot="left">
+          <mt-button icon="back">返回首页</mt-button>
+        </router-link>
+        <mt-button icon="search" slot="right" @click='goToSearch'></mt-button>
+      </mt-header>
+
+    </div>
     <div v-if='detail'>
       <v-share imgurl="https://ss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=91a426229082d158a4825fb1b00819d5/0824ab18972bd4077557733177899e510eb3096d.jpg" />
       <v-swiper :imgList="detail.imgurl"></v-swiper>
       <v-chose :view="detail"></v-chose>
       <v-content :content='detail'></v-content>
-      <v-backtotop bottom="50px" right="10px">
+      <v-backtotop bottom="60px" right="10px">
         <i class='btn-to-top iconfont icon-fanhuidingbu'></i>
       </v-backtotop>
       <v-baseline></v-baseline>
@@ -63,6 +72,9 @@ export default {
         console.log(err)
         this.isLoading = false
       })
+    },
+    goToSearch() {
+      this.$router.push('/shop/search')
     }
   },
   beforeCreate(){
@@ -72,10 +84,24 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.header{
+  background: #fff;
+}
+.mint-header{
+  background: #fff !important;
+  color: #333;
+  box-shadow: 0px 0px 3px #aaa;
+  z-index: 10;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left:0;
+}
 .detail {
   width: 100%;
   min-height: 100vh;
   padding-bottom: 14vw;
+  margin-top: 40px;
   // background: #fff;
 }
 .banner{

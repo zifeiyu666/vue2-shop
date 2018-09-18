@@ -94,6 +94,7 @@ import qs from 'qs'
 import * as mockapi from '@/../mockapi'
 import { MessageBox } from 'mint-ui';
 import { Toast } from 'mint-ui';
+import {scrollTo} from '@/assets/utils'
 export default {
   props: ['detail'],
   data() {
@@ -139,6 +140,7 @@ export default {
     this.getScoreRate()
   },
   methods:{
+    scrollTo,
     getScore() {
       mockapi.shop.api_Shop_getMyScore_get({
         params: {
@@ -230,6 +232,7 @@ export default {
         this.popupVisible = !this.popupVisible
       } else {
         Toast('请选择商品规格')
+        this.scrollTo('400')
       }
       
     },
@@ -295,7 +298,7 @@ export default {
         this.payVisible = !this.payVisible
       } else {
         Toast('请选择商品规格')
-        
+        this.scrollTo('400')
       }
     },
     confirmPay() {

@@ -46,26 +46,31 @@ export default {
   },
   methods: {
     getBannerList() {
+      this.$store.commit('SET_LOADING', true)
       mockapi.show.api_Show_getWebBanner_get({
       }).then(response => {
-        console.log('成功返回banner')
+        this.$store.commit('SET_LOADING', false)
         var data = response.data.data
         console.log(data)
         this.bannerList = data
       }).catch(error => {
+        this.$store.commit('SET_LOADING', false)
         console.log(error)
       })
     },
     getItemList() {
+      this.$store.commit('SET_LOADING', true)
       mockapi.show.api_Show_getTopItem_get({
         params: {
           top: 5
         }
       }).then(response => {
+        this.$store.commit('SET_LOADING', false)
         var data = response.data.data
         this.items = data
         console.log(this.items)
       }).catch(error => {
+        this.$store.commit('SET_LOADING', false)
         console.log(error)
       })
     },
