@@ -30,9 +30,7 @@ import Content from '@/components/detail/content.vue'
 import Footer from '@/components/detail/footer.vue'
 import Baseline from '@/common/_baseline.vue'
 import Share from '@/components/shareBtn.vue'
-
 import BackToTop from 'vue-backtotop'
-
 import qs from 'qs'
 import * as mockapi from '@/../mockapi'
 export default {
@@ -84,6 +82,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import '../../assets/utils.less';
 .header{
   background: #fff;
 }
@@ -118,14 +117,5 @@ export default {
   }
   
 }
-.btn-to-top {
-  font-size: 16vw;
-  color: #ff4800;
-  background: #fff;
-  width: 15vw;
-  height: 15vw;
-  display: inline-block;
-  padding: 0;
-  border-radius: 8vw;
-}
+
 </style>

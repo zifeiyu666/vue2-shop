@@ -8,55 +8,53 @@
 
     <!-- 小分类 -->
     <el-row  class="search clearfix">
-      <el-col :span='6' class='sel-icon' @click.native='goToSearch'>
-        <img class='icon' src="../../assets/img/all.png" alt="">
-        <span class='icon-title'>全部商品</span>
+      <el-col :span='6' class='sel-icon' @click.native='goToSearch("嗨周末")'>
+        <img class='icon' src="../../assets/img/01.png" alt="">
+        <span class='icon-title'>嗨周末</span>
       </el-col>
-      <el-col :span='6' class='sel-icon' @click.native='goToCollection'>
-        <img class='icon' src="../../assets/img/mycol.png" alt="">
-        <span class='icon-title'>我的收藏</span>
+      <el-col :span='6' class='sel-icon' @click.native='goToSearch("乐假日")'>
+        <img class='icon' src="../../assets/img/02.png" alt="">
+        <span class='icon-title'>乐假日</span>
       </el-col>
-      <el-col :span='6' class='sel-icon' @click.native='goToMyOrder'>
-        <img class='icon' src="../../assets/img/myorder.png" alt="">
-        <span class='icon-title'>我的订单</span>
+      <el-col :span='6' class='sel-icon' @click.native='goToSearch("享度假")'>
+        <img class='icon' src="../../assets/img/03.png" alt="">
+        <span class='icon-title'>享度假</span>
       </el-col>
-      <el-col :span='6' class='sel-icon' @click.native='goToMyCar'>
-        <img class='icon' src="../../assets/img/shopcar.png" alt="">
-        <span class='icon-title'>购物车</span>
+      <el-col :span='6' class='sel-icon' @click.native='goToSearch("直通车")'>
+        <img class='icon' src="../../assets/img/04.png" alt="">
+        <span class='icon-title'>直通车</span>
+      </el-col>
+      <el-col :span='6' class='sel-icon' @click.native='goToSearch("门票")'>
+        <img class='icon' src="../../assets/img/05.png" alt="">
+        <span class='icon-title'>门票</span>
+      </el-col>
+      <el-col :span='6' class='sel-icon' @click.native='goToSearch("研学旅行")'>
+        <img class='icon' src="../../assets/img/06.png" alt="">
+        <span class='icon-title'>研学旅行</span>
+      </el-col>
+      <el-col :span='6' class='sel-icon' @click.native='goToSearch("特产")'>
+        <img class='icon' src="../../assets/img/07.png" alt="">
+        <span class='icon-title'>特产</span>
+      </el-col>
+      <el-col :span='6' class='sel-icon' @click.native='goToSearch("更多")'>
+        <img class='icon' src="../../assets/img/08.png" alt="">
+        <span class='icon-title'>更多</span>
       </el-col>
     </el-row>
 
-    <div class="product_list_wrap">
-      <h3 class='title'>
-        全部商品
-        <span class="more">查看更多></span>
-      </h3>
-      <ul 
-        class="something" 
-        v-if='allList.length != 0'
-        v-infinite-scroll="loadMore"
-        infinite-scroll-disabled="isLoading"
-        infinite-scroll-distance="0"
-        >
-        <li v-for="(k,i) in allList" @click='gotoDetail(k)' :key="i">
-          <div class="something-middle">
-            <img :src="k.imgurl[0]">
-          </div>
-          <div class="something-right">
-            <p>{{k.title}}</p>
-            <p style="color:rgb(199, 108, 28);"> {{k.intro}}</p>
-            <p>￥{{k.price}}元</p>
-            <!-- <div class="something-right-bottom">
-              <span @click='deleteCollection(k)'></span>
-            </div> -->
-          </div>
-        </li>
-      </ul>
-      <div v-else>
-        <v-nomore></v-nomore>
-      </div>
-    </div>
-    <v-baseline></v-baseline>
+    <!-- 推荐商品 -->
+    <v-section1 v-if='section1.length > 0' :section1="section1" :banner='banner1'></v-section1>
+
+    <!-- 所有商品 -->
+    <v-all></v-all>
+
+    <v-baseline v-if='isLastPage'></v-baseline>
+
+    <!-- 返回顶部 -->
+    <v-backtotop bottom="60px" right="10px">
+      <i class='btn-to-top iconfont icon-fanhuidingbu'></i>
+    </v-backtotop>
+
     <v-footer></v-footer>
   </div>
 </template>
@@ -68,8 +66,9 @@ import Header from '@/components/index/header.vue'
 import Swiper from '@/components/shop/swiper.vue'
 import Baseline from '@/common/_baseline.vue'
 import Footer from '@/common/_footer.vue'
-import NorMore from '@/components/nomore'
-import {scrollTo} from '@/assets/utils'
+import Section1 from '@/components/index/section1.vue'
+import BackToTop from 'vue-backtotop'
+import AllProduct from '@/common/_productList.vue'
 
 export default {
   components: {
@@ -77,7 +76,9 @@ export default {
     'v-swiper': Swiper,
     'v-baseline': Baseline,
     'v-footer': Footer,
-    'v-nomore': NorMore
+    'v-section1': Section1,
+    'v-backtotop': BackToTop,
+    'v-all': AllProduct
   },
   data() {
     return {
@@ -87,21 +88,70 @@ export default {
       pageNo: 1,
       pageSize: 10,
       isLastPage: false,
-      allList: [],
-      loading: false
+      loading: false,
+      section1: '',
+      banner1: '',
     }
-  },
-  beforeCreate() {
   },
   mounted() {
     if (this.$store.state.userInfo) {
       this.avatar = this.$store.state.userInfo.headimgurl
     }
+    
+    this.getProductType()
     this.getBanner()
-    this.getAllProductList()
+    this.getBanner1()
   },
   methods: {
-    scrollTo,
+    getProductType() {
+      this.loading = true
+      mockapi.shop.api_Shop_getProductType_get({
+        params: {}
+      }).then(res => {
+        this.loading = false
+        var data = res.data.data
+        console.log(data)
+        this.productTypeList = data
+        // 请求数据
+        this.getSection1()
+      }).catch(err => {
+        this.loading = false
+        console.log(err)
+      })
+    },
+    getSection1() {
+      this.loading = true
+      mockapi.shop.api_Shop_getTopProduct_get({
+        params: {
+          ProductType: this.productTypeList[0].EntryCode,
+          ProjectType: '',
+          top: 10
+        }
+      }).then(res => {
+        this.loading = false
+        var data = res.data.data
+        console.log(data)
+        this.section1 = data
+      }).catch(err => {
+        this.loading = false
+        console.log(err)
+      })
+    },
+    getBanner1() {
+      this.loading = true
+      mockapi.shop.api_Shop_getADByCode_get({
+        params: {
+          typeCode: 'ADO'
+        }
+      }).then(res => {
+        this.loading = false
+        var data = res.data.data
+        this.banner1 = data
+      }).catch(err => {
+        this.loading = false
+        console.log(err)
+      })
+    },
     gotoDetail(i) {
       console.log()
       this.$router.push({path: '/shop/detail', query: {pid: i.id}})
@@ -117,39 +167,8 @@ export default {
         console.log(err)
       })
     },
-    // 所有商品加载更多
-    getAllProductList() {
-      this.isLoading = true
-      this.$store.commit('SET_LOADING', true)
-      mockapi.shop.api_Shop_getAllProductList_get({
-        params: {
-          pageNo: this.pageNo,
-          pageSize: this.pageSize,
-          Title: '',
-          ProductType: '',
-          SuitableUser: '',
-          DestinationType: '',
-        }
-      }).then(res => {
-        var data = res.data.data.list
-        this.pageNo++
-        this.allList = this.allList.concat(data)
-        this.isLastPage = res.data.data.pager.isLastPage
-        this.$store.commit('SET_LOADING', false)
-        this.isLoading = false
-      }).catch(err => {
-        this.$store.commit('SET_LOADING', false)
-        this.isLoading = false
-        console.log(err)
-      })
-    },
-    loadMore() {
-      if (!this.isLastPage) {
-        this.getAllProductList()
-      }
-    },
-    goToSearch() {
-      this.$router.push('/shop/search')
+    goToSearch(title) {
+      this.$router.push({path: '/shop/search', query: {title: title}})
     },
     goToMyOrder() {
       this.$router.push('/shop/myorder')
@@ -169,6 +188,7 @@ export default {
 @import '../../assets/fz.less';
 .sel-icon{
   cursor: pointer;
+  margin-bottom: 6px;
 }
 .index_wrap {
   padding-bottom: 60px;
@@ -204,13 +224,14 @@ export default {
   padding: 4% 2%;
   box-shadow: 0px 1px 4px #ccc;
   .icon{
-    width: 50%;
+    width: 60%;
     display: block;
-    margin:0 25%;
+    margin:4px 20%;
   }
   .icon-title{
-    color: @fontGray;
-    font-size: 14px;
+    color: @fontBlack;
+    font-size: 12px;
+    margin-top: 2px;
   }
   .avatar{
     position: absolute;
