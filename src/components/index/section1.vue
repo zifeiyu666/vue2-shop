@@ -3,7 +3,7 @@
     <h1 class="section1-title">
       <!-- <img class='icon' src="../../assets/img/dandu.png" alt=""> -->
       限时抢购
-      <span class="right" @click='goAll(4)'>产看更多></span>
+      <span class="right" @click='goToSearch("限时抢购")'>查看更多></span>
     </h1>
     <ul class="section1-list">
       <li v-for="k in section1">
@@ -12,7 +12,10 @@
           <p>{{k.intro}}</p>
         </router-link>
         <h3>{{k.title}}</h3>
-        <span>￥ {{k.price}}</span>
+        <span>￥{{k.price}}</span>
+        <span class='fx' v-if='k.gwfx && k.gwfx!=0'>
+          <i>返</i>￥{{k.gwfx}}
+        </span>
       </li>
     </ul>
   <!-- <router-link :to="{ name: '详情页'}"  class="section1-banner">
@@ -27,8 +30,8 @@ import { Lazyload } from 'mint-ui';
 export default {
   props:['section1', 'banner'],
   methods: {
-    goAll(id) {
-      this.$router.push({path: '/shop/all', query: {id: id}})
+    goToSearch(title) {
+      this.$router.push({path: '/shop/search', query: {title: title}})
     }
   }
 }
@@ -36,7 +39,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-   @import '../../assets/fz.less';
+  @import '../../assets/fz.less';
   @import '../../assets/index/style.css';
   .product-img{
     height: 120px;
@@ -85,7 +88,7 @@ export default {
         width: 50%;
         -webkit-box-sizing: border-box;
                 box-sizing: border-box;
-        padding:0 3vw;
+        padding:0 2vw;
         >a {
           display: block;
           width: 100%;
@@ -127,7 +130,7 @@ export default {
           display: inline-block;
           padding-bottom: 6px;
           color: @fontRed;
-          font-size: 18px;
+          font-size: 16px;
         }
       }
     }

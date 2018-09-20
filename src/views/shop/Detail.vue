@@ -18,7 +18,7 @@
         <i class='btn-to-top iconfont icon-fanhuidingbu'></i>
       </v-backtotop>
       <v-baseline></v-baseline>
-      <v-footer :detail="detail" :carnum="carnum"></v-footer>
+      <v-footer  :detail="detail" :carnum="carnum"></v-footer>
     </div>
   </div>
 </template>

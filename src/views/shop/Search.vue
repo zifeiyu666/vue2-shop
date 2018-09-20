@@ -38,34 +38,10 @@
       <mt-picker :slots="slots" @change="onValuesChange"></mt-picker>
     </mt-popup>
 
-    <!-- 商品列表 -->
-    <div class="product_list_wrap">
-      <ul 
-        class="something" 
-        v-if='allList.length != 0'
-        v-infinite-scroll="loadMore"
-        infinite-scroll-disabled="isLoading"
-        infinite-scroll-distance="0"
-        >
-        <li v-for="(k,i) in allList" @click='gotoDetail(k)' :key="i">
-          <div class="something-middle">
-            <img :src="k.imgurl[0]">
-          </div>
-          <div class="something-right">
-            <p>{{k.title}}</p>
-            <p style="color:rgb(199, 108, 28);"> {{k.intro}}</p>
-            <p>￥{{k.price}}元</p>
-            <!-- <div class="something-right-bottom">
-              <span @click='deleteCollection(k)'></span>
-            </div> -->
-          </div>
-        </li>
-      </ul>
-      <div v-else>
-        <v-nomore></v-nomore>
-      </div>
-    </div>
-    <v-baseline v-if='isLastPage'></v-baseline>
+    <!-- 所有商品 -->
+    <v-all fx='gwfx' :hideHead='true'></v-all>
+
+    
 
     <!-- 返回顶部 -->
     <v-backtotop bottom="60px" right="10px">
@@ -84,12 +60,15 @@ import Header from '@/common/_header.vue'
 import Baseline from '@/common/_baseline.vue'
 import NorMore from '@/components/nomore'
 import BackToTop from 'vue-backtotop'
+import AllProduct from '@/common/_productList.vue'
+
 export default {
   components: {
     'v-header':Header,
     'v-baseline': Baseline,
     'v-nomore': NorMore,
-    'v-backtotop': BackToTop
+    'v-backtotop': BackToTop,
+    'v-all': AllProduct
   },
   data() {
     return {

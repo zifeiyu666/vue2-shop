@@ -90,7 +90,7 @@
               -webkit-box-pack: justify;
               -ms-flex-pack: justify;
               justify-content: space-between;
-              padding-left: 6vw;
+              padding-left: 10px;
               -webkit-box-sizing: border-box;
               box-sizing: border-box;
               p {
@@ -117,7 +117,8 @@
               // }
               p:last-of-type {
                 font-size: 18px;
-                line-height: 18px;
+                line-height: 24px;
+                height: 24px;
                 color:@fontRed;
               }
               .something-right-bottom {
@@ -169,12 +170,37 @@
 
 // 返回顶部
 .btn-to-top {
-    font-size: 16vw;
-    color: #ff4800;
-    background: #fff;
-    width: 15vw;
-    height: 15vw;
-    display: inline-block;
-    padding: 0;
-    border-radius: 8vw;
+font-size: 16vw;
+color: #ff4800;
+background: #fff;
+width: 15vw;
+height: 15vw;
+display: inline-block;
+padding: 0;
+border-radius: 8vw;
+}
+
+// 显示折扣返现
+.fx{
+    display: inline!important;
+    margin-left: 5px;
+    position: relative;
+    top: -2px;
+    i{
+      position: relative;
+      top: -2px;
+      font-size: 12px!important;
+      background: @fontRed;
+      color: #fff;
+      // padding: 4px;
+      text-align: center;
+      line-height: 20px;
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      box-sizing: border-box;
+      border-radius: 10px;
+    }
+    font-size: 14px !important;
+    color: @fontRed !important;
   }

@@ -28,9 +28,34 @@
         <p>
           商品名称:<span class="title">{{detail ? detail.ProductName : undefined}}</span> 
         </p>
-        <p>
-          商品类型:<span class="title">{{detail ? detail.ProductTypeName : undefined}}</span> 
-        </p>
+        <!-- 选择规格 -->
+        <div class="pick" >
+          <div  v-if='detail.diclist[0]'>
+            <h1>请选择{{detail.diclist[0].DicTypeName}}:</h1>
+            <div style='cursor:pointer'>
+              <el-radio-group v-model="radio[0].radio" @change='changeSelect' size="medium">
+                <el-radio-button style='cursor:pointer' @click.native.prevent="clickToggle0(item.code)" v-for="(item, k) in modal1" :label="item.code" :key='k'>{{item.name}}</el-radio-button>
+              </el-radio-group>
+            </div>
+          </div>
+          <div v-if='detail.diclist[1]'>
+            <h1>请选择{{detail.diclist[1].DicTypeName}}:</h1>
+            <!-- @click.native的情况下无法实现toggle效果 -->
+            <div  style='cursor:pointer'>
+              <el-radio-group v-model="radio[1].radio" @change='changeSelect' size="medium">
+                <el-radio-button style='cursor:pointer' @click.native.prevent="clickToggle1(item.code)"  v-for="(item, k) in modal2" :label="item.code"  :key='k'>{{item.name}}</el-radio-button>
+              </el-radio-group>
+            </div>
+          </div>
+          <div v-if='detail.diclist[2]'>
+            <h1>请选择{{detail.diclist[2].DicTypeName}}:</h1>
+            <div>
+              <el-radio-group v-model="radio[2].radio" @change='changeSelect' size="medium">
+                <el-radio-button style='cursor:pointer' @click.native.prevent="clickToggle2(item.code)"  v-for="(item, k) in modal3" :label="item.code"  :key='k'>{{item.name}}</el-radio-button>
+              </el-radio-group>
+            </div>
+          </div>
+        </div>
         <p>
           价格:<span class="title">{{price ? price : ''}}</span>
         </p>
@@ -110,7 +135,24 @@ export default {
       carnum: '',
       score: '',
       usescore: '',
-      scoreRate: '' //提现比例
+      scoreRate: '', //提现比例
+      // 存储用户选择的规格信息
+      radio: [
+        {
+          radio: ''
+        },
+        {
+          radio: ''
+        },
+        {
+          radio: ''
+        }
+      ],
+      selectedPropId: '', // 用户选择的规格
+      enabledProp: [],
+      modal1: [],
+      modal2: [],
+      modal3: [],
     }
   },
   computed:{
@@ -138,9 +180,77 @@ export default {
     this.getMyCarNum()
     this.getScore()
     this.getScoreRate()
+    this.changeSelect()
   },
   methods:{
     scrollTo,
+    clickToggle0(e) {
+      console.log(1111111111111)
+      e === this.radio[0].radio ? this.radio[0].radio = '' : this.radio[0].radio = e
+      this.changeSelect()
+    },
+    clickToggle1(e) {
+      console.log(2222222222222)
+      e === this.radio[1].radio ? this.radio[1].radio = '' : this.radio[1].radio = e
+      this.changeSelect()
+    },
+    clickToggle2(e) {
+      console.log(3333333333333)
+      e === this.radio[2].radio ? this.radio[2].radio = '' : this.radio[2].radio = e
+      this.changeSelect()
+    },
+    changeSelect() {
+      mockapi.shop.api_Shop_getProductPropList_get({
+        params:{
+          PId: this.$route.query.pid,
+          Prop1: this.radio[0].radio,
+          Prop2: this.radio[1].radio,
+          Prop3: this.radio[2].radio
+        }
+      }).then(res => {
+        var data = res.data.data
+        this.enabledProp = data
+        if (this.enabledProp.length == 1) {
+          this.OriginalPrice = this.enabledProp[0].OriginalPrice
+          this.DiscountPrice = this.enabledProp[0].DiscountPrice
+        }
+        this.$store.commit('saveSelectedProp', this.enabledProp)
+        this.modal1 = []
+        this.modal2 = []
+        this.modal3 = []
+        for(var i = 0; i < this.enabledProp.length; i++ ) {
+          this.modal1.push(this.enabledProp[i].Prop1)
+          this.modal2.push(this.enabledProp[i].Prop2)
+          this.modal3.push(this.enabledProp[i].Prop3)
+        }
+        //将对象元素转换成字符串以作比较  
+        function obj2key(obj, keys){  
+            var n = keys.length,  
+                key = [];  
+            while(n--){  
+                key.push(obj[keys[n]]);  
+            }  
+            return key.join('|');  
+        }  
+        //去重操作  
+        function uniqeByKeys(array,keys){  
+            var arr = [];  
+            var hash = {};  
+            for (var i = 0, j = array.length; i < j; i++) {  
+                var k = obj2key(array[i], keys);  
+                if (!(k in hash)) {  
+                    hash[k] = true;  
+                    arr .push(array[i]);  
+                }  
+            }  
+            return arr ;  
+        }
+        //进行去重
+        this.modal1 = uniqeByKeys(this.modal1,['code']);
+        this.modal2 = uniqeByKeys(this.modal2,['code']);
+        this.modal3 = uniqeByKeys(this.modal3,['code']);
+      })
+    },
     getScore() {
       mockapi.shop.api_Shop_getMyScore_get({
         params: {
@@ -347,6 +457,17 @@ export default {
 <style lang="less" scoped>
 @import '../../assets/fz.less';
 @import '../../assets/index/style.css';
+
+
+.pick{
+  padding-bottom: 10px;
+}
+.pick h1{
+  font-size: 14px;
+  line-height: 35px;
+}
+
+
 .jf{
   width: 100%;
   box-sizing: border-box;

@@ -1,8 +1,8 @@
 <template>
   <div class="product_list_wrap">
-      <h3 class='title'>
+      <h3 class='title' v-if='!hideHead'>
         全部商品
-        <span class="more">查看更多></span>
+        <span class="more" @click='goToSearch("全部商品")'>查看更多></span>
       </h3>
       <ul 
         class="something" 
@@ -18,7 +18,19 @@
           <div class="something-right">
             <p>{{k.title}}</p>
             <!-- <p style="color:rgb(199, 108, 28);"> {{k.intro}}</p> -->
-            <p>￥{{k.price}}元</p>
+            <p>
+              ￥{{k.price}}元
+              <span class='fx' v-if='k.gwfx && k.gwfx!=0 && fx=="gwfx"'>
+                <i>返</i>￥{{k.gwfx}}
+              </span>
+              <span class='fx' v-if='k.ywyfx && k.ywyfx!=0 && fx=="ywyfx"'>
+                <i>赚</i>￥{{k.ywyfx}}
+              </span>
+              <span class='fx' v-if='k.hyfx && k.hyfx!=0 && fx=="hyfx"'>
+                <i>赚</i>￥{{k.hyfx}}
+              </span>
+            </p>
+            
             <!-- <div class="something-right-bottom">
               <span @click='deleteCollection(k)'></span>
             </div> -->
@@ -28,6 +40,7 @@
       <div v-else>
         <v-nomore></v-nomore>
       </div>
+      <v-baseline v-if='isLastPage'></v-baseline>
     </div>
 </template>
 
@@ -35,11 +48,14 @@
 import qs from 'qs'
 import * as mockapi from '@/../mockapi'
 import NorMore from '@/components/nomore'
+import Baseline from '@/common/_baseline.vue'
 
 export default {
   components: {
-    'v-nomore': NorMore
+    'v-nomore': NorMore,
+    'v-baseline': Baseline,
   },
+  props: ['fx', 'hideHead'],
   data() {
     return {
       pageNo: 1,
@@ -53,6 +69,9 @@ export default {
     this.getAllProductList()
   },
   methods: {
+    goToSearch(title) {
+      this.$router.push({path: '/shop/search', query: {title: title}})
+    },
     // 所有商品加载更多
     getAllProductList() {
       this.isLoading = true

@@ -36,19 +36,23 @@
         <img class='icon' src="../../assets/img/07.png" alt="">
         <span class='icon-title'>特产</span>
       </el-col>
-      <el-col :span='6' class='sel-icon' @click.native='goToSearch("更多")'>
+      <el-col :span='6' class='sel-icon' @click.native='goToSearch("全部商品")'>
         <img class='icon' src="../../assets/img/08.png" alt="">
         <span class='icon-title'>更多</span>
       </el-col>
     </el-row>
 
+    <!-- 搜索入口 -->
+    <div class="search-in" @click='goToSearch("全部商品")'>
+      <input type="text" placeholder='搜索'>
+      <p>搜索</p>
+    </div>
+
     <!-- 推荐商品 -->
     <v-section1 v-if='section1.length > 0' :section1="section1" :banner='banner1'></v-section1>
 
     <!-- 所有商品 -->
-    <v-all></v-all>
-
-    <v-baseline v-if='isLastPage'></v-baseline>
+    <v-all fx='gwfx'></v-all>
 
     <!-- 返回顶部 -->
     <v-backtotop bottom="60px" right="10px">
@@ -64,7 +68,6 @@ import qs from 'qs'
 import * as mockapi from '@/../mockapi'
 import Header from '@/components/index/header.vue'
 import Swiper from '@/components/shop/swiper.vue'
-import Baseline from '@/common/_baseline.vue'
 import Footer from '@/common/_footer.vue'
 import Section1 from '@/components/index/section1.vue'
 import BackToTop from 'vue-backtotop'
@@ -74,7 +77,6 @@ export default {
   components: {
     'v-header': Header,
     'v-swiper': Swiper,
-    'v-baseline': Baseline,
     'v-footer': Footer,
     'v-section1': Section1,
     'v-backtotop': BackToTop,
@@ -189,6 +191,33 @@ export default {
 .sel-icon{
   cursor: pointer;
   margin-bottom: 6px;
+}
+.search-in{
+  background: #fff;
+  margin-top: 10px;
+  padding: 10px 0;
+  input{
+    width: 70vw;
+    margin-left: 5vw;
+    margin-right: 3vw;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 15px;
+    padding: 0 4vw;
+    box-sizing: border-box;
+    background: @bgCol;
+  }
+  p{
+    display: inline-block;
+    font-size: 12px;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    background: @fontRed;
+    color: #fff;
+    border-radius: 15px;
+    padding: 0 3vw;
+  }
 }
 .index_wrap {
   padding-bottom: 60px;
