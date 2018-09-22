@@ -18,10 +18,9 @@
     </span>
     <span class="footer-buy" @click="goPay">
       立即购买
-    </span>
+    </span> 
     <!-- 加入购物车 -->
     <mt-popup
-      v-if="selectedProp[0]"
       v-model="popupVisible"
       position="bottom">
       <div class='shopcar'>
@@ -30,28 +29,11 @@
         </p>
         <!-- 选择规格 -->
         <div class="pick" >
-          <div  v-if='detail.diclist[0]'>
-            <h1>请选择{{detail.diclist[0].DicTypeName}}:</h1>
+          <div v-if='propTypeNameList' v-for='(item, index) in propTypeNameList' :key='index + "a"'>
+            <h1>请选择{{item}}:</h1>
             <div style='cursor:pointer'>
-              <el-radio-group v-model="radio[0].radio" @change='changeSelect' size="medium">
-                <el-radio-button style='cursor:pointer' @click.native.prevent="clickToggle0(item.code)" v-for="(item, k) in modal1" :label="item.code" :key='k'>{{item.name}}</el-radio-button>
-              </el-radio-group>
-            </div>
-          </div>
-          <div v-if='detail.diclist[1]'>
-            <h1>请选择{{detail.diclist[1].DicTypeName}}:</h1>
-            <!-- @click.native的情况下无法实现toggle效果 -->
-            <div  style='cursor:pointer'>
-              <el-radio-group v-model="radio[1].radio" @change='changeSelect' size="medium">
-                <el-radio-button style='cursor:pointer' @click.native.prevent="clickToggle1(item.code)"  v-for="(item, k) in modal2" :label="item.code"  :key='k'>{{item.name}}</el-radio-button>
-              </el-radio-group>
-            </div>
-          </div>
-          <div v-if='detail.diclist[2]'>
-            <h1>请选择{{detail.diclist[2].DicTypeName}}:</h1>
-            <div>
-              <el-radio-group v-model="radio[2].radio" @change='changeSelect' size="medium">
-                <el-radio-button style='cursor:pointer' @click.native.prevent="clickToggle2(item.code)"  v-for="(item, k) in modal3" :label="item.code"  :key='k'>{{item.name}}</el-radio-button>
+              <el-radio-group v-model="selectedPropId[index]" @change='changeSelect' size="medium">
+                <el-radio-button :disabled='i.canSel' style='cursor:pointer' @click.native.prevent="clickToggle(index, i.code, i.canSel)" v-for='(i, k) in propTypeList[index]' :label="i.code" :key='k'>{{i.name}}</el-radio-button>
               </el-radio-group>
             </div>
           </div>
@@ -68,8 +50,8 @@
   width: 30px;" @click='add'>+</button>
         </p>
         <div class="bottm-btn-group bottom clearfix">
-          <mt-button class='confirm-btn' type="primary" @click='confirmShopCar'>确定</mt-button>
-          <mt-button class='concel-btn' type="concel-btn" @click='consoleAddIntoCar'>取消</mt-button>
+          <mt-button class='confirm-btn' @click='confirmShopCar'>确定</mt-button>
+          <mt-button class='concel-btn' @click='consoleAddIntoCar'>取消</mt-button>
         </div>
       </div>
     </mt-popup>
@@ -105,8 +87,8 @@
         </div>
 
         <div class="bottm-btn-group bottom clearfix">
-          <mt-button class='confirm-btn' type="primary" @click='confirmPay'>确定</mt-button>
-          <mt-button class='concel-btn' type="default" @click='consolePay'>取消</mt-button>
+          <mt-button class='confirm-btn' @click='confirmPay'>确定</mt-button>
+          <mt-button class='concel-btn' @click='consolePay'>取消</mt-button>
         </div>
         
       </div>
@@ -148,19 +130,26 @@ export default {
           radio: ''
         }
       ],
-      selectedPropId: '', // 用户选择的规格
+      selectedPropId: [undefined, undefined, undefined], // 用户选择的规格
       enabledProp: [],
       modal1: [],
       modal2: [],
       modal3: [],
+      propTypeList0: [], //类别1
+      propTypeList1: [], // 类别2
+      propTypeList2: [], // 类别3
+      propTypeList: [],
+      propTypeNameList: [], // 可选类别标题
     }
   },
   computed:{
     price() {
-      return this.selectedProp[0].DiscountPrice * this.num
+      // return this.selectedProp[0].DiscountPrice * this.num
+      return 12
     },
     payprice() {
-      return this.selectedProp[0].DiscountPrice * this.paynum
+      // return this.selectedProp[0].DiscountPrice * this.paynum
+      return 12
     }
   },
   // TODO： 检测数据
@@ -178,100 +167,172 @@ export default {
   mounted() {
     this.initCollectStar()
     this.getMyCarNum()
-    this.getScore()
-    this.getScoreRate()
     this.changeSelect()
+    this.initPropTypeList()
   },
   methods:{
     scrollTo,
-    clickToggle0(e) {
-      console.log(1111111111111)
-      e === this.radio[0].radio ? this.radio[0].radio = '' : this.radio[0].radio = e
-      this.changeSelect()
+    initPropTypeList() {
+      
+      var allList = this.detail.prop
+      // if (selectedPropId) {
+      //   console.log('进入类别选择')
+      //   var canSelList = []
+      //   allList.forEach((item, index) => {
+      //     if (item.Prop1.code == selectedPropId[0]) {
+      //       canSelList.push(item)
+      //     }
+      //     if (index == 1 && item.Prop2.code == propCode) {
+      //       canSelList.push(item)
+      //     }
+      //     if (index == 2 && item.Prop3.code == propCode) {
+      //       canSelList.push(item)
+      //     }
+      //   })
+      //   allList = canSelList
+      //   console.log('筛选后的类别')
+      //   console.log(allList)
+      // }
+      
+      this.propTypeNameList = this.detail.PropertyName
+      console.log('进入类别选择')
+      console.log(this.selectedPropId[0])
+      var that = this
+      var canSelList = []
+      allList.forEach((item, index) => {
+        if (!that.selectedPropId[0] && !that.selectedPropId[1] && !that.selectedPropId[2]) {
+          that.$set(item.Prop1, 'canSel', false)
+          that.$set(item.Prop2, 'canSel', false)
+          that.$set(item.Prop3, 'canSel', false)
+        } else {
+          // 这里保证已选属性可选，未做出选择的属性都不可选，后续再筛选出可选的
+          that.$set(item.Prop1, 'canSel', !that.selectedPropId[0])
+          that.$set(item.Prop2, 'canSel', !that.selectedPropId[1])
+          that.$set(item.Prop3, 'canSel', !that.selectedPropId[2])
+        }
+        if (
+           ((that.selectedPropId[0] && item.Prop1.code == that.selectedPropId[0]) || !that.selectedPropId[0]) &&
+           ((that.selectedPropId[1] && item.Prop2.code == that.selectedPropId[1]) || !that.selectedPropId[1]) &&
+           ((that.selectedPropId[2] && item.Prop3.code == that.selectedPropId[2]) || !that.selectedPropId[2]) 
+        ) {
+          canSelList.push(item)
+        }
+        that.propTypeList0.push(item.Prop1)
+        that.propTypeList1.push(item.Prop2)
+        that.propTypeList2.push(item.Prop3)
+      })
+      console.log('可选列表')
+      console.log(canSelList)
+
+      var canSelList0 = []
+      var canSelList1 = []
+      var canSelList2 = []
+
+      canSelList.forEach((item, index) => {
+        canSelList0.push(item.Prop1)
+        canSelList1.push(item.Prop2)
+        canSelList2.push(item.Prop3)
+      })
+
+      this.propTypeList0 = uniqeByKeys(this.propTypeList0, ['code'])
+      this.propTypeList1 = uniqeByKeys(this.propTypeList1, ['code'])
+      this.propTypeList2 = uniqeByKeys(this.propTypeList2, ['code'])
+      this.propTypeList0 = this.propTypeList0.map((val, index) => {
+        if (!val.canSel) {
+          return val
+        } else if (val.code == canSelList0[index].code) {
+          return {
+            'code': val.code,
+            'name': val.name,
+            'canSel': false
+          }
+        }
+      })
+      this.propTypeList1 = this.propTypeList1.map((val, index) => {
+        console.log('aaaa')
+        console.log(val.name)
+        console.log('原code')
+        console.log(val.code)
+        console.log('现code')
+        console.log(canSelList1[index].code)
+        console.log()
+        if (!val.canSel) {
+          return val
+        } else if (val.code == canSelList1[index].code) {
+          console.log('进入设置')
+          console.log(val)
+          console.log('valaaaaa')
+          return {
+            'code': val.code,
+            'name': val.name,
+            'canSel': false
+          }
+        }
+      })
+      this.propTypeList2 = this.propTypeList2.map((val, index) => {
+        if (!val.canSel) {
+          return val
+        } else if (val.code == canSelList2[index].code) {
+          return {
+            'code': val.code,
+            'name': val.name,
+            'canSel': false
+          }
+        }
+      })
+      console.log('筛完的数组')
+      console.log(this.propTypeList1)
+
+
+      this.propTypeList = [this.propTypeList0, this.propTypeList1, this.propTypeList2]
+
+      //将对象元素转换成字符串以作比较
+      function obj2key(obj, keys){  
+          var n = keys.length,  
+              key = [];  
+          while(n--){  
+              key.push(obj[keys[n]]);  
+          }  
+          return key.join('|');  
+      }  
+      //去重操作  
+      function uniqeByKeys(array,keys){
+          var arr = [];  
+          var hash = {};  
+          for (var i = 0, j = array.length; i < j; i++) {  
+              var k = obj2key(array[i], keys);  
+              if (!(k in hash)) {  
+                  hash[k] = true;  
+                  arr .push(array[i]);  
+              }  
+          }  
+          return arr ;  
+      }
     },
-    clickToggle1(e) {
-      console.log(2222222222222)
-      e === this.radio[1].radio ? this.radio[1].radio = '' : this.radio[1].radio = e
-      this.changeSelect()
-    },
-    clickToggle2(e) {
-      console.log(3333333333333)
-      e === this.radio[2].radio ? this.radio[2].radio = '' : this.radio[2].radio = e
-      this.changeSelect()
+    clickToggle(i, code, canSel) {
+      if (canSel) {
+        console.log('不能选择')
+        return
+      }
+      console.log(i, code)
+      this.selectedPropId = this.selectedPropId.map((val, index) => {
+        if (index == i) {
+          if (val == code) {
+            return undefined
+          } else {
+            return code
+          }
+        } else {
+          return val
+        }
+      })
+      console.log('准备进入')
+      this.initPropTypeList()
     },
     changeSelect() {
-      mockapi.shop.api_Shop_getProductPropList_get({
-        params:{
-          PId: this.$route.query.pid,
-          Prop1: this.radio[0].radio,
-          Prop2: this.radio[1].radio,
-          Prop3: this.radio[2].radio
-        }
-      }).then(res => {
-        var data = res.data.data
-        this.enabledProp = data
-        if (this.enabledProp.length == 1) {
-          this.OriginalPrice = this.enabledProp[0].OriginalPrice
-          this.DiscountPrice = this.enabledProp[0].DiscountPrice
-        }
-        this.$store.commit('saveSelectedProp', this.enabledProp)
-        this.modal1 = []
-        this.modal2 = []
-        this.modal3 = []
-        for(var i = 0; i < this.enabledProp.length; i++ ) {
-          this.modal1.push(this.enabledProp[i].Prop1)
-          this.modal2.push(this.enabledProp[i].Prop2)
-          this.modal3.push(this.enabledProp[i].Prop3)
-        }
-        //将对象元素转换成字符串以作比较  
-        function obj2key(obj, keys){  
-            var n = keys.length,  
-                key = [];  
-            while(n--){  
-                key.push(obj[keys[n]]);  
-            }  
-            return key.join('|');  
-        }  
-        //去重操作  
-        function uniqeByKeys(array,keys){  
-            var arr = [];  
-            var hash = {};  
-            for (var i = 0, j = array.length; i < j; i++) {  
-                var k = obj2key(array[i], keys);  
-                if (!(k in hash)) {  
-                    hash[k] = true;  
-                    arr .push(array[i]);  
-                }  
-            }  
-            return arr ;  
-        }
-        //进行去重
-        this.modal1 = uniqeByKeys(this.modal1,['code']);
-        this.modal2 = uniqeByKeys(this.modal2,['code']);
-        this.modal3 = uniqeByKeys(this.modal3,['code']);
-      })
-    },
-    getScore() {
-      mockapi.shop.api_Shop_getMyScore_get({
-        params: {
-          type: 1,
-          token: this.$store.state.userInfo.MemberToken
-        }
-      }).then(res => {
-        var data = res.data.data
-        this.score = data
-      })
-    },
-    getScoreRate() {
-      mockapi.shop.api_Shop_getRatio_get({
-        params: {
-          type: 1,
-          token: this.$store.state.userInfo.MemberToken
-        }
-      }).then(res => {
-        var data = res.data.data
-        this.scoreRate = data
-      })
+      console.log('change')
+
+      
     },
     initCollectStar() {
       mockapi.shop.api_Shop_isMyCollection_get({
@@ -335,15 +396,19 @@ export default {
       })
     },
     addIntoCar(){
+      console.log('购物车')
+
+      this.popupVisible = !this.popupVisible
+      console.log(this.popupVisible)
       //  mint-ui的弹出式提示框
-      this.selectedProp = this.$store.state.selectedProp
-      if (this.selectedProp.length == 1) {
-        this.PropId = this.selectedProp[0].PropId
-        this.popupVisible = !this.popupVisible
-      } else {
-        Toast('请选择商品规格')
-        this.scrollTo('400')
-      }
+      // this.selectedProp = this.$store.state.selectedProp
+      // if (this.selectedProp.length == 1) {
+      //   this.PropId = this.selectedProp[0].PropId
+      //   this.popupVisible = !this.popupVisible
+      // } else {
+      //   Toast('请选择商品规格')
+      //   this.scrollTo('400')
+      // }
       
     },
     //  确认添加购物车 
@@ -465,6 +530,10 @@ export default {
 .pick h1{
   font-size: 14px;
   line-height: 35px;
+}
+
+.confirm-btn{
+  color: #fff;
 }
 
 

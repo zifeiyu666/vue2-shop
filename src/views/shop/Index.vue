@@ -3,7 +3,7 @@
   <div class="index_wrap">
     <!-- <v-header></v-header> -->
     <!-- 隐藏搜索按钮 -->
-    <mt-button icon="search" @click='goToSearch'></mt-button>
+    <!-- <mt-button icon="search" @click='goToSearch'></mt-button> -->
     <v-swiper :swiperData="bannerList"></v-swiper>
 
     <!-- 小分类 -->
