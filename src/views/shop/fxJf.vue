@@ -73,7 +73,7 @@ import { parseTime } from '@/util/data.js'
     components: {
       'v-header':Header,
       'v-baseline': Baseline,
-      'v-nomore': NorMore
+      'v-nomore': NoMore
     },
     created() {
       var userInfo = this.$store.state.userInfo

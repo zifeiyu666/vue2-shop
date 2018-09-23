@@ -9,16 +9,19 @@
     <div class="itemlist">
       
     </div>
-    <ul
-      class='container'>
+    <ul v-if='list && list.length != 0' class='container'>
       <li v-for="(item, index) in list" :key='index' @click='goToItemDetail(item)'>
         <div class="item">
-          <!-- <img :src="$imgHost + '400x80/999/&text=项目背景图'" alt=""> -->
           <item-show :itemData="item"></item-show>
         </div>
       </li>
+      <v-baseline></v-baseline>
     </ul>
+    <v-nomore v-else></v-nomore>
+    
+    
     <v-footer></v-footer>
+    
   </div>
   
 </template>
@@ -27,10 +30,14 @@
   import qs from 'qs'
   import Footer from '@/common/show/_footer'
   import ItemShow from '@/components/show/ItemShow'
+  import Baseline from '@/common/_baseline.vue'
+  import NoMore from '@/components/nomore.vue'
   export default{
     components: {
       'v-footer': Footer,
       ItemShow,
+      'v-nomore': NoMore,
+      'v-baseline': Baseline
     },
     data() {
       return {
@@ -47,16 +54,19 @@
         this.$router.push('/show')
       },
       getItemList() {
+        this.$store.commit('SET_LOADING', true)
         mockapi.show.api_Show_getItemList_get({
           params: {
             pageNo: this.pageNo,
             pageSize: this.pageSize
           } 
         }).then(response => {
+          this.$store.commit('SET_LOADING', false)
           var data = response.data.data.list
           this.list = this.list.concat(data)
           this.loading=false
         }).catch(error => {
+          this.$store.commit('SET_LOADING', false)
           console.log(error)
         })
       },
@@ -80,10 +90,11 @@
   padding-bottom: 90px;
   padding-top: 40px;
   background-color: #EBEBEB;
+  box-sizing: border-box;
 }
 .item{
   box-shadow: 0px 1px 3px #eee;
-  padding: 10px;
+  /* padding: 10px; */
   img{
     width: 100%;
   }

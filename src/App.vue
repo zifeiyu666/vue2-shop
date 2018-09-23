@@ -1,7 +1,8 @@
 <template>
   <div id="app" v-loading='fetchLoading'>
+    <!-- shell -->
     <!-- <transition name='fade'> -->
-        <router-view></router-view>
+    <router-view></router-view>
     <!-- </transition> -->
     <!-- <v-loading v-show="fetchLoading"></v-loading> -->
   </div>

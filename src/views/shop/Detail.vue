@@ -1,12 +1,24 @@
 <template lang="html">
   <div class="detail" v-loading='isLoading'>
+    <div class="header">
+      <mt-header title="商品详情">
+        <router-link to="/shop" slot="left">
+          <mt-button icon="back">返回首页</mt-button>
+        </router-link>
+        <mt-button icon="search" slot="right" @click='goToSearch'></mt-button>
+      </mt-header>
+
+    </div>
     <div v-if='detail'>
       <v-share :imgurl="qrcode" />
       <v-swiper :imgList="detail.imgurl"></v-swiper>
       <v-chose :view="detail"></v-chose>
       <v-content :content='detail'></v-content>
+      <v-backtotop bottom="60px" right="10px">
+        <i class='btn-to-top iconfont icon-fanhuidingbu'></i>
+      </v-backtotop>
       <v-baseline></v-baseline>
-      <v-footer :detail="detail" :carnum="carnum"></v-footer>
+      <v-footer  :detail="detail" :carnum="carnum"></v-footer>
     </div>
   </div>
 </template>
@@ -18,7 +30,7 @@ import Content from '@/components/detail/content.vue'
 import Footer from '@/components/detail/footer.vue'
 import Baseline from '@/common/_baseline.vue'
 import Share from '@/components/shareBtn.vue'
-
+import BackToTop from 'vue-backtotop'
 import qs from 'qs'
 import * as mockapi from '@/../mockapi'
 export default {
@@ -28,7 +40,8 @@ export default {
     'v-content':Content,
     'v-footer':Footer,
     'v-baseline':Baseline,
-    'v-share': Share
+    'v-share': Share,
+    'v-backtotop': BackToTop
   },
   data() {
     return{
@@ -71,6 +84,9 @@ export default {
         console.log(err)
         this.isLoading = false
       })
+    },
+    goToSearch() {
+      this.$router.push('/shop/search')
     }
   },
   beforeCreate(){
@@ -80,10 +96,25 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import '../../assets/utils.less';
+.header{
+  background: #fff;
+}
+.mint-header{
+  background: #fff !important;
+  color: #333;
+  box-shadow: 0px 0px 3px #aaa;
+  z-index: 10;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left:0;
+}
 .detail {
   width: 100%;
   min-height: 100vh;
   padding-bottom: 14vw;
+  margin-top: 40px;
   // background: #fff;
 }
 .banner{

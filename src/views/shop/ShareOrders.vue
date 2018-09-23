@@ -310,8 +310,8 @@ input{
                 display: flex;
                 -webkit-box-orient: vertical;
                 -webkit-box-direction: normal;
-                -ms-flex-flow: column wrap;
-                flex-flow: column wrap;
+                -ms-flex-flow: column nowrap;
+                flex-flow: column nowrap;
                 -webkit-box-pack: justify;
                 -ms-flex-pack: justify;
                 justify-content: space-between;

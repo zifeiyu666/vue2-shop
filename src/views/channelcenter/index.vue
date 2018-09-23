@@ -48,6 +48,14 @@
                   <span>渠道营业额</span><i class="icon-go"></i>
                 </p>
               </router-link>
+              <a @click='showQrCode()' class="my-service-bottom">
+                <div>
+                  <img src='../../assets/img/qrcode.png' style='width: 22px;margin-top:-4px' >
+                </div>
+                <p>
+                  <span>我的二维码</span><i class="icon-go"></i>
+                </p>
+              </a>
           </section>
 
       </div>

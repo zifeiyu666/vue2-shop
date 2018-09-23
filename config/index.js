@@ -1,12 +1,18 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
 
+<<<<<<< HEAD
 // 地址
+=======
+>>>>>>> 7bc0e313b35fb9814afc983b94755b53d03100fe
 var mock =  'https://www.easy-mock.com/mock/5aa88e678ed9a05f24bed96d/xjha_copy'
 var wj = 'http://47.95.230.197'
 var test = 'http://www.yunhi.vip'
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7bc0e313b35fb9814afc983b94755b53d03100fe
 module.exports = {
   build: {
     env: require('./prod.env'),
@@ -34,6 +40,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
+<<<<<<< HEAD
       '/api': {  
         target: 'http://www.yunhi.vip',    //主域名，以前我都写192.168.2.57:80，这里跨域了  
         changeOrigin: true,   //允许跨域  
@@ -44,6 +51,16 @@ module.exports = {
       }
     },
     host: 'localhost',
+=======
+      '/api': {
+        target: mock,  //目标接口域名
+        changeOrigin: true,  //是否跨域
+        // pathRewrite: {
+        //   '^/api': '/api'   //重写接口
+        // }
+      },
+    },
+>>>>>>> 7bc0e313b35fb9814afc983b94755b53d03100fe
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
     // (https://github.com/webpack/css-loader#sourcemaps)

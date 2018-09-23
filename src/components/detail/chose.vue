@@ -7,26 +7,21 @@
       </h1>
       <p class="chose-view-intro">{{view.ProductIntro}}</p>
       <div class='item-wrap'>
-        <p class='discountprice' v-if='enabledProp.length != 1'>
-          <i>￥</i>{{view.minPrice}}-{{view.maxPrice}}
-          <span class='fx' v-if='!fxtype && this.maxgwfx != 0'><i>返</i>￥{{this.mingwfx}}--{{this.maxgwfx}}</span>
-          <span class='fx' v-if='fxtype == "fxzx" && this.maxhyfx != 0 '><i>赚</i>￥{{this.minhyfx}}--{{this.maxhyfx}}</span>
-          <span class='fx' v-if='fxtype == "ywyzx" && this.maxywyfx != 0 '><i>赚</i>￥{{this.minywyfx}}--{{this.maxywyfx}}</span>
-        </p>
+        <p class='discountprice' v-if='enabledProp.length != 1'><i>￥</i>{{view.minPrice}}-{{view.maxPrice}}</p>
         <p class='discountprice' v-if='enabledProp.length == 1'>
           <i>￥</i>{{this.DiscountPrice}}
-          <span class='fx' v-if='!fxtype && this.gwfx!=0'><i>返</i>￥{{this.gwfx}}</span>
-          <span class='fx' v-if='fxtype == "fxzx" && this.hyfx!=0 '><i>赚</i>￥{{this.hyfx}}</span>
-          <span class='fx' v-if='fxtype == "ywyzx" && this.ywyfx!=0'><i>赚</i>￥{{this.ywyfx}}</span>
+          <span class='fx' v-if='view.prop[0].ywyfx && view.prop[0].ywyfx != 0'>
+            <i>返</i>￥{{view.prop[0].ywyfx}}
+          </span>
         </p>
         <span class='originalprice' v-if='enabledProp.length == 1 && this.DiscountPrice != this.OriginalPrice'>原价{{this.OriginalPrice}}元</span>
         
       </div>
       <div class='item-wrap'>
-        <span>浏览次数： {{view.VisitTimes}}</span>
-        <span>所属项目：{{view.ProjectTypeName}}</span>
+        <span>已售 {{view.SoldNum}}</span>
+        <span>库存：{{view.AvailableNum}}</span>
       </div>
-      <div class='item-wrap'>
+      <!-- <div class='item-wrap'>
         <span v-if='view.DBTypeName'>打包类型： {{view.DBTypeName}}</span>
         <span v-if='view.DestinationTypeName'>目的地类别： {{view.DestinationTypeName}}</span>
         <span v-if='view.AvailableNum'>使用天数：{{view.AvailableNum}}</span>
@@ -35,7 +30,7 @@
         <span v-if='view.UseEndTime'>可使用截止日期：{{parseTime(view.UseEndTime)}}</span>
         <span v-if = 'view.Unable'>不可使用日期: {{view.Unable}}</span>
         <span v-if = 'view.SuitableUserName'>适用人群：{{view.SuitableUserName}}</span>
-      </div>
+      </div> -->
       <div class='line'></div>
       <!-- <div class="pick" v-for='(i, index) in view.diclist' >
         <mt-button @click='toggleSelected(item)' size="small" :type="item.IsChecked ? 'primary' : 'default'" v-for="(item, k) in i.EntryList ">
@@ -74,6 +69,8 @@
           </div>
         </div>
       </div>
+
+      
       <div class='line'></div>
       
     </div>
@@ -267,11 +264,31 @@ export default {
 .originalprice{
   text-decoration:line-through;
 }
+.chose-view-title{
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  height: 40px;
+  line-height: 20px;
+  font-size: 14px !important;
+}
 .fx{
+<<<<<<< HEAD
   margin-left: 15px;
   padding-right: 15px;
   display: inline!important;
+=======
+  display: inline!important;
+  margin-left: 5px;
+  position: relative;
+  top: -2px;
+>>>>>>> 7bc0e313b35fb9814afc983b94755b53d03100fe
   i{
+    position: relative;
+    top: -2px;
+    font-size: 12px!important;
     background: @fontRed;
     color: #fff;
     // padding: 4px;
@@ -283,13 +300,14 @@ export default {
     box-sizing: border-box;
     border-radius: 10px;
   }
-  font-size: 12px;
+  font-size: 14px !important;
+  color: @fontRed !important;
 }
 .discountprice{
-  font-size: 16px;
-  color: red;
+  font-size: 24px;
+  color: @fontRed;
   i{
-    font-size: 12px;
+    font-size: 16px;
   }
 }
 .chose {
@@ -297,7 +315,7 @@ export default {
     padding: 3vw;
     .chose-view {
         > h1 {
-            .fz(font-size,36);
+           font-size: 16px;
             color: #2c3e50;
             > span {
                 color: rgb(238, 113, 80);
@@ -431,15 +449,20 @@ export default {
 }
 .chose-view-intro{
   color:#ff7d00;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 6px;
+  margin-bottom: 6px;
 }
-.item-wrap span{
-  font-size: 12px;
-  width: 100%;
-  display: inline-block;
-  box-sizing: border-box;
-  padding-right: 10px;
-  color: #999;
+.item-wrap {
+  margin-top: 10px;
+  span{
+    font-size: 14px;
+    box-sizing: border-box;
+    padding-right: 10px;
+    color: #666;
+  }
+  span:nth-of-type(2){
+    float: right;
+  }
+  
 }
 </style>

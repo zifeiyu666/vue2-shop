@@ -31,15 +31,18 @@
     },
     methods: {
       getItemIntro() {
+        this.$store.commit('SET_LOADING', true)
         mockapi.show.api_Show_getXMJJ_get({
           params: {
             typeCode: this.$route.query.code
           }
         }).then(response => {
+          this.$store.commit('SET_LOADING', false)
           var data = response.data.data
           this.content = data
           console.log(this.content)
         }).catch(error => {
+          this.$store.commit('SET_LOADING', false)
           console.log(error)
         })
       }
@@ -62,14 +65,19 @@
     margin: 0 auto !important;
   }
   .item-title{
-    margin-top: 15px;
+    background: #fff;
     text-align: center;
-    line-height: 50px;
-    font-size: 18px;
+    line-height: 40px;
+    font-size: 16px;
     color: #333;
+    box-shadow: 0px 1px 2px #ccc;
+    border-radius: 30px;
   }
   p{
-    padding: 5px;
+    padding: 8px;
+    color: #666;
+    background: #fff;
+    margin-top: 10px;
   }
 }
 

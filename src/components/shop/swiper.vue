@@ -2,7 +2,7 @@
     
     <div v-if='swiperData ? true : false'>
       <mt-swipe :auto="4000" >
-        <mt-swipe-item v-for="k in swiperData" :key="k.id">
+        <mt-swipe-item v-for="(k, i) in swiperData" :key="k.id + i">
           <router-link :to="{ path: '/show/itemnav', params: { id: k.id }}">
             <img v-lazy="k.imgurl">
             <p class='title'>{{k.title}}</p>

@@ -21,9 +21,7 @@
         </div>
       </li>
     </ul>
-    <div v-else style='text-align: center; margin-top: 26px'>
-      暂无内容，敬请期待！
-    </div>
+    <v-nomore v-else></v-nomore>
 
   </div>
   
@@ -31,60 +29,66 @@
 <script>
 import qs from 'qs'
 import * as mockapi from '@/../mockapi'
-  export default{
-    data() {
-      return {
-        houseList: [],
-        query: {
-          pageNo: 1,
-          pageSize: 10,
-          typeCode: this.$route.query.code
-        },
-        busy: false, // loadmore是否busy
-        firstFlag: true,
-        title: ''
-      }
-    },
-    mounted() {
-      this.title = this.$route.query.name
-      this.houseList = []
-      this.getHouseList()
-    },
-    methods: {
-      getHouseList() {
-        this.busy = true
-        mockapi.show.api_Show_getPicNewsList_get({
-          params: this.query
-        }).then(response => {
-          var data = response.data.data
-          if (this.firstFlag) {
-            this.houseList = data.list
-            this.firstFlag = false
-          } else {
-            this.houseList = this.houseList.concat(data)
-          }
-          this.loading = false
-          this.busy = false
-        }).catch(error => {
-          console.log(error)
-        })
+import Baseline from '@/common/_baseline.vue'
+import NoMore from '@/components/nomore.vue'
+export default{
+  components: {
+    'v-nomore': NoMore,
+    'v-baseline': Baseline
+  },
+  data() {
+    return {
+      houseList: [],
+      query: {
+        pageNo: 1,
+        pageSize: 10,
+        typeCode: this.$route.query.code
       },
-      loadMore() {
-        if (!this.busy && !this.firstFlag) {
-          console.log('loadmore')
-          this.query.pageNo++
-          this.getHouseList()
+      busy: false, // loadmore是否busy
+      firstFlag: true,
+      title: ''
+    }
+  },
+  mounted() {
+    this.title = this.$route.query.name
+    this.houseList = []
+    this.getHouseList()
+  },
+  methods: {
+    getHouseList() {
+      this.busy = true
+      mockapi.show.api_Show_getPicNewsList_get({
+        params: this.query
+      }).then(response => {
+        var data = response.data.data
+        if (this.firstFlag) {
+          this.houseList = data.list
+          this.firstFlag = false
+        } else {
+          this.houseList = this.houseList.concat(data)
         }
-        
-      },
-      goToDetail(item) {
-        this.$router.push({path:'/show/commonDetail', query: {id: item.id, name: this.$route.query.name}})
-      },
-      goBack(){
-        this.$router.push({path: '/show/itemNav', query: {id: this.$route.query.id}})
+        this.loading = false
+        this.busy = false
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    loadMore() {
+      if (!this.busy && !this.firstFlag) {
+        console.log('loadmore')
+        this.query.pageNo++
+        this.getHouseList()
       }
+      
+    },
+    goToDetail(item) {
+      this.$router.push({path:'/show/commonDetail', query: {id: item.id, name: this.$route.query.name}})
+    },
+    goBack(){
+      this.$router.push({path: '/show/itemNav', query: {id: this.$route.query.id}})
     }
   }
+}
 </script>
 <style lang=less scoped>
 .item-container{

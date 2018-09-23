@@ -98,7 +98,7 @@
                     <img src='../../assets/img/dd.png' style='width: 22px;margin-top:-4px' >
                   </div>
                   <p>
-                    <span>推广订单</span><i class="icon-go"></i>
+                    <span>推广成交订单</span><i class="icon-go"></i>
                   </p>
               </router-link>
               <router-link class="my-service-bottom" :to="{ path: '/sharecenter/shareproducts', query: {type: 'ywyzx'}}">
@@ -118,6 +118,14 @@
                   <span>返现记录</span><i class="icon-go"></i>
                 </p>
               </router-link>
+              <a @click='showQrCode()' class="my-service-bottom">
+                <div>
+                  <img src='../../assets/img/qrcode.png' style='width: 22px;margin-top:-4px' >
+                </div>
+                <p>
+                  <span>我的二维码</span><i class="icon-go"></i>
+                </p>
+              </a>
           </section>
 
           <!-- <section class="my-settle"> -->
