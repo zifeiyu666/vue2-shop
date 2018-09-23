@@ -74,7 +74,7 @@ export default {
       }, 0);
     },
     goToDetail(k) {
-        this.$router.push('')
+        this.$router.push({path: '/shop/detail', query: {pid: k.id}})
     },
     loadMore() {
         this.$emit('loadmore')

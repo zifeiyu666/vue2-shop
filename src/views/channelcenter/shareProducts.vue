@@ -235,6 +235,15 @@ export default {
     'v-nomore': NorMore
   },
   mounted() {
+    let userInfo = sessionStorage.getItem('token')
+    if (userInfo) {
+      let data = userInfo.split(',')
+      this.username = data[0]
+      this.token = data[1]
+    } else {
+      this.$router.push('/channelcenter/login')
+      return
+    }
     
     this.getAllProductList()
     this.getQYKProductList()
@@ -342,6 +351,7 @@ export default {
           ProjectType: this.ProjectType,
           SuitableUser: this.SuitableValue,
           DestinationType: this.DestinationValue,
+          token: this.token
         }
       }).then(res => {
         this.$store.commit('SET_LOADING', false)
@@ -374,6 +384,7 @@ export default {
           Title: '',
           SuitableUser: '',
           DestinationType: '',
+          token: this.token
         }
       }).then(res => {
         this.$store.commit('SET_LOADING', false)
@@ -405,6 +416,7 @@ export default {
           Title: this.title,
           SuitableUser: this.SuitableValue,
           DestinationType: this.DestinationValue,
+          token: this.token
         }
       }).then(res => {
         this.$store.commit('SET_LOADING', false)
@@ -436,6 +448,7 @@ export default {
           Title: this.title,
           SuitableUser: this.SuitableValue,
           DestinationType: this.DestinationValue,
+          token: this.token
         }
       }).then(res => {
         this.$store.commit('SET_LOADING', false)
@@ -551,7 +564,7 @@ input{
 }
 .catagory{
   position: fixed;
-  top: 50px;
+  top:16vw;
   z-index: 10;
   .nav{
     width: 85vw;

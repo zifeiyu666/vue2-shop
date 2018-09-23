@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-header>
-      <h1 slot="title">返现记录</h1>
+      <h1 slot="title">营业额记录</h1>
     </v-header>
     <!-- <header class="header">
         <div class="header-icon">
@@ -13,7 +13,7 @@
         </div>
     </header> -->
     <!-- <div @click='openDialog' class='tx-btn'> <i class='iconfont icon-yiwancheng1'></i></div> -->
-    <p class='jfmx'><span style='background: #f3f5f7'>返现明细</span></p>
+    <p class='jfmx'><span style='background: #f3f5f7'>营业额明细</span></p>
     <ul
       v-if='FxList.length > 0 && FxList[0]'
       v-infinite-scroll="loadMore"

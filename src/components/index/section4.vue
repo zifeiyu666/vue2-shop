@@ -12,7 +12,7 @@
           <p>{{k.intro}}</p>
         </router-link>
         <h3>{{k.title}}</h3>
-        <span>￥ {{k.price}}</span>
+        <span>￥ {{k.price}} <span class='fxicon' v-if='k.gwfx && k.gwfx != 0'><i>返</i>￥{{k.gwfx}}</span></span>
       </li>
 
     </ul>
@@ -39,6 +39,24 @@
   @import '../../assets/index/style.css';
   .product-img{
     height: 120px;
+  }
+  .fxicon{
+    margin-left: 10px;
+    padding-right: 5px;
+    color: #999;
+    i{
+      background: @fontRed;
+      color: #fff;
+      // padding: 4px;
+      text-align: center;
+      line-height: 20px;
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      box-sizing: border-box;
+      border-radius: 10px;
+    }
+    font-size: 12px;
   }
   .section4 {
     width: 100%;

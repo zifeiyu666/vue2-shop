@@ -106,7 +106,7 @@
             <!-- <div id="deleteOrder">
               <span @click='deleteOrder(orderDetail)'></span>
             </div> -->
-            <li v-for="(k,i) in orderDetail.opd" :key='i'>
+            <li v-for="(k,i) in orderDetail.opd" :key='i' @click='goToDetail(k.pid)'>
               <div class="flex">
                 <div class="something-middle">
                   <img :src="k.imgurl[0]">
@@ -114,7 +114,7 @@
                 <div class="something-right">
                   <p>{{k.producttitle}}</p>
                   <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p>
-                  <p>售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;使用积分：{{k.usescore}}</p>
+                  <p>售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;</p>
                   <!-- TODO -->
                   <!-- v-if='k.orderstate=="已付款"' -->
                   <div class='state-wrap'>
@@ -210,6 +210,9 @@ import Header from '@/common/_header.vue'
       
     },
     methods: {
+      goToDetail(id) {
+        this.$router.push({path: '/shop/detail', query: {pid: id}})
+      },
       deadlineTime(data) {
         console.log(data)
         var date1= data;  //开始时间

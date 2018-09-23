@@ -7,10 +7,20 @@
       </h1>
       <p class="chose-view-intro">{{view.ProductIntro}}</p>
       <div class='item-wrap'>
-        <p class='discountprice' v-if='enabledProp.length != 1'><i>￥</i>{{view.minPrice}}-{{view.maxPrice}}</p>
-        <p class='discountprice' v-if='enabledProp.length == 1'><i>￥</i>{{this.DiscountPrice}}</p>
+        <p class='discountprice' v-if='enabledProp.length != 1'>
+          <i>￥</i>{{view.minPrice}}-{{view.maxPrice}}
+          <span class='fx' v-if='!fxtype && this.maxgwfx != 0'><i>返</i>￥{{this.mingwfx}}--{{this.maxgwfx}}</span>
+          <span class='fx' v-if='fxtype == "fxzx" && this.maxhyfx != 0 '><i>赚</i>￥{{this.minhyfx}}--{{this.maxhyfx}}</span>
+          <span class='fx' v-if='fxtype == "ywyzx" && this.maxywyfx != 0 '><i>赚</i>￥{{this.minywyfx}}--{{this.maxywyfx}}</span>
+        </p>
+        <p class='discountprice' v-if='enabledProp.length == 1'>
+          <i>￥</i>{{this.DiscountPrice}}
+          <span class='fx' v-if='!fxtype && this.gwfx!=0'><i>返</i>￥{{this.gwfx}}</span>
+          <span class='fx' v-if='fxtype == "fxzx" && this.hyfx!=0 '><i>赚</i>￥{{this.hyfx}}</span>
+          <span class='fx' v-if='fxtype == "ywyzx" && this.ywyfx!=0'><i>赚</i>￥{{this.ywyfx}}</span>
+        </p>
         <span class='originalprice' v-if='enabledProp.length == 1 && this.DiscountPrice != this.OriginalPrice'>原价{{this.OriginalPrice}}元</span>
-        <span class='fx' v-if='view.prop[0].ywyfx && view.prop[0].ywyfx != 0'><i>赚</i>￥{{view.prop[0].ywyfx}}</span>
+        
       </div>
       <div class='item-wrap'>
         <span>浏览次数： {{view.VisitTimes}}</span>
@@ -129,7 +139,17 @@ export default {
       modal2: [],
       modal3: [],
       OriginalPrice: '',
-      DiscountPrice: ''
+      DiscountPrice: '',
+      hyfx: '',
+      ywyfx: '',
+      gwfx: "",
+      minhyfx: '',
+      maxhyfx: '',
+      minywyfx: '',
+      maxywyfx: '',
+      mingwfx: '',
+      maxgwfx: '',
+      fxtype: ''
     }
   },
   computed: {
@@ -148,6 +168,7 @@ export default {
     }
   },
   mounted() {
+    this.fxtype = this.$route.query.type
     this.changeSelect()
   },
   methods: {
@@ -177,6 +198,9 @@ export default {
         if (this.enabledProp.length == 1) {
           this.OriginalPrice = this.enabledProp[0].OriginalPrice
           this.DiscountPrice = this.enabledProp[0].DiscountPrice
+          this.ywyfx = this.enabledProp[0].ywyfx
+          this.gwfx = this.enabledProp[0].gwfx
+          this.hyfx = this.enabledProp[0].hyfx
         }
         this.$store.commit('saveSelectedProp', this.enabledProp)
         this.modal1 = []
@@ -246,6 +270,7 @@ export default {
 .fx{
   margin-left: 15px;
   padding-right: 15px;
+  display: inline!important;
   i{
     background: @fontRed;
     color: #fff;

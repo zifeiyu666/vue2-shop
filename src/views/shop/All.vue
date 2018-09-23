@@ -37,7 +37,10 @@
                 <div class="something-right">
                   <p>{{k.title}}</p>
                   <p style="color:rgb(199, 108, 28);height: 20px;"> {{k.intro}}</p>
-                  <p>售价：{{k.price}}元</p>
+                  <p>售价：{{k.price}}元
+                    <span v-if='fxtype == "fxzx" && k.hyfx != 0'><i>赚</i>￥{{k.hyfx}}</span>
+                    <span v-show='k.gwfx && k.gwfx != 0' v-else><i>返</i>￥{{k.gwfx}}</span>
+                  </p>
                   <!-- <div class="something-right-bottom">
                     <span @click='deleteCollection(k)'></span>
                   </div> -->
@@ -63,7 +66,10 @@
                 <div class="something-right">
                   <p>{{k.title}}</p>
                   <p style="color:rgb(199, 108, 28);height: 20px;"> {{k.intro}}</p>
-                  <p>售价：{{k.price}}元</p>
+                  <p>售价：{{k.price}}元
+                    <span v-if='fxtype == "fxzx" && k.hyfx != 0'><i>赚</i>￥{{k.hyfx}}</span>
+                    <span v-show='k.gwfx && k.gwfx != 0' v-else><i>返</i>￥{{k.gwfx}}</span>
+                  </p>
                   <!-- <div class="something-right-bottom">
                     <span @click='deleteCollection(k)'></span>
                   </div> -->
@@ -89,7 +95,10 @@
                 <div class="something-right">
                   <p>{{k.title}}</p>
                   <p style="color:rgb(199, 108, 28);height: 20px;"> {{k.intro}}</p>
-                  <p>售价：{{k.price}}元</p>
+                  <p>售价：{{k.price}}元
+                    <span v-if='fxtype == "fxzx" && k.hyfx != 0'><i>赚</i>￥{{k.hyfx}}</span>
+                    <span v-show='k.gwfx && k.gwfx != 0' v-else><i>返</i>￥{{k.gwfx}}</span>
+                  </p>
                   <!-- <div class="something-right-bottom">
                     <span @click='deleteCollection(k)'></span>
                   </div> -->
@@ -115,7 +124,10 @@
                 <div class="something-right">
                   <p>{{k.title}}</p>
                   <p style="color:rgb(199, 108, 28);height: 20px;"> {{k.intro}}</p>
-                  <p>售价：{{k.price}}元</p>
+                  <p>售价：{{k.price}}元
+                    <span v-if='fxtype == "fxzx" && k.hyfx != 0'><i>赚</i>￥{{k.hyfx}}</span>
+                    <span v-show='k.gwfx && k.gwfx != 0' v-else><i>返</i>￥{{k.gwfx}}</span>
+                  </p>
                   <!-- <div class="something-right-bottom">
                     <span @click='deleteCollection(k)'></span>
                   </div> -->
@@ -225,7 +237,7 @@ export default {
     'v-nomore': NorMore
   },
   mounted() {
-    
+    this.fxtype = this.$route.query.type
     this.getAllProductList()
     this.getQYKProductList()
     this.getLTDBProductList()
@@ -667,12 +679,30 @@ input{
                     -webkit-box-orient: vertical;
                     .fz(font-size,26);
                 }
-                p:first-of-type{
-                  height: 36px;
-                }
+                // p:first-of-type{
+                //   height: 36px;
+                // }
                 p:last-of-type {
-                  .fz(font-size,22);
-                  color: rgb(168, 168, 168);
+                  font-size: 12px;
+                  span{
+                      // float: right;
+                      margin-left: 10px;
+                      padding-right: 5px;
+                      i{
+                        background: @fontRed;
+                        color: #fff;
+                        // padding: 4px;
+                        text-align: center;
+                        line-height: 20px;
+                        display: inline-block;
+                        width: 20px;
+                        height: 20px;
+                        box-sizing: border-box;
+                        border-radius: 10px;
+                      }
+                      font-size: 12px;
+                    }
+                    color: @fontRed;
                 }
                 .something-right-bottom {
                     > div {

@@ -27,7 +27,7 @@
                     <div class="something-right">
                       <p>{{k.producttitle}}</p>
                       <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p>
-                      <p>售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;使用积分：{{k.usescore}}</p>
+                      <p>售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;</p>
                       
                       <!-- TODO -->
                       <!-- v-if='k.orderstate=="已付款"' -->
@@ -74,7 +74,7 @@
                     <div class="something-right">
                       <p>{{k.producttitle}}</p>
                       <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p>
-                      <p>售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;使用积分：{{k.usescore}}</p>
+                      <p>售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;</p>
                       <!-- <div class="something-right-bottom">
                         <span @click.stop='deleteOrder(item)'></span>
                       </div> -->
@@ -116,7 +116,7 @@
                     <div class="something-right">
                       <p>{{k.producttitle}}</p>
                       <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p>
-                      <p>售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;使用积分：{{k.usescore}}</p>
+                      <p>售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;</p>
                       <!-- <div class="something-right-bottom">
                         <span @click.stop='deleteOrder(item)'></span>
                       </div> -->
@@ -158,7 +158,7 @@
                     <div class="something-right">
                       <p>{{k.producttitle}}</p>
                       <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p>
-                      <p>售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;使用积分：{{k.usescore}}</p>
+                      <p>售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;</p>
                       <!-- <div class="something-right-bottom">
                         <span @click.stop='deleteOrder(item)'></span>
                       </div> -->

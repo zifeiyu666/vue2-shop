@@ -5,25 +5,20 @@
     </v-header>
     <mt-tab-container v-model="selected">
       <div class="wrap">
-        <ul v-if='allOrders.length > 0'>
-          <li class='order-wrap' v-for="(k,i) in allOrders" @click='gotoDetail(k)' :key="i">
-            <h3><i class='iconfont icon-leibie'></i>{{k.ordertitle}}</h3>
-            <ul class="something" >
-              <li v-for="(k,i) in k.opd" :key='i'>
-                <div class="something-middle">
-                  <img :src="k.imgurl[0]">
-                </div>
-                <div class="something-right">
-                  <p>{{k.producttitle}}</p>
-                  <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p>
-                  <!-- <p style="color:rgb(199, 108, 28);height: 20px;"> {{k.intro}}</p> -->
-                  <p>售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;使用积分：{{k.usescore}}</p>
-                  <!-- <div class="something-right-bottom">
-                    <span @click='deleteCollection(k)'></span>
-                  </div> -->
-                </div>
-              </li>
-            </ul>
+        <ul v-if='allOrders.length > 0' class='something'>
+          <li v-for="(k,i) in allOrders" :key='i' @click='goToDetail(k)'>
+            <div class="something-middle">
+              <img :src="k.imgurl[0]">
+            </div>
+            <div class="something-right">
+              <p>{{k.producttitle}}</p>
+              <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p>
+              <!-- <p style="color:rgb(199, 108, 28);height: 20px;"> {{k.intro}}</p> -->
+              <p>售价：{{k.realprice}}元</p>
+              <!-- <div class="something-right-bottom">
+                <span @click='deleteCollection(k)'></span>
+              </div> -->
+            </div>
           </li>
         </ul>
         <div v-else>
@@ -87,6 +82,9 @@ import Header from '@/common/_header.vue'
       loadMore() {
         this.pageNo++
         this.getShareOrders()
+      },
+      goToDetail(k) {
+        this.$router.push({path: '/shop/detail', query: {pid: k.pid}})
       }
     }
   }

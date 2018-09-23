@@ -6,6 +6,7 @@
           </div>
           <!-- <span>登录/注册</span> -->
            <div class="header-content">
+             <p>业务员中心</p>
             <p>欢迎您：{{username}}</p>
             <!-- <p>注册时间：{{time}}</p> -->
             <!-- <p>会员等级：{{memberrank}}</p> -->
@@ -100,7 +101,7 @@
                     <span>推广订单</span><i class="icon-go"></i>
                   </p>
               </router-link>
-              <router-link class="my-service-bottom" :to="{ path: '/sharecenter/shareproducts'}">
+              <router-link class="my-service-bottom" :to="{ path: '/sharecenter/shareproducts', query: {type: 'ywyzx'}}">
                   <div>
                     <!-- <span class="icon2-milogo"></span> -->
                     <img src='../../assets/img/sharegoods1.png' style='width: 22px;margin-top:-4px' >

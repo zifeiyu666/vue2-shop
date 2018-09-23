@@ -20,6 +20,7 @@
           </p>
           <p class="section2-list-price">
             ￥{{k.price}}
+             <span class='fxicon' v-if='k.gwfx && k.gwfx != 0'><i>返</i>￥{{k.gwfx}}</span>
           </p>
         </li>
       </ul>
@@ -45,9 +46,28 @@ import { Lazyload } from 'mint-ui';
 
 <style lang="less" scoped>
   @import '../../assets/fz.less';
+   @import '../../assets/utils.less';
   @import '../../assets/index/style.css';
   .product-img{
     height: 120px;
+  }
+  .fxicon{
+    margin-left: 0px;
+    padding-right: 5px;
+    color: #999;
+    i{
+      background: @fontRed;
+      color: #fff;
+      // padding: 4px;
+      text-align: center;
+      line-height: 20px;
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      box-sizing: border-box;
+      border-radius: 10px;
+    }
+    font-size: 12px;
   }
   .section1-title{
     .bt();
@@ -74,7 +94,7 @@ import { Lazyload } from 'mint-ui';
       width: 380%;
       li {
         margin-right: 10vw;
-        width: 26vw;
+        width: 35vw;
         a,
         img {
           display: block;
@@ -89,19 +109,22 @@ import { Lazyload } from 'mint-ui';
           text-overflow: ellipsis;
         }
         h2 {
-          .fz(font-size, 32);
+          font-size: 14px;
           padding-top: 3vw;
           color: #333;
+          text-align: left !important;
         }
 
         p.section2-list-intro {
-          padding-top: 2vw;
+          padding-top: 2px;
           .fz(font-size, 26);
           color: rgb(150, 150, 150);
         }
 
         p.section2-list-price {
-          color: #b4282d;
+          font-size: 18px;
+          font-weight: bold;
+          color: @fontRed;
         }
       }
     }
@@ -125,8 +148,8 @@ import { Lazyload } from 'mint-ui';
       position: relative;
       background-color: rgb(248, 248, 248);
       text-align: left;
-      .fz(font-size, 34);
-      padding: 4vw 6vw;
+      font-size: 14px;
+      padding: 2vw 4vw;
       color: #333;
       position: relative;
       .icon{

@@ -1,6 +1,33 @@
 import instance from './instance';
 import { convertRESTAPI } from '../util';
 
+/** 我的积分记录 */
+function api_Shop_getMyCrashbackList_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Shop/getMyCrashbackList',
+    opts: opts
+  });
+}
+
+/** 业务员分享二维码 */
+function api_Share_GetProductQRCard_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Share/GetProductQRCard',
+    opts: opts
+  });
+}
+
+/** 会员分享商品吗 */
+function api_Shop_GetProductQRCard_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Shop/GetProductQRCard',
+    opts: opts
+  });
+}
+
 /** 获取商品信息 */
 function api_Share_getProduct_get(opts) {
   return instance({
@@ -767,6 +794,9 @@ function shop_getBanner_get(opts) {
 }
 
 export {
+  api_Shop_getMyCrashbackList_get,
+  api_Share_GetProductQRCard_get,
+  api_Shop_GetProductQRCard_get,
   api_Share_getProduct_get,
   api_Channel_getProduct_get,
   api_Channel_getMyCrashbackList_get,

@@ -1,6 +1,12 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
 
+// 地址
+var mock =  'https://www.easy-mock.com/mock/5aa88e678ed9a05f24bed96d/xjha_copy'
+var wj = 'http://47.95.230.197'
+var test = 'http://www.yunhi.vip'
+
+
 module.exports = {
   build: {
     env: require('./prod.env'),
@@ -27,7 +33,17 @@ module.exports = {
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/api': {  
+        target: 'http://www.yunhi.vip',    //主域名，以前我都写192.168.2.57:80，这里跨域了  
+        changeOrigin: true,   //允许跨域  
+        // pathRewrite: {         
+        //     '^/api': ''  
+        // }  
+        //重写路径，其实这里就是和上面的target拼接起来
+      }
+    },
+    host: 'localhost',
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
     // (https://github.com/webpack/css-loader#sourcemaps)

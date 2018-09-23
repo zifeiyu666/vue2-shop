@@ -102,9 +102,9 @@ export default {
     
     // this.getSection3()
     
-    this.getBanner1()
-    this.getBanner2()
-    this.getBanner4()
+    // this.getBanner1()
+    // this.getBanner2()
+    // this.getBanner4()
     if (this.$store.state.userInfo) {
       this.avatar = this.$store.state.userInfo.headimgurl
     }
@@ -315,8 +315,8 @@ export default {
     margin:0 25%;
   }
   .icon-title{
-    color: @fontGray;
-    font-size: 14px;
+    color: @fontBlack;
+    font-size: 12px;
   }
   .avatar{
     position: absolute;

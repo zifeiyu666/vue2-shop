@@ -44,7 +44,7 @@
         </p>
         <div class="bottm-btn-group bottom clearfix">
           <mt-button class='confirm-btn' type="primary" @click='confirmShopCar'>确定</mt-button>
-          <mt-button class='concel-btn' type="concel-btn" @click='consoleAddIntoCar'>取消</mt-button>
+          <mt-button class='concel-btn' type="default" @click='consoleAddIntoCar'>取消</mt-button>
         </div>
       </div>
     </mt-popup>
@@ -109,7 +109,8 @@ export default {
       carnum: '',
       score: '',
       usescore: '',
-      scoreRate: '' //提现比例
+      scoreRate: '', //提现比例
+      openid: ''
     }
   },
   computed:{
@@ -133,6 +134,7 @@ export default {
     }
   },
   mounted() {
+    this.openid = this.$route.query.openid ? this.$route.query.openid : ''
     this.initCollectStar()
     this.getMyCarNum()
     this.getScore()
@@ -224,9 +226,14 @@ export default {
     },
     addIntoCar(){
       //  mint-ui的弹出式提示框
+      // debugger
       this.selectedProp = this.$store.state.selectedProp
       if (this.selectedProp.length == 1) {
+        console.log(111111111111111111)
+        console.log(this.selectedProp[0].PropId)
+        console.log(this.selectedProp)
         this.PropId = this.selectedProp[0].PropId
+        console.log(this.PropId)
         this.popupVisible = !this.popupVisible
       } else {
         Toast('请选择商品规格')
@@ -240,7 +247,8 @@ export default {
           token: this.$store.state.userInfo.MemberToken,
           PId: this.detail.PId,
           PropId: this.PropId,
-          Num: this.num
+          Num: this.num,
+          FxOpenID: this.openid
         })
       }).then(res => {
         Toast('添加成功')
@@ -309,7 +317,8 @@ export default {
           PId: this.detail.PId,
           PropId: this.PropId,
           Num: this.paynum,
-          Score: this.usescore ? this.usescore : 0
+          // Score: this.usescore ? this.usescore : 0,
+          OpenID: this.openid
         })
       }).then(res => {
         var data = res.data.data

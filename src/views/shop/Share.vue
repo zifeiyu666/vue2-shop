@@ -7,11 +7,12 @@
           </div>
           <!-- <span>登录/注册</span> -->
            <div class="header-content">
+            <p>分销中心</p>
             <p>欢迎您：{{username}}</p>
             <!-- <p>注册时间：{{time}}</p> -->
             <!-- <p>会员等级：{{memberrank}}</p> -->
             <!-- <p>购物积分：{{score}}</p> -->
-            <p>分销积分：{{fxscore}}</p>
+            <!-- <p>分销积分：{{fxscore}}</p> -->
             <P>手机号：{{phone}}</P>
           </div>
           <img class='qrcode' :src="smallQrCode" alt="" @click='showQrCode()'>
@@ -101,7 +102,7 @@
                     <span>分销订单</span><i class="icon-go"></i>
                   </p>
               </router-link>
-              <router-link class="my-service-bottom" :to="{ path: '/shop/shareOrders'}">
+              <router-link class="my-service-bottom" :to="{ path: '/shop/shareAll', query: {type: 'fxzx'}}">
                   <div>
                     <!-- <span class="icon2-milogo"></span> -->
                     <img src='../../assets/img/sharegoods1.png' style='width: 22px;margin-top:-4px' >
@@ -178,7 +179,7 @@
     },
     mounted() {
       var userInfo = this.$store.state.userInfo
-      this.smallQrCode = userInfo.SharedQRCode
+      // this.smallQrCode = userInfo.SharedQRCode
       this.avatar = userInfo.headimgurl
       this.username = userInfo.nickname
       this.jifen = userInfo.Score,
@@ -198,8 +199,9 @@
             token: this.$store.state.userInfo.MemberToken
           }
         }).then(res => {
-          var data = res.data.data
-          this.qrcode = data
+          var data = res.data.data.split(',')
+          this.smallQrCode = data[0]
+          this.qrcode = data[1]
         })
       },
       showQrCode() {

@@ -2,8 +2,8 @@
   <section class="section1" v-if='section1'>
     <h1 class="section1-title">
       <img class='icon' src="../../assets/img/dandu.png" alt="">
-      单独类
-      <i class="icon-right" @click='goAll(4)'></i>
+      权益卡类
+      <i class="icon-right" @click='goAll(2)'></i>
     </h1>
     <ul class="section1-list">
       <li v-for="k in section1">
@@ -12,7 +12,7 @@
           <p>{{k.intro}}</p>
         </router-link>
         <h3>{{k.title}}</h3>
-        <span>￥ {{k.price}}</span>
+        <span>￥ {{k.price}} <span class='fxicon' v-if='k.gwfx && k.gwfx != 0'><i>返</i>￥{{k.gwfx}}</span></span>
       </li>
     </ul>
   <!-- <router-link :to="{ name: '详情页'}"  class="section1-banner">
@@ -41,6 +41,24 @@ export default {
   .product-img{
     height: 120px;
   }
+  .fxicon{
+    margin-left: 2px;
+    padding-right: 5px;
+    color: #999;
+    i{
+      background: @fontRed;
+      color: #fff;
+      // padding: 4px;
+      text-align: center;
+      line-height: 20px;
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      box-sizing: border-box;
+      border-radius: 10px;
+    }
+    font-size: 12px;
+  }
   .section1 {
     width: 100%;
     overflow: hidden;
@@ -50,7 +68,7 @@ export default {
       .bt();
       text-align: left;
       .fz(font-size, 34);
-      padding: 4vw 6vw;
+      padding: 2vw 4vw;
       position: relative;
       background-color: #fff;
       color: #333;
@@ -125,9 +143,11 @@ export default {
           text-overflow: ellipsis;
         }
         >span {
+          font-size: 18px;
+          font-weight: bold;
           display: inline-block;
           padding-bottom: 3vw;
-          color: #b4282d;
+          color:@fontRed;
         }
       }
     }

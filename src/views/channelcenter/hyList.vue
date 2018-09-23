@@ -73,6 +73,14 @@ import { parseTime } from '@/util/data.js'
       'v-nomore': NorMore
     },
     mounted() {
+      let userInfo = sessionStorage.getItem('token')
+      if (userInfo) {
+        let data = userInfo.split(',')
+        this.username = data[0]
+        this.token = data[1]
+      } else {
+        this.$router.push('/channelcenter/login')
+      }
       this.getList()
     },
     methods: {
@@ -82,7 +90,7 @@ import { parseTime } from '@/util/data.js'
         this.loading = true
         mockapi.shop.api_Channel_getSalesmanMembersList_get({
           params: {
-            token: this.$store.state.userInfo.MemberToken,
+            token: this.token,
             pageNo: this.pageNo,
             pageSize: this.pageSize,
             openid: this.$route.query.id

@@ -7,6 +7,7 @@
           </div> -->
           <!-- <span>登录/注册</span> -->
            <div class="header-content">
+            <p>渠道中心</p>
             <p>欢迎您：{{username}}</p>
             <!-- <p>注册时间：{{time}}</p> -->
             <!-- <p>会员等级：{{memberrank}}</p> -->
@@ -44,7 +45,7 @@
                   <span class="icon2-f"></span>
                 </div>
                 <p>
-                  <span>渠道返现</span><i class="icon-go"></i>
+                  <span>渠道营业额</span><i class="icon-go"></i>
                 </p>
               </router-link>
           </section>

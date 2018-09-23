@@ -4,7 +4,7 @@
       <h3>渠道用户登录</h3>
     </div>
     <mt-field label='用户名' placeholder='请输入用户名' v-model='username'></mt-field>
-    <mt-field label='密码' placeholder='请输入密码' v-model='password'></mt-field>
+    <mt-field label='密码' placeholder='请输入密码' type="password" v-model='password'></mt-field>
     <div class="login">
       <mt-button type='danger' size='large' @click='login'>登录</mt-button>
     </div>

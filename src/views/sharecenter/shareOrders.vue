@@ -87,6 +87,9 @@ import Header from '@/common/_header.vue'
         if(!this.isLastPage) {
           this.getShareOrders()
         }
+      },
+      goToDetail(k) {
+        this.$router.push({path: '/shop/detail', query: {pid: k.pid}})
       }
     }
   }

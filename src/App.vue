@@ -17,7 +17,7 @@ export default {
     this.$Lazyload.config({ 
         preLoad: 1.3,
         error: require('./assets/error.jpg'),
-        loading: '../static/timg.gif',
+        loading: require('./assets/timg.gif'),
         attempt: 1 
     })
   },

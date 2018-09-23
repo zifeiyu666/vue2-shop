@@ -39,9 +39,11 @@
                 </div>
                 <div class="something-right">
                   <p>{{k.title}}</p>
-                  <!-- <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p> -->
                   <p style="color:rgb(199, 108, 28);height: 20px;"> {{k.intro}}</p>
-                  <p>￥{{k.price}}<span v-if='k.ywyfx && k.ywyfx != 0'><i>赚</i>￥{{k.ywyfx}}</span> </p>
+                  <p>售价：{{k.price}}元
+                    <span v-if='fxtype == "fxzx" && k.hyfx != "0.00"'><i>赚</i>￥{{k.hyfx}}</span>
+                    <span v-show='k.gwfx' v-else><i>返</i>￥{{k.gwfx}}</span>
+                  </p>
                   <!-- <div class="something-right-bottom">
                     <span @click='deleteCollection(k)'></span>
                   </div> -->
@@ -66,9 +68,11 @@
                 </div>
                 <div class="something-right">
                   <p>{{k.title}}</p>
-                  <!-- <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p> -->
                   <p style="color:rgb(199, 108, 28);height: 20px;"> {{k.intro}}</p>
-                  <p>￥{{k.price}}<span v-if='k.ywyfx && k.ywyfx != 0'><i>赚</i>￥{{k.ywyfx}}</span> </p>
+                  <p>售价：{{k.price}}元
+                    <span v-if='fxtype == "fxzx" && k.hyfx != "0.00"'><i>赚</i>￥{{k.hyfx}}</span>
+                    <span v-show='k.gwfx' v-else><i>返</i>￥{{k.gwfx}}</span>
+                  </p>
                   <!-- <div class="something-right-bottom">
                     <span @click='deleteCollection(k)'></span>
                   </div> -->
@@ -93,9 +97,11 @@
                 </div>
                 <div class="something-right">
                   <p>{{k.title}}</p>
-                  <!-- <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p> -->
                   <p style="color:rgb(199, 108, 28);height: 20px;"> {{k.intro}}</p>
-                  <p>￥{{k.price}}<span v-if='k.ywyfx && k.ywyfx != 0'><i>赚</i>￥{{k.ywyfx}}</span> </p>
+                  <p>售价：{{k.price}}元
+                    <span v-if='fxtype == "fxzx" && k.hyfx != "0.00"'><i>赚</i>￥{{k.hyfx}}</span>
+                    <span v-show='k.gwfx' v-else><i>返</i>￥{{k.gwfx}}</span>
+                  </p>
                   <!-- <div class="something-right-bottom">
                     <span @click='deleteCollection(k)'></span>
                   </div> -->
@@ -120,9 +126,11 @@
                 </div>
                 <div class="something-right">
                   <p>{{k.title}}</p>
-                  <!-- <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p> -->
                   <p style="color:rgb(199, 108, 28);height: 20px;"> {{k.intro}}</p>
-                  <p>￥{{k.price}}<span v-if='k.ywyfx && k.ywyfx != 0'><i>赚</i>￥{{k.ywyfx}}</span> </p>
+                  <p>售价：{{k.price}}元
+                    <span v-if='fxtype == "fxzx" && k.hyfx != "0.00"'><i>赚</i>￥{{k.hyfx}}</span>
+                    <span v-show='k.gwfx' v-else><i>返</i>￥{{k.gwfx}}</span>
+                  </p>
                   <!-- <div class="something-right-bottom">
                     <span @click='deleteCollection(k)'></span>
                   </div> -->
@@ -146,7 +154,7 @@
     </div>
 
     <div class="popside-wrap" v-if='popsideVisible'>
-      <div class="shade"></div>
+      <div class="shade" @click='hidePopside()'></div>
       <div class="main">
         <div class='inner-wrap'>
           <mt-field label="标题" v-model='title' placeholder='请输入'></mt-field>
@@ -201,7 +209,6 @@ export default {
       DestinationValue: '',
       SuitableValue: '',
       ProductValue: '',
-      ProjectType: '',
       allQuery: {
         pageNo: 1,
         pageSize: 10,
@@ -231,11 +238,11 @@ export default {
   components: {
     'v-baseline': Baseline,
     'v-footer':Footer,
+    'v-nomore': NorMore,
     'v-header':Header,
-    'v-nomore': NorMore
   },
   mounted() {
-    
+    this.fxtype = this.$route.query.type
     this.getAllProductList()
     this.getQYKProductList()
     this.getLTDBProductList()
@@ -333,13 +340,12 @@ export default {
     // 所有商品加载更多
     getAllProductList() {
       this.$store.commit('SET_LOADING', true)
-      mockapi.shop.api_Share_getProductList_get({
+      mockapi.shop.api_Shop_getAllProductList_get({
         params: {
           pageNo: this.allQuery.pageNo,
           pageSize: this.allQuery.pageSize,
           Title: this.title,
           ProductType: this.ProductValue,
-          ProjectType: this.ProjectType,
           SuitableUser: this.SuitableValue,
           DestinationType: this.DestinationValue,
         }
@@ -363,7 +369,7 @@ export default {
     },
     // 获取权益卡商品列表
     getQYKProductList() {
-      mockapi.shop.api_Share_getProductList_get({
+      mockapi.shop.api_Shop_getProductList_get({
         params: {
           ProjectType: '',
           pageNo: this.QYKQuery.pageNo,
@@ -389,7 +395,7 @@ export default {
     },
      // 获取旅游打包商品列表
     getLTDBProductList() {
-      mockapi.shop.api_Share_getProductList_get({
+      mockapi.shop.api_Shop_getProductList_get({
         params: {
           ProjectType: '',
           pageNo: this.LTDBQuery.pageNo,
@@ -415,7 +421,7 @@ export default {
     },
      // 获取单独商品列表
     getDDProductList() {
-      mockapi.shop.api_Share_getProductList_get({
+      mockapi.shop.api_Shop_getProductList_get({
         params: {
           ProjectType: '',
           pageNo: this.DDQuery.pageNo,
@@ -441,7 +447,7 @@ export default {
     },
     gotoDetail(i) {
       console.log()
-      this.$router.push({path: '/sharecenter/productdetail', query: {pid: i.id, type: "ywyzx"}})
+      this.$router.push({path: '/shop/detail', query: {pid: i.id}})
     },
     back() {
       this.$router.go('-1')
@@ -517,7 +523,7 @@ input{
     margin-bottom: -3px;
 }
 .search-history{
-  margin-top: 60px;
+  margin-top: 50px;
   .title{
     margin: 10px;
   }
@@ -682,11 +688,11 @@ input{
                 //   height: 36px;
                 // }
                 p:last-of-type {
-                  font-size: 16px;
+                  font-size: 12px;
                   span{
                       // float: right;
-                      margin-left: 15px;
-                      padding-right: 15px;
+                      margin-left: 10px;
+                      padding-right: 5px;
                       i{
                         background: @fontRed;
                         color: #fff;

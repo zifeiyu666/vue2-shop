@@ -68,6 +68,7 @@ export default {
     width: 30px;
     height: 30px;
     border-radius: 15px;
+    z-index: 10
   }
 }
 .wrap{

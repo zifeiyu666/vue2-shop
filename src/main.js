@@ -40,11 +40,14 @@ import * as mockapi from '@/../mockapi'
 
 // 用钩子函数beforeEach()对路由进行判断
 router.beforeEach((to, from, next) => {
+    // Toast('进入路由')
     if (to.meta.requireAuth) {  // 需要权限,进一步进行判断
       console.log('进入需要登录信息路由')
+      // Toast('需要登录信息')
       if (store.state.userInfo && store.state.userInfo.MemberToken) {  // 通过vuex state获取当前的token是否存在
         // 不要求必须有手机号
         console.log('已有登录信息')
+        // Toast('已有登录信息')
         next()
         // if (store.state.userInfo.Phone) {
         //   // console.log('已经绑定手机')
@@ -61,6 +64,7 @@ router.beforeEach((to, from, next) => {
       else {    
         //如果没有token，获取token
         console.log('没有token')
+        // Toast('没有token')
         // if (to.query.code) {
         //   var code = to.query.code
         //   console.log(`微信取到的code: ${to.query.code}`)
@@ -72,11 +76,13 @@ router.beforeEach((to, from, next) => {
 
         if (sessionStorage.getItem('membertoken')) {
           console.log('获取membertoken')
+          // Toast('获取membertoken')
           var membertoken = sessionStorage.getItem('membertoken')
           // var membertoken = '95d031ca-669a-406a-adcc-caa85bd398e6'
         } else {
           var code = to.query.code
-          console.log(`微信取到的code: ${to.query.code}`)
+          // var code = 'asdfasdfasdfsa'
+          console.log(`微信取到的code: ${code}`)
         }
 
         if (membertoken && membertoken != 'undefined' && membertoken != '') {
@@ -89,6 +95,7 @@ router.beforeEach((to, from, next) => {
             }
           }).then(response => {
             console.log('通过membertoken请求成功')
+            // Toast('通过membertoken请求成功')
             
             var data = response.data.data
 
@@ -97,6 +104,8 @@ router.beforeEach((to, from, next) => {
             if (to.meta.ywyAuth) {
               if (userType != 4) {
                 Toast('当前页面没有访问权限')
+                // window.location.href='/shop'
+                // router.push('/shop')
                 console.log('不是业务员')
                 return
               } else {
@@ -124,23 +133,30 @@ router.beforeEach((to, from, next) => {
             //   })
             // }
           }).catch(err => {
-            console.log(err)
+            console.log(new Error('通过MemberToken获取抛出错误'))
           })
         } else if (code && code != 'undefined' && code != '') {
+          console.log('通过code获取')
           mockapi.shop.api_GetUserInfo_get({
             params: {
               code: code // 微信传递过来的code
             }
           }).then(response => {
-            if (response.data.result == 0) {
+            console.log(response)
+            if (!response.data || response.data.result != '1') {
+              console.log('code获取失败')
               router.push('/shop/noauth')
               return
             }
+            console.log('通过code获取成功')
+            // Toast('通过code获取成功')
+            var data = response.data.data
             // 验证业务员身份
             var userType = data.AttentionMethod
             if (to.meta.ywyAuth) {
               if (userType != 4) {
                 Toast('当前页面没有访问权限')
+                // window.location.href='/shop'
                 console.log('不是业务员')
                 return
               } else {
@@ -148,9 +164,9 @@ router.beforeEach((to, from, next) => {
               }
             }
 
-            console.log('成功获取到token')
+            console.log('通过code成功获取到token')
             
-            var data = response.data.data
+            
             // TODO: 为了测试添加手机号
             // data.Phone = '18554870804'
             console.log(data)
@@ -181,7 +197,7 @@ router.beforeEach((to, from, next) => {
         } else {
 
           console.log('获取code和membertoken都失败了')
-
+          // return 
           // 生产环境直接让用户去注册页面
           if (process.env.NODE_ENV === 'production') {
             // Toast('获取用户信息失败，请重关闭页面并重试！')
@@ -190,6 +206,7 @@ router.beforeEach((to, from, next) => {
             console.log(process.env.NODE_ENV)
             return
           }
+          Toast('走测试接口')
 
           // 开发环境用测试用户
           console.log('环境变量')

@@ -79,7 +79,7 @@ export default {
           this.enable = true
         } else {
           this.enable = false
-          this.todayLottery = data
+          this.todayLottery = data[0]
         }
       })
     },

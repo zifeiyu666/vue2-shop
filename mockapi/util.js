@@ -10,7 +10,8 @@ function createAPI(baseURL) {
       url: conf.url,
       baseURL: baseURL,
       method: conf.method,
-      // withCredentials: true
+      crossDomain: true,
+      withCredentials: true
     }, conf.opts));
   };
 }
@@ -22,7 +23,7 @@ function convertRESTAPI(url, opts) {
     const r = new RegExp('(:' + key + '|{' + key + '})', 'g')
     url = url.replace(r, opts.path[key])
   })
-
+  
   return url
 }
 
@@ -38,26 +39,26 @@ instance.interceptors.request.use(config => {
 })
 
 // respone拦截器
-instance.interceptors.response.use(
-  response => {
-    console.log(123123123)
-    console.log(response.data.result)
-    if (response.data.result === '0') {
-      var msg = response.data.msg
-      Toast(msg)
-    }
-    return response
-  },
-  error => {
-    console.log('err' + error)// for debug
-    // Message({
-    //   message: error.message,
-    //   type: 'error',
-    //   duration: 5 * 1000
-    // })
-    return Promise.reject(error)
-  }
-)
+// instance.interceptors.response.use(
+//   response => {
+//     console.log(123123123)
+//     console.log(response.data.result)
+//     // if (response.data.result === '0') {
+//     //   var msg = response.data.msg
+//     //   Toast(msg)
+//     // }
+//     return response
+//   },
+//   error => {
+//     console.log('err' + error)// for debug
+//     // Message({
+//     //   message: error.message,
+//     //   type: 'error',
+//     //   duration: 5 * 1000
+//     // })
+//     return Promise.reject(error)
+//   }
+// )
 
 export {
   createAPI,

@@ -6,7 +6,7 @@ var wj = 'http://47.95.230.197'
 var test = 'http://www.yunhi.vip'
 
 const baseUrl = {
-  mock: wj,
+  mock: '',
   dev: '',
   pre: '',
   prod: ''

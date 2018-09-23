@@ -30,6 +30,7 @@ const refund = resolve => require(['@/views/shop/refund.vue'], resolve)
 const refundList = resolve => require(['@/views/shop/refundList.vue'], resolve)
 const refundDetail = resolve => require(['@/views/shop/refundDetail.vue'], resolve)
 const NoAuth = resolve => require(['@/views/shop/NoAuth.vue'],resolve)
+const shareAll = resolve => require(['@/views/shop/shareAll.vue'],resolve)
 // show
 const ShowIndex = resolve => require(['@/views/show/index.vue'], resolve)
 const ShowItem = resolve => require(['@/views/show/item.vue'], resolve)
@@ -266,6 +267,11 @@ const shopRouters = [
     path: '/shop/noauth',
     name: '未关注',
     component: NoAuth
+  },
+  {
+    path: '/shop/shareAll',
+    name: 'shareAll',
+    component: shareAll
   }
 ]
 

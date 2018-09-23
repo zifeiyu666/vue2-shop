@@ -145,7 +145,7 @@
       console.log(userInfo)
       console.log(userInfo.nickname)
       this.avatar = userInfo.headimgurl
-      this.smallQrCode = userInfo.SharedQRCode
+      // this.smallQrCode = userInfo.SharedQRCode
       this.username = userInfo.nickname
       this.jifen = userInfo.Score,
       this.time = userInfo.subscribe_time,
@@ -164,8 +164,9 @@
             token: this.$store.state.userInfo.MemberToken
           }
         }).then(res => {
-          var data = res.data.data
-          this.qrcode = data
+          var data = res.data.data.split(',')
+          this.qrcode = data[1]
+          this.smallQrCode = data[0]
         })
       },
       showQrCode() {
