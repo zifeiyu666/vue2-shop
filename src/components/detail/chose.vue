@@ -231,9 +231,16 @@ export default {
             return arr ;  
         }
         //进行去重
-        this.modal1 = uniqeByKeys(this.modal1,['code']);
-        this.modal2 = uniqeByKeys(this.modal2,['code']);
-        this.modal3 = uniqeByKeys(this.modal3,['code']);
+        if (this.modal1.length != 0) {
+          this.modal1 = uniqeByKeys(this.modal1,['code']);
+        }
+        if (this.modal2.length != 0) {
+          this.modal2 = uniqeByKeys(this.modal2,['code']);
+        }
+        if (this.modal3.length != 0) {
+          this.modal3 = uniqeByKeys(this.modal3,['code']);
+        }
+        
       })
     },
 
@@ -275,16 +282,10 @@ export default {
   font-size: 14px !important;
 }
 .fx{
-<<<<<<< HEAD
-  margin-left: 15px;
-  padding-right: 15px;
-  display: inline!important;
-=======
   display: inline!important;
   margin-left: 5px;
   position: relative;
   top: -2px;
->>>>>>> 7bc0e313b35fb9814afc983b94755b53d03100fe
   i{
     position: relative;
     top: -2px;

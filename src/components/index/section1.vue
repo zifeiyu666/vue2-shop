@@ -70,13 +70,8 @@ export default {
     .section1-title {
       .bt();
       text-align: left;
-<<<<<<< HEAD
-      .fz(font-size, 34);
-      padding: 2vw 4vw;
-=======
       padding: 10px;
       font-size: 14px;
->>>>>>> 7bc0e313b35fb9814afc983b94755b53d03100fe
       position: relative;
       background-color: #fff;
       border-bottom: 1px solid #eee;
@@ -153,14 +148,9 @@ export default {
           font-size: 18px;
           font-weight: bold;
           display: inline-block;
-<<<<<<< HEAD
-          padding-bottom: 3vw;
-          color:@fontRed;
-=======
           padding-bottom: 6px;
           color: @fontRed;
           font-size: 16px;
->>>>>>> 7bc0e313b35fb9814afc983b94755b53d03100fe
         }
       }
     }

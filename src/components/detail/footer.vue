@@ -21,78 +21,116 @@
     </span> 
     <!-- 加入购物车 -->
     <mt-popup
+      style='overflow: auto; max-height: 95vh'
       v-model="popupVisible"
       position="bottom">
       <div class='shopcar'>
-        <p>
-          商品名称:<span class="title">{{detail ? detail.ProductName : undefined}}</span> 
-        </p>
-        <!-- 选择规格 -->
-        <div class="pick" >
-          <div v-if='propTypeNameList' v-for='(item, index) in propTypeNameList' :key='index + "a"'>
-            <h1>请选择{{item}}:</h1>
-            <div style='cursor:pointer'>
-              <el-radio-group v-model="selectedPropId[index]" @change='changeSelect' size="medium">
-                <el-radio-button :disabled='i.canSel' style='cursor:pointer' @click.native.prevent="clickToggle(index, i.code, i.canSel)" v-for='(i, k) in propTypeList[index]' :label="i.code" :key='k'>{{i.name}}</el-radio-button>
-              </el-radio-group>
+        <div>
+          <!-- 选择规格 -->
+        <div class="pick type_wrap" >
+            <div v-if='propTypeNameList' v-for='(item, index) in propTypeNameList' :key='index + "a"'>
+              <h1 class='type_title'>请选择商品规格</h1>
+              <div style='cursor:pointer'>
+                <p class='sub_title'>{{item}}：</p>
+                <el-radio-group v-if='propTypeList[index]' v-model="selectedPropId[index]" size="medium">
+                  <el-radio-button  v-for='(i, k) in propTypeList[index]' :disabled='i.canSel' style='cursor:pointer' @click.native.prevent="clickToggle(index, i.code, i.canSel)"  :label="i.code" :key='k'>{{i.name}}</el-radio-button>
+                </el-radio-group>
+              </div>
             </div>
           </div>
-        </div>
-        <p>
-          价格:<span class="title">{{price ? price : ''}}</span>
-        </p>
-        <p>
-          规格:<span class="title">{{detail ? detail.ProductUnit : undefined}}</span>
-        </p>
-        <p>
-          数量：<button style="padding: 4px 5px;
-  width: 30px;" @click='reduce'>-</button> {{num}} <button style="padding: 4px 5px;
-  width: 30px;" @click='add'>+</button>
-        </p>
-        <div class="bottm-btn-group bottom clearfix">
-          <mt-button class='confirm-btn' @click='confirmShopCar'>确定</mt-button>
-          <mt-button class='concel-btn' @click='consoleAddIntoCar'>取消</mt-button>
-        </div>
-      </div>
-    </mt-popup>
-    <!-- 立即购买 -->
-    <mt-popup
-      v-if='selectedProp[0]'
-      v-model="payVisible"
-      position="bottom">
-      <div class='shopcar'>
-        <p>
-          商品名称:<span class="title">{{detail ? detail.ProductName : undefined}}</span> 
-        </p>
-        <p>
-          商品类型:<span class="title">{{detail ? detail.ProductTypeName : undefined}}</span> 
-        </p>
-        <p>
-          价格:<span class="title">{{payprice}}</span>
-        </p>
-        <p>
-          规格:<span class="title">{{detail ? detail.ProductUnit : undefined}}</span>
-        </p>
-        <p>
-          数量：<button style="padding: 4px 5px;
-  width: 30px;" @click='payReduce'>-</button> {{paynum}} <button style="padding: 4px 5px;
-  width: 30px;" @click='payAdd'>+</button>
-        </p>
-        <div class="jf" v-if='score'>
-          <mt-field label="积分抵扣:" placeholder="请输入要使用的积分" type="number" v-model="usescore" ></mt-field>
-          <div class="totalScore">
-            <span>当前可用积分：{{score}}</span>
-            <p>可抵扣金额：{{usescore/scoreRate}}元</p>
+  
+          <!-- 请选择人数 -->
+          <div class='type_wrap'>
+              <p class='type_title'>请选择人数</p>
+              <p style='margin-bottom: 4px'>
+                <span class='sub_title'>大人：</span>
+                <button class='num_btn' @click='reduce("adult")'>-</button>
+                 <span class="num">{{adult}}位</span>
+                <button class='num_btn' @click='add("adult")'>+</button>
+              </p>
+              <p>
+                <span class='sub_title'>小孩：</span>
+                <button class='num_btn' @click='reduce("children")'>-</button>
+                 <span class="num">{{children}}位</span>
+                <button class='num_btn' @click='add("children")'>+</button>
+              </p>
+          </div>
+          
+          <!-- 立即购买选项 -->
+          <div v-if='isImmePay'>
+            <!-- 联系人信息 -->
+            <div class="type_wrap">
+                <p class="type_title">联系人信息</p>
+                <el-form ref="lxrForm" :model="lxrForm" label-width="65px">
+                    <el-form-item label="联系人">
+                        <el-input v-model="lxrForm.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="联系电话" style='margin-bottom: -14px;'>
+                        <el-input v-model="lxrForm.phone"></el-input>
+                        <span style='font-size: 12px; color:#666; position: relative; top: -8px'><span style='color: #ff4545'>*</span>请准确填写，用于接收通知</span>
+                    </el-form-item>
+                    <el-form-item label="邮寄地址">
+                        <el-input v-model="lxrForm.address"></el-input>
+                    </el-form-item>
+                </el-form>  
+              </div>
+              <!-- 出行人信息 -->
+              <div class="type_wrap">
+                <p class="type_title">出行人信息</p>
+                <el-form v-for='(i, index) in cxrNum' ref="cxrForm" :model="cxrForm[index]" label-width="65px">
+                    <el-form-item label="姓名">
+                        <el-input v-model="cxrForm[index].cxrname"></el-input>
+                    </el-form-item>
+                    <el-form-item label="身份证号" style='margin-bottom: -14px;'>
+                        <el-input v-model="cxrForm[index].idcard"></el-input>
+                        <span style='font-size: 12px; color:#666; position: relative; top: -8px'><span style='color: #ff4545'>*</span>请准确填写，用于接收通知</span>
+                    </el-form-item>
+                </el-form>  
+              </div>
+          </div>
+          
+          <!-- 数量 -->
+          <p class='type_wrap'>
+            <span class='type_title'>数量：</span>
+            <button class='num_btn' @click='reduce("num")'>-</button> 
+              <span class='num'>{{num}} </span>
+            <button class='num_btn' @click='add("num")'>+</button>
+          </p>
+  
+          <!-- 价格 -->
+          <div class='type_wrap'>
+            <p class='discountprice' v-if='enabledProp.length != 1'>总价：<i>￥</i>{{detail.minPrice}}-{{detail.maxPrice}}</p>
+            <p class='discountprice' v-if='enabledProp.length == 1'>
+              总价：<i>￥</i>{{this.DiscountPrice * this.num}}
+              <!-- <span class='fx' v-if='detail.prop[0].ywyfx && detail.prop[0].ywyfx != 0'>
+                <i>返</i>￥{{detail.prop[0].ywyfx}}
+              </span> -->
+            </p>
+            <span class='originalprice' v-if='enabledProp.length == 1 && this.DiscountPrice != this.OriginalPrice'>原价{{this.OriginalPrice}}元</span>
+          </div>
+            
+          <!-- 购物须知 -->
+          <div class='read_wrap type_wrap' @click='changeIsRead'>
+            <i v-if='!isRead' class='iconfont icon-circle' style='color: #666'></i>
+            <i v-else class='iconfont icon-danxuanxuanzhong' style='color: #ff4800'></i>
+            <span>我已仔细阅读《预定须知》并同意条款内容</span>
           </div>
         </div>
 
         <div class="bottm-btn-group bottom clearfix">
-          <mt-button class='confirm-btn' @click='confirmPay'>确定</mt-button>
-          <mt-button class='concel-btn' @click='consolePay'>取消</mt-button>
+          <div v-if='isImmePay'>
+            <mt-button class='confirm-btn' @click='confirmPay'>微信支付</mt-button>
+            <mt-button class='concel-btn' @click='consoleAddIntoCar'>取消</mt-button>
+          </div>
+          <div v-else>
+            <mt-button class='confirm-btn' @click='confirmShopCar'>确定</mt-button>
+            <mt-button class='concel-btn' @click='consoleAddIntoCar'>取消</mt-button>
+          </div>
+          
         </div>
-        
       </div>
     </mt-popup>
+
   </footer>
 </template>
 
@@ -108,6 +146,21 @@ export default {
     return {
       star: false,
       num: 1, // 购物车数量
+      adult: 1,
+      children: 1,
+      isRead: false, //是否阅读须知
+      isImmePay: false, // 是否是立即购买
+      lxrForm: {
+        name: '',
+        phone: '',
+        address: ''
+      },
+      cxrForm: [
+        {
+          cxrname: '',
+          idcard: '',
+        }
+      ],
       paynum: 1, // 立即购买数量
       popupVisible: false,
       payVisible: false,
@@ -140,6 +193,18 @@ export default {
       propTypeList2: [], // 类别3
       propTypeList: [],
       propTypeNameList: [], // 可选类别标题
+      OriginalPrice: '',
+      DiscountPrice: '',
+      hyfx: '',
+      ywyfx: '',
+      gwfx: "",
+      minhyfx: '',
+      maxhyfx: '',
+      minywyfx: '',
+      maxywyfx: '',
+      mingwfx: '',
+      maxgwfx: '',
+      enabledProp: []
     }
   },
   computed:{
@@ -150,6 +215,9 @@ export default {
     payprice() {
       // return this.selectedProp[0].DiscountPrice * this.paynum
       return 12
+    },
+    cxrNum() {
+      return this.adult + this.children
     }
   },
   // TODO： 检测数据
@@ -162,55 +230,81 @@ export default {
         // this.usescore = '0'
         Toast('请输入整形数字')
       }
+    },
+    cxrNum() {
+      this.cxrForm = []
+      for(let i=0; i<this.cxrNum; i++) {
+        this.cxrForm.push({cxrname: '', idcard: ''})
+      }
     }
   },
   mounted() {
+    for(let i=0; i<this.cxrNum; i++) {
+      this.cxrForm.push({cxrname: '', idcard: ''})
+    }
     this.openid = this.$route.query.openid ? this.$route.query.openid : ''
     this.initCollectStar()
     this.getMyCarNum()
-    this.changeSelect()
     this.initPropTypeList()
   },
   methods:{
     scrollTo,
+    changeIsRead() {
+      this.isRead = !this.isRead
+    },
     initPropTypeList() {
       
-      var allList = this.detail.prop
-      // if (selectedPropId) {
-      //   console.log('进入类别选择')
-      //   var canSelList = []
-      //   allList.forEach((item, index) => {
-      //     if (item.Prop1.code == selectedPropId[0]) {
-      //       canSelList.push(item)
-      //     }
-      //     if (index == 1 && item.Prop2.code == propCode) {
-      //       canSelList.push(item)
-      //     }
-      //     if (index == 2 && item.Prop3.code == propCode) {
-      //       canSelList.push(item)
-      //     }
-      //   })
-      //   allList = canSelList
-      //   console.log('筛选后的类别')
-      //   console.log(allList)
-      // }
+      let allList = this.detail.prop
+      // 初始化原始数组
+      this.propTypeList0 = []
+      this.propTypeList1 = []
+      this.propTypeList2 = []
       
       this.propTypeNameList = this.detail.PropertyName
       console.log('进入类别选择')
-      console.log(this.selectedPropId[0])
+      console.log(this.selectedPropId)
       var that = this
       var canSelList = []
       allList.forEach((item, index) => {
+        // 用户未作出选择之前必须都是可选的
         if (!that.selectedPropId[0] && !that.selectedPropId[1] && !that.selectedPropId[2]) {
-          that.$set(item.Prop1, 'canSel', false)
-          that.$set(item.Prop2, 'canSel', false)
-          that.$set(item.Prop3, 'canSel', false)
+          if (item.Prop1) {
+            that.$set(item.Prop1, 'canSel', false)
+          }
+          if (item.Prop2) {
+            that.$set(item.Prop2, 'canSel', false)
+          }
+          if (item.Prop3) {
+            that.$set(item.Prop3, 'canSel', false)
+          }
+           
         } else {
-          // 这里保证已选属性可选，未做出选择的属性都不可选，后续再筛选出可选的
-          that.$set(item.Prop1, 'canSel', !that.selectedPropId[0])
-          that.$set(item.Prop2, 'canSel', !that.selectedPropId[1])
-          that.$set(item.Prop3, 'canSel', !that.selectedPropId[2])
-        }
+          // 这里保证已选属性可选，未做出选择的属性都不可选，后续再筛选出可选的     
+          if(that.selectedPropId[0] && item.Prop1 && item.Prop1.code==that.selectedPropId[0]) {
+            that.$set(item.Prop1, 'canSel', false)
+          } else {
+            that.$set(item.Prop1, 'canSel', true)
+          }
+
+          if(that.selectedPropId[1] && item.Prop2 && item.Prop2.code==that.selectedPropId[1]) {
+            that.$set(item.Prop2, 'canSel', false)
+          } else {
+            if (item.Prop2) {
+              that.$set(item.Prop2, 'canSel', true)
+            }
+            
+          }
+
+          if(that.selectedPropId[2] && item.Prop3 && item.Prop3.code==that.selectedPropId[2]) {
+            that.$set(item.Prop3, 'canSel', false)
+          } else {
+            if (item.Prop3) {
+              that.$set(item.Prop3, 'canSel', true)
+            }
+          }
+        } 
+
+
         if (
            ((that.selectedPropId[0] && item.Prop1.code == that.selectedPropId[0]) || !that.selectedPropId[0]) &&
            ((that.selectedPropId[1] && item.Prop2.code == that.selectedPropId[1]) || !that.selectedPropId[1]) &&
@@ -218,9 +312,15 @@ export default {
         ) {
           canSelList.push(item)
         }
-        that.propTypeList0.push(item.Prop1)
-        that.propTypeList1.push(item.Prop2)
-        that.propTypeList2.push(item.Prop3)
+        if (item.Prop1) {
+          that.propTypeList0.push(item.Prop1)
+        }
+        if (item.Prop2) {
+          that.propTypeList1.push(item.Prop2)
+        }
+        if (item.Prop3) {
+          that.propTypeList2.push(item.Prop3)
+        }
       })
       console.log('可选列表')
       console.log(canSelList)
@@ -230,62 +330,129 @@ export default {
       var canSelList2 = []
 
       canSelList.forEach((item, index) => {
-        canSelList0.push(item.Prop1)
-        canSelList1.push(item.Prop2)
-        canSelList2.push(item.Prop3)
+        if (item.Prop1) {
+          canSelList0.push(item.Prop1)
+        }
+        if (item.Prop2) {
+          canSelList1.push(item.Prop2)
+        }
+        if (item.Prop3) {
+          canSelList2.push(item.Prop3)
+        }
+        
       })
+      if (canSelList0.length != 0) {
+        canSelList0 = uniqeByKeys(canSelList0, ['code'])
+      }
+      if (canSelList0.length != 0) {
+        canSelList1 = uniqeByKeys(canSelList1, ['code'])
+      }
+      if (canSelList0.length != 0) {
+        canSelList2 = uniqeByKeys(canSelList2, ['code'])
+      }
+      
+      
+      
+      console.log('可选列表子列表')
+      console.log(canSelList0)
+      console.log(canSelList1)
+      console.log(canSelList2)
 
-      this.propTypeList0 = uniqeByKeys(this.propTypeList0, ['code'])
-      this.propTypeList1 = uniqeByKeys(this.propTypeList1, ['code'])
-      this.propTypeList2 = uniqeByKeys(this.propTypeList2, ['code'])
-      this.propTypeList0 = this.propTypeList0.map((val, index) => {
-        if (!val.canSel) {
-          return val
-        } else if (val.code == canSelList0[index].code) {
-          return {
-            'code': val.code,
-            'name': val.name,
-            'canSel': false
-          }
-        }
-      })
-      this.propTypeList1 = this.propTypeList1.map((val, index) => {
-        console.log('aaaa')
-        console.log(val.name)
-        console.log('原code')
-        console.log(val.code)
-        console.log('现code')
-        console.log(canSelList1[index].code)
-        console.log()
-        if (!val.canSel) {
-          return val
-        } else if (val.code == canSelList1[index].code) {
-          console.log('进入设置')
-          console.log(val)
-          console.log('valaaaaa')
-          return {
-            'code': val.code,
-            'name': val.name,
-            'canSel': false
-          }
-        }
-      })
-      this.propTypeList2 = this.propTypeList2.map((val, index) => {
-        if (!val.canSel) {
-          return val
-        } else if (val.code == canSelList2[index].code) {
-          return {
-            'code': val.code,
-            'name': val.name,
-            'canSel': false
-          }
-        }
-      })
-      console.log('筛完的数组')
+
+      if (this.propTypeList0.length != 0) {
+        this.propTypeList0 = uniqeByKeys(this.propTypeList0, ['code'])
+      }
+      if (this.propTypeList1.length != 0) {
+        this.propTypeList1 = uniqeByKeys(this.propTypeList1, ['code'])
+      }
+      if (this.propTypeList2.length != 0) {
+        this.propTypeList2 = uniqeByKeys(this.propTypeList2, ['code'])
+      }
+      
+
+      console.log('原数组')
+      console.log(this.propTypeList0)
       console.log(this.propTypeList1)
+      console.log(this.propTypeList2)
 
+      this.propTypeList0 = this.propTypeList0.map((val, index) => {
+        let isSel = true
+        canSelList0.forEach(item => {
+          if (val.code == item.code) {
+            isSel = false
+          }
+        })
+        if (!val.canSel) {
+          return val
+        } else if (!isSel) {
+          console.log('可选项')
+          let _val = {'code': val.code, 'name': val.name, 'canSel': false}
+          console.log(_val)
+          return _val
+        } else {
+          console.log('不可选')
+          let _val = {'code': val.code, 'name': val.name, 'canSel': true}
+          console.log(_val)
+          return _val
+        }
+      })
+      
+      this.propTypeList1 = this.propTypeList1.map((val, index) => {
+        let isSel = true
+        canSelList1.forEach(item => {
+          if (val.code == item.code) {
+            console.log('code 相同')
+            isSel = false
+          }
+        })
+        if (!val.canSel) {
+          console.log('可选项直接返回')
+          return val
+        }else if (!isSel) {
+          console.log('可选项')
+          let _val = {'code': val.code, 'name': val.name, 'canSel': false}
+          console.log(_val)
+          return _val
+        } else {
+          console.log('不可选')
+          let _val = {'code': val.code, 'name': val.name, 'canSel': true}
+          console.log(_val)
+          return _val
+        }
+      })
+
+      this.propTypeList2 = this.propTypeList2.map((val, index) => {
+        console.log('对比')
+        console.log(this.propTypeList2)
+        console.log(canSelList2)
+        let isSel = true
+        canSelList2.forEach(item => {
+          if (val.code == item.code) {
+            isSel = false
+          }
+        })
+        if (!val.canSel) {
+          return val
+        }else if (!isSel) {
+          console.log('可选项')
+          let _val = {'code': val.code, 'name': val.name, 'canSel': false}
+          console.log(_val)
+          return _val
+        } else {
+          console.log('不可选')
+          let _val = {'code': val.code, 'name': val.name, 'canSel': true}
+          console.log(_val)
+          return _val
+        }
+      })
+
+      console.log('筛完的数组')
+      console.log(this.propTypeList0)
+      console.log(this.propTypeList1)
+      console.log(this.propTypeList2)
 
       this.propTypeList = [this.propTypeList0, this.propTypeList1, this.propTypeList2]
+
 
       //将对象元素转换成字符串以作比较
       function obj2key(obj, keys){  
@@ -329,11 +496,28 @@ export default {
       })
       console.log('准备进入')
       this.initPropTypeList()
+      this.getRealPrice()
     },
-    changeSelect() {
-      console.log('change')
-
-      
+    getRealPrice() {
+      mockapi.shop.api_Shop_getProductPropList_get({
+        params:{
+          PId: this.$route.query.pid,
+          Prop1: this.selectedPropId[0] ? this.selectedPropId[0] : '',
+          Prop2: this.selectedPropId[1] ? this.selectedPropId[0] : '',
+          Prop3: this.selectedPropId[2] ? this.selectedPropId[0] : ''
+        }
+      }).then(res => {
+        var data = res.data.data
+        this.enabledProp = data
+        if (this.enabledProp.length == 1) {
+          this.OriginalPrice = this.enabledProp[0].OriginalPrice
+          this.DiscountPrice = this.enabledProp[0].DiscountPrice
+          this.ywyfx = this.enabledProp[0].ywyfx
+          this.gwfx = this.enabledProp[0].gwfx
+          this.hyfx = this.enabledProp[0].hyfx
+          this.$store.commit('saveSelectedProp', this.enabledProp)
+        }
+      })
     },
     initCollectStar() {
       mockapi.shop.api_Shop_isMyCollection_get({
@@ -373,6 +557,8 @@ export default {
         })
       }
     },
+
+    // 是否收藏
     isSelected() {
       mockapi.shop.api_Shop_isMyCollection_get({
         params:{
@@ -396,29 +582,26 @@ export default {
         this.carnum = data
       })
     },
-    addIntoCar(){
-      console.log('购物车')
 
+    addIntoCar(){
       this.popupVisible = !this.popupVisible
-      console.log(this.popupVisible)
-      //  mint-ui的弹出式提示框
-      // this.selectedProp = this.$store.state.selectedProp
-      // if (this.selectedProp.length == 1) {
-      //   this.PropId = this.selectedProp[0].PropId
-      //   this.popupVisible = !this.popupVisible
-      // } else {
-      //   Toast('请选择商品规格')
-      //   this.scrollTo('400')
-      // }
-      
+      this.isImmePay = false
     },
     //  确认添加购物车 
     confirmShopCar() {
+      if(this.enabledProp.length != 1) {
+        Toast('请选择商品规格')
+        return
+      }
+      if(!this.isRead) {
+        Toast('请阅读并勾选阅读须知')
+        return
+      }
       mockapi.shop.api_Shop_addToCar_post({
         data: qs.stringify({
           token: this.$store.state.userInfo.MemberToken,
           PId: this.detail.PId,
-          PropId: this.PropId,
+          PropId: this.enabledProp[0].PropId,
           Num: this.num,
           FxOpenID: this.openid
         })
@@ -431,76 +614,84 @@ export default {
     consoleAddIntoCar() {
       this.popupVisible = false
     },
-    add() {
-      if (this.num < (this.selectedProp[0].TotalNum - this.selectedProp[0].SoldNum)){
-        // mockapi.shop.api_Shop_updateCar_post({
-        //   data: qs.stringify({
-        //     token: this.$store.state.userInfo.MemberToken,
-        //     PId: this.detail.PId,
-        //     PropId: this.PropId,
-        //     Num: this.num + 1
-        //   })
-        // }).then(res => {
-        //   this.num++
-        // }).catch(err => {
-        //   console.log(err)
-        // })
-        this.num++
-      } else {
-        Toast('已达到最大数量')
+    add(type) {
+      if(this.enabledProp.length != 1) {
+        Toast('请选择商品规格')
+        return
       }
+      if (type=='num') {
+        if (this.num < (this.enabledProp[0].TotalNum - this.enabledProp[0].SoldNum)){
+          this.num++
+        } else {
+          Toast('已达到最大数量')
+        }
+      }
+      if (type=='adult') {
+        this.adult++
+      }
+      if (type=='children') {
+        this.children++
+      }
+      
     },
-    reduce() {
-      if (this.num > 1) {
-        mockapi.shop.api_Shop_updateCar_post({
-          data: qs.stringify({
-            token: this.$store.state.userInfo.MemberToken,
-            PId: this.detail.PId,
-            PropId: this.detail.prop.PropId,
-            Num: this.num - 1
-          })
-        }).then(res => {
-          this.num--
-        }).catch(err => {
-          console.log(err)
-        })
+    reduce(type) {
+      if(this.enabledProp.length != 1) {
+        Toast('请选择商品规格')
+        return
       }
+      if (type=='num') {
+        if (this.num > 1 ){
+          this.num--
+        } else {
+          Toast('商品数量不能小于1')
+        }
+      }
+      if (type=='adult') {
+        if (this.adult > 0 ){
+          this.adult--
+        } else {
+          Toast('人数不能小于0')
+        }
+      }
+      if (type=='children') {
+        if (this.children > 0 ){
+          this.children--
+        } else {
+          Toast('人数不能小于0')
+        }
+      }
+      
+
     },
     /* 立即购买相关 */
     goPay(){
-      this.selectedProp = this.$store.state.selectedProp
-      if (this.selectedProp.length == 1) {
-        this.PropId = this.selectedProp[0].PropId
-        //  mint-ui的弹出式提示框
-        this.payVisible = !this.payVisible
-      } else {
-        Toast('请选择商品规格')
-        this.scrollTo('400')
-      }
+      this.popupVisible = !this.popupVisible
+      this.isImmePay = true
     },
     confirmPay() {
-      if(this.usescore && isNaN(parseInt(this.usescore))) {
-        Toast('请输入正确的积分格式')
-        return 
+      if(this.enabledProp.length != 1) {
+        Toast('请选择商品规格')
+        return
       }
-      this.payVisible = false
+      if(!this.isRead) {
+        Toast('请阅读并勾选阅读须知')
+        return
+      }
       mockapi.shop.api_Shop_generateOrder_post({
         data: qs.stringify({
           token: this.$store.state.userInfo.MemberToken,
           PId: this.detail.PId,
-          PropId: this.PropId,
+          PropId: this.enabledProp[0].PropId,
           Num: this.paynum,
-          // Score: this.usescore ? this.usescore : 0,
           OpenID: this.openid
         })
       }).then(res => {
+        this.popupVisible = false
         var data = res.data.data
         this.$router.push({path: '/shop/order', query: {orderno: data.orderno, orderid: data.orderid}})
       }).catch(err => {
         console.log(err)
       })
-      
-      
     },
     consolePay() {
       this.payVisible = false
@@ -525,7 +716,33 @@ export default {
 <style lang="less" scoped>
 @import '../../assets/fz.less';
 @import '../../assets/index/style.css';
+.type_wrap{
+  border-bottom: 1px solid @lightBorder;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  .type_title{
+    font-size: 14px;
+    line-height: 35px;
+    height: 35px;
+    color: @fontBlack;
+  }
+  .sub_title{
+    font-size: 13px;
+    color: @fontGray;
+    margin-bottom: 4px;
+  }
+  .num_btn{
+    padding: 4px 5px;
+    width: 30px;
+    border-radius: 4px;
+    color: @fontGray;
+    font-size: 14px;
+  }
+  .num{
+    color: @fontGray;
 
+  }
+}
 
 .pick{
   padding-bottom: 10px;
@@ -543,7 +760,6 @@ export default {
 .jf{
   width: 100%;
   box-sizing: border-box;
-  // border-bottom: 1px solid #eee;
   margin-top: 20px;
   margin-left: -10px;
   margin-right: -10px;
@@ -558,6 +774,7 @@ export default {
   }
 }
 .footer {
+  z-index: 1000;
   width: 100%;
   display: -webkit-flex;
   display: -ms-flex;
