@@ -1,5 +1,8 @@
 <template lang="html">
   <div class="detail" v-loading='isLoading'>
+    <v-header>
+      <h1 slot="title">商品详情</h1>
+    </v-header>
     <div v-if='detail'>
       <v-share :imgurl="qrcode" />
       <v-swiper :imgList="detail.imgurl"></v-swiper>
@@ -18,6 +21,7 @@ import Content from '@/components/detail/content.vue'
 import Footer from '@/components/detail/footer.vue'
 import Baseline from '@/common/_baseline.vue'
 import Share from '@/components/shareBtn.vue'
+import Header from '@/common/_header.vue'
 
 import qs from 'qs'
 import * as mockapi from '@/../mockapi'
@@ -28,7 +32,8 @@ export default {
     'v-content':Content,
     'v-footer':Footer,
     'v-baseline':Baseline,
-    'v-share': Share
+    'v-share': Share,
+    'v-header':Header,
   },
   data() {
     return{

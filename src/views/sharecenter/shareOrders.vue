@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-header>
-      <h1 slot="title">分销订单</h1>
+      <h1 slot="title">推广成交订单</h1>
     </v-header>
     <mt-tab-container v-model="selected">
       <div class="wrap">

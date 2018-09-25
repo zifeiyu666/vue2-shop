@@ -53,6 +53,7 @@ const ShareCenter = resolve => require(['@/views/sharecenter/index.vue'],resolve
 const MyChannel = resolve => require(['@/views/sharecenter/myChannel.vue'],resolve)
 const SCorders = resolve => require(['@/views/sharecenter/shareOrders.vue'],resolve)
 const SCprouducts = resolve => require(['@/views/sharecenter/shareProducts.vue'],resolve)
+const SCsearch = resolve => require(['@/views/sharecenter/search.vue'],resolve)
 const SCfxjl = resolve => require(['@/views/sharecenter/fxJl.vue'],resolve)
 const SCproductDetail = resolve => require(['@/views/sharecenter/productDetail.vue'],resolve)
 
@@ -61,6 +62,7 @@ const CCindex = resolve => require(['@/views/channelcenter/index.vue'],resolve)
 const CCmanager = resolve => require(['@/views/channelcenter/sharemanager.vue'],resolve)
 const CCfxjl = resolve => require(['@/views/channelcenter/fxJl.vue'],resolve)
 const CCproducts = resolve => require(['@/views/channelcenter/shareProducts.vue'],resolve)
+const CCsearch = resolve => require(['@/views/channelcenter/search.vue'],resolve)
 const CClogin = resolve => require(['@/views/channelcenter/login.vue'],resolve)
 const CChylist = resolve => require(['@/views/channelcenter/hyList.vue'],resolve)
 const CCywyFxjl = resolve => require(['@/views/channelcenter/ywyfxJl.vue'],resolve)
@@ -95,7 +97,7 @@ const shopRouters = [
   },
   {
     path: '/shop/car',
-    name: '购物车页',
+    name: '购物车',
     component: Car,
     meta: {
         requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
@@ -134,7 +136,7 @@ const shopRouters = [
   },
   {
     path: '/shop/user',
-    name: '用户页',
+    name: '会员中心',
     component: User,
     meta: {
         requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
@@ -394,6 +396,15 @@ const shareRouters = [
     }
   },
   {
+    path: '/sharecenter/search',
+    name: 'SCsearch',
+    component: SCsearch,
+    meta: {
+      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+      ywyAuth: true
+    }
+  },
+  {
     path: '/sharecenter/fxjl',
     name: 'SCfxjl',
     component: SCfxjl,
@@ -433,6 +444,11 @@ const channelRouters = [
     path: '/channelcenter/shareproducts',
     name: 'CCproducts',
     component: CCproducts
+  },
+  {
+    path: '/channelcenter/search',
+    name: 'CCsearch',
+    component: CCsearch
   },
   {
     path: '/channelcenter/login',

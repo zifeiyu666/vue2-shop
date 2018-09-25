@@ -53,7 +53,7 @@ import Baseline from '@/common/_baseline.vue'
 import { Toast } from 'mint-ui';
 import * as mockapi from '@/../mockapi'
 import Header from '@/common/_header.vue'
-import NorMore from '@/components/nomore'
+import NoMore from '@/components/nomore'
 import { parseTime } from '@/util/data.js'
 
   export default{

@@ -7,94 +7,45 @@
       </h1>
       <p class="chose-view-intro">{{view.ProductIntro}}</p>
       <div class='item-wrap'>
-        <p class='discountprice' v-if='enabledProp.length != 1'><i>￥</i>{{view.minPrice}}-{{view.maxPrice}}</p>
-        <p class='discountprice' v-if='enabledProp.length == 1'>
-          <i>￥</i>{{this.DiscountPrice}}
-          <span class='fx' v-if='view.prop[0].ywyfx && view.prop[0].ywyfx != 0'>
-            <i>返</i>￥{{view.prop[0].ywyfx}}
+        <!-- 价格区间 -->
+        <p class='discountprice' v-if='enabledProp.length != 1'>
+          <i>￥</i>{{view.minPrice}}-{{view.maxPrice}}
+          <!-- 购物返现 -->
+          <span class='fx' v-if='view.maxgwfx != 0 && view.mingwfx && !fxtype'>
+            <i>返</i>￥{{view.maxgwfx}}-{{view.mingwfx}}
+          </span>
+          <!-- 分销返现 -->
+          <span class='fx' v-if='view.maxhyfx != 0 && view.minhyfx && fxtype=="fx"'>
+            <i>赚</i>￥{{view.maxhyfx}}-{{view.minhyfx}}
+          </span>
+          <!-- 业务员返现 -->
+          <span class='fx' v-if='view.maxywyfx != 0 && view.minywyfx && fxtype=="ywyzx"'>
+            <i>赚</i>￥{{view.maxywyfx}}-{{view.minywyfx}}
           </span>
         </p>
-        <span class='originalprice' v-if='enabledProp.length == 1 && this.DiscountPrice != this.OriginalPrice'>原价{{this.OriginalPrice}}元</span>
+        <!-- 具体价格 -->
+        <p class='discountprice' v-if='enabledProp.length == 1'>
+          <i>￥</i>{{enabledProp[0].DiscountPrice}}
+          <!-- 购物返现 -->
+          <span class='fx' v-if='enabledProp[0].gwfx && enabledProp[0].gwfx != 0 && !fxtype'>
+            <i>返</i>￥{{enabledProp[0].gwfx}}
+          </span>
+          <!-- 分销返现 -->
+          <span class='fx' v-if='enabledProp[0].gwfx && enabledProp[0].gwfx != 0 && fxtype=="fx"'>
+            <i>返</i>￥{{enabledProp[0].gwfx}}
+          </span>
+        </p>
+        <!-- 具体原价 -->
+        <span class='originalprice' v-if='enabledProp.length == 1 && this.DiscountPrice != this.OriginalPrice'>原价{{enabledProp[0].OriginalPrice}}元</span>
         
       </div>
       <div class='item-wrap'>
         <span>已售 {{view.SoldNum}}</span>
         <span>库存：{{view.AvailableNum}}</span>
       </div>
-      <!-- <div class='item-wrap'>
-        <span v-if='view.DBTypeName'>打包类型： {{view.DBTypeName}}</span>
-        <span v-if='view.DestinationTypeName'>目的地类别： {{view.DestinationTypeName}}</span>
-        <span v-if='view.AvailableNum'>使用天数：{{view.AvailableNum}}</span>
-        <span v-if='view.HouseTypeName'>房型类别： {{view.HouseTypeName}}</span>
-        <span v-if='view.UseStartTim'>可使用开始日期： {{parseTime(view.UseStartTime)}}</span>
-        <span v-if='view.UseEndTime'>可使用截止日期：{{parseTime(view.UseEndTime)}}</span>
-        <span v-if = 'view.Unable'>不可使用日期: {{view.Unable}}</span>
-        <span v-if = 'view.SuitableUserName'>适用人群：{{view.SuitableUserName}}</span>
-      </div> -->
-      <div class='line'></div>
-      <!-- <div class="pick" v-for='(i, index) in view.diclist' >
-        <mt-button @click='toggleSelected(item)' size="small" :type="item.IsChecked ? 'primary' : 'default'" v-for="(item, k) in i.EntryList ">
-          {{item.EntryName}}
-        </mt-button>
-        <div>
-          <el-radio-group v-model="radio[index].radio">
-            <el-radio-button v-for="(item, k) in i.EntryList" :label="item.EntryName"></el-radio-button>
-          </el-radio-group>
-        </div>
-      </div> -->
-      <div class="pick" >
-        <div  v-if='view.diclist[0]'>
-          <h1>请选择{{view.diclist[0].DicTypeName}}:</h1>
-          <div style='cursor:pointer'>
-            <el-radio-group v-model="radio[0].radio" @change='changeSelect' size="medium">
-              <el-radio-button style='cursor:pointer' @click.native.prevent="clickToggle0(item.code)" v-for="(item, k) in modal1" :label="item.code" :key='k'>{{item.name}}</el-radio-button>
-            </el-radio-group>
-          </div>
-        </div>
-        <div v-if='view.diclist[1]'>
-          <h1>请选择{{view.diclist[1].DicTypeName}}:</h1>
-          <!-- @click.native的情况下无法实现toggle效果 -->
-          <div  style='cursor:pointer'>
-            <el-radio-group v-model="radio[1].radio" @change='changeSelect' size="medium">
-              <el-radio-button style='cursor:pointer' @click.native.prevent="clickToggle1(item.code)"  v-for="(item, k) in modal2" :label="item.code"  :key='k'>{{item.name}}</el-radio-button>
-            </el-radio-group>
-          </div>
-        </div>
-        <div v-if='view.diclist[2]'>
-          <h1>请选择{{view.diclist[2].DicTypeName}}:</h1>
-          <div>
-            <el-radio-group v-model="radio[2].radio" @change='changeSelect' size="medium">
-              <el-radio-button style='cursor:pointer' @click.native.prevent="clickToggle2(item.code)"  v-for="(item, k) in modal3" :label="item.code"  :key='k'>{{item.name}}</el-radio-button>
-            </el-radio-group>
-          </div>
-        </div>
-      </div>
-
-      
       <div class='line'></div>
       
     </div>
-  <!-- 添加空函数 解决Safari浏览器 :active无效 -->
-    <!-- <div class="chose-mychosed" ontouchstart="">
-      <div class="colChose">
-        <span
-           v-for="(k,i) in view.chose"
-           :class="{active:colSelected==i}"
-           @click="colChose(i)"
-         >{{k.col}}</span>
-      </div>
-      <div class="sizeChose" >
-        <span
-          v-for="(k,i) in view.chose"
-          :class="{active:sizeSelected==i}"
-          @click="sizeChose(i)"
-        >
-          {{k.size}}
-        </span>
-      </div>
-    </div> -->
-
-
 
   </section>
 
@@ -113,28 +64,11 @@ import {parseTime} from '@/util/data.js'
 import * as mockapi from '@/../mockapi'
 export default {
   props: [
-    'view'
+    'view',
   ],
   data() {
     return {
-      selectedPropId: '', // 用户选择的规格
       type: 'default',
-      // 存储用户选择的规格信息
-      radio: [
-        {
-          radio: ''
-        },
-        {
-          radio: ''
-        },
-        {
-          radio: ''
-        }
-      ],
-      enabledProp: [],
-      modal1: [],
-      modal2: [],
-      modal3: [],
       OriginalPrice: '',
       DiscountPrice: '',
       hyfx: '',
@@ -150,118 +84,19 @@ export default {
     }
   },
   computed: {
-    // 当前可选的规格
-    // modal1 () {
-    //   return this.view.diclist[0] ? this.view.diclist[0].EntryList : undefined
-    // },
-    // modal2 () {
-    //   return this.view.diclist[1] ? this.view.diclist[1].EntryList : undefined
-    // },
-    // modal3 () {
-    //   return this.view.diclist[2] ? this.view.diclist[2].EntryList : undefined
-    // },
-    abledModal() {
-      return this.view.prop
+    enabledProp() {
+      console.log('计算')
+      console.log(this.$store.state.selectedProp)
+      return this.$store.state.selectedProp ? this.$store.state.selectedProp : []
     }
   },
   mounted() {
-    this.fxtype = this.$route.query.type
-    this.changeSelect()
+    this.fxtype = this.$route.query.type ? this.$route.query.type : undefined
+    console.log('返现类型')
+    console.log(this.fxtype)
   },
   methods: {
-
-    //点击后把i赋值给colSelected,再通过判断决定是否添加选中样式 (active)
-    // colChose(i) {
-    //   this.$store.commit('CHANGE_COL_SELECTED', i);
-    // },
-    // sizeChose(i) {
-    //   this.$store.commit('CHANGE_SIZE_SELECTED', i);
-    // },
     parseTime: parseTime,
-    toggleSelected(item) {
-      item.IsChecked = !item.IsChecked
-    },
-    changeSelect() {
-      mockapi.shop.api_Shop_getProductPropList_get({
-        params:{
-          PId: this.$route.query.pid,
-          Prop1: this.radio[0].radio,
-          Prop2: this.radio[1].radio,
-          Prop3: this.radio[2].radio
-        }
-      }).then(res => {
-        var data = res.data.data
-        this.enabledProp = data
-        if (this.enabledProp.length == 1) {
-          this.OriginalPrice = this.enabledProp[0].OriginalPrice
-          this.DiscountPrice = this.enabledProp[0].DiscountPrice
-          this.ywyfx = this.enabledProp[0].ywyfx
-          this.gwfx = this.enabledProp[0].gwfx
-          this.hyfx = this.enabledProp[0].hyfx
-        }
-        this.$store.commit('saveSelectedProp', this.enabledProp)
-        this.modal1 = []
-        this.modal2 = []
-        this.modal3 = []
-        for(var i = 0; i < this.enabledProp.length; i++ ) {
-          this.modal1.push(this.enabledProp[i].Prop1)
-          this.modal2.push(this.enabledProp[i].Prop2)
-          this.modal3.push(this.enabledProp[i].Prop3)
-        }
-        //将对象元素转换成字符串以作比较  
-        function obj2key(obj, keys){  
-            var n = keys.length,  
-                key = [];  
-            while(n--){  
-                key.push(obj[keys[n]]);  
-            }  
-            return key.join('|');  
-        }  
-        //去重操作  
-        function uniqeByKeys(array,keys){  
-            var arr = [];  
-            var hash = {};  
-            for (var i = 0, j = array.length; i < j; i++) {  
-                var k = obj2key(array[i], keys);  
-                if (!(k in hash)) {  
-                    hash[k] = true;  
-                    arr .push(array[i]);  
-                }  
-            }  
-            return arr ;  
-        }
-        //进行去重
-        if (this.modal1.length != 0) {
-          this.modal1 = uniqeByKeys(this.modal1,['code']);
-        }
-        if (this.modal2.length != 0) {
-          this.modal2 = uniqeByKeys(this.modal2,['code']);
-        }
-        if (this.modal3.length != 0) {
-          this.modal3 = uniqeByKeys(this.modal3,['code']);
-        }
-        
-      })
-    },
-
-    clickToggle0(e) {
-      console.log(1111111111111)
-      e === this.radio[0].radio ? this.radio[0].radio = '' : this.radio[0].radio = e
-      this.changeSelect()
-    },
-
-    clickToggle1(e) {
-      console.log(2222222222222)
-      e === this.radio[1].radio ? this.radio[1].radio = '' : this.radio[1].radio = e
-      this.changeSelect()
-    },
-
-    clickToggle2(e) {
-      console.log(3333333333333)
-      e === this.radio[2].radio ? this.radio[2].radio = '' : this.radio[2].radio = e
-      this.changeSelect()
-    }
-
   }
 }
 </script>

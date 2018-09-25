@@ -1,6 +1,15 @@
 import instance from './instance';
 import { convertRESTAPI } from '../util';
 
+/** 快速搜索 */
+function api_Shop_getKeyWord_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Shop/getKeyWord',
+    opts: opts
+  });
+}
+
 /** 我的积分记录 */
 function api_Shop_getMyCrashbackList_get(opts) {
   return instance({
@@ -794,6 +803,7 @@ function shop_getBanner_get(opts) {
 }
 
 export {
+  api_Shop_getKeyWord_get,
   api_Shop_getMyCrashbackList_get,
   api_Share_GetProductQRCard_get,
   api_Shop_GetProductQRCard_get,

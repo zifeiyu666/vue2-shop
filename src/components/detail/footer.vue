@@ -1,5 +1,15 @@
 <template lang="html">
   <footer class="footer">
+    <router-link :to="{path:'/shop'}" class="footer-index">
+      <span>
+        <i class="iconfont icon-shouye"></i>
+      </span>
+    </router-link>
+    <router-link :to="{path:'/shop'}" class="footer-index">
+      <span>
+        <i class="iconfont icon-kefu"></i>
+      </span>
+    </router-link>
     <div class="footer-index" @click='collect'>
       <span v-if='star' class='collection'>
         <icon name='star' scale='1.5'></icon>
@@ -7,12 +17,11 @@
       <span v-else >
         <icon name='star-o'  style='color: #666' scale='1.5'></icon>
       </span>
-      
     </div>
-    <router-link :to="{path:'/shop/car'}" class="footer-gocar">
+    <!-- <router-link :to="{path:'/shop/car'}" class="footer-gocar">
       <i class="iconfont icon-gouwuche3-copy-copy-copy-copy"></i>
       <span v-if="carnum">{{carnum}}</span>
-    </router-link>
+    </router-link> -->
     <span class="footer-addcar" @click="addIntoCar">
       加入购物车
     </span>
@@ -77,7 +86,7 @@
               <!-- 出行人信息 -->
               <div class="type_wrap">
                 <p class="type_title">出行人信息</p>
-                <el-form v-for='(i, index) in cxrNum' ref="cxrForm" :model="cxrForm[index]" label-width="65px">
+                <el-form v-for='(i, index) in cxrNum' ref="cxrForm" :key='index' :model="cxrForm[index]" label-width="65px">
                     <el-form-item label="姓名">
                         <el-input v-model="cxrForm[index].cxrname"></el-input>
                     </el-form-item>
@@ -99,12 +108,27 @@
   
           <!-- 价格 -->
           <div class='type_wrap'>
-            <p class='discountprice' v-if='enabledProp.length != 1'>总价：<i>￥</i>{{detail.minPrice}}-{{detail.maxPrice}}</p>
+            <p class='discountprice' v-if='enabledProp.length != 1'>
+              总价：<i>￥</i>{{detail.minPrice}}-{{detail.maxPrice}}
+              <!-- 购物返现 -->
+              <span class='fx' v-if='detail.maxgwfx != 0 && detail.mingwfx && !fxtype'>
+                <i>返</i>￥{{detail.maxgwfx}}-{{detail.mingwfx}}
+              </span>
+              <!-- 分销返现 -->
+              <span class='fx' v-if='detail.maxhyfx != 0 && detail.minhyfx && fxtype=="fx"'>
+                <i>赚</i>￥{{detail.maxhyfx}}-{{detail.minhyfx}}
+              </span>
+            </p>
             <p class='discountprice' v-if='enabledProp.length == 1'>
               总价：<i>￥</i>{{this.DiscountPrice * this.num}}
-              <!-- <span class='fx' v-if='detail.prop[0].ywyfx && detail.prop[0].ywyfx != 0'>
-                <i>返</i>￥{{detail.prop[0].ywyfx}}
-              </span> -->
+              <!-- 购物返现 -->
+              <span class='fx' v-if='detail.prop[0].gwfx && detail.prop[0].gwfx != 0 && !fxtype'>
+                <i>返</i>￥{{detail.prop[0].gwfx * this.num}}
+              </span>
+              <!-- 分销返现 -->
+              <span class='fx' v-if='detail.prop[0].hyfx && detail.prop[0].hyfx != 0 && fxtype == "fx"'>
+                <i>赚</i>￥{{detail.prop[0].hyfx * this.num}}
+              </span>
             </p>
             <span class='originalprice' v-if='enabledProp.length == 1 && this.DiscountPrice != this.OriginalPrice'>原价{{this.OriginalPrice}}元</span>
           </div>
@@ -184,7 +208,6 @@ export default {
         }
       ],
       selectedPropId: [undefined, undefined, undefined], // 用户选择的规格
-      enabledProp: [],
       modal1: [],
       modal2: [],
       modal3: [],
@@ -204,6 +227,7 @@ export default {
       maxywyfx: '',
       mingwfx: '',
       maxgwfx: '',
+      fxtype: '',
       enabledProp: []
     }
   },
@@ -219,6 +243,9 @@ export default {
     cxrNum() {
       return this.adult + this.children
     }
+  },
+  mounted() {
+    this.fxtype = this.$route.query.type
   },
   // TODO： 检测数据
   watch: {
@@ -515,8 +542,10 @@ export default {
           this.ywyfx = this.enabledProp[0].ywyfx
           this.gwfx = this.enabledProp[0].gwfx
           this.hyfx = this.enabledProp[0].hyfx
-          this.$store.commit('saveSelectedProp', this.enabledProp)
         }
+        this.$store.commit('saveSelectedProp', this.enabledProp)
+        console.log('获取长度')
+        console.log(this.$store.state.selectedProp)
       })
     },
     initCollectStar() {
@@ -743,7 +772,11 @@ export default {
 
   }
 }
-
+.iconfont{
+  position: relative;
+  top: -3px;
+  color: @fontGray !important;
+}
 .pick{
   padding-bottom: 10px;
 }

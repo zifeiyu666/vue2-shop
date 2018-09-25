@@ -31,7 +31,7 @@
                     <span>业务员管理</span><i class="icon-go"></i>
                   </p>
               </router-link>
-              <router-link class="my-service-bottom" :to="{ path: '/channelcenter/shareproducts'}">
+              <router-link class="my-service-bottom" :to="{ path: '/channelcenter/search', query: {title: '分销产品',  type: 'qd'}}">
                   <div>
                     <!-- <span class="icon2-milogo"></span> -->
                     <img src='../../assets/img/sharegoods1.png' style='width: 22px;margin-top:-4px' >

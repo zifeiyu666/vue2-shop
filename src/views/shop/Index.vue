@@ -48,8 +48,10 @@
       <p>搜索</p>
     </div>
 
-    <!-- 推荐商品 -->
-    <v-section1 v-if='section1.length > 0' :section1="section1" :banner='banner1'></v-section1>
+    <!-- 限时抢购 -->
+    <v-section1 v-if='section1.length > 0' :section1="section1" :banner='banner1' title='限时抢购'></v-section1>
+    <!-- 精品推荐 -->
+    <v-section1 v-if='section2.length > 0' :section1="section2" :banner='banner2' title='精品推荐'></v-section1>
 
     <!-- 所有商品 -->
     <v-all fx='gwfx'></v-all>
@@ -93,6 +95,20 @@ export default {
       loading: false,
       section1: '',
       banner1: '',
+      section2: '',
+      banner2: '',
+      searchForm: {
+        ProductType: '',
+        ProjectType: '',
+        Title: '',
+        SuitableUser: '',
+        DestinationType: '',
+        KeyWord: '',
+        City: '',
+        Classification: '',
+        IsMain: '',
+        IsLimitTime: ''
+      }
     }
   },
   mounted() {
@@ -100,40 +116,61 @@ export default {
       this.avatar = this.$store.state.userInfo.headimgurl
     }
     
-    this.getProductType()
+    this.getSection1()
+    this.getSection2()
     this.getBanner()
     this.getBanner1()
   },
   methods: {
-    getProductType() {
+    getSection1() {
       this.loading = true
-      mockapi.shop.api_Shop_getProductType_get({
-        params: {}
+      mockapi.shop.api_Shop_getProductList_get({
+        params: {
+          ProductType: '',
+          ProjectType: '',
+          pageNo: 1,
+          pageSize: 4,
+          Title: '',
+          SuitableUser: '',
+          DestinationType: '',
+          KeyWord: '',
+          City: '',
+          Classification: '',
+          IsMain: '',
+          IsLimitTime: 1
+        }
       }).then(res => {
         this.loading = false
-        var data = res.data.data
+        var data = res.data.data.list
         console.log(data)
-        this.productTypeList = data
-        // 请求数据
-        this.getSection1()
+        this.section1 = data
       }).catch(err => {
         this.loading = false
         console.log(err)
       })
     },
-    getSection1() {
+    getSection2() {
       this.loading = true
-      mockapi.shop.api_Shop_getTopProduct_get({
+      mockapi.shop.api_Shop_getProductList_get({
         params: {
-          ProductType: this.productTypeList[0].EntryCode,
+          ProductType: '',
           ProjectType: '',
-          top: 10
+          pageNo: 1,
+          pageSize: 6,
+          Title: '',
+          SuitableUser: '',
+          DestinationType: '',
+          KeyWord: '',
+          City: '',
+          Classification: '',
+          IsMain: 1,
+          IsLimitTime: ''
         }
       }).then(res => {
         this.loading = false
-        var data = res.data.data
+        var data = res.data.data.list
         console.log(data)
-        this.section1 = data
+        this.section2 = data
       }).catch(err => {
         this.loading = false
         console.log(err)

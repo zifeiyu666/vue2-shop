@@ -2,8 +2,8 @@
   <section class="section1" v-if='section1'>
     <h1 class="section1-title">
       <!-- <img class='icon' src="../../assets/img/dandu.png" alt=""> -->
-      限时抢购
-      <span class="right" @click='goToSearch("限时抢购")'>查看更多></span>
+      {{title}}
+      <span class="right" @click='goToSearch(title)'>查看更多></span>
     </h1>
     <ul class="section1-list">
       <li v-for="k in section1">
@@ -28,7 +28,7 @@
 import { Lazyload } from 'mint-ui';
 
 export default {
-  props:['section1', 'banner'],
+  props:['section1', 'banner', 'title'],
   methods: {
     goToSearch(title) {
       this.$router.push({path: '/shop/search', query: {title: title}})

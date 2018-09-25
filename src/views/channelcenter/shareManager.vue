@@ -46,6 +46,8 @@
       </ul>
       <v-baseline v-if='isLastPage && List.length > 0'></v-baseline>
     </div>
+
+    <v-nomore v-if='List.length == 0'></v-nomore>
     
   </div>
   

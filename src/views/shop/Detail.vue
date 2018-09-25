@@ -54,7 +54,6 @@ export default {
   mounted() {
     this.getDetail()
     this.getShareProductCode()
-    // this.getCarNum()
   },
   methods: {
     getShareProductCode() {

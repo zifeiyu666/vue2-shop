@@ -20,15 +20,9 @@
             <!-- <p style="color:rgb(199, 108, 28);"> {{k.intro}}</p> -->
             <p>
               ￥{{k.price}}元
-              <span class='fx' v-if='k.gwfx && k.gwfx!=0 && !fxtype'>
-                <i>返</i>￥{{k.gwfx}}
-              </span>
-              <span class='fx' v-if='k.ywyfx && k.ywyfx!=0 && fxtype=="ywyfx"'>
+              <!-- <span class='fx' v-if='k.ywyfx && k.ywyfx!=0'>
                 <i>赚</i>￥{{k.ywyfx}}
-              </span>
-              <span class='fx' v-if='k.hyfx && k.hyfx!=0 && fxtype=="fx"'>
-                <i>赚</i>￥{{k.hyfx}}
-              </span>
+              </span> -->
             </p>
           </div>
         </li>
@@ -88,8 +82,6 @@ export default {
   },
   mounted() {
     this.getAllProductList()
-    console.log('类型')
-    console.log(this.fxtype)
   },
   methods: {
     goToSearch(title) {
@@ -99,10 +91,11 @@ export default {
     getAllProductList(isSearch) {
       if (isSearch) {
         this.pageNo = 1
+        this.allList = []
       }
       this.isLoading = true
       this.$store.commit('SET_LOADING', true)
-      mockapi.shop.api_Shop_getProductList_get({
+      mockapi.shop.api_Share_getProductList_get({
         params: {
           pageNo: this.pageNo,
           pageSize: this.pageSize,
@@ -128,7 +121,7 @@ export default {
     },
     gotoDetail(i) {
       console.log()
-      this.$router.push({path: '/shop/detail', query: {pid: i.id, type: this.fxtype}})
+      this.$router.push({path: '/channelcenter/detail', query: {pid: i.id, type: this.fxtype}})
     },
   }
 }
@@ -136,5 +129,5 @@ export default {
 </script>
 
 <style lang='less'>
-@import '../assets/utils.less';
+@import '../../assets/utils.less';
 </style>

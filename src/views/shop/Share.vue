@@ -1,89 +1,11 @@
 <template lang="html">
 
   <div class="car">
-      <header class="header">
-          <div class="header-icon">
-            <img :src="avatar" style='width: 100%; height: 100%' alt="">
-          </div>
-          <!-- <span>登录/注册</span> -->
-           <div class="header-content">
-            <p>分销中心</p>
-            <p>欢迎您：{{username}}</p>
-            <!-- <p>注册时间：{{time}}</p> -->
-            <!-- <p>会员等级：{{memberrank}}</p> -->
-            <!-- <p>购物积分：{{score}}</p> -->
-            <!-- <p>分销积分：{{fxscore}}</p> -->
-            <P>手机号：{{phone}}</P>
-          </div>
-          <img class='qrcode' :src="smallQrCode" alt="" @click='showQrCode()'>
-      </header>
+      <v-header>
+        <h1 slot="title">分销中心</h1>
+      </v-header>
       <div class="main">
-          <!-- <router-link class="my-indent" :to="{ name: ''}">
-              <span class="my-indent-left">我的订单</span>
-              <div class="my-indent-right">
-                  <span>全部订单</span>
-                  <i class="icon-go"></i>
-              </div>
-          </router-link> -->
-          <!-- <div class='money'>
-            <div class='total'>
-              累计佣金：0.00元
-            </div>
-            <div class="current">
-              0.00
-            </div>
-            <button class="charge">去提现</button>
-          </div> -->
-
-          <!-- <section class="my-pay">
-              <router-link :to="{path: '/shop/shareproduct'}">
-                  <span>18</span>
-                  <p>分销产品</p>
-              </router-link>
-              <router-link to="/shop/shareCompany">
-                  <span>3</span>
-                  <p>分销商</p>
-              </router-link>
-              <router-link :to="{ path: '/shop/shareOrders'}">
-                  <span>8</span>
-                  <p>分销订单</p>
-              </router-link>
-
-          </section> -->
-
-          <!-- <section class="my-vip">
-            <router-link class="my-vip-top ho" :to="{ name: ''}" >
-              <div class="my-vip-top-div">
-                <span class="icon2-vip">
-                    <span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span><span class="path7"></span><span class="path8"></span><span class="path9"></span>
-                </span>
-              </div>
-              <p>
-                <span>分销专题</span><i class="icon-go"></i>
-              </p>
-            </router-link>
-            <router-link class="my-vip-bottom ho" :to="{ name: ''}">
-              <div>
-                <span class="icon2-money"></span>
-              </div>
-              <p>
-                <span>我的优惠</span><i class="icon-go"></i>
-              </p>
-            </router-link>
-          </section> -->
-
           <section class="my-service">
-              <!-- <router-link class="my-service-top" :to="{path: '/shop/shareproduct'}">
-                  <div>
-                    <span class="icon2-service">
-                        <img src='../../assets/img/cp.png' style='width: 26px;margin-top:-4px' >
-                    </span>
-                    
-                  </div>
-                  <p>
-                    <span>分销产品</span><i class="icon-go"></i>
-                  </p>
-              </router-link> -->
               <router-link class="my-service-bottom" to="/shop/shareCompany">
                   <div>
                     <!-- <span class="icon2-milogo"></span> -->
@@ -102,7 +24,7 @@
                     <span>分销订单</span><i class="icon-go"></i>
                   </p>
               </router-link>
-              <router-link class="my-service-bottom" :to="{ path: '/shop/shareAll', query: {type: 'fxzx'}}">
+              <router-link class="my-service-bottom" :to="{ path: '/shop/search', query: {type: 'fx', title: '分销产品'}}">
                   <div>
                     <!-- <span class="icon2-milogo"></span> -->
                     <img src='../../assets/img/sharegoods1.png' style='width: 22px;margin-top:-4px' >
@@ -120,33 +42,10 @@
                 </p>
               </router-link>
           </section>
-
-          <!-- <section class="my-settle"> -->
-              
-              <!-- <router-link :to="{ name: ''}" class="my-settle-bottom">
-                <div>
-                  <span class="icon2-settle"></span>
-                </div>
-                <p>
-                  <span>我的上级</span><i class="icon-go"></i>
-                </p>
-              </router-link> -->
-          <!-- </section> -->
-
       </div>
-      <!-- <v-baseline></v-baseline> -->
-      <v-footer></v-footer>
+      <!-- <v-footer></v-footer> -->
 
       <!-- 二维码弹窗 -->
-      <!-- <el-dialog
-        class='code_dialog'
-        title='我的分享码'
-        fullscreen
-        :visible.sync="dialogVisible"
-        width="100%"
-        center>
-        <span><img style='width: 100%; display: inline-block' :src="qrcode" alt=""></span>
-      </el-dialog> -->
       <v-qrcode @close='closeQrCode' :imgurl='qrcode' :isShow='isShow'></v-qrcode>
     </div>
 </template>
@@ -155,13 +54,15 @@
   import * as mockapi from '@/../mockapi'
   import Baseline from '@/common/_baseline.vue'
   import Footer from '@/common/_footer.vue'
+  import Header from '@/common/_header.vue'
   import Qrcode from '@/components/qrcode.vue'
 
   export default {
     components: {
       'v-baseline': Baseline,
       'v-footer': Footer,
-      'v-qrcode': Qrcode
+      'v-qrcode': Qrcode,
+      'v-header':Header
     },
     data() {
       return {
