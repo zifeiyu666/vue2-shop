@@ -49,7 +49,7 @@
           </div>
   
           <!-- 请选择人数 -->
-          <div class='type_wrap'>
+          <div class='type_wrap' v-if='detail.ProductType != "QYKL"'>
               <p class='type_title'>请选择人数</p>
               <p style='margin-bottom: 4px'>
                 <span class='sub_title'>大人：</span>
@@ -68,7 +68,7 @@
           <!-- 立即购买选项 -->
           <div v-if='isImmePay'>
             <!-- 联系人信息 -->
-            <div class="type_wrap">
+            <div class="type_wrap" v-if='detail.ProductType != "QYKL"'>
                 <p class="type_title">联系人信息</p>
                 <el-form ref="lxrForm" :model="lxrForm" label-width="65px">
                     <el-form-item label="联系人">
@@ -84,7 +84,7 @@
                 </el-form>  
               </div>
               <!-- 出行人信息 -->
-              <div class="type_wrap">
+              <div class="type_wrap" v-if='detail.ProductType != "QYKL"'>
                 <p class="type_title">出行人信息</p>
                 <el-form v-for='(i, index) in cxrNum' ref="cxrForm" :key='index' :model="cxrForm[index]" label-width="65px">
                     <el-form-item label="姓名">
@@ -92,7 +92,33 @@
                     </el-form-item>
                     <el-form-item label="身份证号" style='margin-bottom: -14px;'>
                         <el-input v-model="cxrForm[index].idcard"></el-input>
+                    </el-form-item>
+                </el-form>  
+              </div>
+              <!-- 权益卡度假政策 -->
+              <div class="type_wrap" v-if='detail.ProductType == "QYKL"'>
+                <p class="type_title">度假政策<a>《度假卡使用说明》</a></p>
+                 
+              </div>
+              <!-- 权益卡信息填写 -->
+              <div class="type_wrap" v-if='detail.ProductType == "QYKL"'>
+                <p class="type_title">信息填写</p>
+                <el-form ref="qykForm" :key='index' :model="qykForm" label-width="65px">
+                    <el-form-item label="联系人">
+                        <el-input v-model="qykForm.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="联系电话">
+                        <el-input v-model="qykForm.name"></el-input>
                         <span style='font-size: 12px; color:#666; position: relative; top: -8px'><span style='color: #ff4545'>*</span>请准确填写，用于接收通知</span>
+                    </el-form-item>
+                    <el-form-item label="邮寄地址">
+                        <el-input v-model="qykForm.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="身份证号">
+                        <el-input v-model="qykForm.idcard"></el-input>
+                    </el-form-item>
+                    <el-form-item label="备注">
+                        <el-input v-model="qykForm.tip"></el-input>
                     </el-form-item>
                 </el-form>  
               </div>
@@ -185,6 +211,13 @@ export default {
           idcard: '',
         }
       ],
+      qykForm: {
+        name: '',
+        phone: '',
+        address: '',
+        idcard: '',
+        tip: ''
+      },
       paynum: 1, // 立即购买数量
       popupVisible: false,
       payVisible: false,
