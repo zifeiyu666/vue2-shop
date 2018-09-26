@@ -5,6 +5,7 @@ Vue.use(Router);
 //按需加载,当渲染其他页面时才加载其组件,并缓存,减少首屏加载时间
 // shop
 const Index = resolve => require(['@/views/shop/Index.vue'], resolve)
+const ChangeCard = resolve => require(['@/views/shop/changeCard.vue'], resolve)
 const Category = resolve => require(['@/views/shop/Category.vue'], resolve)
 const CategoryMain = resolve => require(['@/components/category/main.vue'], resolve)
 const Car = resolve => require(['@/views/shop/Car.vue'],resolve)
@@ -74,6 +75,14 @@ const shopRouters = [
     path: '/shop',
     name: '首页',
     component: Index,
+    meta: {
+        requireAuth: true  // 添加该字段，表示进入这个路由是需要登录才能进入的
+    }
+  }, 
+  {
+    path: '/shop/changeCard',
+    name: '兑换度假卡',
+    component: ChangeCard,
     meta: {
         requireAuth: true  // 添加该字段，表示进入这个路由是需要登录才能进入的
     }

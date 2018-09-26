@@ -15,7 +15,7 @@
             <!-- <p>分销积分：{{fxscore}}</p>
             <P>手机号：{{phone}}</P> -->
           </div>
-          <img class='qrcode' :src="smallQrCode" alt="" @click='showQrCode()'>
+          <!-- <img class='qrcode' :src="smallQrCode" alt="" @click='showQrCode()'> -->
       </header>
       <div class="main">
 

@@ -9,7 +9,7 @@
             <p>欢迎您：{{username}}</p>
             <P>手机号：{{phone}}</P>
           </div>
-          <img class='qrcode' :src="smallQrCode" alt="" @click='showQrCode()'>
+          <!-- <img class='qrcode' :src="smallQrCode" alt="" @click='showQrCode()'> -->
       </header>
       <div class="main">
           <section class="my-service">

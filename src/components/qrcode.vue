@@ -81,12 +81,12 @@ export default {
   top: 0;
   z-index: 800;
   .img-wrap{
-    background: rgba(256,256,256,.9);
+    background: #fff;
     z-index: 900;
     position: fixed;
-    width: 80vw;
-    height: 80vh;
-    margin: 10vh auto;
+    width: 90vw;
+    height: 145vw;
+    margin:auto;
     left: 0;
     right: 0;
     top: 0;

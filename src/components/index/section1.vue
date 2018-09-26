@@ -7,6 +7,7 @@
     </h1>
     <ul class="section1-list">
       <li v-for="k in section1">
+        <count-down class='count_down' v-if='title == "限时抢购"' v-on:start_callback="countDownS_cb(1)" v-on:end_callback="countDownE_cb(1)" :startTime="new Date().getTime()" :endTime="new Date(k.limitTime).getTime()" :tipText="'距离开始文字1'" :tipTextEnd="'距离结束文字1'" :endText="'结束自定义文字2'" :dayTxt="'天'" :hourTxt="'小时'" :minutesTxt="'分钟'" :secondsTxt="'秒'"></count-down>
         <router-link :to="{path:'/shop/detail', query:{pid: k.id}}" :key="k.id">
           <img v-lazy="k.imgurl[0]" alt="">
           <p>{{k.intro}}</p>
@@ -26,47 +27,65 @@
 
 <script>
 import { Lazyload } from 'mint-ui';
+import CountDown from 'vue2-countdown'
 
 export default {
   props:['section1', 'banner', 'title'],
+  components: {
+    CountDown
+  },
+  data() {
+    return {
+      startTime: '',
+      endTime: ''
+    }
+  },
   methods: {
     goToSearch(title) {
       this.$router.push({path: '/shop/search', query: {title: title}})
+    },
+    countDownS_cb: function (x) {
+      console.log(x)
+    },
+    countDownE_cb: function (x) {
+      console.log(x)
     }
   }
 }
 
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
   @import '../../assets/fz.less';
   @import '../../assets/index/style.css';
-  .product-img{
-    height: 120px;
-  }
-  .fxicon{
-    margin-left: 2px;
-    padding-right: 5px;
-    color: #999;
-    i{
-      background: @fontRed;
-      color: #fff;
-      // padding: 4px;
-      text-align: center;
-      line-height: 20px;
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      box-sizing: border-box;
-      border-radius: 10px;
-    }
-    font-size: 12px;
-  }
+  
   .section1 {
     width: 100%;
     overflow: hidden;
     margin-top: 6px !important;
     background: #fff;
+    .product-img{
+      height: 120px;
+    }
+    
+    .fxicon{
+      margin-left: 2px;
+      padding-right: 5px;
+      color: #999;
+      i{
+        background: @fontRed;
+        color: #fff;
+        // padding: 4px;
+        text-align: center;
+        line-height: 20px;
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        box-sizing: border-box;
+        border-radius: 10px;
+      }
+      font-size: 12px;
+    }
     .section1-title {
       .bt();
       text-align: left;
@@ -105,8 +124,51 @@ export default {
       li {
         width: 50%;
         -webkit-box-sizing: border-box;
-                box-sizing: border-box;
+        box-sizing: border-box;
         padding:0 2vw;
+        .count_down{
+          z-index: 10;
+          background: rgba(0, 0, 0, 0.4);
+          display: block;
+          width: 100%;
+          position: relative;
+          top: 26px;
+          height: 26px;
+          border-radius: 4px;
+          p{
+            float: right;
+            margin: 4px 2px;
+          }
+          span:nth-of-type(1){
+            background: rgba(0,0,0,0);
+            padding: 0;
+            font-size: 10px!important;
+            >span{
+              padding: 0 2px;
+              background: @fontRed;
+              color: #fff;
+              line-height: 18px;
+              height: 18px;
+              display: inline-block;
+              border-radius: 4px;
+              font-size: 10px!important;
+            }
+          }
+          i{
+            color: #fff;
+            font-size: 8px!important;
+          }
+          span{
+            padding: 0 2px;
+            background: @fontRed;
+            color: #fff;
+            line-height: 18px;
+            height: 18px;
+            display: inline-block;
+            border-radius: 4px;
+            font-size: 10px!important;
+          }
+        }
         >a {
           display: block;
           width: 100%;

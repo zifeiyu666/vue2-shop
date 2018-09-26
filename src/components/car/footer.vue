@@ -1,22 +1,54 @@
 <template lang="html">
-  <footer class="footer">
-    <!-- 去掉购物积分相关 -->
-    <!-- <div class="jf" v-if="score">
-      <mt-field label="积分抵扣:" placeholder="请输入要使用的积分" type="number" v-model="usescore" ></mt-field>
-      <div class="totalScore">
-        <span>当前可用积分：{{score}}</span>
-        <p>可抵扣金额：{{usescore/scoreRate}}元</p>
-      </div>
-    </div> -->
-        
+  <footer class="footer">     
     <div class="footer-result">
       <p>共 {{count}} 件商品</p>
       <p>合计：<span> {{allpay}} </span>元</p>
     </div>
+    <!-- 加入购物车 -->
+    <mt-popup
+      style='overflow: auto; max-height: 95vh'
+      v-model="popupVisible"
+      position="bottom">
+      <div class='shopcar'>
+        <div>
+          <!-- 联系人信息 -->
+          <div class="type_wrap">
+              <p class="type_title">信息填写</p>
+              <el-form ref="form" :model="form" label-width="65px">
+                  <el-form-item label="联系人">
+                      <el-input v-model="form.name"></el-input>
+                  </el-form-item>
+                  <el-form-item label="联系电话">
+                      <el-input v-model="form.phone"></el-input>
+                      <span style='font-size: 12px; color:#666; position: relative; top: -8px'><span style='color: #ff4545'>*</span>请准确填写，用于接收通知</span>
+                  </el-form-item>
+                  <el-form-item label="邮寄地址">
+                      <el-input v-model="form.address"></el-input>
+                  </el-form-item>
+                  <el-form-item label="身份证号">
+                      <el-input v-model="form.idCard"></el-input>
+                  </el-form-item>
+              </el-form>  
+              
+            </div>
+            <div class="type_wrap">
+              <p>合计：<span> {{allpay}} </span>元</p>
+            </div>
+
+        </div>
+
+        <div class="bottm-btn-group bottom clearfix">
+          <div>
+            <mt-button class='confirm-btn' @click='goPay'>微信支付</mt-button>
+            <mt-button class='concel-btn' @click='consolePay'>取消</mt-button>
+          </div>         
+        </div>
+      </div>
+    </mt-popup>
     <!-- <router-link :to="{ path: '/shop/all'}" class="footer-goon" >
       继续购物
     </router-link> -->
-    <a class="footer-pay" @click="goPay">
+    <a class="footer-pay" @click="addContact">
       去结算
     </a>
   </footer>
@@ -31,16 +63,6 @@ import qs from 'qs'
 
 export default {
   computed:{
-    // 勾选的商品数量
-    // count(){
-    //   // 如果已选择列表为空 就返回0
-    //   if(this.$store.getters.selectedList==undefined) {
-    //     return 0
-    //   }else {
-
-    //     return this.$store.getters.selectedList.length
-    //   }
-    // },
     carList() {
       return this.$store.state.carList
     },
@@ -51,77 +73,53 @@ export default {
       return this.$store.state.allMoney ? this.$store.state.allMoney : 0
     }
   },
+  props: ['canSubmit'],
   data() {
     return {
       params: [],
-      score: '',
-      usescore: '',
-      scoreRate: '' //提现比例
+      form: {
+        name: '',
+        address: '',
+        idCard: '',
+        phone: ''
+      },
+      popupVisible: false,
     }
   },
   watch: {
     carList() {
-      console.log('carlist')
-      console.log(this.carList)
       this.carList.forEach((item, i) => {
         this.params.push({propid: item.propid, num: item.num})
       })
-      console.log('params')
-      console.log(this.params)
-      console.log(qs.stringify({params: this.params}))
-      // this.params = JSON.stringify(this.params)
-    },
-    usescore() {
-      if (this.usescore > this.score || this.usescore > (this.allpay*this.scoreRate)) {
-        this.usescore = this.score > this.allpay*this.scoreRate ? this.allpay*this.scoreRate : this.score
-        Toast('不能超过最大可用积分')
-      } else if (isNaN(parseInt(this.usescore)) ) {
-        // this.usescore = '0'
-        Toast('请输入整形数字')
-      }
     }
   },
   mounted() {
-    this.getScore()
-    this.getScoreRate()
+
   },
   methods:{
-    getScore() {
-      mockapi.shop.api_Shop_getMyScore_get({
-        params: {
-          type: 1,
-          token: this.$store.state.userInfo.MemberToken
-        }
-      }).then(res => {
-        var data = res.data.data
-        this.score = data
-      })
+    addContact() {
+      if (this.canSubmit) {
+        this.popupVisible = true
+      } else {
+        Toast('请先仔细阅读须知并勾选')
+      }
     },
-    getScoreRate() {
-      mockapi.shop.api_Shop_getRatio_get({
-        params: {
-          type: 1,
-          token: this.$store.state.userInfo.MemberToken
-        }
-      }).then(res => {
-        var data = res.data.data
-        this.scoreRate = data
-      })
+    consolePay() {
+      this.popupVisible = false
     },
     //点击跳转到支付页
     goPay(){
-      if(this.usescore && isNaN(parseInt(this.usescore))) {
-        Toast('请输入正确的积分格式')
-        return 
-      }
       console.log(this.$store.state.userInfo.MemberToken)
-      console.log(this.params[0].propid)
+      console.log(this.params)
       mockapi.shop.api_Shop_generateCarOrder_post({
         data: qs.stringify({
           token: this.$store.state.userInfo.MemberToken,
           // TODO: 这里参数传递有问题，需要后台解析
           params: this.params,
-          Score: this.usescore ? this.usescore : 0
+          Contacts: this.form.name,
+          Address: this.form.address,
+          Phone: this.form.phone,
+          IdNum: this.form.idCard
         })
       }).then(res => {
         var data = res.data.data
@@ -137,6 +135,33 @@ export default {
 <style lang="less" scoped>
   @import '../../assets/fz.less';
   @import '../../assets/utils.less';
+  .mint-popup{
+    width: 100%;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+  }
+  .confirm-btn{
+    color: #fff;
+  }
+  .shopcar{
+    padding: 15px;
+    // padding-bottom: 60px;
+    p{
+      word-break: break-all;
+    }
+    .bottom{
+      // position: absolute;
+      // bottom: 0;
+      // width: 100vw;
+      // left:0;
+      button{
+        width: 50%;
+        float:left;
+        box-sizing: border-box;
+        border-radius: 0;
+      }
+    }
+  }
   .jf{
     position: fixed;
     bottom: 16vw;

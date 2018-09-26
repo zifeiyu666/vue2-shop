@@ -31,8 +31,8 @@
     <mt-popup
       class='regionPicker'
       v-model="popupVisible"
-      position="bottom">
-      <mt-picker :slots="slots" @change="onValuesChange"></mt-picker>
+      position="right">
+      <mt-picker :slots="slots" @change="onValuesChange" class='city_pick'></mt-picker>
     </mt-popup>
 
     <!-- 所有商品 -->
@@ -252,9 +252,16 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 @import '../../assets/utils.less';
-.search-nav{
+.search-wrap{
+    height: 100%;
+    .fa-icon{
+      position: relative;
+      left: 10px;
+      top: 6px;
+    }
+    .search-nav{
   .back{
     float: left;
     width: 70px;
@@ -292,14 +299,7 @@ export default {
       border-radius: 15px;
     }
   }
-  .search-wrap{
-    height: 100%;
-    .fa-icon{
-      position: relative;
-      left: 10px;
-      top: 6px;
-    }
-  }
+  
   .input-inner-wrap{
     margin-right: 70px;
     position: relative;
@@ -324,9 +324,16 @@ export default {
   }
 }
 .regionPicker{
-  border-top-right-radius: 10px;
-  border-top-left-radius: 10px;
-  width: 100vw;
+  width: 60vw;
+  height: 100vh;
+  .city_pick{
+    .picker-slot-wrapper{
+      height: 100vh!important;
+    }
+    .picker-center-highlight{
+      top: 88px!important;
+    }
+  }
 }
 
 .mint-header{
@@ -364,13 +371,15 @@ export default {
   }
   button{
     float: left;
-    width: 20vw;
+    width: 12vw;
     text-align: center;
     font-size: 12px;
     padding: 6px 0px;
     box-sizing: border-box;
     border-radius: 22px; 
-    margin: 2px 2.5vw;
+    margin: 2px 2.3vw;
   }
 }
+  }
+
 </style>

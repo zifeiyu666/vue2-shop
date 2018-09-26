@@ -9,18 +9,18 @@
       <div class='item-wrap'>
         <!-- 价格区间 -->
         <p class='discountprice' v-if='enabledProp.length != 1'>
-          <i>￥</i>{{view.minPrice}}-{{view.maxPrice}}
+          <i>￥</i>{{view.minPrice}}<i v-if='view.minPrice != view.maxPrice'>-{{view.maxPrice}}</i>
           <!-- 购物返现 -->
           <span class='fx' v-if='view.maxgwfx != 0 && view.mingwfx && !fxtype'>
-            <i>返</i>￥{{view.maxgwfx}}-{{view.mingwfx}}
+            <i>返</i>￥{{view.mingwfx}}<span v-if='view.mingwfx != view.maxgwfx'>-{{view.maxgwfx}}</span>
           </span>
           <!-- 分销返现 -->
           <span class='fx' v-if='view.maxhyfx != 0 && view.minhyfx && fxtype=="fx"'>
-            <i>赚</i>￥{{view.maxhyfx}}-{{view.minhyfx}}
+            <i>赚</i>￥{{view.minhyfx}}<span v-if='view.minhyfx != view.maxhyfx'>-{{view.maxhyfx}}</span>
           </span>
           <!-- 业务员返现 -->
           <span class='fx' v-if='view.maxywyfx != 0 && view.minywyfx && fxtype=="ywyzx"'>
-            <i>赚</i>￥{{view.maxywyfx}}-{{view.minywyfx}}
+            <i>赚</i>￥{{view.minywyfx}}<span v-if='view.minywyfx != view.maxywyfx'>-{{view.maxywyfx}}</span>
           </span>
         </p>
         <!-- 具体价格 -->
@@ -36,7 +36,7 @@
           </span>
         </p>
         <!-- 具体原价 -->
-        <span class='originalprice' v-if='enabledProp.length == 1 && this.DiscountPrice != this.OriginalPrice'>原价{{enabledProp[0].OriginalPrice}}元</span>
+        <span class='originalprice' v-if='enabledProp.length == 1 && enabledProp[0].DiscountPrice != enabledProp[0].OriginalPrice'>原价￥{{enabledProp[0].OriginalPrice}}</span>
         
       </div>
       <div class='item-wrap'>
@@ -135,6 +135,9 @@ export default {
     height: 20px;
     box-sizing: border-box;
     border-radius: 10px;
+  }
+  span{
+    color: @fontRed !important;
   }
   font-size: 14px !important;
   color: @fontRed !important;

@@ -5,32 +5,23 @@
         <span class="more" @click='goToSearch("全部商品")'>查看更多></span>
       </h3>
       <ul 
-        class="something" 
+        class="section1-list"
         v-if='allList.length != 0'
         v-infinite-scroll="loadMore"
         infinite-scroll-disabled="isLoading"
         infinite-scroll-distance="0"
         >
         <li v-for="(k,i) in allList" @click='gotoDetail(k)' :key="i">
-          <div class="something-middle">
-            <img :src="k.imgurl[0]">
-          </div>
-          <div class="something-right">
-            <p>{{k.title}}</p>
-            <!-- <p style="color:rgb(199, 108, 28);"> {{k.intro}}</p> -->
-            <p>
-              ￥{{k.price}}元
-              <span class='fx' v-if='k.gwfx && k.gwfx!=0 && !fxtype'>
-                <i>返</i>￥{{k.gwfx}}
-              </span>
-              <span class='fx' v-if='k.ywyfx && k.ywyfx!=0 && fxtype=="ywyfx"'>
-                <i>赚</i>￥{{k.ywyfx}}
-              </span>
-              <span class='fx' v-if='k.hyfx && k.hyfx!=0 && fxtype=="fx"'>
-                <i>赚</i>￥{{k.hyfx}}
-              </span>
-            </p>
-          </div>
+          <count-down class='count_down' v-if='k.limitTime' v-on:start_callback="countDownS_cb(1)" v-on:end_callback="countDownE_cb(1)" :startTime="new Date().getTime()" :endTime="new Date(k.limitTime).getTime()" :tipText="'距离开始文字1'" :tipTextEnd="'距离结束文字1'" :endText="'结束自定义文字2'" :dayTxt="'天'" :hourTxt="'小时'" :minutesTxt="'分钟'" :secondsTxt="'秒'"></count-down>
+          <router-link :to="{path:'/shop/detail', query:{pid: k.id}}" :key="k.id">
+            <img v-lazy="k.imgurl[0]" alt="">
+            <p>{{k.intro}}</p>
+          </router-link>
+          <h3>{{k.title}}</h3>
+          <span>￥{{k.price}}</span>
+          <span class='fx' v-if='k.gwfx && k.gwfx!=0'>
+            <i>返</i>￥{{k.gwfx}}
+          </span>
         </li>
       </ul>
       <div v-else>
@@ -45,11 +36,13 @@ import qs from 'qs'
 import * as mockapi from '@/../mockapi'
 import NorMore from '@/components/nomore'
 import Baseline from '@/common/_baseline.vue'
+import CountDown from 'vue2-countdown'
 
 export default {
   components: {
     'v-nomore': NorMore,
     'v-baseline': Baseline,
+    CountDown
   },
   props: {
     hideHead: {
@@ -92,6 +85,12 @@ export default {
     console.log(this.fxtype)
   },
   methods: {
+    countDownS_cb: function (x) {
+      console.log(x)
+    },
+    countDownE_cb: function (x) {
+      console.log(x)
+    },
     goToSearch(title) {
       this.$router.push({path: '/shop/search', query: {title: title}})
     },
@@ -137,4 +136,112 @@ export default {
 
 <style lang='less'>
 @import '../assets/utils.less';
+.section1-list {
+      width: 100%;
+      display: -ms-flex;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: left;
+          -ms-flex-pack: left;
+              justify-content: left;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+      overflow: hidden;
+      li {
+        width: 50%;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        padding:0 2vw;
+        .count_down{
+          z-index: 10;
+          background: rgba(0, 0, 0, 0.4);
+          display: block;
+          width: 100%;
+          position: relative;
+          top: 26px;
+          height: 26px;
+          border-radius: 4px;
+          p{
+            float: right;
+            margin: 4px 2px;
+          }
+          span:nth-of-type(1){
+            background: rgba(0,0,0,0);
+            padding: 0;
+            font-size: 10px!important;
+            >span{
+              padding: 0 2px;
+              background: @fontRed;
+              color: #fff;
+              line-height: 18px;
+              height: 18px;
+              display: inline-block;
+              border-radius: 4px;
+              font-size: 10px!important;
+            }
+          }
+          i{
+            color: #fff;
+            font-size: 8px!important;
+          }
+          span{
+            padding: 0 2px;
+            background: @fontRed;
+            color: #fff;
+            line-height: 18px;
+            height: 18px;
+            display: inline-block;
+            border-radius: 4px;
+            font-size: 10px!important;
+          }
+        }
+        >a {
+          display: block;
+          width: 100%;
+          position: relative;
+          img {
+            display: block;
+            width: 100%;
+            // border-top-left-radius: 6px; 
+            // border-top-right-radius: 6px; 
+            border-radius: 4px;
+          }
+          p {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0,0,0,.5);
+            color: #fff;
+            -webkit-box-sizing: border-box;
+                    box-sizing: border-box;
+            padding:1.2vw 2vw;
+          }
+        }
+
+        >h3{
+          font-size: 14px;
+          padding-top: 6px;
+          color: #333;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          height: 40px;
+        }
+        >span {
+          font-size: 18px;
+          font-weight: bold;
+          display: inline-block;
+          padding-bottom: 6px;
+          color: @fontRed;
+          font-size: 16px;
+        }
+      }
+    }
+
 </style>

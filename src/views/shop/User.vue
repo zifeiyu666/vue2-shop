@@ -16,7 +16,7 @@
             <p>手机号：{{phone}}</p>
             <!-- <p>分销积分：{{fxscore}}</p> -->
           </div>
-          <img class='qrcode' :src="smallQrCode" alt="" @click='showQrCode()'>
+          <!-- <img class='qrcode' :src="smallQrCode" alt="" @click='showQrCode()'> -->
       </header>
       <div class="main">
           <router-link class="my-indent" :to="{ path: '/shop/myorder'}">

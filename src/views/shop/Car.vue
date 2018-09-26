@@ -6,9 +6,9 @@
         <h1 slot="title">购物车</h1>
       </v-header>
       <!-- 根据购物车是否有商品加载不同的组件 -->
-      <v-something></v-something>
+      <v-something @canSubmit='getCanSubmit'></v-something>
       <!-- <v-nothing></v-nothing> -->
-      <v-footer></v-footer>
+      <v-footer :canSubmit='canSubmit'></v-footer>
     </div>
 </template>
 
@@ -29,13 +29,17 @@ export default {
     return {
       carList: undefined,
       pageNo: 1,
-      pageSize: 10
+      pageSize: 10,
+      canSubmit: false
     }
   },
   mounted(){
     // this.getMyCar()
   },
   methods: {
+    getCanSubmit(data) {
+      this.canSubmit = data
+    },
     getMyCar() {
       mockapi.shop.api_Shop_getMyCar_get({
         params: {

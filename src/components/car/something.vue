@@ -1,11 +1,12 @@
 <template lang="html">
 
   <div class="wrap">
-    <v-gologin></v-gologin>
+    <!-- <v-gologin></v-gologin> -->
     <ul 
     class="something" 
     v-if='carList.length != 0'>
-      <li v-for="(k,i) in carList" :key="i">
+      <li v-if='hasQyk' style='height: 20px;padding-left: 15px'>权益卡类</li>
+      <li v-for="(k,i) in carList" v-if='k.producttype == "QYKL"' :key="i">
           <!-- 暂时屏蔽购物车选择，直接全部提交 -->
           <!-- <div class="something-left">
             <label class="true" :class="{false:!k.choseBool}">
@@ -17,7 +18,7 @@
           </div>
           <div class="something-right">
             <p>{{k.title}}</p>
-            <p style="color:rgb(199, 108, 28)"> {{k.propname}}</p>
+            <p style="color:rgb(199, 108, 28)"> {{generateTypeName(k.producttype)}}</p>
             <p>数量：<span style="padding: 4px 5px;
   width: 30px;" @click='reduce(k)'>-</span> {{k.num}} <span style="padding: 4px 5px;
   width: 30px;" @click='add(k)'>+</span>
@@ -28,9 +29,39 @@
             </div>
           </div>
       </li>
-      <div style='text-align:center; padding: 30px'>
-        <mt-button @click='loadMore' v-if='isLoadMore'>加载更多</mt-button>
-        <v-baseline v-else></v-baseline>
+      <div v-if='hasQyk' class='read_wrap type_wrap' style='padding: 10px 15px;' @click='changeIsRead("qyk")'>
+        <i v-if='!qykIsRead' class='iconfont icon-circle' style='color: #666'></i>
+        <i v-else class='iconfont icon-danxuanxuanzhong' style='color: #ff4800'></i>
+        <span>我已仔细阅读《权益卡使用须知》并同意条款内容</span>
+      </div>
+      <li v-if='hasOther' style='height: 20px;padding-left: 15px'>非权益卡类</li>
+      <li v-for="(k,i) in carList" v-if='k.producttype != "QYKL"' :key="i">
+          <!-- 暂时屏蔽购物车选择，直接全部提交 -->
+          <!-- <div class="something-left">
+            <label class="true" :class="{false:!k.choseBool}">
+              <input type="checkbox" v-model="k.choseBool">
+            </label>
+          </div> -->
+          <div class="something-middle">
+            <img :src="k.imgurl[0]">
+          </div>
+          <div class="something-right">
+            <p>{{k.title}}</p>
+            <p style="color:rgb(199, 108, 28)"> {{generateTypeName(k.producttype)}}</p>
+            <p>数量：<span style="padding: 4px 5px;
+  width: 30px;" @click='reduce(k)'>-</span> {{k.num}} <span style="padding: 4px 5px;
+  width: 30px;" @click='add(k)'>+</span>
+            </p>
+            <p>售价：{{k.price * k.num}}元</p>
+            <div class="something-right-bottom" @click="cut(k)">
+              <span></span>
+            </div>
+          </div>
+      </li>
+      <div v-if='hasOther' class='read_wrap type_wrap' style='padding: 10px 15px;' @click='changeIsRead("fqyk")'>
+        <i v-if='!isRead' class='iconfont icon-circle' style='color: #666'></i>
+        <i v-else class='iconfont icon-danxuanxuanzhong' style='color: #ff4800'></i>
+        <span>我已仔细阅读《权益卡使用须知》并同意条款内容</span>
       </div>
 
     </ul>
@@ -45,23 +76,13 @@ import Baseline from '@/common/_baseline.vue'
 import qs from 'qs'
 import * as mockapi from '@/../mockapi'
 // 提示登录组件
-import Gologin from '@/components/car/gologin.vue'
-import Util from '../../util/common'
 import {Toast} from 'mint-ui'
 import NorMore from '@/components/nomore'
 
 export default {
   components: {
     'v-baseline': Baseline,
-    'v-gologin': Gologin,
     'v-nomore': NorMore
-  },
-  computed: {
-
-    // carList() {
-    //   return this.$store.state.detail.carList;
-    // },
-
   },
   data() {
     return{
@@ -71,7 +92,11 @@ export default {
       carList: [],
       token: '',
       selectedProp: [],
-      isLoadMore: true
+      isRead: false,
+      qykIsRead: false,
+      canSubmit: false,
+      hasQyk: false,
+      hasOther: false
     }
   },
   watch: {
@@ -97,7 +122,49 @@ export default {
     this.getMyCar()
   },
   methods: {
+    checkType() {
+      this.carList.forEach(item => {
+        if (item.producttype == 'QYKL') {
+          this.hasQyk = true
+        } else if (item.producttype != 'QYKL') {
+          this.hasOther = true
+        }
+      })
+    },
+    changeIsRead(type) {
+      if (type == 'qyk') {
+        this.qykIsRead = !this.qykIsRead
+      } else {
+        this.isRead = !this.isRead
+      }
+
+      if (this.hasQyk && !this.qykIsRead) {
+        this.canSubmit = false
+      } else if (this.hasOther && !this.isRead) {
+        this.canSubmit = false
+      } else {
+        this.canSubmit = true
+      }
+
+      this.$emit('canSubmit', this.canSubmit)
+      
+      
+    },
+    generateTypeName(type) {
+      switch (type) {
+        case 'QYKL':
+         return '权益卡类'
+         break
+        case 'LTDBL':
+         return '旅游产品类'
+         break
+        case 'DDL':
+         return '单独类'
+         break
+      }
+    },
     getMyCar() {
+      this.$store.commit('SET_LOADING', true)
       mockapi.shop.api_Shop_getMyCar_get({
         params: {
           token: this.token,
@@ -105,12 +172,14 @@ export default {
           pageSize: this.pageSize
         }
       }).then(res => {
-        var data = res.data.data.list
-        var isLastPage = res.data.data.pager.isLastPage
-        if (isLastPage) {
-          this.isLoadMore = false
-        }
-        this.carList = this.carList.concat(data)
+        this.$store.commit('SET_LOADING', false)
+        var data = res.data.data
+        this.carList = data
+        // 检验是否含有权益卡类
+        this.checkType()
+      }).catch(err => {
+        this.$store.commit('SET_LOADING', false)
+        console.log(err)
       })
     },
     updateMycar() {
@@ -121,11 +190,11 @@ export default {
           pageSize: this.pageSize
         }
       }).then(res => {
-        var data = res.data.data.list
-        var isLastPage = res.data.data.pager.isLastPage
-        if (isLastPage) {
-          this.isLoadMore = false
-        }
+        var data = res.data.data
+        // var isLastPage = res.data.data.pager.isLastPage
+        // if (isLastPage) {
+        //   this.isLoadMore = false
+        // }
         this.carList = data
       })
     },
@@ -189,10 +258,6 @@ export default {
       }).catch(err => {
         console.log(err)
       })
-    },
-    loadMore() {
-      this.pageNo++
-      this.getMyCar()
     }
 
   }
@@ -206,6 +271,7 @@ export default {
     .something {
         width: 100%;
         > li {
+            background: #fff;
             display: -ms-flex;
             display: -webkit-box;
             display: -ms-flexbox;

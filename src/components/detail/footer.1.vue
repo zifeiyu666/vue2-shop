@@ -18,6 +18,10 @@
         <icon name='star-o'  style='color: #666' scale='1.5'></icon>
       </span>
     </div>
+    <!-- <router-link :to="{path:'/shop/car'}" class="footer-gocar">
+      <i class="iconfont icon-gouwuche3-copy-copy-copy-copy"></i>
+      <span v-if="carnum">{{carnum}}</span>
+    </router-link> -->
     <span class="footer-addcar" @click="addIntoCar">
       加入购物车
     </span>
@@ -32,17 +36,36 @@
       <div class='shopcar'>
         <div>
           <!-- 选择规格 -->
-        <div class="pick type_wrap" v-if='propTypeList' >
-            <div v-for='(item, index) in propTypeList' :key='index + "a"'>
+        <div class="pick type_wrap" >
+            <div v-if='propTypeNameList' v-for='(item, index) in propTypeNameList' :key='index + "a"'>
               <h1 class='type_title'>请选择商品规格</h1>
               <div style='cursor:pointer'>
-                <p class='sub_title'>{{item.DicTypeName}}：</p>
-                <el-radio-group v-model="selectedPropId[index]" size="medium">
-                  <el-radio-button  v-for='(i, k) in item.EntryList' :disabled='!i.IsChecked' style='cursor:pointer' @click.native.prevent="clickToggle(index, i.EntryCode, i.IsChecked)"  :label="i.EntryCode" :key='k'>{{i.EntryName}}</el-radio-button>
+                <p class='sub_title'>{{item}}：</p>
+                <el-radio-group v-if='propTypeList[index]' v-model="selectedPropId[index]" size="medium">
+                  <el-radio-button  v-for='(i, k) in propTypeList[index]' :disabled='i.canSel' style='cursor:pointer' @click.native.prevent="clickToggle(index, i.code, i.canSel)"  :label="i.code" :key='k'>{{i.name}}</el-radio-button>
                 </el-radio-group>
               </div>
             </div>
           </div>
+
+          
+  
+          <!-- 请选择人数 -->
+          <!-- <div class='type_wrap' v-if='detail.ProductType != "QYKL"'>
+              <p class='type_title'>请选择人数</p>
+              <p style='margin-bottom: 4px'>
+                <span class='sub_title'>大人：</span>
+                <button class='num_btn' @click='reduce("adult")'>-</button>
+                 <span class="num">{{adult}}位</span>
+                <button class='num_btn' @click='add("adult")'>+</button>
+              </p>
+              <p>
+                <span class='sub_title'>小孩：</span>
+                <button class='num_btn' @click='reduce("children")'>-</button>
+                 <span class="num">{{children}}位</span>
+                <button class='num_btn' @click='add("children")'>+</button>
+              </p>
+          </div> -->
           
           <!-- 立即购买选项 -->
           <div v-if='isImmePay'>
@@ -68,6 +91,18 @@
                     </el-form-item>
                 </el-form>  
               </div>
+              <!-- 出行人信息 -->
+              <!-- <div class="type_wrap" v-if='detail.ProductType != "QYKL"'>
+                <p class="type_title">出行人信息</p>
+                <el-form v-for='(i, index) in cxrNum' ref="cxrForm" :key='index' :model="cxrForm[index]" label-width="65px">
+                    <el-form-item label="姓名">
+                        <el-input v-model="cxrForm[index].cxrname"></el-input>
+                    </el-form-item>
+                    <el-form-item label="身份证号" style='margin-bottom: -14px;'>
+                        <el-input v-model="cxrForm[index].idcard"></el-input>
+                    </el-form-item>
+                </el-form>  
+              </div> -->
               <!-- 权益卡度假政策 -->
               <div class="type_wrap" v-if='detail.ProductType == "QYKL"'>
                 <p class="type_title">度假政策<a>《度假卡使用说明》</a></p>
@@ -200,6 +235,9 @@ export default {
       modal1: [],
       modal2: [],
       modal3: [],
+      propTypeList0: [], //类别1
+      propTypeList1: [], // 类别2
+      propTypeList2: [], // 类别3
       propTypeList: [],
       propTypeNameList: [], // 可选类别标题
       OriginalPrice: '',
@@ -266,20 +304,229 @@ export default {
       this.isRead = !this.isRead
     },
     initPropTypeList() {
-      mockapi.shop.api_Shop_getProductProp_get({
-        params:{
-          PId: this.$route.query.pid,
-          Prop1: this.selectedPropId[0] ? this.selectedPropId[0] : '',
-          Prop2: this.selectedPropId[1] ? this.selectedPropId[0] : '',
-          Prop3: this.selectedPropId[2] ? this.selectedPropId[0] : ''
+      
+      let allList = this.detail.prop
+      // 初始化原始数组
+      this.propTypeList0 = []
+      this.propTypeList1 = []
+      this.propTypeList2 = []
+      
+      this.propTypeNameList = this.detail.PropertyName
+      console.log('进入类别选择')
+      console.log(this.selectedPropId)
+      var that = this
+      var canSelList = []
+      allList.forEach((item, index) => {
+        // 用户未作出选择之前必须都是可选的
+        if (!that.selectedPropId[0] && !that.selectedPropId[1] && !that.selectedPropId[2]) {
+          if (item.Prop1) {
+            that.$set(item.Prop1, 'canSel', false)
+          }
+          if (item.Prop2) {
+            that.$set(item.Prop2, 'canSel', false)
+          }
+          if (item.Prop3) {
+            that.$set(item.Prop3, 'canSel', false)
+          }
+           
+        } else {
+          // 这里保证已选属性可选，未做出选择的属性都不可选，后续再筛选出可选的     
+          if(that.selectedPropId[0] && item.Prop1 && item.Prop1.code==that.selectedPropId[0]) {
+            that.$set(item.Prop1, 'canSel', false)
+          } else {
+            that.$set(item.Prop1, 'canSel', true)
+          }
+
+          if(that.selectedPropId[1] && item.Prop2 && item.Prop2.code==that.selectedPropId[1]) {
+            that.$set(item.Prop2, 'canSel', false)
+          } else {
+            if (item.Prop2) {
+              that.$set(item.Prop2, 'canSel', true)
+            }
+            
+          }
+
+          if(that.selectedPropId[2] && item.Prop3 && item.Prop3.code==that.selectedPropId[2]) {
+            that.$set(item.Prop3, 'canSel', false)
+          } else {
+            if (item.Prop3) {
+              that.$set(item.Prop3, 'canSel', true)
+            }
+          }
+        } 
+
+
+        if (
+           ((that.selectedPropId[0] && item.Prop1.code == that.selectedPropId[0]) || !that.selectedPropId[0]) &&
+           ((that.selectedPropId[1] && item.Prop2.code == that.selectedPropId[1]) || !that.selectedPropId[1]) &&
+           ((that.selectedPropId[2] && item.Prop3.code == that.selectedPropId[2]) || !that.selectedPropId[2]) 
+        ) {
+          canSelList.push(item)
         }
-      }).then(res => {
-        let allList = res.data.data.diclist
+        if (item.Prop1) {
+          that.propTypeList0.push(item.Prop1)
+        }
+        if (item.Prop2) {
+          that.propTypeList1.push(item.Prop2)
+        }
+        if (item.Prop3) {
+          that.propTypeList2.push(item.Prop3)
+        }
+      })
+      console.log('可选列表')
+      console.log(canSelList)
 
-        this.propTypeList = allList
+      var canSelList0 = []
+      var canSelList1 = []
+      var canSelList2 = []
 
+      canSelList.forEach((item, index) => {
+        if (item.Prop1) {
+          canSelList0.push(item.Prop1)
+        }
+        if (item.Prop2) {
+          canSelList1.push(item.Prop2)
+        }
+        if (item.Prop3) {
+          canSelList2.push(item.Prop3)
+        }
+        
+      })
+      if (canSelList0.length != 0) {
+        canSelList0 = uniqeByKeys(canSelList0, ['code'])
+      }
+      if (canSelList0.length != 0) {
+        canSelList1 = uniqeByKeys(canSelList1, ['code'])
+      }
+      if (canSelList0.length != 0) {
+        canSelList2 = uniqeByKeys(canSelList2, ['code'])
+      }
+      
+      
+      
+      console.log('可选列表子列表')
+      console.log(canSelList0)
+      console.log(canSelList1)
+      console.log(canSelList2)
+
+
+      if (this.propTypeList0.length != 0) {
+        this.propTypeList0 = uniqeByKeys(this.propTypeList0, ['code'])
+      }
+      if (this.propTypeList1.length != 0) {
+        this.propTypeList1 = uniqeByKeys(this.propTypeList1, ['code'])
+      }
+      if (this.propTypeList2.length != 0) {
+        this.propTypeList2 = uniqeByKeys(this.propTypeList2, ['code'])
+      }
+      
+
+      console.log('原数组')
+      console.log(this.propTypeList0)
+      console.log(this.propTypeList1)
+      console.log(this.propTypeList2)
+
+      this.propTypeList0 = this.propTypeList0.map((val, index) => {
+        let isSel = true
+        canSelList0.forEach(item => {
+          if (val.code == item.code) {
+            isSel = false
+          }
+        })
+        if (!val.canSel) {
+          return val
+        } else if (!isSel) {
+          console.log('可选项')
+          let _val = {'code': val.code, 'name': val.name, 'canSel': false}
+          console.log(_val)
+          return _val
+        } else {
+          console.log('不可选')
+          let _val = {'code': val.code, 'name': val.name, 'canSel': true}
+          console.log(_val)
+          return _val
+        }
       })
       
+      this.propTypeList1 = this.propTypeList1.map((val, index) => {
+        let isSel = true
+        canSelList1.forEach(item => {
+          if (val.code == item.code) {
+            console.log('code 相同')
+            isSel = false
+          }
+        })
+        if (!val.canSel) {
+          console.log('可选项直接返回')
+          return val
+        }else if (!isSel) {
+          console.log('可选项')
+          let _val = {'code': val.code, 'name': val.name, 'canSel': false}
+          console.log(_val)
+          return _val
+        } else {
+          console.log('不可选')
+          let _val = {'code': val.code, 'name': val.name, 'canSel': true}
+          console.log(_val)
+          return _val
+        }
+      })
+
+      this.propTypeList2 = this.propTypeList2.map((val, index) => {
+        console.log('对比')
+        console.log(this.propTypeList2)
+        console.log(canSelList2)
+        let isSel = true
+        canSelList2.forEach(item => {
+          if (val.code == item.code) {
+            isSel = false
+          }
+        })
+        if (!val.canSel) {
+          return val
+        }else if (!isSel) {
+          console.log('可选项')
+          let _val = {'code': val.code, 'name': val.name, 'canSel': false}
+          console.log(_val)
+          return _val
+        } else {
+          console.log('不可选')
+          let _val = {'code': val.code, 'name': val.name, 'canSel': true}
+          console.log(_val)
+          return _val
+        }
+      })
+
+      console.log('筛完的数组')
+      console.log(this.propTypeList0)
+      console.log(this.propTypeList1)
+      console.log(this.propTypeList2)
+
+      this.propTypeList = [this.propTypeList0, this.propTypeList1, this.propTypeList2]
+
+
+      //将对象元素转换成字符串以作比较
+      function obj2key(obj, keys){  
+          var n = keys.length,  
+              key = [];  
+          while(n--){  
+              key.push(obj[keys[n]]);  
+          }  
+          return key.join('|');  
+      }  
+      //去重操作  
+      function uniqeByKeys(array,keys){
+          var arr = [];  
+          var hash = {};  
+          for (var i = 0, j = array.length; i < j; i++) {  
+              var k = obj2key(array[i], keys);  
+              if (!(k in hash)) {  
+                  hash[k] = true;  
+                  arr .push(array[i]);  
+              }  
+          }  
+          return arr ;  
+      }
     },
     clickToggle(i, code, canSel) {
       if (canSel) {

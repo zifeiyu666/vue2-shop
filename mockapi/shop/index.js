@@ -1,6 +1,15 @@
 import instance from './instance';
 import { convertRESTAPI } from '../util';
 
+/** 商品规格联动 */
+function api_Shop_getProductProp_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Shop/getProductProp',
+    opts: opts
+  });
+}
+
 /** 快速搜索 */
 function api_Shop_getKeyWord_get(opts) {
   return instance({
@@ -803,6 +812,7 @@ function shop_getBanner_get(opts) {
 }
 
 export {
+  api_Shop_getProductProp_get,
   api_Shop_getKeyWord_get,
   api_Shop_getMyCrashbackList_get,
   api_Share_GetProductQRCard_get,
