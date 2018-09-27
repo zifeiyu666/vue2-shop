@@ -26,11 +26,12 @@ header {
   display: flex;
   align-items: center;
   padding: 0 4vw;
-  .shadow();
+  // .shadow();
+  border-bottom: 1px solid #ccc;
   cursor: pointer;
   top: 0;
   width: 100%;
-  z-index: 100;
+  z-index: 10000;
   h1 {
     .fz(font-size,32);
     letter-spacing: .2vw;

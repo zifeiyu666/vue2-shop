@@ -94,7 +94,7 @@
       </p>
       <p>
         下单时间：
-        <span class="data-time">
+        <span class="data-time" v-if='orderDetail.ordertime'>
           {{orderDetail.ordertime.slice(0, 10) + ' ' + orderDetail.ordertime.slice(11, 19)}}
         </span>
       </p>

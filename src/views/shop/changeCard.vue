@@ -1,29 +1,35 @@
 <template lang="html">
+  
   <div class="index_wrap changeCard">
-
+    <v-header>
+      <h1 slot="title">预定酒店</h1>
+    </v-header>
     <v-swiper :swiperData="bannerList"></v-swiper>
     <div class="search_wrap">
       <HotelDatePicker style='z-index: 1000' :i18n="ptBr"></HotelDatePicker>
-      <mt-button size='middle' class='search_btn'>开始搜索</mt-button>
+      <mt-button size='large' class='search_btn' @click='searchHotel()'>开始搜索</mt-button>
     </div>
+    <v-list></v-list>
+
 
     <!-- 返回顶部 -->
     <v-backtotop bottom="60px" right="10px">
       <i class='btn-to-top iconfont icon-fanhuidingbu'></i>
     </v-backtotop>
 
-    <v-footer></v-footer>
+    <!-- <v-footer></v-footer> -->
   </div>
 </template>
 
 <script>
 import qs from 'qs'
 import * as mockapi from '@/../mockapi'
-import Header from '@/components/index/header.vue'
+import Header from '@/common/_header.vue'
 import Swiper from '@/components/shop/swiper.vue'
 import Footer from '@/common/_footer.vue'
 import BackToTop from 'vue-backtotop'
 import HotelDatePicker from 'vue-hotel-datepicker'
+import HotelList from '@/common/_hotelList.vue'
 
 export default {
   components: {
@@ -32,6 +38,7 @@ export default {
     'v-footer': Footer,
     'v-backtotop': BackToTop,
     HotelDatePicker,
+    'v-list': HotelList
   },
   data() {
     return {
@@ -63,6 +70,9 @@ export default {
         this.$store.commit('SET_LOADING', false)
         console.log(err)
       })
+    },
+    searchHotel() {
+
     }
   }
 }
