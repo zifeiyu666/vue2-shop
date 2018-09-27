@@ -6,7 +6,6 @@
       <HotelDatePicker style='z-index: 1000' :i18n="ptBr"></HotelDatePicker>
       <mt-button size='middle' class='search_btn'>开始搜索</mt-button>
     </div>
-    
 
     <!-- 返回顶部 -->
     <v-backtotop bottom="60px" right="10px">

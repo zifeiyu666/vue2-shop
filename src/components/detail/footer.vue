@@ -33,8 +33,9 @@
         <div>
           <!-- 选择规格 -->
         <div class="pick type_wrap" v-if='propTypeList' >
+          <h1 class='type_title'>请选择商品规格</h1>
             <div v-for='(item, index) in propTypeList' :key='index + "a"'>
-              <h1 class='type_title'>请选择商品规格</h1>
+              
               <div style='cursor:pointer'>
                 <p class='sub_title'>{{item.DicTypeName}}：</p>
                 <el-radio-group v-model="selectedPropId[index]" size="medium">
@@ -270,19 +271,30 @@ export default {
         params:{
           PId: this.$route.query.pid,
           Prop1: this.selectedPropId[0] ? this.selectedPropId[0] : '',
-          Prop2: this.selectedPropId[1] ? this.selectedPropId[0] : '',
-          Prop3: this.selectedPropId[2] ? this.selectedPropId[0] : ''
+          Prop2: this.selectedPropId[1] ? this.selectedPropId[1] : '',
+          Prop3: this.selectedPropId[2] ? this.selectedPropId[2] : ''
         }
       }).then(res => {
         let allList = res.data.data.diclist
-
         this.propTypeList = allList
+
+        this.enabledProp = res.data.data.prop
+        if (this.enabledProp.length == 1) {
+          this.OriginalPrice = this.enabledProp[0].OriginalPrice
+          this.DiscountPrice = this.enabledProp[0].DiscountPrice
+          this.ywyfx = this.enabledProp[0].ywyfx
+          this.gwfx = this.enabledProp[0].gwfx
+          this.hyfx = this.enabledProp[0].hyfx
+        }
+        this.$store.commit('saveSelectedProp', this.enabledProp)
+        console.log('获取长度')
+        console.log(this.$store.state.selectedProp)
 
       })
       
     },
     clickToggle(i, code, canSel) {
-      if (canSel) {
+      if (!canSel) {
         console.log('不能选择')
         return
       }
@@ -298,33 +310,35 @@ export default {
           return val
         }
       })
-      console.log('准备进入')
+
       this.initPropTypeList()
-      this.getRealPrice()
+      // this.getRealPrice()
+      
     },
-    getRealPrice() {
-      mockapi.shop.api_Shop_getProductPropList_get({
-        params:{
-          PId: this.$route.query.pid,
-          Prop1: this.selectedPropId[0] ? this.selectedPropId[0] : '',
-          Prop2: this.selectedPropId[1] ? this.selectedPropId[0] : '',
-          Prop3: this.selectedPropId[2] ? this.selectedPropId[0] : ''
-        }
-      }).then(res => {
-        var data = res.data.data
-        this.enabledProp = data
-        if (this.enabledProp.length == 1) {
-          this.OriginalPrice = this.enabledProp[0].OriginalPrice
-          this.DiscountPrice = this.enabledProp[0].DiscountPrice
-          this.ywyfx = this.enabledProp[0].ywyfx
-          this.gwfx = this.enabledProp[0].gwfx
-          this.hyfx = this.enabledProp[0].hyfx
-        }
-        this.$store.commit('saveSelectedProp', this.enabledProp)
-        console.log('获取长度')
-        console.log(this.$store.state.selectedProp)
-      })
-    },
+    // 弃用老接口
+    // getRealPrice() {
+    //   mockapi.shop.api_Shop_getProductPropList_get({
+    //     params:{
+    //       PId: this.$route.query.pid,
+    //       Prop1: this.selectedPropId[0] ? this.selectedPropId[0] : '',
+    //       Prop2: this.selectedPropId[1] ? this.selectedPropId[1] : '',
+    //       Prop3: this.selectedPropId[2] ? this.selectedPropId[2] : ''
+    //     }
+    //   }).then(res => {
+    //     var data = res.data.data
+    //     this.enabledProp = data
+    //     if (this.enabledProp.length == 1) {
+    //       this.OriginalPrice = this.enabledProp[0].OriginalPrice
+    //       this.DiscountPrice = this.enabledProp[0].DiscountPrice
+    //       this.ywyfx = this.enabledProp[0].ywyfx
+    //       this.gwfx = this.enabledProp[0].gwfx
+    //       this.hyfx = this.enabledProp[0].hyfx
+    //     }
+    //     this.$store.commit('saveSelectedProp', this.enabledProp)
+    //     console.log('获取长度')
+    //     console.log(this.$store.state.selectedProp)
+    //   })
+    // },
     initCollectStar() {
       mockapi.shop.api_Shop_isMyCollection_get({
         params: {

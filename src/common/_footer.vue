@@ -1,6 +1,6 @@
 <template lang="html">
   <!-- gotoRouter:点击后路由跳转到与id名相同的route.name所对应的路径 -->
-  <footer class="footer" @click.stop='gotoRouter'>
+  <footer class="footer" style='position: fixed; z-index: 100' @click.stop='gotoRouter'>
     <mt-tabbar v-model="selected" fixed>
     <mt-tab-item id="首页">
       <i slot="icon" class="icon-index"></i>

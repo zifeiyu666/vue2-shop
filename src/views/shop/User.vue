@@ -99,6 +99,14 @@
                 <span>我的二维码</span><i class="icon-go"></i>
               </p>
             </a>
+            <router-link :to="{ name: '度假卡'}" class="my-settle-top">
+              <div>
+                <img src='../../assets/img/hotel.png' style='width: 22px;' >
+              </div>
+              <p>
+                <span>度假卡</span><i class="icon-go"></i>
+              </p>
+            </router-link>
             <router-link :to="{ name: '分销中心'}" class="my-settle-top">
               <div>
                 <span class="icon2-f"></span>

@@ -57,6 +57,11 @@ import NoMore from '@/components/nomore'
 import { parseTime } from '@/util/data.js'
 
   export default{
+    components: {
+      'v-header':Header,
+      'v-baseline': Baseline,
+      'v-nomore': NoMore
+    },
     data() {
       return {
         pageNo: 1,
@@ -69,11 +74,6 @@ import { parseTime } from '@/util/data.js'
         token: '',
         username: ''
       }
-    },
-    components: {
-      'v-header':Header,
-      'v-baseline': Baseline,
-      'v-nomore': NoMore
     },
     created() {
       var userInfo = this.$store.state.userInfo
