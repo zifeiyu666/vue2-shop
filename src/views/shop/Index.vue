@@ -118,7 +118,9 @@ export default {
     
     this.getSection1()
     this.getSection2()
+    // 轮播图
     this.getBanner()
+    // 广告位
     this.getBanner1()
   },
   methods: {
@@ -180,7 +182,7 @@ export default {
       this.loading = true
       mockapi.shop.api_Shop_getADByCode_get({
         params: {
-          typeCode: 'ADO'
+          typeCode: 'ADF'
         }
       }).then(res => {
         this.loading = false

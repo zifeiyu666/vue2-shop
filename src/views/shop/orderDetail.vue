@@ -241,13 +241,18 @@ import Header from '@/common/_header.vue'
         return (days+"天 "+hours+"小时 "+minutes+" 分钟"+seconds+" 秒")
       },
       getOrderDetail() {
+        this.$store.commit('SET_LOADING', true);
         mockapi.shop.api_Shop_getOrders_get({
           params: {
             token: this.$store.state.userInfo.MemberToken,
             orderno: this.orderno
           }
         }).then(res => {
+          this.$store.commit('SET_LOADING', false);
           this.orderDetail = res.data.data
+        }).catch(err => {
+          console.log(err)
+          this.$store.commit('SET_LOADING', false);
         })
       },
       // TODO

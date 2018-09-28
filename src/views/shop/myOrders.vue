@@ -274,6 +274,7 @@ import Header from '@/common/_header.vue'
     },
     methods: {
       getAllOrdersList(flag) {
+        this.$store.commit('SET_LOADING', true);
         mockapi.shop.api_Shop_getAllOrders_get({
           params: {
             token: this.$store.state.userInfo.MemberToken,
@@ -282,6 +283,7 @@ import Header from '@/common/_header.vue'
             pageSize: this.allQuery.pageSize
           }
         }).then(res => {
+          this.$store.commit('SET_LOADING', false);
           this.allQuery.busy = false
           var data = res.data.data.list
           var isLastPage = res.data.data.pager.isLastPage
@@ -290,6 +292,9 @@ import Header from '@/common/_header.vue'
           }
           this.allOrders = this.allOrders.concat(data)
           
+        }).catch(err => {
+          console.log(err)
+          this.$store.commit('SET_LOADING', false);
         })
       },
       getWaitOrdersList(flag) {

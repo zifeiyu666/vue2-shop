@@ -8,7 +8,7 @@
     <ul class="section1-list">
       <li v-for="k in section1">
         <count-down class='count_down' v-if='title == "限时抢购"' v-on:start_callback="countDownS_cb(1)" v-on:end_callback="countDownE_cb(1)" :startTime="new Date().getTime()" :endTime="new Date(k.limitTime).getTime()" :tipText="'距离开始文字1'" :tipTextEnd="'距离结束文字1'" :endText="'结束自定义文字2'" :dayTxt="'天'" :hourTxt="'小时'" :minutesTxt="'分钟'" :secondsTxt="'秒'"></count-down>
-        <router-link :to="{path:'/shop/detail', query:{pid: k.id}}" :key="k.id">
+        <router-link class='img_wrap' :to="{path:'/shop/detail', query:{pid: k.id}}" :key="k.id">
           <img v-lazy="k.imgurl[0]" alt="">
           <p>{{k.intro}}</p>
         </router-link>
@@ -64,8 +64,12 @@ export default {
     overflow: hidden;
     margin-top: 6px !important;
     background: #fff;
-    .product-img{
-      height: 120px;
+    .img_wrap{
+      height: 32vw;
+      img{
+        width: 100%;
+        height:100%;
+      }
     }
     
     .fxicon{
