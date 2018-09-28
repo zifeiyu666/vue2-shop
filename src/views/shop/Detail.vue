@@ -7,7 +7,6 @@
         </router-link>
         <mt-button icon="search" slot="right" @click='goToSearch'></mt-button>
       </mt-header>
-
     </div>
     <div v-if='detail'>
       <v-share :imgurl="qrcode" />
@@ -85,7 +84,7 @@ export default {
       })
     },
     goToSearch() {
-      this.$router.push('/shop/search')
+      this.$router.push({path: '/shop/search', query: {title: '全部商品'}})
     }
   },
   beforeCreate(){
@@ -98,6 +97,11 @@ export default {
 @import '../../assets/utils.less';
 .header{
   background: #fff;
+  header{
+    height: 16vw;
+    font-size: 16px;
+    font-family: '微软雅黑';
+  }
 }
 .mint-header{
   background: #fff !important;
@@ -113,7 +117,7 @@ export default {
   width: 100%;
   min-height: 100vh;
   padding-bottom: 14vw;
-  margin-top: 40px;
+  margin-top:16vw;
   // background: #fff;
 }
 .banner{

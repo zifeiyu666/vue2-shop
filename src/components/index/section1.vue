@@ -19,9 +19,9 @@
         </span>
       </li>
     </ul>
-  <!-- <router-link :to="{ name: '详情页'}"  class="section1-banner">
-    <img :src="banner.imgurl" v-if='banner'>
-  </router-link> -->
+    <router-link to=""  class="section1-banner">
+      <img :src="banner.imgurl" v-if='banner'>
+    </router-link>
   </section>
 </template>
 
@@ -139,6 +139,7 @@ export default {
           top: 26px;
           height: 26px;
           border-radius: 4px;
+          margin-top: -26px;
           p{
             float: right;
             margin: 4px 2px;
@@ -222,7 +223,11 @@ export default {
     }
 
     .section1-banner {
-      width: 100%;
+      margin-top: 10px;
+      border-top: 1px solid #eee;
+      padding: 10px 0;
+      // width: 100%;
+      // box-sizing: border-box;
       display: block;
       img {
         display: block;

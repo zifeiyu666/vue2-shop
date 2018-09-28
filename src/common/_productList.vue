@@ -1,6 +1,6 @@
 <template>
   <div class="product_list_wrap">
-      <h3 class='title' v-if='!hideHead'>
+      <h3 class='title' v-if='!hideHead' style='margin-bottom: 10px;'>
         全部商品
         <span class="more" @click='goToSearch("全部商品")'>查看更多></span>
       </h3>
@@ -162,6 +162,7 @@ export default {
           top: 26px;
           height: 26px;
           border-radius: 4px;
+          margin-top: -26px;
           p{
             float: right;
             margin: 4px 2px;

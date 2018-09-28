@@ -39,6 +39,7 @@ header {
     margin-right: 36vw;
     margin-left: 2vw;
     position: relative;
+    margin-top: -5px;
     top: 2px;
     color: @fontBlack;
   }

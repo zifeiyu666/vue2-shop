@@ -122,6 +122,7 @@ export default {
     this.getBanner()
     // 广告位
     this.getBanner1()
+    this.getBanner2()
   },
   methods: {
     getSection1() {
@@ -182,12 +183,27 @@ export default {
       this.loading = true
       mockapi.shop.api_Shop_getADByCode_get({
         params: {
-          typeCode: 'ADF'
+          typeCode: 'SPADO'
         }
       }).then(res => {
         this.loading = false
         var data = res.data.data
         this.banner1 = data
+      }).catch(err => {
+        this.loading = false
+        console.log(err)
+      })
+    },
+    getBanner2() {
+      this.loading = true
+      mockapi.shop.api_Shop_getADByCode_get({
+        params: {
+          typeCode: 'SPADT'
+        }
+      }).then(res => {
+        this.loading = false
+        var data = res.data.data
+        this.banner2 = data
       }).catch(err => {
         this.loading = false
         console.log(err)

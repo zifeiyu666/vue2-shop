@@ -42,7 +42,7 @@ export default {
 .share-btn{
   .icon{
     position: fixed;
-    top: 50px;
+    top:17vw;
     right: 0;
     height: 24px;
     width: 50px;
@@ -80,11 +80,11 @@ export default {
   top: 0;
   z-index: 800;
   .img-wrap{
-    background: rgba(256,256,256,.9);
+    background: #fff;
     z-index: 900;
     position: fixed;
-    width: 80vw;
-    height: 80vh;
+    width: 75vw;
+    height: 120vw;
     margin: 10vh auto;
     left: 0;
     right: 0;

@@ -43,7 +43,7 @@ export default {
 .share-btn{
   .icon{
     position: fixed;
-    top: 12px;
+    top: 20vw;
     right: 0;
     height: 24px;
     width: 50px;

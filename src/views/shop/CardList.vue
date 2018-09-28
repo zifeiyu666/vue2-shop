@@ -63,7 +63,7 @@ export default{
 
     },
     goToHistory() {
-
+      this.$router.push({path: '/shop/'})
     },
     goToBooking(id) {
       this.$router.push({path: '/shop/changecard', query: {id: id}})
@@ -86,9 +86,9 @@ export default{
           border-radius: 10px;
         }
         .btn-list{
-          margin-top:-43px;
+          margin-top:5px;
           padding-bottom: 10px;
-          margin-left: 10px;
+          // margin-left: 10px;
           .btn{
             background: #fff;
           }

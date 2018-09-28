@@ -5,7 +5,7 @@
     </v-header>
     
     <!-- 搜索框 -->
-    <div class='search-nav' style='background: #eee;height: 40px;padding-top: 10px;'>
+    <div class='search-nav' style='background: #eee;height: 50px;padding-top: 10px;'>
       <div class="back" @click="selectRegion">
         <span>{{region}} <i class='iconfont icon-cert-down'></i></span>
       </div>
