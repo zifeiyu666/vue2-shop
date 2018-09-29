@@ -106,8 +106,8 @@
             <!-- <div id="deleteOrder">
               <span @click='deleteOrder(orderDetail)'></span>
             </div> -->
-            <li v-for="(k,i) in orderDetail.opd" :key='i' @click='goToDetail(k.pid)'>
-              <div class="flex">
+            <li v-for="(k,i) in orderDetail.opd" :key='i'>
+              <div class="flex"  @click='goToDetail(k.pid)'>
                 <div class="something-middle">
                   <img :src="k.imgurl[0]">
                 </div>
@@ -125,12 +125,18 @@
               </div>
               <!-- v-if='k.kqh.length != 0' -->
               <div class="kqh" v-if='k.kqh.length != 0'>
-                <p>tips: 通过卡券号到指定商家消费</p>
+                <!-- <p>tips: 通过卡券号到指定商家消费</p> -->
                 <el-card class="box-card">
-                  <div v-for="(item, index) in k.kqh" :key="index" class="text item">
+                  <div v-for="(item, index) in k.kqh" :key="index" class="text item" style='margin-top: 6px;'>
                     <span class='sm_title'>卡券号： </span>{{ item }}
                   </div>
                 </el-card>
+              </div>
+              <div class="kqh" v-if='k.djk.length != 0'>
+                <p>权益卡列表</p>
+                <div v-for="(item, index) in k.djk" :key="index" class="text item" style='padding: 10px;'>
+                  <img style='display: block; width: 100%;' v-lazy="item" alt="">
+                </div>
               </div>
             </li>
             <mt-button class='refund-btn-2' :class="{'refund-btn-right': (orderDetail.orderstate == '未付款' ? true : false)}">{{orderDetail.orderstate}}</mt-button>
@@ -502,7 +508,7 @@ input{
             align-items: center;
             padding: 4vw 0vw;
             position: relative;
-            height: 40vw;
+            height: 35vw;
             margin: 0 2vw;
             
             .something-left {
@@ -526,10 +532,10 @@ input{
 
             }
             .something-middle {
-                ms-flex: 3;
-                -webkit-box-flex: 3;
-                flex: 3;
-                height: 30vw;
+                ms-flex: 4;
+                -webkit-box-flex: 4;
+                flex: 4;
+                height: 25vw;
                 padding-left: 2vw;
                 -webkit-box-sizing: border-box;
                 box-sizing: border-box;
@@ -557,7 +563,7 @@ input{
                 -webkit-box-pack: justify;
                 -ms-flex-pack: justify;
                 justify-content: space-between;
-                padding-left: 6vw;
+                padding-left: 4vw;
                 -webkit-box-sizing: border-box;
                 box-sizing: border-box;
                 p {

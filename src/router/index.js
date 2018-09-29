@@ -33,6 +33,7 @@ const refundDetail = resolve => require(['@/views/shop/refundDetail.vue'], resol
 const NoAuth = resolve => require(['@/views/shop/NoAuth.vue'],resolve)
 const shareAll = resolve => require(['@/views/shop/shareAll.vue'],resolve)
 const cardList = resolve => require(['@/views/shop/CardList.vue'],resolve)
+const bookHistory = resolve => require(['@/views/shop/bookHistory.vue'],resolve)
 // show
 const ShowIndex = resolve => require(['@/views/show/index.vue'], resolve)
 const ShowItem = resolve => require(['@/views/show/item.vue'], resolve)
@@ -92,6 +93,14 @@ const shopRouters = [
     path: '/shop/cardList',
     name: '度假卡',
     component: cardList,
+    meta: {
+        requireAuth: true  // 添加该字段，表示进入这个路由是需要登录才能进入的
+    }
+  }, 
+  {
+    path: '/shop/bookhistory',
+    name: '预定记录',
+    component: bookHistory,
     meta: {
         requireAuth: true  // 添加该字段，表示进入这个路由是需要登录才能进入的
     }

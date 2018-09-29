@@ -3,33 +3,47 @@
     <v-header>
       <h1 slot="title">我的度假卡</h1>
     </v-header>
-    <ul class="list">
+    <ul 
+      v-if='QYKlist.length > 0 && QYKlist[0]'
+      v-infinite-scroll="loadMore"
+      infinite-scroll-disabled="loading"
+      infinite-scroll-distance="10"
+      class="list">
       <li class="add" @click='showPopup(1)'>
         <i class='iconfont icon-tianjia'></i>
       </li>
-      <li v-for='item in 4'>
-        <img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1401141749,1060310951&fm=26&gp=0.jpg" alt="">
+      <li v-for='item in QYKlist' :key='item.Id'>
+        <img v-lazy='item.ImageUrl' style='border: 1px solid #ddd' alt="">
         <div class="btn-list">
-          <mt-button class='btn' size='small' @click='showPopup(2)'>修改密码</mt-button>
-          <mt-button class='btn' size='small'>解除绑定</mt-button>
-          <mt-button class='btn' size='small' @click='goToBooking("123")'>预定酒店</mt-button>
-          <mt-button class='btn' size='small' @click='goToHistory("123")'>预定记录</mt-button>
+          <mt-button class='btn' size='small' @click='showPopup(2, item.Deliverable)'>修改密码</mt-button>
+          <mt-button class='btn' size='small' @click='showPopup(3, item.Deliverable)'>解除绑定</mt-button>
+          <mt-button class='btn' size='small' @click='goToBooking(item.Deliverable)'>预定酒店</mt-button>
+          <mt-button class='btn' size='small' @click='goToHistory(item.Deliverable)'>预定记录</mt-button>
         </div>
       </li>
     </ul>
+    <div v-else>
+      <v-nomore></v-nomore>
+    </div>
+    <v-baseline v-if='isLastPage && QYKlist.length > 0'></v-baseline>
     <mt-popup
       class='popup'
       v-model="popupVisible"
       position="right">
-      <mt-field v-if='showType==1' label="卡号" placeholder="请输入卡号" v-model="cardnum"></mt-field>
+      <div style='margin-top:18vw'></div>
+      <mt-field label="卡号" placeholder="请输入卡号" v-model="cardnum"></mt-field>
       <mt-field v-if='showType==2' label="原密码" placeholder="请输入原密码" v-model="oldPw"></mt-field>
-      <mt-field label="密码" placeholder="请输入密码" type="password" v-modal="password"></mt-field>
+      
+      <mt-field label="密码" placeholder="请输入密码" type="password" v-model="pw"></mt-field>
       <div class="btn-list">
         <mt-button v-if='showType==1' size='large' class='confirm_btn' @click='confirmBanding()'>
           <span>绑定</span>
         </mt-button>
         <mt-button v-if='showType==2' size='large' class='confirm_btn' @click='changePw()'>
           <span >确定</span>
+        </mt-button>
+        <mt-button v-if='showType==3' size='large' class='confirm_btn' @click='cancelBanding()'>
+          <span >解绑</span>
         </mt-button>
         <mt-button size='large' class='console_btn' @click='popupVisible = false'>取消</mt-button>
       </div>
@@ -40,30 +54,142 @@
 <script>
 import * as mockapi from '@/../mockapi'
 import Header from '@/common/_header.vue'
+import NoMore from '@/components/nomore'
+import Baseline from '@/common/_baseline.vue'
+import qs from 'qs'
+import { Toast } from 'mint-ui'
 
 export default{
   components: {
     'v-header':Header,
+    'v-baseline': Baseline,
+    'v-nomore': NoMore
   },
   data() {
     return {
+      QYKlist: [],
       popupVisible: false,
       cardnum: '',
-      password: '',
+      pw: '',
       oldPw: '',
-      showType: ''
+      showType: '',
+      pageNo: 1,
+      pageSize: 10,
+      loading: false,
+      isLastPage: false,
     }
   },
+  mounted() {
+    this.getList()
+  },
   methods: {
-    showPopup(id) {
+    getList() {
+      this.isloading = true
+      this.$store.commit('SET_LOADING', true);
+      mockapi.shop.api_QYK_GetMyQuanYiKa_get({
+        params: {
+          token: this.$store.state.userInfo.MemberToken,
+          pageNo: this.pageNo,
+          pageSize: this.pageSize
+        }
+      }).then(res => {
+        var data = res.data.data.list
+        this.pageNo++
+        this.QYKlist = this.QYKlist.concat(data)
+        this.pageNo++
+        this.isLastPage = res.data.data.pager.isLastPage
+        this.$store.commit('SET_LOADING', false);
+        this.isloading = false
+      }).catch(err => {
+        console.log(err)
+        this.$store.commit('SET_LOADING', false);
+        this.isloading = false
+      })
+    },
+    loadMore() {
+      console.log('loadmore')
+      console.log({isLastPage: this.isLastPage})
+      if (!this.isLastPage) {
+        this.getList()
+      }
+    },
+    showPopup(id, code) {
+      this.cardnum = ''
+      this.pw = ''
+      this.oldPw = ''
       this.showType=id
+      this.cardnum = code ? code : ''
       this.popupVisible = true
     },
+    // 绑定
     confirmBanding() {
-
+      this.$store.commit('SET_LOADING', true);
+      mockapi.shop.api_QYK_BangDing_post({
+        data: qs.stringify(
+          {
+            token: this.$store.state.userInfo.MemberToken,
+            QuanYiKaHao: this.cardnum,
+            QuanYiKaMiMa: this.pw
+          }
+        ) 
+      }).then(res => {
+        this.pageNo = 1
+        this.QYKlist = []
+        this.getList()
+        Toast(res.data.msg)
+        this.popupVisible = false
+        this.$store.commit('SET_LOADING', false);
+      }).catch(err => {
+        console.log(err)
+        this.$store.commit('SET_LOADING', false);
+      })
     },
-    goToHistory() {
-      this.$router.push({path: '/shop/'})
+    // 解除绑定
+    cancelBanding() {
+      this.$store.commit('SET_LOADING', true);
+      mockapi.shop.api_QYK_JieBang_post({
+        data: qs.stringify({
+          token: this.$store.state.userInfo.MemberToken,
+          QuanYiKaHao: this.cardnum,
+          QuanYiKaMiMa: this.pw
+        })
+      }).then(res => {
+        this.pageNo = 1
+        this.QYKlist = []
+        this.getList()
+        Toast(res.data.msg)
+        this.popupVisible = false
+        this.$store.commit('SET_LOADING', false);
+      }).catch(err => {
+        console.log(err)
+        this.$store.commit('SET_LOADING', false);
+      })
+    },
+    // 修改密码
+    changePw() {
+      this.$store.commit('SET_LOADING', true);
+      mockapi.shop.api_QYK_XiuGaiMiMa_post({
+        data: qs.stringify({
+          token: this.$store.state.userInfo.MemberToken,
+          QuanYiKaHao: this.cardnum,
+          QuanYiKaMiMa: this.oldPw,
+          NewQuanYiKaMiMa: this.pw
+        })
+      }).then(res => {
+        this.pageNo = 1
+        this.QYKlist = []
+        this.getList()
+        Toast(res.data.msg)
+        this.popupVisible = false
+        this.$store.commit('SET_LOADING', false);
+      }).catch(err => {
+        console.log(err)
+        this.$store.commit('SET_LOADING', false);
+      })
+    },
+
+    goToHistory(id) {
+      this.$router.push({path: '/shop/bookhistory', query: {id: id}})
     },
     goToBooking(id) {
       this.$router.push({path: '/shop/changecard', query: {id: id}})
@@ -111,7 +237,6 @@ export default{
     .popup{
       height: 100vh;
       width: 90vw;
-      padding-top: 200px;
       .btn-list{
         margin: 10px;
         margin-top: 30px;

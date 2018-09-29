@@ -1,6 +1,87 @@
 import instance from './instance';
 import { convertRESTAPI } from '../util';
 
+/** 房源列表 */
+function api_FangYuan_GetKeYuYongList_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/FangYuan/GetKeYuYongList',
+    opts: opts
+  });
+}
+
+/** 获取房源 */
+function api_FangYuan_getFangYuan_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/FangYuan/getFangYuan',
+    opts: opts
+  });
+}
+
+/** 权益卡使用次数 */
+function api_QYK_GetYiYongCiShuByKaHao_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/QYK/GetYiYongCiShuByKaHao',
+    opts: opts
+  });
+}
+
+/** 未知获取权益卡 */
+function api_QYK_GetQuanYiKaByOrderID_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/QYK/GetQuanYiKaByOrderID',
+    opts: opts
+  });
+}
+
+/** 权益卡列表 */
+function api_QYK_GetMyQuanYiKa_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/QYK/GetMyQuanYiKa',
+    opts: opts
+  });
+}
+
+/** 房源预定 */
+function api_FangYuan_YuDing_post(opts) {
+  return instance({
+    method: 'post',
+    url:  '/api/FangYuan/YuDing',
+    opts: opts
+  });
+}
+
+/** 修改密码 */
+function api_QYK_XiuGaiMiMa_post(opts) {
+  return instance({
+    method: 'post',
+    url:  '/api/QYK/XiuGaiMiMa',
+    opts: opts
+  });
+}
+
+/** 解绑 */
+function api_QYK_JieBang_post(opts) {
+  return instance({
+    method: 'post',
+    url:  '/api/QYK/JieBang',
+    opts: opts
+  });
+}
+
+/** 绑定 */
+function api_QYK_BangDing_post(opts) {
+  return instance({
+    method: 'post',
+    url:  '/api/QYK/BangDing',
+    opts: opts
+  });
+}
+
 /** 商品规格联动 */
 function api_Shop_getProductProp_get(opts) {
   return instance({
@@ -812,6 +893,15 @@ function shop_getBanner_get(opts) {
 }
 
 export {
+  api_FangYuan_GetKeYuYongList_get,
+  api_FangYuan_getFangYuan_get,
+  api_QYK_GetYiYongCiShuByKaHao_get,
+  api_QYK_GetQuanYiKaByOrderID_get,
+  api_QYK_GetMyQuanYiKa_get,
+  api_FangYuan_YuDing_post,
+  api_QYK_XiuGaiMiMa_post,
+  api_QYK_JieBang_post,
+  api_QYK_BangDing_post,
   api_Shop_getProductProp_get,
   api_Shop_getKeyWord_get,
   api_Shop_getMyCrashbackList_get,

@@ -439,7 +439,7 @@ import Header from '@/common/_header.vue'
   }
 </script>
 <style lang="less" scoped>
-@import '../../assets/fz.less';
+@import '../../assets/utils.less';
 .order-wrap{
   // border-bottom: 1px solid #999;
   margin-bottom: 20px;
@@ -631,7 +631,7 @@ input{
             align-items: center;
             padding: 4vw 0vw;
             position: relative;
-            height: 40vw;
+            height: 35vw;
             margin: 0 2vw;
             .bd();
             .something-left {
@@ -655,10 +655,10 @@ input{
 
             }
             .something-middle {
-                ms-flex: 3;
-                -webkit-box-flex: 3;
-                flex: 3;
-                height: 30vw;
+                ms-flex: 4;
+                -webkit-box-flex: 4;
+                flex: 4;
+                height: 25vw;
                 padding-left: 2vw;
                 -webkit-box-sizing: border-box;
                 box-sizing: border-box;
@@ -686,7 +686,7 @@ input{
                 -webkit-box-pack: justify;
                 -ms-flex-pack: justify;
                 justify-content: space-between;
-                padding-left: 6vw;
+                padding-left: 4vw;
                 -webkit-box-sizing: border-box;
                 box-sizing: border-box;
                 p {
