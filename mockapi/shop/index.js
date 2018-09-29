@@ -1,6 +1,15 @@
 import instance from './instance';
 import { convertRESTAPI } from '../util';
 
+/** 预定记录 */
+function api_FangYuan_GetYuDingJiLu_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/FangYuan/GetYuDingJiLu',
+    opts: opts
+  });
+}
+
 /** 房源列表 */
 function api_FangYuan_GetKeYuYongList_get(opts) {
   return instance({
@@ -893,6 +902,7 @@ function shop_getBanner_get(opts) {
 }
 
 export {
+  api_FangYuan_GetYuDingJiLu_get,
   api_FangYuan_GetKeYuYongList_get,
   api_FangYuan_getFangYuan_get,
   api_QYK_GetYiYongCiShuByKaHao_get,

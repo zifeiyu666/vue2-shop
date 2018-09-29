@@ -3,7 +3,9 @@
     <div class='swiper-container'>
       <v-swiper :swiperData="bannerList"></v-swiper>
     </div>
+    <mt-button @click='goToIntroduce()' style='display: block; width: 95vw; background: #FFAA00; margin: 2.5vw' size='small' type='danger'>集团介绍</mt-button>
     <v-title title='项目展示' @clickMore='moreItems'></v-title>
+    
     <div v-for='(i, index) in items' :key='index' @click='goToDetail(i)'>
       <item-show :itemData="i"></item-show>
     </div>
@@ -78,6 +80,10 @@ export default {
     goToDetail(i) {
       console.log(11111)
       this.$router.push({path: '/show/itemnav', query:{id: i.id}})
+    },
+    // 项目简介
+    goToIntroduce() {
+      this.$router.push({path: '/show/itemDetail', query: {code: 'JTJS', name: ''}})
     },
     moreItems() {
       console.log(11111111)

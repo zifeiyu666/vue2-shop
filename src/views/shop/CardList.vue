@@ -10,7 +10,7 @@
       infinite-scroll-distance="10"
       class="list">
       <li class="add" @click='showPopup(1)'>
-        <i class='iconfont icon-tianjia'></i>
+        <i class='iconfont icon-add'></i>
       </li>
       <li v-for='item in QYKlist' :key='item.Id'>
         <img v-lazy='item.ImageUrl' style='border: 1px solid #ddd' alt="">

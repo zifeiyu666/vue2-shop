@@ -55,23 +55,23 @@
                         <el-input v-model="qykForm.name"></el-input>
                     </el-form-item>
                     <el-form-item label="联系电话">
-                        <el-input v-model="qykForm.name"></el-input>
+                        <el-input v-model="qykForm.phone"></el-input>
                         <span style='font-size: 12px; color:#666; position: relative; top: -8px'><span style='color: #ff4545'>*</span>请准确填写，用于接收通知</span>
                     </el-form-item>
                     <el-form-item label="邮寄地址">
-                        <el-input v-model="qykForm.name"></el-input>
+                        <el-input v-model="qykForm.address"></el-input>
                     </el-form-item>
                     <el-form-item label="身份证号">
                         <el-input v-model="qykForm.idcard"></el-input>
                     </el-form-item>
-                    <el-form-item label="备注">
+                    <!-- <el-form-item label="备注">
                         <el-input v-model="qykForm.tip"></el-input>
-                    </el-form-item>
+                    </el-form-item> -->
                 </el-form>  
               </div>
               <!-- 权益卡度假政策 -->
               <div class="type_wrap" v-if='detail.ProductType == "QYKL"'>
-                <p class="type_title">度假政策<a>《度假卡使用说明》</a></p>
+                <p class="type_title">度假政策<span @click.stop="goToXuZhi('DJLSYSM', '度假卡使用说明')" style='color:#ff4800 '>《度假卡使用说明》</span></p>
               </div>
           </div>
           
@@ -114,13 +114,13 @@
           <div class='read_wrap type_wrap' @click='changeIsRead' v-if='isImmePay && detail.ProductType != "QYKL"'>
             <i v-if='!isRead' class='iconfont icon-circle' style='color: #666'></i>
             <i v-else class='iconfont icon-danxuanxuanzhong' style='color: #ff4800'></i>
-            <span>我已仔细阅读《购物须知》并同意条款内容</span>
+            <span>我已仔细阅读<span @click.stop="goToXuZhi('YDXZ', '预定须知')" style='color:#ff4800 '>《预定须知》</span>并同意条款内容</span>
           </div>
           <!-- 权益卡须知 -->
           <div class='read_wrap type_wrap' @click='changeIsRead' v-if='isImmePay && detail.ProductType == "QYKL"'>
             <i v-if='!isRead' class='iconfont icon-circle' style='color: #666'></i>
             <i v-else class='iconfont icon-danxuanxuanzhong' style='color: #ff4800'></i>
-            <span>我已仔细阅读《权益卡使用须知》并同意条款内容</span>
+            <span>我已仔细阅读<span @click.stop="goToXuZhi('DJLSYSM', '度假卡使用说明')" style='color:#ff4800 '>《度假卡使用说明》</span>并同意条款内容</span>
           </div>
         </div>
 
@@ -263,6 +263,9 @@ export default {
   },
   methods:{
     scrollTo,
+    goToXuZhi(code, title) {
+      this.$router.push({path: '/shop/xz', query: {code: code, title: title}})
+    },
     changeIsRead() {
       this.isRead = !this.isRead
     },
@@ -499,7 +502,11 @@ export default {
           PId: this.detail.PId,
           PropId: this.enabledProp[0].PropId,
           Num: this.paynum,
-          OpenID: this.openid
+          OpenID: this.openid,
+          Contacts: this.qykForm.name,
+          Phone: this.qykForm.phone,
+          Address: this.qykForm.address,
+          IdNum: this.qykForm.idcard
         })
       }).then(res => {
         this.popupVisible = false

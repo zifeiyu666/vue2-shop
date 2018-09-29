@@ -1,23 +1,25 @@
 <template>
   <div>
     <v-header>
-      <h1 slot="title">返现记录</h1>
+      <h1 slot="title">预定记录</h1>
     </v-header>
-    <p class='jfmx'><span style='background: #f3f5f7'>返现明细</span></p>
+    <p class='jfmx'><span style='background: #f3f5f7'>预定明细</span></p>
     <ul
-      v-if='FxList.length > 0 && FxList[0]'
+      v-if='List.length > 0 && List[0]'
       v-infinite-scroll="loadMore"
       infinite-scroll-disabled="loading"
       infinite-scroll-distance="10"
       >
-      <li v-for="(i, index) in FxList" :key='index' >
+      <li v-for="(i, index) in List" :key='index' >
         <div class="company-wrap clearfix">
           <div class="content">
             <ul style='background-color: #F8FCFF!important'>
-                <li><span>{{i.reason}}</span></li>
-                <li class='score'><span class="in"><i>+</i> ￥{{i.amounts}}</span></li>
-                <li><span style='font-size: 12px; color: #666'>{{parseTime(i.recordTime)}}</span></li>
-              </ul>
+              <li><span>{{i.FangYuanBiaoTi}}</span></li>
+              <li>卡券号：<span>{{i.KaQuanHao}}</span></li>
+              <li>预定时间：<span style='font-size: 12px; color: #666'>{{parseTime(i.YuDingKaiShiSJ)}} 至 {{parseTime(i.YuDingJieZhiSJ)}}</span></li>
+              <li v-if='i.RuZhuZhuangTai == 2 || i.RuZhuZhuangTai == 3'>入住时间：<span  style='font-size: 12px; color: #666'>{{parseTime(i.ShiJiRuZhuSJ)}}</span></li>
+              <li v-if='i.RuZhuZhuangTai == 3'>离店时间：<span  style='font-size: 12px; color: #666'>{{parseTime(i.ShiJiLiDianSJ)}}</span></li>
+            </ul>
           </div>
         </div>
       </li>
@@ -27,7 +29,7 @@
       <v-nomore></v-nomore>
     </div>
 
-    <v-baseline v-if='isLastPage && FxList.length > 0'></v-baseline>
+    <v-baseline v-if='isLastPage && List.length > 0'></v-baseline>
     
   </div>
   
@@ -38,7 +40,6 @@ import { Toast } from 'mint-ui';
 import * as mockapi from '@/../mockapi'
 import Header from '@/common/_header.vue'
 import NoMore from '@/components/nomore'
-import { parseTime } from '@/util/data.js'
 
   export default{
     components: {
@@ -51,7 +52,7 @@ import { parseTime } from '@/util/data.js'
         pageNo: 1,
         pageSize: 10,
         isLastPage: false,
-        FxList: [],
+        List: [],
         score: null,
         usescore: null,
         loading: false,
@@ -67,24 +68,30 @@ import { parseTime } from '@/util/data.js'
       this.time = userInfo.subscribe_time
     },
     mounted() {
-      this.getFxList()
+      this.getList()
     },
     methods: {
-      parseTime,
-      getFxList() {
+      parseTime(time) {
+        if (time) {
+          return time.slice(0,10)
+        }
+        return ''
+        
+      },
+      getList() {
         this.isloading = true
         this.$store.commit('SET_LOADING', true);
-        mockapi.shop.api_Shop_getMyCrashbackList_get({
+        mockapi.shop.api_FangYuan_GetYuDingJiLu_get({
           params: {
             token: this.$store.state.userInfo.MemberToken,
-            openid: this.$route.query.id,
+            QuanYiKaHao: 'MS G20180100002',
             pageNo: this.pageNo,
             pageSize: this.pageSize
           }
         }).then(res => {
           var data = res.data.data.list
           this.pageNo++
-          this.FxList = this.FxList.concat(data)
+          this.List = this.List.concat(data)
           this.isLastPage = res.data.data.pager.isLastPage
           console.log({isLastPage: this.isLastPage})
           this.$store.commit('SET_LOADING', false);
@@ -99,7 +106,7 @@ import { parseTime } from '@/util/data.js'
         console.log('loadmore')
         console.log({isLastPage: this.isLastPage})
         if (!this.isLastPage) {
-          this.getFxList()
+          this.getList()
         }
       } 
     }

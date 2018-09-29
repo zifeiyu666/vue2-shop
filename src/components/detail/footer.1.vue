@@ -148,13 +148,13 @@
           <div class='read_wrap type_wrap' @click='changeIsRead' v-if='isImmePay && detail.ProductType != "QYKL"'>
             <i v-if='!isRead' class='iconfont icon-circle' style='color: #666'></i>
             <i v-else class='iconfont icon-danxuanxuanzhong' style='color: #ff4800'></i>
-            <span>我已仔细阅读《购物须知》并同意条款内容</span>
+            <span>我已仔细阅读<span @click.stop="goToXuZhi('YDXZ', '预定须知')" style='color:#ff4800 '>《预定须知》</span>并同意条款内容</span>
           </div>
           <!-- 权益卡须知 -->
           <div class='read_wrap type_wrap' @click='changeIsRead' v-if='isImmePay && detail.ProductType == "QYKL"'>
             <i v-if='!isRead' class='iconfont icon-circle' style='color: #666'></i>
             <i v-else class='iconfont icon-danxuanxuanzhong' style='color: #ff4800'></i>
-            <span>我已仔细阅读《权益卡使用须知》并同意条款内容</span>
+            <span @click.stop="goToXuZhi('DJLSYSM', '度假卡使用说明')" style='color:#ff4800 '>《度假卡使用说明》</span>
           </div>
         </div>
 

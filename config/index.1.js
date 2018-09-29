@@ -31,16 +31,16 @@ module.exports = {
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {
+    <!-- proxyTable: {
       '/api': {  
-        target: test,    //主域名，以前我都写192.168.2.57:80，这里跨域了  
+        target: wj,    //主域名，以前我都写192.168.2.57:80，这里跨域了  
         changeOrigin: true,   //允许跨域  
         // pathRewrite: {         
         //     '^/api': ''  
         // }  
         //重写路径，其实这里就是和上面的target拼接起来
       }
-    },
+    }, -->
     host: 'localhost',
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

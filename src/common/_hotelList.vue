@@ -29,7 +29,7 @@
       position="bottom">
       <div style='max-height: 80vh; overflow: auto'>
         <div>
-          <img v-lazy="currentHotel.BiaoTiTuPianList[0]" alt="">
+          <v-hotelswiper :swiperData="currentHotel.BiaoTiTuPianList"></v-hotelswiper>
         </div>
         <div>
           <div v-html='currentHotel.XiangQing'></div>
@@ -49,11 +49,14 @@ import * as mockapi from '@/../mockapi'
 import NorMore from '@/components/nomore'
 import Baseline from '@/common/_baseline.vue'
 import { Toast } from 'mint-ui'
+import HotelDatePicker from 'vue-hotel-datepicker'
+import HotelSwiper from '@/common/swiper.vue'
 
 export default {
   components: {
     'v-nomore': NorMore,
     'v-baseline': Baseline,
+    'v-hotelswiper': HotelSwiper,
   },
   props: {
     startTime: {
@@ -151,14 +154,18 @@ export default {
 
 </script>
 
-<style lang='less' scoped>
+<style lang='less'>
 @import '../assets/utils.less';
+.mint-toast{
+    z-index: 2013!important;
+  }
 .popup{
   max-height: 80vh;
   width: 100%;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   overflow: hidden;
+  
   img{
     display: block;
     width: 100%;

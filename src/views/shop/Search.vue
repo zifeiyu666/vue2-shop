@@ -57,7 +57,7 @@ import Header from '@/common/_header.vue'
 import Baseline from '@/common/_baseline.vue'
 import NorMore from '@/components/nomore'
 import BackToTop from 'vue-backtotop'
-import AllProduct from '@/common/_productList.vue'
+import AllProduct from '@/common/_productListOneLine.vue'
 
 export default {
   components: {

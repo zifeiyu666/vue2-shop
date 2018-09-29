@@ -32,7 +32,7 @@
       <div v-if='hasQyk' class='read_wrap type_wrap' style='padding: 10px 15px;' @click='changeIsRead("qyk")'>
         <i v-if='!qykIsRead' class='iconfont icon-circle' style='color: #666'></i>
         <i v-else class='iconfont icon-danxuanxuanzhong' style='color: #ff4800'></i>
-        <span>我已仔细阅读《权益卡使用须知》并同意条款内容</span>
+        <span>我已仔细阅读<span @click.stop="goToXuZhi('DJLSYSM', '度假卡使用说明')" style='color:#ff4800 '>《度假卡使用说明》</span>并同意条款内容</span>
       </div>
       <li v-if='hasOther' style='height: 20px;padding-left: 15px'>非权益卡类</li>
       <li v-for="(k,i) in carList" v-if='k.producttype != "QYKL"' :key="i">
@@ -61,7 +61,7 @@
       <div v-if='hasOther' class='read_wrap type_wrap' style='padding: 10px 15px;' @click='changeIsRead("fqyk")'>
         <i v-if='!isRead' class='iconfont icon-circle' style='color: #666'></i>
         <i v-else class='iconfont icon-danxuanxuanzhong' style='color: #ff4800'></i>
-        <span>我已仔细阅读《权益卡使用须知》并同意条款内容</span>
+        <span>我已仔细阅读<span @click.stop="goToXuZhi('YDXZ', '预定须知')" style='color:#ff4800 '>《预定须知》</span>并同意条款内容</span>
       </div>
 
     </ul>
@@ -122,6 +122,9 @@ export default {
     this.getMyCar()
   },
   methods: {
+    goToXuZhi(code, title) {
+      this.$router.push({path: '/shop/xz', query: {code: code, title: title}})
+    },
     checkType() {
       this.carList.forEach(item => {
         if (item.producttype == 'QYKL') {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mt-header title="项目简介">
+    <mt-header :title='this.$route.query.name'>
       <span @click='goBack()' slot="left">
         <mt-button icon="back">返回</mt-button>
       </span>
