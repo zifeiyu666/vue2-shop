@@ -3,7 +3,13 @@
     <div class='swiper-container'>
       <v-swiper :swiperData="bannerList"></v-swiper>
     </div>
-    <mt-button @click='goToIntroduce()' style='display: block; width: 95vw; background: #FFAA00; margin: 2.5vw' size='small' type='danger'>集团介绍</mt-button>
+    <div class="btn-wrap clearfix">
+      <mt-button class='my-btn' @click='goTo(1)' size='small' type='danger'>集团介绍</mt-button>
+      <mt-button class='my-btn' @click='goTo(2)' size='small' type='danger'>企业新闻</mt-button>
+      <mt-button class='my-btn' @click='goTo(3)' size='small' type='danger'>旅游板块</mt-button>
+      <mt-button class='my-btn' @click='goTo(4)' size='small' type='danger'>度假项目</mt-button>
+    </div>
+    
     <v-title title='项目展示' @clickMore='moreItems'></v-title>
     
     <div v-for='(i, index) in items' :key='index' @click='goToDetail(i)'>
@@ -14,7 +20,7 @@
     <news-show></news-show> 
     <news-show></news-show>
     <news-show></news-show> -->
-    <v-footer></v-footer>
+    <!-- <v-footer></v-footer> -->
   </div>
 </template>
 
@@ -82,8 +88,13 @@ export default {
       this.$router.push({path: '/show/itemnav', query:{id: i.id}})
     },
     // 项目简介
-    goToIntroduce() {
-      this.$router.push({path: '/show/itemDetail', query: {code: 'JTJS', name: ''}})
+    goTo(index) {
+      if (index == 1) {
+        this.$router.push({path: '/show/itemDetail', query: {code: 'JTJS', name: ''}})
+      } else if (index == 2) {
+        this.$router.push({path: '/show/item/list'})
+      }
+      
     },
     moreItems() {
       console.log(11111111)
@@ -104,6 +115,25 @@ export default {
     width: 100%;
     height: 100%;
     background-color: #EBEBEB;
+    .my-btn{
+      float: left; 
+      width: 46vw;
+      padding-top: 6vw;
+      padding-bottom: 10vw;
+      margin: 2vw;
+    }
+    .my-btn:nth-of-type(1) {
+      background: #FFAA00;
+    }
+    .my-btn:nth-of-type(2) {
+      background: rgb(217, 116, 43)
+    }
+    .my-btn:nth-of-type(3) {
+      background: rgb(153,77,82);
+    }
+    .my-btn:nth-of-type(4) {
+      background: #ff6b6b;
+    }
 }
 .nothing {
   height: 60px;

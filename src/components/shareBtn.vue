@@ -44,16 +44,16 @@ export default {
     position: fixed;
     top:17vw;
     right: 0;
-    height: 24px;
-    width: 50px;
-    line-height: 24px;
+    height: 8vw;
+    width: 70px;
+    line-height: 8vw;
     background: rgba(0,0,0,0.7);
     color: #fff;
+    text-align: center;
     font-size: 12px;
-    padding: 0 6px 0 10px;
     z-index: 700;
-    border-top-left-radius: 12px;
-    border-bottom-left-radius: 12px;
+    border-top-left-radius: 4vw;
+    border-bottom-left-radius: 4vw;
   }
   .close{
     position: absolute;

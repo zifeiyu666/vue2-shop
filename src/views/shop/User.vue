@@ -104,7 +104,7 @@
                 <img src='../../assets/img/hotel.png' style='width: 22px;' >
               </div>
               <p>
-                <span>度假卡</span><i class="icon-go"></i>
+                <span>我的度假卡</span><i class="icon-go"></i>
               </p>
             </router-link>
             <router-link :to="{ name: '分销中心'}" class="my-settle-top">

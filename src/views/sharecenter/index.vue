@@ -19,23 +19,23 @@
                     <img src='../../assets/img/fxs.png' style='width: 24px;margin-top:-4px' >
                   </div>
                   <p>
-                    <span>我的渠道</span><i class="icon-go"></i>
+                    <span>我的归属团队</span><i class="icon-go"></i>
                   </p>
               </router-link>
+              <a @click='showQrCode()' class="my-service-bottom">
+                <div>
+                  <img src='../../assets/img/qrcode.png' style='width: 22px;margin-top:-4px' >
+                </div>
+                <p>
+                  <span>我的推介二维码</span><i class="icon-go"></i>
+                </p>
+              </a>
               <router-link class="my-service-bottom" :to="{ path: '/sharecenter/shareorders'}">
                   <div>
                     <img src='../../assets/img/dd.png' style='width: 22px;margin-top:-4px' >
                   </div>
                   <p>
-                    <span>推广成交订单</span><i class="icon-go"></i>
-                  </p>
-              </router-link>
-              <router-link class="my-service-bottom" :to="{ path: '/sharecenter/search', query: {type: 'ywyzx', title: '分销产品'}}">
-                  <div>
-                    <img src='../../assets/img/sharegoods1.png' style='width: 22px;margin-top:-4px' >
-                  </div>
-                  <p>
-                    <span>分销产品</span><i class="icon-go"></i>
+                    <span>我的推介成交</span><i class="icon-go"></i>
                   </p>
               </router-link>
               <router-link :to="{ path: '/sharecenter/fxjl'}" class="my-service-bottom">
@@ -43,17 +43,19 @@
                   <span class="icon2-f"></span>
                 </div>
                 <p>
-                  <span>返现记录</span><i class="icon-go"></i>
+                  <span>我的返现记录</span><i class="icon-go"></i>
                 </p>
               </router-link>
-              <a @click='showQrCode()' class="my-service-bottom">
-                <div>
-                  <img src='../../assets/img/qrcode.png' style='width: 22px;margin-top:-4px' >
-                </div>
-                <p>
-                  <span>我的二维码</span><i class="icon-go"></i>
-                </p>
-              </a>
+              <router-link class="my-service-bottom" :to="{ path: '/sharecenter/search', query: {type: 'ywyzx', title: '分销产品'}}">
+                  <div>
+                    <img src='../../assets/img/sharegoods1.png' style='width: 22px;margin-top:-4px' >
+                  </div>
+                  <p>
+                    <span>热门分销产品</span><i class="icon-go"></i>
+                  </p>
+              </router-link>
+              
+              
           </section>
 
       </div>
