@@ -45,7 +45,7 @@ export default {
     top:17vw;
     right: 0;
     height: 24px;
-    width: 50px;
+    // width: 50px;
     line-height: 24px;
     background: rgba(0,0,0,0.7);
     color: #fff;

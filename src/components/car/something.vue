@@ -18,7 +18,7 @@
           </div>
           <div class="something-right">
             <p>{{k.title}}</p>
-            <p style="color:rgb(199, 108, 28)"> {{generateTypeName(k.producttype)}}</p>
+            <p style="color:rgb(199, 108, 28)"> {{k.propname}}</p>
             <p>数量：<span style="padding: 4px 5px;
   width: 30px;" @click='reduce(k)'>-</span> {{k.num}} <span style="padding: 4px 5px;
   width: 30px;" @click='add(k)'>+</span>
@@ -32,9 +32,9 @@
       <div v-if='hasQyk' class='read_wrap type_wrap' style='padding: 10px 15px;' @click='changeIsRead("qyk")'>
         <i v-if='!qykIsRead' class='iconfont icon-circle' style='color: #666'></i>
         <i v-else class='iconfont icon-danxuanxuanzhong' style='color: #ff4800'></i>
-        <span>我已仔细阅读<span @click.stop="goToXuZhi('DJLSYSM', '度假卡使用说明')" style='color:#ff4800 '>《度假卡使用说明》</span>并同意条款内容</span>
+        <span>我已仔细阅读<span @click.stop="goToXuZhi('DJKSYSM', '度假卡使用说明')" style='color:#ff4800 '>《度假卡使用说明》</span>并同意条款内容</span>
       </div>
-      <li v-if='hasOther' style='height: 20px;padding-left: 15px'>非权益卡类</li>
+      <li v-if='hasOther' style='height: 20px;padding-left: 15px'>旅游产品类</li>
       <li v-for="(k,i) in carList" v-if='k.producttype != "QYKL"' :key="i">
           <!-- 暂时屏蔽购物车选择，直接全部提交 -->
           <!-- <div class="something-left">
@@ -68,6 +68,19 @@
     <div v-else>
       <v-nomore></v-nomore>
     </div>
+
+    <!-- 购物须知 -->
+    <mt-popup
+      style='overflow: auto; max-height: 80vh; width: 100%; border-top-left-radius: 20px;border-top-right-radius: 20px'
+      v-model="popupVisible2"
+      position="bottom">
+      <div style='padding: 30px 15px' v-html='content.NewsContent'>
+
+      </div>
+      <div style='margin: 10px'>
+        <mt-button size='large' type='danger' @click='popupVisible2 = false'>关闭</mt-button>
+      </div>
+    </mt-popup>
   </div>
 </template>
 
@@ -96,7 +109,10 @@ export default {
       qykIsRead: false,
       canSubmit: false,
       hasQyk: false,
-      hasOther: false
+      hasOther: false,
+      code: '',
+      content: '',
+      popupVisible2: false
     }
   },
   watch: {
@@ -123,7 +139,23 @@ export default {
   },
   methods: {
     goToXuZhi(code, title) {
-      this.$router.push({path: '/shop/xz', query: {code: code, title: title}})
+      // this.$router.push({path: '/shop/xz', query: {code: code, title: title}})
+      this.popupVisible2 = true
+      // this.$router.push({path: '/shop/xz', query: {code: code, title: title}})
+      this.$store.commit('SET_LOADING', true)
+        mockapi.show.api_Show_getXMJJ_get({
+            params: {
+                typeCode: code
+            }
+        }).then(response => {
+            this.$store.commit('SET_LOADING', false)
+            var data = response.data.data
+            this.content = data
+            console.log(this.content)
+        }).catch(error => {
+            this.$store.commit('SET_LOADING', false)
+            console.log(error)
+        })
     },
     checkType() {
       this.carList.forEach(item => {
@@ -228,7 +260,7 @@ export default {
           Num: k.num + 1
         })
       }).then(res => {
-        this.updateMycar()
+        this.getMyCar()
       }).catch(err => {
         console.log(err)
       })
@@ -243,7 +275,7 @@ export default {
             Num: k.num - 1
           })
         }).then(res => {
-          this.updateMycar()
+          this.getMyCar()
         }).catch(err => {
           console.log(err)
         })

@@ -85,6 +85,7 @@ export default {
     getList(isSearch) {
       if (isSearch) {
         this.pageNo = 1
+        this.allList = []
       }
       this.isLoading = true
       this.$store.commit('SET_LOADING', true)
@@ -142,7 +143,9 @@ export default {
           Toast(res.data.msg)
         } else if (res.data.result == 1) {
           Toast('预定成功')
+          
         }
+        this.$router.push({path: '/shop/bookhistory', query: {id: this.$route.query.id}})
         this.$store.commit('SET_LOADING', false)
       }).catch(err => {
         this.$store.commit('SET_LOADING', false)

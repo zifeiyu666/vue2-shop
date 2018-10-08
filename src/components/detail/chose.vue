@@ -39,9 +39,15 @@
         <span class='originalprice' v-if='enabledProp.length == 1 && enabledProp[0].DiscountPrice != enabledProp[0].OriginalPrice'>原价￥{{enabledProp[0].OriginalPrice}}</span>
         
       </div>
+      <div>
+        <el-tag type='info' size='small' v-if='view.isfenqi == 1'>可分期</el-tag>
+        <el-tag type='info' size='small' v-if='view.isfenqi == 0'>不可分期</el-tag>
+        <el-tag type='info' size='small' v-if='view.istuikuan == 0'>不可退款</el-tag>
+        <el-tag type='info' size='small' v-if='view.istuikuan == 1'>可退款</el-tag>
+      </div>
       <div class='item-wrap'>
         <span>已售 {{view.SoldNum}}</span>
-        <span>库存：{{view.AvailableNum}}</span>
+        <span>库存：{{view.InventoryNum}}</span>
       </div>
       <div class='line'></div>
       

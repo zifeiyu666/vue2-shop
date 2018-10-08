@@ -27,7 +27,8 @@ header {
   align-items: center;
   padding: 0 4vw;
   // .shadow();
-  border-bottom: 1px solid #ccc;
+  // border-bottom: 1px solid #ccc;
+  box-shadow: 0px 1px 2px #ddd;
   cursor: pointer;
   top: 0;
   width: 100%;

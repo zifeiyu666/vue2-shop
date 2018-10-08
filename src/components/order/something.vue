@@ -1,7 +1,7 @@
 <template lang="html">
 
   <div class="wrap">
-    <v-gologin></v-gologin>
+    <!-- <v-gologin></v-gologin> -->
     <ul class="something" v-if='orderDetail'>
       <li v-for="(k,i) in orderDetail.opd">
           <div class="something-middle">
@@ -70,8 +70,10 @@ export default {
 .wrap {
     width: 100%;
     .something {
+        margin-top: 5px;
         width: 100%;
         > li {
+            background: #fff;
             display: -ms-flex;
             display: -webkit-box;
             display: -ms-flexbox;

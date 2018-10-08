@@ -2,6 +2,10 @@
   <div id="app" v-loading='fetchLoading'>
     <!-- shell -->
     <!-- <transition name='fade'> -->
+    <!-- <keep-alive>
+        <router-view v-if="$route.meta.keep_alive"></router-view>
+    </keep-alive>
+    <router-view v-if="!$route.meta.keep_alive"></router-view> -->
     <router-view></router-view>
     <!-- </transition> -->
     <!-- <v-loading v-show="fetchLoading"></v-loading> -->

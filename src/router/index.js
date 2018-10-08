@@ -215,6 +215,7 @@ const shopRouters = [
     name: '详情页',
     component: Detail,
     meta: {
+      keep_alive: true,
       requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
     }
   }, {
@@ -517,5 +518,8 @@ export default new Router({
     ...showRouters,
     ...shareRouters,
     ...channelRouters
-  ]
+  ],
+  scrollBehavior (to, from, savedPosition) {
+    return { x: 0, y: 0 }
+  }
 })

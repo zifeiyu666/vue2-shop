@@ -1,5 +1,5 @@
 <template lang="html">
-  <footer class="footer">
+  <footer class="pay_footer">
 
     <div class="footer-result">
       <p>合计：</p>
@@ -67,15 +67,59 @@ export default {
                   //     location.href = '@Url.Action("Refund", "TenPayV3")';
                   // }
                   //console.log(JSON.stringify(res));
-                  that.$message('支付成功')
-                  that.$router.push('/shop/myorder')
+                  // that.$message('支付成功')
+                  that.$confirm('已成功支付，接下来您打算去往哪里？', '支付成功', {
+                    distinguishCancelAndClose: true,
+                    confirmButtonText: '查看订单',
+                    cancelButtonText: '返回首页',
+                    center: true,
+                    customClass: 'el_message',
+                    showClose: false
+                  })
+                  .then(() => {
+                    that.$router.push('/shop/myorder')
+                  })
+                  .catch(action => {
+                    that.$router.push('/shop')
+                  });
+                  // that.$router.push('/shop/myorder')
               } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
-                that.$message('支付被取消')
-                that.$router.push('/shop/myorder')
+                // that.$message('支付被取消')
+                // that.$router.push('/shop/myorder')
+                that.$confirm('支付被取消，接下来您打算去往哪里？', '支付失败', {
+                    distinguishCancelAndClose: true,
+                    confirmButtonText: '查看订单',
+                    cancelButtonText: '返回首页',
+                    center: true,
+                    customClass: 'el_message',
+                    showClose: false
+                  })
+                  .then(() => {
+                    that.$router.push('/shop/myorder')
+                  })
+                  .catch(action => {
+                    that.$router.push('/shop')
+                  });
               }
               // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
               //因此微信团队建议，当收到ok返回时，向商户后台询问是否收到交易成功的通知，若收到通知，前端展示交易成功的界面；若此时未收到通知，商户后台主动调用查询订单接口，查询订单的当前状态，并反馈给前端展示相应的界面。
           })
+        }).catch(err => {
+          console.log('支付出错', err)
+          that.$confirm('发生错误，接下来您打算去往哪里？', '支付失败', {
+            distinguishCancelAndClose: true,
+            confirmButtonText: '查看订单',
+            cancelButtonText: '返回首页',
+            center: true,
+            customClass: 'el_message',
+            showClose: false
+          })
+          .then(() => {
+            that.$router.push('/shop/myorder')
+          })
+          .catch(action => {
+            that.$router.push('/shop')
+          });
         })
       })
     }
@@ -83,10 +127,12 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 @import '../../assets/fz.less';
-
-  .footer {
+  .el_message{
+    width: 80vw;
+  }
+  .pay_footer {
     width: 100%;
     height: 16vw;
     display: -webkit-flex;
@@ -97,6 +143,7 @@ export default {
     bottom: 0;
     left: 0;
     background-color: #ffffff;
+    
     .footer-result,a {
       -webkit-flex: 1;
       -ms-flex: 1;

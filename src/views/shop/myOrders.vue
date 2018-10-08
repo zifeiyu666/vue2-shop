@@ -26,21 +26,22 @@
                     </div>
                     <div class="something-right">
                       <p>{{k.producttitle}}</p>
-                      <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p>
-                      <p>售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                      <p>数量： {{k.buynum}}</p>
+                      <p>规格：{{k.propname}}</p>
+                      <p style="color:rgb(199, 108, 28);">售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;</p>
                       
                       <!-- TODO -->
-                      <!-- v-if='k.orderstate=="已付款"' -->
+                      <!-- v-if='k.orderstate=="已付款"' -->                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
                       <div class='state-wrap'>
                         <mt-badge size="small" color='#ccc'>{{k.state}}</mt-badge>
-                        <mt-button v-if='k.state == "已付款" || k.state == "已接受"'  class='refund-btn1'  @click.stop='refund([k,item])'>申请退款</mt-button>
+                        <mt-button style='width: 90px' v-if='k.state == "已付款" || k.state == "已接受"'  class='refund-btn1'  @click.stop='refund([k,item])'>申请退款</mt-button>
                         
                       </div>
                       
                     </div>
                     
                   </li>
-                  <mt-button class='refund-btn-2' :class="{'refund-btn-right': (item.orderstate == '未付款' ? true : false)}">{{item.orderstate}}</mt-button>
+                  <span class='refund-btn-2' style='width: 90px' :class="{'refund-btn-right': (item.orderstate == '未付款' ? true : false)}">{{item.orderstate}}</span>
                   <mt-button v-if='item.orderstate=="未付款"' class='refund-btn'  @click.stop='goPay(item)'>去支付</mt-button>
                 </ul>
                 
@@ -73,8 +74,9 @@
                     </div>
                     <div class="something-right">
                       <p>{{k.producttitle}}</p>
-                      <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p>
-                      <p>售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                      <p>数量： {{k.buynum}}</p>
+                      <p>规格：{{k.propname}}</p>
+                      <p  style="color:rgb(199, 108, 28);">售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;</p>
                       <!-- <div class="something-right-bottom">
                         <span @click.stop='deleteOrder(item)'></span>
                       </div> -->
@@ -84,7 +86,7 @@
                       </div>
                     </div>
                   </li>
-                  <mt-button class='refund-btn-2' :class="{'refund-btn-right': (item.orderstate == '未付款' ? true : false)}">{{item.orderstate}}</mt-button>
+                  <span class='refund-btn-2' :class="{'refund-btn-right': (item.orderstate == '未付款' ? true : false)}">{{item.orderstate}}</span>
                   <mt-button class='refund-btn'  @click.stop='goPay(item)'>去支付</mt-button>
                 </ul>
                 
@@ -115,8 +117,9 @@
                     </div>
                     <div class="something-right">
                       <p>{{k.producttitle}}</p>
-                      <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p>
-                      <p>售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                      <p>数量： {{k.buynum}}</p>
+                      <p>规格：{{k.propname}}</p>
+                      <p style="color:rgb(199, 108, 28);">售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;</p>
                       <!-- <div class="something-right-bottom">
                         <span @click.stop='deleteOrder(item)'></span>
                       </div> -->
@@ -126,7 +129,7 @@
                       </div>
                     </div>
                   </li>
-                  <mt-button class='refund-btn-2'>{{item.orderstate}}</mt-button>
+                  <span class='refund-btn-2'>{{item.orderstate}}</span>
                   <!-- <mt-badge size="normal" color='#ccc'>{{item.orderstate}}</mt-badge> -->
                 </ul>
                 
@@ -157,8 +160,9 @@
                     </div>
                     <div class="something-right">
                       <p>{{k.producttitle}}</p>
-                      <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p>
-                      <p>售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                      <p>数量： {{k.buynum}}</p>
+                      <p>规格：{{k.propname}}</p>
+                      <p style="color:rgb(199, 108, 28);">售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;</p>
                       <!-- <div class="something-right-bottom">
                         <span @click.stop='deleteOrder(item)'></span>
                       </div> -->
@@ -168,7 +172,7 @@
                       </div>
                     </div>
                   </li>
-                  <mt-button class='refund-btn-2'>{{item.orderstate}}</mt-button>
+                  <span class='refund-btn-2'>{{item.orderstate}}</span>
                   <!-- <mt-badge size="normal" color='#ccc'>{{item.orderstate}}</mt-badge> -->
                 </ul>
                 
@@ -184,6 +188,7 @@
           </div>
       </mt-tab-container-item>
     </mt-tab-container>
+    <v-footer></v-footer>
   </div>
   
 </template>
@@ -261,7 +266,8 @@ import Header from '@/common/_header.vue'
     components: {
       'v-header':Header,
       'v-baseline': Baseline,
-      'v-nomore': NorMore
+      'v-nomore': NorMore,
+      'v-footer': Footer
     },
     mounted() {
       if (this.$route.query.selected) {
@@ -695,11 +701,12 @@ input{
                     display: -webkit-box;
                     -webkit-line-clamp: 2;
                     -webkit-box-orient: vertical;
-                    .fz(font-size,26);
+                    font-size: 12px;
+                    color: #666;
                 }
-                p:last-of-type {
-                    .fz(font-size,22);
-                    color: rgb(168, 168, 168);
+                p:first-of-type {
+                  font-size: 14px;
+                  color: #333;
                 }
                 .something-right-bottom {
 
@@ -761,15 +768,18 @@ input{
 }
 .refund-btn-2{
   font-size: 13px;
-  width: 80px;
+  width: 90px;
   height: 35px;
-  color: #ccc;
+  line-height: 35px;
+  text-align: center;
+  color: #aaa;
   background: #fff;
   margin-top: 2vw;
   position: absolute;
   right: 8vw;
   bottom: 7px;
   z-index: 10;
+  border: none;
 }
 .refund-btn-right{
   right: 30vw !important;

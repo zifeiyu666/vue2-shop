@@ -3,15 +3,16 @@
     <v-header>
       <h1 slot="title">我的度假卡</h1>
     </v-header>
+    <div class="add" @click='showPopup(1)'>
+      <i class='iconfont icon-add'></i>
+    </div>
     <ul 
       v-if='QYKlist.length > 0 && QYKlist[0]'
       v-infinite-scroll="loadMore"
       infinite-scroll-disabled="loading"
       infinite-scroll-distance="10"
       class="list">
-      <li class="add" @click='showPopup(1)'>
-        <i class='iconfont icon-add'></i>
-      </li>
+      
       <li v-for='item in QYKlist' :key='item.Id'>
         <img v-lazy='item.ImageUrl' style='border: 1px solid #ddd' alt="">
         <div class="btn-list">
@@ -27,7 +28,7 @@
     </div>
     <v-baseline v-if='isLastPage && QYKlist.length > 0'></v-baseline>
     <mt-popup
-      class='popup'
+      class='popup_wrap'
       v-model="popupVisible"
       position="right">
       <div style='margin-top:18vw'></div>
@@ -200,6 +201,19 @@ export default{
 <style lang='less'>
 @import '../../assets/utils.less';
   .card_wrap{
+    .add{
+      margin: 15px;
+        .iconfont{
+          font-size: 40px;
+          color: #bbb;
+          line-height: 45vw;
+        }
+        background: #fff;
+        text-align: center;
+        height: 45vw;
+        border: 2px dashed #ccc;
+        border-radius: 10px;
+      }
     .list{
       width: 100%;
       li{
@@ -220,21 +234,10 @@ export default{
           }
         }
       }
-      .add{
-        .iconfont{
-          font-size: 40px;
-          color: #bbb;
-          line-height: 45vw;
-        }
-        background: #fff;
-        text-align: center;
-        height: 45vw;
-        border: 2px dashed #ccc;
-        border-radius: 10px;
-      }
+      
     }
 
-    .popup{
+    .popup_wrap{
       height: 100vh;
       width: 90vw;
       .btn-list{

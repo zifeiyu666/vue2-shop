@@ -3,7 +3,7 @@
         <v-header>
          <h1 slot="title">{{title}}</h1>
         </v-header>
-        <div v-html='content'>
+        <div style='padding: 30px 15px' v-html='content.NewsContent'>
 
         </div>
     </div>

@@ -34,7 +34,7 @@
           <!-- 选择规格 -->
         <div class="pick type_wrap" v-if='propTypeList' >
           <h1 class='type_title'>请选择商品规格</h1>
-            <div v-for='(item, index) in propTypeList' :key='index + "a"'>
+            <div v-for='(item, index) in propTypeList' :key='index'>
               
               <div style='cursor:pointer'>
                 <p class='sub_title'>{{item.DicTypeName}}：</p>
@@ -50,7 +50,7 @@
             <!-- 联系人信息 -->
             <div class="type_wrap" v-if='detail.ProductType == "QYKL"'>
                 <p class="type_title">信息填写</p>
-                <el-form ref="qykForm" :key='index' :model="qykForm" label-width="65px">
+                <el-form ref="qykForm" :model="qykForm" label-width="65px">
                     <el-form-item label="联系人">
                         <el-input v-model="qykForm.name"></el-input>
                     </el-form-item>
@@ -71,7 +71,7 @@
               </div>
               <!-- 权益卡度假政策 -->
               <div class="type_wrap" v-if='detail.ProductType == "QYKL"'>
-                <p class="type_title">度假政策<span @click.stop="goToXuZhi('DJLSYSM', '度假卡使用说明')" style='color:#ff4800 '>《度假卡使用说明》</span></p>
+                <p class="type_title">度假政策<span @click.stop="goToXuZhi('DJKSYSM', '度假卡使用说明')" style='color:#ff4800 '>《度假卡使用说明》</span></p>
               </div>
           </div>
           
@@ -99,15 +99,20 @@
             <p class='discountprice' v-if='enabledProp.length == 1'>
               总价：<i>￥</i>{{this.DiscountPrice * this.num}}
               <!-- 购物返现 -->
-              <span class='fx' v-if='detail.prop[0].gwfx && detail.prop[0].gwfx != 0 && !fxtype'>
-                <i>返</i>￥{{detail.prop[0].gwfx * this.num}}
+              <span class='fx' v-if='enabledProp[0].gwfx && enabledProp[0].gwfx != 0 && !fxtype'>
+                <i>返</i>￥{{enabledProp[0].gwfx * this.num}}
               </span>
               <!-- 分销返现 -->
-              <span class='fx' v-if='detail.prop[0].hyfx && detail.prop[0].hyfx != 0 && fxtype == "fx"'>
-                <i>赚</i>￥{{detail.prop[0].hyfx * this.num}}
+              <span class='fx' v-if='enabledProp[0].hyfx && enabledProp[0].hyfx != 0 && fxtype == "fx"'>
+                <i>赚</i>￥{{enabledProp[0].hyfx * this.num}}
               </span>
             </p>
+            
             <span class='originalprice' v-if='enabledProp.length == 1 && this.DiscountPrice != this.OriginalPrice'>原价￥{{this.OriginalPrice}}</span>
+            <p class='discountprice'  v-if='enabledProp.length == 1'>
+              <span>已售：{{enabledProp[0].SoldNum}}</span>
+              <span>库存：{{enabledProp[0].InventoryNum}}</span>
+            </p>
           </div>
             
           <!-- 购物须知 -->
@@ -120,7 +125,7 @@
           <div class='read_wrap type_wrap' @click='changeIsRead' v-if='isImmePay && detail.ProductType == "QYKL"'>
             <i v-if='!isRead' class='iconfont icon-circle' style='color: #666'></i>
             <i v-else class='iconfont icon-danxuanxuanzhong' style='color: #ff4800'></i>
-            <span>我已仔细阅读<span @click.stop="goToXuZhi('DJLSYSM', '度假卡使用说明')" style='color:#ff4800 '>《度假卡使用说明》</span>并同意条款内容</span>
+            <span>我已仔细阅读<span @click.stop="goToXuZhi('DJKSYSM', '度假卡使用说明')" style='color:#ff4800 '>《度假卡使用说明》</span>并同意条款内容</span>
           </div>
         </div>
 
@@ -135,6 +140,19 @@
           </div>
           
         </div>
+      </div>
+    </mt-popup>
+
+    <!-- 购物须知 -->
+    <mt-popup
+      style='overflow: auto; max-height: 95vh'
+      v-model="popupVisible2"
+      position="bottom">
+      <div style='padding: 30px 15px' v-html='content.NewsContent'>
+
+      </div>
+      <div style='margin: 10px'>
+        <mt-button size='large' type='danger' @click='popupVisible2 = false'>关闭</mt-button>
       </div>
     </mt-popup>
 
@@ -215,7 +233,10 @@ export default {
       mingwfx: '',
       maxgwfx: '',
       fxtype: '',
-      enabledProp: []
+      enabledProp: [],
+      code: '',
+      content: '',
+      popupVisible2: false
     }
   },
   computed:{
@@ -233,6 +254,7 @@ export default {
   },
   mounted() {
     this.fxtype = this.$route.query.type
+    this.getItemIntro(code)
   },
   // TODO： 检测数据
   watch: {
@@ -264,7 +286,23 @@ export default {
   methods:{
     scrollTo,
     goToXuZhi(code, title) {
-      this.$router.push({path: '/shop/xz', query: {code: code, title: title}})
+      this.popupVisible2 = true
+      // this.$router.push({path: '/shop/xz', query: {code: code, title: title}})
+      this.$store.commit('SET_LOADING', true)
+        mockapi.show.api_Show_getXMJJ_get({
+            params: {
+                typeCode: code
+            }
+        }).then(response => {
+            this.$store.commit('SET_LOADING', false)
+            var data = response.data.data
+            this.content = data
+            console.log(this.content)
+        }).catch(error => {
+            this.$store.commit('SET_LOADING', false)
+            console.log(error)
+        })
+
     },
     changeIsRead() {
       this.isRead = !this.isRead

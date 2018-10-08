@@ -19,7 +19,7 @@
       </div>
       <div class='item-wrap'>
         <span>已售 {{view.SoldNum}}</span>
-        <span>库存：{{view.AvailableNum}}</span>
+        <span>库存：{{view.InventoryNum}}</span>
       </div>
       <!-- <div class='item-wrap'>
         <span v-if='view.DBTypeName'>打包类型： {{view.DBTypeName}}</span>

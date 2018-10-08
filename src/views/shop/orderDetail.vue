@@ -9,6 +9,7 @@
           <span><i class='icon-clock iconfont'></i> 等待付款</span>
         </div>
         <div class="right">
+          <!-- <count-down class='count_down' v-if='k.limitTime' v-on:start_callback="countDownS_cb(1)" v-on:end_callback="countDownE_cb(1)" :startTime="new Date().getTime()" :endTime="new Date(orderDetail.expiretime).getTime()" :tipText="'距离开始文字1'" :tipTextEnd="'距离结束文字1'" :endText="'结束自定义文字2'" :dayTxt="'天'" :hourTxt="'小时'" :minutesTxt="'分钟'" :secondsTxt="'秒'"></count-down> -->
           <p>{{deadlineTime(orderDetail.expiretime)}}</p>
           <p>需付款： ￥{{orderDetail.realtotalprice}}</p>
         </div>
@@ -113,8 +114,9 @@
                 </div>
                 <div class="something-right">
                   <p>{{k.producttitle}}</p>
-                  <p style="color:rgb(199, 108, 28);">规格：{{k.propname}}</p>
-                  <p>售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                  <p>数量： {{k.buynum}}</p>
+                  <p>规格：{{k.propname}}</p>
+                  <p style="color:rgb(199, 108, 28);">售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;</p>
                   <!-- TODO -->
                   <!-- v-if='k.orderstate=="已付款"' -->
                   <div class='state-wrap'>
@@ -153,6 +155,7 @@ import Footer from '@/common/_footer.vue'
 import * as mockapi from '@/../mockapi'
 import qs from 'qs'
 import {Toast} from 'mint-ui'
+import CountDown from 'vue2-countdown'
 
 import Header from '@/common/_header.vue'
   export default{
@@ -203,7 +206,8 @@ import Header from '@/common/_header.vue'
     },
     components: {
       'v-header':Header,
-      'v-baseline': Baseline
+      'v-baseline': Baseline,
+      CountDown
     },
     mounted() {
       this.userInfo = this.$store.state.userInfo
@@ -572,11 +576,12 @@ input{
                     display: -webkit-box;
                     -webkit-line-clamp: 2;
                     -webkit-box-orient: vertical;
-                    .fz(font-size,26);
+                    font-size: 12px;
+                    color: #666;
                 }
-                p:last-of-type {
-                    .fz(font-size,22);
-                    color: rgb(168, 168, 168);
+                p:first-of-type{
+                  font-size: 14px;
+                  color: #333
                 }
                 .something-right-bottom {
 

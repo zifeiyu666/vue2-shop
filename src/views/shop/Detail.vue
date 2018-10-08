@@ -47,8 +47,32 @@ export default {
       detail: undefined,
       carnum: undefined,
       isLoading: false,
-      qrcode: ''
+      qrcode: '',
+      to: '',
+      from: ''
     }
+  },
+  beforeRouteEnter (to, from, next) {
+    // 在渲染该组件的对应路由被 confirm 前调用
+    // 不！能！获取组件实例 `this`
+    // 因为当守卫执行前，组件实例还没被创建
+    next(vm => {
+      vm.to = to
+      vm.from = from
+    })
+  },
+  activated() {
+    let that = this
+    setTimeout(()=> {
+      console.log('1222334455')
+      console.log(that.from.name)
+      if(that.from.name != '预定须知') {
+        this.getDetail()
+        this.getShareProductCode()
+      } else {
+        return 
+      }
+    }, 200)
   },
   mounted() {
     this.getDetail()

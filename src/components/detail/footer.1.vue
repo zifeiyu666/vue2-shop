@@ -154,7 +154,7 @@
           <div class='read_wrap type_wrap' @click='changeIsRead' v-if='isImmePay && detail.ProductType == "QYKL"'>
             <i v-if='!isRead' class='iconfont icon-circle' style='color: #666'></i>
             <i v-else class='iconfont icon-danxuanxuanzhong' style='color: #ff4800'></i>
-            <span @click.stop="goToXuZhi('DJLSYSM', '度假卡使用说明')" style='color:#ff4800 '>《度假卡使用说明》</span>
+            <span @click.stop="goToXuZhi('DJKSYSM', '度假卡使用说明')" style='color:#ff4800 '>《度假卡使用说明》</span>
           </div>
         </div>
 
