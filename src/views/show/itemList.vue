@@ -89,7 +89,7 @@
 .index{
   padding-bottom: 90px;
   padding-top: 40px;
-  background-color: #EBEBEB;
+  /* background-color: #EBEBEB; */
   box-sizing: border-box;
 }
 .item{

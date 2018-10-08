@@ -8,8 +8,8 @@
     </mt-header>
     <div v-if='content' class="item-wrap">
       <h2 class='item-title'>{{content.NewsTitle}}</h2>
-      <p>{{content.NewsAbstract}}</p>
-      <div v-html="content.NewsContent"></div>
+      <p v-if='content.NewsAbstract'>{{content.NewsAbstract}}</p>
+      <div style='margin-top: 10px' v-html="content.NewsContent"></div>
     </div>
     <div v-else class='nomore'>暂无更多内容</div>
   </div>
@@ -49,7 +49,10 @@
     }
   }
 </script>
-<style lang=less>
+<style lang=less scoped>
+.mint-header{
+    color: #fff!important;
+  }
 .item-wrap{
   padding: 10px;
   .banner{
@@ -59,6 +62,7 @@
       width: 100%;
     }
   }
+  
   img{
     width: 90vw !important;
     display: block !important;

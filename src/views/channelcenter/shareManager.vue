@@ -34,11 +34,14 @@
           </div>
           <div class="something-right">
             <p>{{item.name}}
-              <span class="level" style='margin-left: 0' >
+              <span class="level" style='margin-left: 0; margin-top: 5px' >
                 <a @click.stop='goToFx(item.openid)'>查看返现记录</a>
               </span>
+              <span class="level" style='margin-left: 0; margin-top: 5px' >
+                <a @click.stop='goToCJ(item.openid)'>查看成交记录</a>
+              </span>
             </p>
-            <p><i class='iconfont icon-dianhua'></i>：{{item.phone}}</p>
+            <!-- <p><i class='iconfont icon-dianhua'></i>：{{item.phone}}</p> -->
             <p><i class='iconfont icon-dizhi-01'></i>{{item.adress}}</p>
             <i class='iconfont icon-jiantou' @click='showHY(item.openid)'></i>
           </div>
@@ -93,6 +96,9 @@ import { parseTime } from '@/util/data.js'
       },
       goToFx(openid) {
         this.$router.push({path: '/channelcenter/ywyfxjl', query: {id: openid}})
+      },
+      goToCJ(openid) {
+        this.$router.push({path: '/channelcenter/ywycjjl', query: {id: openid}})
       },
       getList() {
         this.isLoading = true
@@ -351,7 +357,8 @@ input{
                   font-size: 16px;
                   color: @fontBlack !important;
                   .level{
-                    float: right;
+                    /* float: right; */
+                    display: block;
                     font-size: 14px;
                     color: @fontRed !important;
                     margin-right: 15px;

@@ -10,11 +10,11 @@
       <mt-button class='my-btn' @click='goTo(4)' size='small' type='danger'>度假项目</mt-button>
     </div>
     
-    <v-title title='项目展示' @clickMore='moreItems'></v-title>
+    <!-- <v-title title='项目展示' @clickMore='moreItems'></v-title> -->
     
-    <div v-for='(i, index) in items' :key='index' @click='goToDetail(i)'>
+    <!-- <div v-for='(i, index) in items' :key='index' @click='goToDetail(i)'>
       <item-show :itemData="i"></item-show>
-    </div>
+    </div> -->
     <div class="nothing"></div>
     <!-- <v-title title='新闻资讯' @clickMore='moreNews'></v-title>
     <news-show></news-show> 
@@ -50,7 +50,7 @@ export default {
   },
   mounted() {
     this.getBannerList()
-    this.getItemList()
+    // this.getItemList()
   },
   methods: {
     getBannerList() {
@@ -83,15 +83,19 @@ export default {
       })
     },
     // 查看详情
-    goToDetail(i) {
-      console.log(11111)
-      this.$router.push({path: '/show/itemnav', query:{id: i.id}})
-    },
+    // goToDetail(i) {
+    //   console.log(11111)
+    //   this.$router.push({path: '/show/itemnav', query:{id: i.id}})
+    // },
     // 项目简介
     goTo(index) {
       if (index == 1) {
         this.$router.push({path: '/show/itemDetail', query: {code: 'JTJS', name: ''}})
       } else if (index == 2) {
+        this.$router.push({path: '/show/commonList', query: {code: 'QYXW', name: '企业新闻'}})
+      } else if (index == 3) {
+        this.$router.push({path: '/show/itemDetail', query: {code: 'LXBK', name: '旅游板块'}})
+      } else {
         this.$router.push({path: '/show/item/list'})
       }
       
@@ -113,26 +117,31 @@ export default {
     padding-top: 0;
     padding-bottom: 90px;
     width: 100%;
-    height: 100%;
-    background-color: #EBEBEB;
+    // height: 100%;
+    // background-color: #EBEBEB;
     .my-btn{
+      font-size: 5vw;
       float: left; 
-      width: 46vw;
-      padding-top: 6vw;
-      padding-bottom: 10vw;
+      width: 48vw;
+      padding-top: 16vw;
+      padding-bottom: 20vw;
       margin: 2vw;
     }
     .my-btn:nth-of-type(1) {
       background: #FFAA00;
+      margin-left: 0;
     }
     .my-btn:nth-of-type(2) {
-      background: rgb(217, 116, 43)
+      background: rgb(217, 116, 43);
+      margin-right: 0;
     }
     .my-btn:nth-of-type(3) {
       background: rgb(153,77,82);
+      margin-left: 0;
     }
     .my-btn:nth-of-type(4) {
       background: #ff6b6b;
+      margin-right: 0
     }
 }
 .nothing {

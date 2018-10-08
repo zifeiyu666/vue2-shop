@@ -69,7 +69,7 @@
 .index {
     width: 100%;
     height: 100%;
-    background-color: #EBEBEB;
+    /* background-color: #EBEBEB; */
 }
 .item{
   box-shadow: 0px 1px 3px #eee;

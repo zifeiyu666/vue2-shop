@@ -70,6 +70,7 @@ const CCsearch = resolve => require(['@/views/channelcenter/search.vue'],resolve
 const CClogin = resolve => require(['@/views/channelcenter/login.vue'],resolve)
 const CChylist = resolve => require(['@/views/channelcenter/hyList.vue'],resolve)
 const CCywyFxjl = resolve => require(['@/views/channelcenter/ywyfxJl.vue'],resolve)
+const CCywyCjjl = resolve => require(['@/views/channelcenter/ywycjJl.vue'],resolve)
 const CCdetail = resolve => require(['@/views/channelcenter/productDetail.vue'],resolve)
 
 
@@ -501,6 +502,11 @@ const channelRouters = [
     path: '/channelcenter/ywyfxjl',
     name: 'CCywyFxjl',
     component: CCywyFxjl
+  },
+  {
+    path: '/channelcenter/ywycjjl',
+    name: 'CCywyCjjl',
+    component: CCywyCjjl
   },
   {
     path: '/channelcenter/detail',

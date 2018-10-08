@@ -48,7 +48,7 @@
           <!-- 立即购买选项 -->
           <div v-if='isImmePay'>
             <!-- 联系人信息 -->
-            <div class="type_wrap" v-if='detail.ProductType == "QYKL"'>
+            <div class="type_wrap">
                 <p class="type_title">信息填写</p>
                 <el-form ref="qykForm" :model="qykForm" label-width="65px">
                     <el-form-item label="联系人">

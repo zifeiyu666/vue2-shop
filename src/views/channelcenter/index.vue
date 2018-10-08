@@ -43,7 +43,7 @@
                   <span class="icon2-f"></span>
                 </div>
                 <p>
-                  <span>渠道整理业绩</span><i class="icon-go"></i>
+                  <span>渠道整体业绩</span><i class="icon-go"></i>
                 </p>
               </router-link>
               <router-link class="my-service-bottom" :to="{ path: '/channelcenter/search', query: {title: '分销产品',  type: 'qd'}}">
