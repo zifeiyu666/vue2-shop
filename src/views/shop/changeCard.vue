@@ -17,7 +17,7 @@
     <v-list ref='list' :startTime='startTime' :endTime='endTime'></v-list>
     <!-- 返回顶部 -->
     <v-backtotop bottom="60px" right="10px">
-      <i class='btn-to-top iconfont icon-fanhuidingbu'></i>
+      <i class='btn-to-top iconfont icon-11'></i>
     </v-backtotop>
 
     <!-- <v-footer></v-footer> -->

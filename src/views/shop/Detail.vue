@@ -14,7 +14,7 @@
       <v-chose :view="detail"></v-chose>
       <v-content :content='detail'></v-content>
       <v-backtotop bottom="60px" right="10px">
-        <i class='btn-to-top iconfont icon-fanhuidingbu'></i>
+        <i class='btn-to-top iconfont icon-11'></i>
       </v-backtotop>
       <v-baseline></v-baseline>
       <v-footer  :detail="detail" :carnum="carnum"></v-footer>

@@ -44,15 +44,9 @@ export default {
     position: fixed;
     top:17vw;
     right: 0;
-<<<<<<< HEAD
-    height: 24px;
-    // width: 50px;
-    line-height: 24px;
-=======
     height: 8vw;
     width: 70px;
     line-height: 8vw;
->>>>>>> a1d905435714a70e62d219fd7ce1cbd561e19513
     background: rgba(0,0,0,0.7);
     color: #fff;
     text-align: center;
