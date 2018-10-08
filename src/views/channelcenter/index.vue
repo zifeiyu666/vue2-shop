@@ -21,23 +21,21 @@
 
 
           <section class="my-service">
-
+            <a @click='showQrCode()' class="my-service-bottom">
+              <div>
+                <img src='../../assets/img/qrcode.png' style='width: 22px;margin-top:-4px' >
+              </div>
+              <p>
+                <span>渠道二维码</span><i class="icon-go"></i>
+              </p>
+            </a>
               <router-link class="my-service-bottom" to="/channelcenter/sharemanager">
                   <div>
                     <!-- <span class="icon2-milogo"></span> -->
                     <img src='../../assets/img/fxs.png' style='width: 24px;margin-top:-4px' >
                   </div>
                   <p>
-                    <span>业务员管理</span><i class="icon-go"></i>
-                  </p>
-              </router-link>
-              <router-link class="my-service-bottom" :to="{ path: '/channelcenter/search', query: {title: '分销产品',  type: 'qd'}}">
-                  <div>
-                    <!-- <span class="icon2-milogo"></span> -->
-                    <img src='../../assets/img/sharegoods1.png' style='width: 22px;margin-top:-4px' >
-                  </div>
-                  <p>
-                    <span>分销产品</span><i class="icon-go"></i>
+                    <span>渠道业务员管理</span><i class="icon-go"></i>
                   </p>
               </router-link>
               <router-link to="/channelcenter/fxjl" class="my-service-bottom">
@@ -45,17 +43,20 @@
                   <span class="icon2-f"></span>
                 </div>
                 <p>
-                  <span>渠道营业额</span><i class="icon-go"></i>
+                  <span>渠道整理业绩</span><i class="icon-go"></i>
                 </p>
               </router-link>
-              <a @click='showQrCode()' class="my-service-bottom">
-                <div>
-                  <img src='../../assets/img/qrcode.png' style='width: 22px;margin-top:-4px' >
-                </div>
-                <p>
-                  <span>我的二维码</span><i class="icon-go"></i>
-                </p>
-              </a>
+              <router-link class="my-service-bottom" :to="{ path: '/channelcenter/search', query: {title: '分销产品',  type: 'qd'}}">
+                  <div>
+                    <!-- <span class="icon2-milogo"></span> -->
+                    <img src='../../assets/img/sharegoods1.png' style='width: 22px;margin-top:-4px' >
+                  </div>
+                  <p>
+                    <span>热门分销产品</span><i class="icon-go"></i>
+                  </p>
+              </router-link>
+              
+              
           </section>
 
       </div>
