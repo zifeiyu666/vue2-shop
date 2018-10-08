@@ -44,7 +44,7 @@
         <el-tag type='info' size='small' v-if='view.isfenqi == 0'>不可分期</el-tag>
         <el-tag type='info' size='small' v-if='view.istuikuan == 0'>不可退款</el-tag>
         <el-tag type='info' size='small' v-if='view.istuikuan == 1'>可退款</el-tag> -->
-        <el-tag type='info' size='small' v-for='(item, id) in view.biaoqian' :key='id'>{{item}}</el-tag>
+        <el-tag type='info' size='small' v-for='(item, id) in view.biaoqian' :key='id' style='margin-right: 5px; margin-top: 5px'>{{item}}</el-tag>
         
       </div>
       <div class='item-wrap'>
