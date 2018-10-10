@@ -128,19 +128,19 @@ export default {
       margin: 2vw;
     }
     .my-btn:nth-of-type(1) {
-      background: #FFAA00;
+      background: rgb(143,162,166);
       margin-left: 0;
     }
     .my-btn:nth-of-type(2) {
-      background: rgb(217, 116, 43);
+      background: rgb(219,199,179);
       margin-right: 0;
     }
     .my-btn:nth-of-type(3) {
-      background: rgb(153,77,82);
+      background: rgb(200,187,152);
       margin-left: 0;
     }
     .my-btn:nth-of-type(4) {
-      background: #ff6b6b;
+      background: rgb(176,154,177);
       margin-right: 0
     }
 }

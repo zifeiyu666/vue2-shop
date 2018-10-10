@@ -20,7 +20,7 @@
     <v-nomore v-else></v-nomore>
     
     
-    <v-footer></v-footer>
+    <!-- <v-footer></v-footer> -->
     
   </div>
   

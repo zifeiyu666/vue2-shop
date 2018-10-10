@@ -35,7 +35,7 @@ import { MessageBox } from 'mint-ui'
       gotoRouter() {
         if (this.selected == '客服') {
           MessageBox.confirm('是否拨打客服热线？').then(action => {
-            window.location.href="tel:12306"
+            window.location.href="tel:19906421598"
           })
           return
         }

@@ -211,7 +211,7 @@
       }
       span{
         position: relative;
-        top: 30px;
+        top: 44px;
         COLOR: #FFF;
       }
     }
