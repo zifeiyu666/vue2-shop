@@ -1,5 +1,5 @@
 <template>
-  <div class="product_list_wrap">
+  <div class="product_list_wrap oneline">
       <h3 class='title' v-if='!hideHead' style='margin-bottom: 10px;'>
         全部商品
         <span class="more" @click='goToSearch("全部商品")'>查看更多></span>
@@ -12,7 +12,9 @@
         infinite-scroll-distance="0"
         >
         <li v-for="(k,i) in allList" @click='gotoDetail(k)' :key="i">
-          <count-down class='count_down' v-if='k.limitTime' v-on:start_callback="countDownS_cb(1)" v-on:end_callback="countDownE_cb(1)" :startTime="new Date().getTime()" :endTime="new Date(k.limitTime).getTime()" :tipText="'距离开始文字1'" :tipTextEnd="'距离结束文字1'" :endText="'结束自定义文字2'" :dayTxt="'天'" :hourTxt="'小时'" :minutesTxt="'分钟'" :secondsTxt="'秒'"></count-down>
+          <span class="tips" v-if='k.limitTime'>距离结束还有</span>
+          <!-- <span class="tips2" v-if='checkTime(k.limitTime) == 1'>活动已结束</span> -->
+          <count-down class='count_down' v-if='k.limitTime' v-on:start_callback="countDownS_cb(1)" v-on:end_callback="countDownE_cb(1)" :startTime="new Date().getTime()" :endTime="new Date(k.limitTime).getTime()" :tipText="'距离开始文字1'" tipTextEnd="距离结束" :endText="'结束自定义文字2'" :dayTxt="'天'" :hourTxt="'小时'" :minutesTxt="'分钟'" :secondsTxt="'秒'"></count-down>
           <!-- <router-link class='img_wrap' :to="{path:'/shop/detail', query:{pid: k.id}}" :key="k.id">
             <img v-lazy="k.imgurl[0]" alt="">
             <p>{{k.intro}}</p>
@@ -20,7 +22,7 @@
           <div class="something-middle">
             <img v-lazy="k.imgurl[0]" alt="">
           </div>
-          <div class="something-right">
+          <div class="something-right" :class="{ djs: k.limitTime }">
             <p>{{k.title}}</p>
             <p>{{k.intro}}</p>
             <p>
@@ -98,6 +100,15 @@ export default {
     console.log(this.fxtype)
   },
   methods: {
+    checkTime(time) {
+      let limitTime = new Date(time).getTime()
+      let now = new Date().getTime()
+      if (limitTime < now) {
+        return 1
+      } else {
+        return 2
+      }
+    },
     countDownS_cb: function (x) {
       console.log(x)
     },
@@ -150,7 +161,35 @@ export default {
 
 <style lang='less'>
 @import '../assets/utils.less';
-.product_list_wrap{
+.oneline{
+  .something > li .djs p:nth-of-type(1){
+    margin-top: 12px;
+  }
+  .something > li .djs p{
+    display: block !important;
+    height: 18px!important;
+    line-height: 18px !important;
+  }
+  .something > li .djs p:last-of-type{
+    height:26px!important;
+    line-height: 25px !important;
+  }
+  .something{
+    position: relative;
+    .tips, .tips2 {
+      position:absolute;
+      right:140px;
+      top: 0;
+      font-size: 12px;
+      line-height: 34px;
+      height: 34px;
+      color: @fontRed;
+    }
+    .tips2{
+      right: 10px;
+    }
+  }
+  
   .count_down{
   z-index: 10;
   background: rgba(0, 0, 0, 0.4);

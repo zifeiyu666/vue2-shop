@@ -1,5 +1,5 @@
 <template>
-  <div class="product_list_wrap">
+  <div class="product_list_wrap shopindex">
       <h3 class='title' v-if='!hideHead' style='margin-bottom: 10px;'>
         全部商品
         <span class="more" @click='goToSearch("全部商品")'>查看更多></span>
@@ -85,6 +85,15 @@ export default {
     console.log(this.fxtype)
   },
   methods: {
+    checkTime(time) {
+      let limitTime = new Date(time).getTime()
+      let now = new Date().getTime()
+      if (limitTime < now) {
+        return 1
+      } else {
+        return 2
+      }
+    },
     countDownS_cb: function (x) {
       console.log(x)
     },
@@ -168,7 +177,7 @@ export default {
           margin-top: -26px;
           p{
             float: right;
-            margin: 4px 2px;
+            margin:2px;
           }
           span:nth-of-type(1){
             background: rgba(0,0,0,0);
