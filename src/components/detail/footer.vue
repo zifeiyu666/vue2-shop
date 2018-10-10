@@ -38,8 +38,8 @@
               
               <div style='cursor:pointer'>
                 <p class='sub_title'>{{item.DicTypeName}}：</p>
-                <el-radio-group v-model="selectedPropId[index]" size="medium">
-                  <el-radio-button  v-for='(i, k) in item.EntryList' :disabled='!i.IsChecked' style='cursor:pointer' @click.native.prevent="clickToggle(index, i.EntryCode, i.IsChecked)"  :label="i.EntryCode" :key='k'>{{i.EntryName}}</el-radio-button>
+                <el-radio-group v-model="selectedPropId[index]" size="mini">
+                  <el-radio-button size='mini' round v-for='(i, k) in item.EntryList' :disabled='!i.IsChecked' style='cursor:pointer' @click.native.prevent="clickToggle(index, i.EntryCode, i.IsChecked)"  :label="i.EntryCode" :key='k'>{{i.EntryName}}</el-radio-button>
                 </el-radio-group>
               </div>
             </div>

@@ -3,11 +3,11 @@
     <div class='swiper-container'>
       <v-swiper :swiperData="bannerList"></v-swiper>
     </div>
-    <div class="btn-wrap clearfix">
-      <mt-button class='my-btn' @click='goTo(1)' size='small' type='danger'>集团介绍</mt-button>
-      <mt-button class='my-btn' @click='goTo(2)' size='small' type='danger'>企业新闻</mt-button>
-      <mt-button class='my-btn' @click='goTo(3)' size='small' type='danger'>旅游板块</mt-button>
-      <mt-button class='my-btn' @click='goTo(4)' size='small' type='danger'>度假项目</mt-button>
+    <div class="btn-wrap clearfix" style='margin-top: 1vw'>
+      <span class='my-btn' @click='goTo(1)' size='small' type='danger'></span>
+      <span class='my-btn' @click='goTo(2)' size='small' type='danger'></span>
+      <span class='my-btn' @click='goTo(3)' size='small' type='danger'></span>
+      <span class='my-btn' @click='goTo(4)' size='small' type='danger'></span>
     </div>
     
     <!-- <v-title title='项目展示' @clickMore='moreItems'></v-title> -->
@@ -123,25 +123,28 @@ export default {
       font-size: 5vw;
       float: left; 
       width: 48vw;
-      padding-top: 16vw;
-      padding-bottom: 20vw;
-      margin: 2vw;
+      margin: 1.25vw;
+      padding-top: 48vw;
+      height: 0;
+      background-repeat: no-repeat;
+      background-size: 100%;
+      margin-bottom: 0px;
     }
     .my-btn:nth-of-type(1) {
-      background: rgb(143,162,166);
-      margin-left: 0;
-    }
-    .my-btn:nth-of-type(2) {
-      background: rgb(219,199,179);
+      background-image: url('../../assets/img/show_btn01.jpeg');
       margin-right: 0;
     }
+    .my-btn:nth-of-type(2) {
+      background-image: url('../../assets/img/show_btn02.jpeg');
+      /* margin-right: 0; */
+    }
     .my-btn:nth-of-type(3) {
-      background: rgb(200,187,152);
-      margin-left: 0;
+      background-image: url('../../assets/img/show_btn03.jpeg');
+      margin-right: 0;
     }
     .my-btn:nth-of-type(4) {
-      background: rgb(176,154,177);
-      margin-right: 0
+      background-image: url('../../assets/img/show_btn04.jpeg');
+      /* margin-right: 0; */
     }
 }
 .nothing {
