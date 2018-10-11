@@ -9,7 +9,7 @@
     <div v-if='content' class="item-wrap">
       <h2 class='item-title'>{{content.NewsTitle}}</h2>
       <p v-if='content.NewsAbstract'>{{content.NewsAbstract}}</p>
-      <div style='margin-top: 10px' v-html="content.NewsContent"></div>
+      <div class='show-content-wrap' style='margin-top: 10px' v-html="content.NewsContent"></div>
     </div>
     <div v-else class='nomore'>暂无更多内容</div>
   </div>

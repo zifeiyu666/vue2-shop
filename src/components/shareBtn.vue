@@ -84,8 +84,8 @@ export default {
     z-index: 900;
     position: fixed;
     width: 75vw;
-    height: 120vw;
-    margin: 10vh auto;
+    height: 133vw;
+    margin: 5vh auto;
     left: 0;
     right: 0;
     top: 0;
