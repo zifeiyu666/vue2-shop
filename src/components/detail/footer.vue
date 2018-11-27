@@ -5,11 +5,11 @@
         <i class="iconfont icon-shouye"></i>
       </span>
     </router-link>
-    <router-link :to="{path:'/shop'}" class="footer-index">
+    <a @click='call' class="footer-index">
       <span>
         <i class="iconfont icon-kefu"></i>
       </span>
-    </router-link>
+    </a>
     <div class="footer-index" @click='collect'>
       <span v-if='star' class='collection'>
         <icon name='star' scale='1.5'></icon>
@@ -193,7 +193,7 @@ export default {
         idcard: '',
         tip: ''
       },
-      paynum: 1, // 立即购买数量
+      num: 1, // 立即购买数量
       popupVisible: false,
       payVisible: false,
       product: undefined,
@@ -245,7 +245,7 @@ export default {
       return 12
     },
     payprice() {
-      // return this.selectedProp[0].DiscountPrice * this.paynum
+      // return this.selectedProp[0].DiscountPrice * this.num
       return 12
     },
     cxrNum() {
@@ -285,6 +285,11 @@ export default {
   },
   methods:{
     scrollTo,
+    call() {
+      MessageBox.confirm('是否拨打客服热线？').then(action => {
+        window.location.href="tel:19906421598"
+      })
+    },
     goToXuZhi(code, title) {
       this.popupVisible2 = true
       // this.$router.push({path: '/shop/xz', query: {code: code, title: title}})
@@ -539,7 +544,7 @@ export default {
           token: this.$store.state.userInfo.MemberToken,
           PId: this.detail.PId,
           PropId: this.enabledProp[0].PropId,
-          Num: this.paynum,
+          Num: this.num,
           OpenID: this.openid,
           Contacts: this.qykForm.name,
           Phone: this.qykForm.phone,

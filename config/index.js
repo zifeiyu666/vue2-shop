@@ -33,7 +33,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {  
-        target: test,    //主域名，以前我都写192.168.2.57:80，这里跨域了  
+        target: wj,    //主域名
         changeOrigin: true,   //允许跨域  
         // pathRewrite: {         
         //     '^/api': ''  

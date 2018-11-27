@@ -19,7 +19,7 @@
           <!-- <img class='qrcode' :src="smallQrCode" alt="" @click='showQrCode()'> -->
       </header>
       <div class="main">
-          <router-link class="my-indent" :to="{ path: '/shop/myorder'}">
+          <!-- <router-link class="my-indent" :to="{ path: '/shop/myorder'}">
               <span class="my-indent-left">我的订单</span>
               <div class="my-indent-right">
                   <span>全部订单</span>
@@ -44,7 +44,7 @@
                   <p>退换货</p>
               </router-link>
 
-          </section>
+          </section> -->
 
           <section class="my-vip">
             <router-link class="my-vip-top ho" to="/shop/collection" >

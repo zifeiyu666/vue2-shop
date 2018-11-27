@@ -17,7 +17,7 @@
               <li @click='goToOrderDetail(item.orderno)' class='order-wrap' v-for="(item,i) in allOrders" :key="i">
                 <h3 class='ordertitle'>{{item.ordertitle}}</h3>
                 <ul class="something" >
-                  <div v-if="item.orderstate == '未付款'" id="deleteOrder">
+                  <div v-if="item.orderstate == '未付款' || item.orderstate == '已取消'" id="deleteOrder">
                     <span @click.stop='deleteOrder(item)'></span>
                   </div>
                   <li v-for="(k,i) in item.opd" :key='i'>
