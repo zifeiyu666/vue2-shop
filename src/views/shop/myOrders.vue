@@ -20,6 +20,9 @@
                   <div v-if="item.orderstate == '未付款' || item.orderstate == '已取消'" id="cancelOrder">
                     <span @click.stop='cancelOrder(item)'></span>
                   </div>
+                  <div v-if="item.orderstate == '已取消'" id="cancelOrder">
+                    <span @click.stop='deleteOrder(item)'></span>
+                  </div>
                   <li v-for="(k,i) in item.opd" :key='i'>
                     <div class="something-middle">
                       <img :src="k.imgurl[0]">
@@ -409,6 +412,39 @@ import Header from '@/common/_header.vue'
         var that = this
         MessageBox.confirm('确定取消订单?').then(action => {
           mockapi.shop.api_Shop_CancleOrder_post({
+            data: qs.stringify({
+              token: this.$store.state.userInfo.MemberToken,
+              orderid: item.orderid
+            })
+          }).then(res => {
+            if (res.data.result == 1) {
+              this.allQuery.pageNo = 1
+              this.waitQuery.pageNo = 1
+              this.payedQuery.pageNo = 1
+              this.allOrders = []
+              this.payedOrders = []
+              this.waitOrders = []
+              this.getAllOrdersList(false)
+              this.getWaitOrdersList(false)
+              this.getPayedOrdersList(false)
+              Toast({
+              message: '操作成功'
+              });
+            } else {
+              Toast({
+                message: '操作失败，请重试'
+              })
+            } 
+          }).catch(err => {
+            Toast(err)
+          })
+        })
+      },
+      deleteOrder(item) {
+        console.log('删除订单')
+        var that = this
+        MessageBox.confirm('确定删除该订单?').then(action => {
+          mockapi.shop.api_Shop_DeleteOrder_post({
             data: qs.stringify({
               token: this.$store.state.userInfo.MemberToken,
               orderid: item.orderid
