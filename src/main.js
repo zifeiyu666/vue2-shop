@@ -66,8 +66,7 @@ router.beforeEach((to, from, next) => {
         //     query: {oldUrl: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
         //   })
         // }
-      }
-      else {    
+      } else {    
         //如果没有token，获取token
         console.log('没有token')
         // Toast('没有token')
@@ -151,7 +150,12 @@ router.beforeEach((to, from, next) => {
             console.log(response)
             if (!response.data || response.data.result != '1') {
               console.log('code获取失败')
-              router.push('/shop/noauth')
+              if (to.query.openid) {
+                router.push({path: '/shop/noauth', query: {openid: to.query.openid}})
+              } else {
+                router.push('/shop/noauth')
+              }
+              
               return
             }
             console.log('通过code获取成功')

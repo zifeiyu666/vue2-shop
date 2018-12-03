@@ -28,9 +28,9 @@
         <img class='icon' src="../../assets/img/05.png" alt="">
         <span class='icon-title'>门票</span>
       </el-col>
-      <el-col :span='6' class='sel-icon' @click.native='goToSearch("研学旅行")'>
+      <el-col :span='6' class='sel-icon' @click.native='goToSearch("公寓民宿")'>
         <img class='icon' src="../../assets/img/06.png" alt="">
-        <span class='icon-title'>研学</span>
+        <span class='icon-title'>公寓民宿</span>
       </el-col>
       <el-col :span='6' class='sel-icon' @click.native='goToSearch("特产")'>
         <img class='icon' src="../../assets/img/07.png" alt="">

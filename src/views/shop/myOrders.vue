@@ -17,8 +17,8 @@
               <li @click='goToOrderDetail(item.orderno)' class='order-wrap' v-for="(item,i) in allOrders" :key="i">
                 <h3 class='ordertitle'>{{item.ordertitle}}</h3>
                 <ul class="something" >
-                  <div v-if="item.orderstate == '未付款' || item.orderstate == '已取消'" id="deleteOrder">
-                    <span @click.stop='deleteOrder(item)'></span>
+                  <div v-if="item.orderstate == '未付款' || item.orderstate == '已取消'" id="cancelOrder">
+                    <span @click.stop='cancelOrder(item)'></span>
                   </div>
                   <li v-for="(k,i) in item.opd" :key='i'>
                     <div class="something-middle">
@@ -65,8 +65,8 @@
               <li @click='goToOrderDetail(item.orderno)' class='order-wrap' v-for="(item,i) in waitOrders" :key="i">
                 <h3 class='ordertitle'>{{item.ordertitle}}</h3>
                 <ul class="something" >
-                  <div id="deleteOrder">
-                    <span @click.stop='deleteOrder(item)'></span>
+                  <div id="cancelOrder">
+                    <span @click.stop='cancelOrder(item)'></span>
                   </div>
                   <li v-for="(k,i) in item.opd" :key='i'>
                      <div class="something-middle">
@@ -78,7 +78,7 @@
                       <p>规格：{{k.propname}}</p>
                       <p  style="color:rgb(199, 108, 28);">售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;</p>
                       <!-- <div class="something-right-bottom">
-                        <span @click.stop='deleteOrder(item)'></span>
+                        <span @click.stop='cancelOrder(item)'></span>
                       </div> -->
                       <div class='state-wrap'>
                         <mt-badge size="small" color='#ccc'>{{k.state}}</mt-badge>
@@ -105,8 +105,8 @@
       <mt-tab-container-item id="3">
         <div class="wrap">
             <ul v-if='payedOrders.length != 0'>
-              <div id="deleteOrder">
-                <span @click.stop='deleteOrder(item)'></span>
+              <div id="cancelOrder">
+                <span @click.stop='cancelOrder(item)'></span>
               </div>
               <li @click='goToOrderDetail(item.orderno)' class='order-wrap' v-for="(item,i) in payedOrders" :key="i">
                 <h3 class='ordertitle'>{{item.ordertitle}}</h3>
@@ -121,7 +121,7 @@
                       <p>规格：{{k.propname}}</p>
                       <p style="color:rgb(199, 108, 28);">售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;</p>
                       <!-- <div class="something-right-bottom">
-                        <span @click.stop='deleteOrder(item)'></span>
+                        <span @click.stop='cancelOrder(item)'></span>
                       </div> -->
                       <div class='state-wrap'>
                         <mt-badge size="small" color='#ccc'>{{k.state}}</mt-badge>
@@ -148,8 +148,8 @@
       <mt-tab-container-item id="4">
         <div class="wrap">
             <ul v-if='unconfirmedOrders.length != 0'>
-              <div id="deleteOrder">
-                <span @click.stop='deleteOrder(item)'></span>
+              <div id="cancelOrder">
+                <span @click.stop='cancelOrder(item)'></span>
               </div>
               <li @click='goToOrderDetail(item.orderno)' class='order-wrap' v-for="(item,i) in unconfirmedOrders" :key="i">
                 <h3 class='ordertitle'>{{item.ordertitle}}</h3>
@@ -164,7 +164,7 @@
                       <p>规格：{{k.propname}}</p>
                       <p style="color:rgb(199, 108, 28);">售价：{{k.realprice}}元&nbsp;&nbsp;&nbsp;&nbsp;</p>
                       <!-- <div class="something-right-bottom">
-                        <span @click.stop='deleteOrder(item)'></span>
+                        <span @click.stop='cancelOrder(item)'></span>
                       </div> -->
                       <div class='state-wrap'>
                         <mt-badge size="small" color='#ccc'>{{k.state}}</mt-badge>
@@ -404,7 +404,7 @@ import Header from '@/common/_header.vue'
         })
         return state
       },
-      deleteOrder(item) {
+      cancelOrder(item) {
         console.log('取消订单')
         var that = this
         MessageBox.confirm('确定取消订单?').then(action => {
@@ -616,7 +616,7 @@ input{
         width: 100%;
         padding-bottom: 50px;
         position: relative;
-        #deleteOrder {
+        #cancelOrder {
           position: relative;
             span {
                 position: absolute;

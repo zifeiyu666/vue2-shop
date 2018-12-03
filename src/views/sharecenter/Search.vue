@@ -128,7 +128,7 @@ export default {
       case '门票':
         this.$set(this.searchForm, 'Classification', 'mp')
         break
-      case '研学旅行':
+      case '公寓民宿':
         this.$set(this.searchForm, 'Classification', 'yx')
         break
       case '特产':

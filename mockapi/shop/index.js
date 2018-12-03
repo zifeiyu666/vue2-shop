@@ -1,6 +1,24 @@
 import instance from './instance';
 import { convertRESTAPI } from '../util';
 
+/** 删除订单，只有取消的订单才能删除 */
+function api_Shop_DeleteOrder_post(opts) {
+  return instance({
+    method: 'post',
+    url:  '/api/Shop/DeleteOrder',
+    opts: opts
+  });
+}
+
+/** 分享产品的时候，用户扫描产品分享二维码，如果该用户没有关注平台，首先提示用户关注平台，返回分享人的分享二维码图片 */
+function api_Shop_getUserSharedQRCode_get(opts) {
+  return instance({
+    method: 'get',
+    url:  '/api/Shop/getUserSharedQRCode',
+    opts: opts
+  });
+}
+
 /** 成交记录 */
 function api_Channel_getSalesmanOrdersList_get(opts) {
   return instance({
@@ -911,6 +929,8 @@ function shop_getBanner_get(opts) {
 }
 
 export {
+  api_Shop_DeleteOrder_post,
+  api_Shop_getUserSharedQRCode_get,
   api_Channel_getSalesmanOrdersList_get,
   api_FangYuan_GetYuDingJiLu_get,
   api_FangYuan_GetKeYuYongList_get,

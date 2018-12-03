@@ -10,9 +10,12 @@
  
         <div class="codeInputBox">
             <!-- 原手机号 -->
-            <div class='oldPhone'>
+            <div class='oldPhone' v-if='oldPhone'>
                 <span>已绑定手机号：</span>
                 {{oldPhone}}
+            </div>
+            <div class='oldPhone' v-else>
+                <span>您还未绑定手机号</span>
             </div>
             <!--手机号-->
             <el-input
@@ -71,6 +74,10 @@
               captchaDisable:false,
           }
         },
+        mounted() {
+            console.log(this.$store.state.userInfo)
+            this.oldPhone = this.$store.state.userInfo.Phone
+        },
         methods:{
             //导航返回
             backAction:function () {
@@ -86,7 +93,7 @@
                 mockapi.shop.api_Shop_generateVeriCode_post({
                     data: qs.stringify({
                         token: this.$store.state.userInfo.MemberToken,
-                        phoneNum: this.phoneNum
+                        phone: this.phoneNum
                     })
                 }).then(res => {
                     if (res.data.result == 1) {
@@ -122,8 +129,9 @@
             registerBottomBtnAction() {
                 mockapi.shop.api_Shop_bindPhone_post({
                     data: qs.stringify({
-                        codeNum: this.codeNum,
-                        phoneNum: this.phoneNum
+                        token: this.$store.state.userInfo.MemberToken,
+                        VeriCode : this.codeNum,
+                        phone: this.phoneNum
                     })
                 }).then(res => {
                     if(res.data.result == 1) {

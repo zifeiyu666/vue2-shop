@@ -1,21 +1,62 @@
 <template>
-  <div class='noauth'>
+  <div class='noauth' v-loading='isLoading'>
     <div class="img">
-      <img src="../../assets/qrcode.jpg" alt="">
-      <div class="dec">
-        <p>长按上方二维码进行关注</p>
+      <img ref='QRcode' :src='imgUrl' alt="" style='min-height: 40vh'>
+      <div class="dec" v-if='!openid'>
+        <p style='color: #666; text-align: center; margin-top: 10px'>长按上方二维码进行关注</p>
+      </div>
+      <div v-else>
+        <p style='text-align: center; color: #666; margin-top: 10px'>长按图片识别二维码进行关注</p>
       </div>
     </div>
-    
 
   </div>
   
 </template>
 <script>
+import qs from 'qs'
+import * as mockapi from '@/../mockapi'
 import {Toast} from 'mint-ui'
 export default {
+  data() {
+    return {
+      imgUrl: '',
+      isLoading: true,
+      openid: undefined
+    }
+  },
+  created() {
+    
+  },
   mounted() {
-    Toast('您还未关注，请先关注。')
+    console.log(this.$refs)
+    this.$refs.QRcode.onload = () => {
+      console.log('loaded')
+      this.isLoading = false
+      Toast('您还未关注，请先关注。')
+    }
+    this.openid = this.$route.query.openid ? this.$route.query.openid : undefined
+    this.getQRCard()
+   
+  },
+  methods: {
+    getQRCard() {
+      if (!this.openid) {
+        this.imgUrl = require('../../assets/qrcode.jpg')
+        console.log(this.imgUrl)
+        return
+      }
+      console.log(2223333)
+      mockapi.shop.api_Shop_getUserSharedQRCode_get({
+        params:{
+          openid: this.openid
+        }
+      }).then(res => {
+        this.imgUrl = res.data.data
+      }).catch(err => {
+        console.log(err)
+      })
+    }
   }
 }
 </script>
