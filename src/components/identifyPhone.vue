@@ -70,7 +70,7 @@
               phoneNum:'',
               codeNum:'',
               captchaLabel:"获取验证码",
-              seconds:15,
+              seconds:60,
               captchaDisable:false,
           }
         },
@@ -111,17 +111,21 @@
                 })
  
                 this.captchaDisable = true;
-                //立即显示重发提示不必等待倒计时启动
-                this.captchaLabel =this.seconds+'秒后重新发送';
+               
  
                 //启动1s步长倒计时
                 var interval = setInterval(()=>{
-                    kTimer.countdown(this)
+                    // kTimer.countdown(this)
                     console.log(this.seconds)
- 
-                    if(this.seconds == 15){
+                    //立即显示重发提示不必等待倒计时启动
+                    this.captchaLabel =this.seconds+'秒后重新发送';
+                    this.seconds = this.seconds-1
+                    if(this.seconds == 0){
                         //停止倒计时
                         clearTimeout(interval)
+                        this.captchaDisable = false
+                        this.captchaLabel = '获取验证码'
+                        this.seconds = 60
                     }
  
                 },1000);
@@ -139,6 +143,10 @@
                             message: '绑定成功'
                         })
                         this.oldPhone = this.phoneNum
+                        this.$store.commit('setPhoneNum', this.phoneNum)
+                        this.$router.push('/shop/user')
+                    } else {
+                        Toast('绑定失败，请重试')
                     }
                 }).catch(err => {
                     console.log(err)

@@ -41,6 +41,10 @@ export default new Vuex.Store({
       console.log('已经存储用户信息')
       state.userInfo = res
     },
+    setPhoneNum(state, res) {
+      console.log('保存手机号')
+      state.userInfo.Phone = res
+    },
     saveSelectedProp(state, res) {
       console.log('保存用户选择规格')
       console.log(res)
